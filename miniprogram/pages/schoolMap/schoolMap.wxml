@@ -1,0 +1,5 @@
+<!--pages/schoolMap/schoolMap.wxml-->
+<map id="myMap" style="width:750rpx;height:1600rpx;" latitude="{{latitude}}" longitude="{{longitude}}" scale="17">
+
+
+</map>
