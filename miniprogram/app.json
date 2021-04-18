@@ -24,13 +24,12 @@
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#F6F6F6",
-    "navigationBarTitleText": "云开发 QuickStart",
+    "navigationBarTitleText": "校园地图",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
-    "color": "#000",
-    "selectedColor": "#71C068",
-    
+    "color": "#000000",
+    "selectedColor": "#313fa0",
     "borderStyle": "black",
     "list": [
       {
@@ -44,7 +43,6 @@
         "text": "设计",        
         "iconPath": "images/design.png",
         "selectedIconPath": "images/design_selected.png"
-        
       },
       {
         "pagePath": "pages/message/message",
@@ -58,10 +56,8 @@
         "iconPath": "images/myCenter.png",
         "selectedIconPath": "images/myCenter_selected.png"
       }
-
     ]
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2"
-
 }

@@ -10,7 +10,6 @@ exports.main = async (event, context) => {
 }`
 
 Page({
-
   data: {
     result: '',
     canIUseClipboard: wx.canIUse('setClipboardData'),
