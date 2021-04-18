@@ -13,7 +13,7 @@
   font-size: 30rpx;
   border-radius: 30rpx;
   position: absolute;
-  top: 1100rpx;
+  top: 736rpx;
   right: 8%;
 }
 

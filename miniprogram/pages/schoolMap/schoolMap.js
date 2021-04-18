@@ -54,6 +54,7 @@ Page({
     switch(this.data.func){
       case "海报":{
         this.setData({
+          pagePosition:"center",
           isMoreTrue: false
         })
         break;
