@@ -43,6 +43,29 @@
       bindclickoverlay="onClickOverlay"
       >
 
+      <view wx:if="{{func=='海报'}}">
+        <view class="title">
+          <view>最新活动</view>
+          <view>更多>></view>
+        </view>
+        <view class="post">
+          <view>
+            <text>绿植领养活动</text>
+            <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png"></image>
+          </view>
+          <view>
+            <text>绿植领养活动</text>
+            <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png"></image>
+          </view>
+          <view>
+            <text>绿植领养活动</text>
+            <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png"></image>
+          </view>
+        </view>
+      </view>
+
+
+
         <button class="screen2-button" bindtap="showPrev" hidden="{{!showPage}}" hover-class="none" style="display: block;margin: 24px auto; background-color: blue;color:white;height: 50rpx;">Exit</button>
       </page-container>
 

@@ -71,3 +71,6 @@
   top: 0rpx;
   right: -0rpx;
 }
+.title{
+  display: flex;justify-content: space-between;
+}
