@@ -38,7 +38,7 @@
         "selectedIconPath": "images/shcoolMap_selected.png"
       },
       {
-        "pagePath": "pages/design/design",
+        "pagePath": "pages/designPage/designPage",
         "text": "设计",        
         "iconPath": "images/design.png",
         "selectedIconPath": "images/design_selected.png"
