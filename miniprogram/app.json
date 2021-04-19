@@ -1,23 +1,11 @@
 {
   "pages": [
-    "pages/schoolMap/schoolMap",
+    "pages/index/index",
     "pages/load/load",
     "pages/login/login",
     "pages/designPage/designPage",
     "pages/message/message",
-    "pages/myCenter/myCenter",
-    "pages/userConsole/userConsole",
-    "pages/storageConsole/storageConsole",
-    "pages/databaseGuide/databaseGuide",
-    "pages/addFunction/addFunction",
-    "pages/deployFunctions/deployFunctions",
-    "pages/chooseLib/chooseLib",
-    "pages/openapi/openapi",
-    "pages/openapi/serverapi/serverapi",
-    "pages/openapi/callback/callback",
-    "pages/openapi/cloudid/cloudid",
-    "pages/im/im",
-    "pages/im/room/room"
+    "pages/myCenter/myCenter"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
@@ -30,30 +18,29 @@
     "color": "#000000",
     "selectedColor": "#313fa0",
     "borderStyle": "black",
-    "list": [
-      {
-        "pagePath": "pages/schoolMap/schoolMap",
+    "list": [{
+        "pagePath": "pages/index/index",
         "text": "地图",
-        "iconPath": "images/shcoolMap.png",
-        "selectedIconPath": "images/shcoolMap_selected.png"
+        "iconPath": "images/tabBarIcon/index.png",
+        "selectedIconPath": "images/tabBarIcon/index_selected.png"
       },
       {
         "pagePath": "pages/designPage/designPage",
-        "text": "设计",        
-        "iconPath": "images/design.png",
-        "selectedIconPath": "images/design_selected.png"
+        "text": "设计",
+        "iconPath": "images/tabBarIcon/design.png",
+        "selectedIconPath": "images/tabBarIcon/design_selected.png"
       },
       {
         "pagePath": "pages/message/message",
         "text": "消息",
-        "iconPath": "images/message.png",
-        "selectedIconPath": "images/message_selected.png"
+        "iconPath": "images/tabBarIcon/message.png",
+        "selectedIconPath": "images/tabBarIcon/message_selected.png"
       },
       {
         "pagePath": "pages/myCenter/myCenter",
         "text": "我的",
-        "iconPath": "images/myCenter.png",
-        "selectedIconPath": "images/myCenter_selected.png"
+        "iconPath": "images/tabBarIcon/myCenter.png",
+        "selectedIconPath": "images/tabBarIcon/myCenter_selected.png"
       }
     ]
   },

@@ -1,81 +1,70 @@
-<!--index.wxml-->
-<view class="container">
+<!--pages/schoolMap/schoolMap.wxml-->
+<view class="Container">
+  <map id="myMap" style="width:750rpx;height:1600rpx;" latitude="{{latitude}}" longitude="{{longitude}}" scale="17"
+    rotate="240" skew="35">
+    <!-- 以下按钮用于获取屏幕中心的经纬度，主要是测试开发用，实际上线可以删去 -->
+    <cover-view class="centerLocation" style="padding:50 0; width:80rpx; height:80rpx; position:relative">
+      <button class="btn-getLoc" bindtap="getCenterLocation"
+        style="width:100%;height:100%;position:absolute;opacity:0;">
+      </button>
+      <cover-image src="/images/index/centerLocation.png" mode="scaleToFill">
+      </cover-image>
+    </cover-view>
 
-  <view class="userinfo">
-    <text>欢迎开发者\n常霆钰、张洁、许吴达、黄嘉婷</text>
-  </view>
+    <!-- 添加图标的实现 -->
+    <cover-view class="moreFunctionIcon">
+      <cover-image class="more" bindtap="showFunction" src="/images/global/add.png"></cover-image>
+    </cover-view>
+    <!-- 选择功能页面的实现 -->
+    <cover-view>
+      <cover-view wx:if="{{isMoreTrue}}">
+        <cover-view class="funcMask{{isMoreTrue?'isMoreShow':'isMoreHide'}}">
+          <cover-view class='funcMaskContent'>
+            <cover-view class='funcMaskText' wx:for='{{functions}}' wx:for-index='index' wx:key="index">
+              <cover-view class="index">{{index+1}}</cover-view>
+              <button class="item" bindtap="popup" data-item="{{item}}">{{item}}</button>
+            </cover-view>
+          </cover-view>
+        </cover-view>
+      </cover-view>
+    </cover-view>
 
-  <!-- 用户 openid -->
-  <view class="userinfo">
-    <block wx:if="{{canIUseOpenData}}" class="userinfo-opendata">
-      <view class="userinfo-block-avatar" bindtap="bindViewTap">
-        <open-data type="userAvatarUrl"></open-data>
-      </view>
-    </block>
-    <block wx:elif="{{!hasUserInfo}}">
-      <button 
-        wx:if="{{canIUseGetUserProfile}}" 
-        bindtap="getUserProfile"
-        class="userinfo-avatar"
-        style="background-image: url({{avatarUrl}})"
-        size="default"
-      ></button>
-      <button
-        wx:else
-        open-type="getUserInfo" 
-        bindgetuserinfo="onGetUserInfo"
-        class="userinfo-avatar"
-        style="background-image: url({{avatarUrl}})"
-        size="default"
-      ></button>
-    </block>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-block-avatar" src="{{avatarUrl}}" mode="cover"></image>
-    </block>
-    <view class="userinfo-nickname-wrapper">
-      <button class="userinfo-nickname" bindtap="onGetOpenid">点击获取 openid</button>
-    </view>
-  </view>
+    <!-- 实现点击功能弹出相应的页面 -->
+    <page-container show="{{showPage}}" overlay="{{overlay}}" close-on-slide-down duration="{{pageDuration}}"
+      position="{{pagePosition}}" bindbeforeenter="onBeforeEnter" bindenter="onEnter" bindafterenter="onAfterEnter"
+      bindbeforeleave="onBeforeLeave" bindleave="onLeave" bindafterleave="onAfterLeave"
+      bindclickoverlay="onClickOverlay">
 
+      <cover-view wx:if="{{func=='海报'}}">
+        <cover-view class="title">
+          <cover-view>最新活动</cover-view>
+          <cover-view>更多>></cover-view>
+        </cover-view>
+        <cover-view class="post">
+          <cover-view>
+            <cover-view>绿植领养活动</cover-view>
+            <cover-image
+              src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
+            </cover-image>
+          </cover-view>
+          <cover-view>
+            <cover-view>绿植领养活动</cover-view>
+            <cover-image
+              src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
+            </cover-image>
+          </cover-view>
+          <cover-view>
+            <cover-view>绿植领养活动</cover-view>
+            <cover-image
+              src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
+            </cover-image>
+          </cover-view>
+        </cover-view>
+      </cover-view>
 
-  <!-- 上传图片 -->
-  <view class="uploader">
-    <view class="uploader-text" bindtap="doUpload">
-      <text>上传图片</text>
-    </view>
-    <view class="uploader-container" wx:if="{{imgUrl}}">
-      <image class="uploader-image" src="{{imgUrl}}" mode="aspectFit" bindtap="previewImg"></image>
-    </view>
-  </view>
+      <button class="screen2-button" bindtap="showPrev" hidden="{{!showPage}}" hover-class="none"
+        style="display: block;margin: 24px auto; background-color: blue;color:white;height: 50rpx;">Exit</button>
+    </page-container>
 
-
-  <!-- 操作数据库 -->
-  <view class="uploader">
-    <navigator url="../databaseGuide/databaseGuide" open-type="navigate" class="uploader-text">
-      <text>前端操作数据库</text>
-    </navigator>
-  </view>
-
-  <!-- 即时通信 -->
-  <view class="uploader">
-    <navigator url="../im/im" open-type="navigate" class="uploader-text">
-      <text>即时通信 Demo</text>
-    </navigator>
-  </view>
-
-  <!-- 新建云函数 -->
-  <view class="uploader">
-    <navigator url="../addFunction/addFunction" open-type="navigate" class="uploader-text">
-      <text>快速新建云函数</text>
-    </navigator>
-  </view>
-
-  <!-- 云调用 -->
-  <view class="uploader">
-    <navigator url="../openapi/openapi" open-type="navigate" class="uploader-text">
-      <text>云调用</text>
-    </navigator>
-  </view>
-
-
+  </map>
 </view>

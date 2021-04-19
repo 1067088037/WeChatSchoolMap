@@ -1,127 +1,176 @@
-//index.js
-const app = getApp()
-
+// pages/schoolMap/schoolMap.js
 Page({
+
+  /**
+   * 页面的初始数据
+   */
   data: {
-    avatarUrl: './user-unlogin.png',
-    userInfo: {},
-    hasUserInfo: false,
-    logged: false,
-    takeSession: false,
-    requestResult: '',
-    canIUseGetUserProfile: false,
-    canIUseOpenData: wx.canIUse('open-data.type.userAvatarUrl') // 如需尝试获取用户信息可改为false
+    mapCtx:     null,                // MapContext对象
+    longitude:  113.40275985754079,  // 小程序一开始显示的经纬度
+    latitude:   23.048671682072218,
+    isMoreTrue: false,               // 是否需要选择更多功能
+    functions:[                      // 功能名称数组
+      "海报",
+      "添加",
+      "搜索",
+      "筛选"
+    ],
+    func:'',                          // 功能名称
+    showPage:false,                   // 是否显示功能页面
+    pagePosition: 'center',           // 弹出的方式
+    pageDuration: 500,                // 动画时长
+    overlay: false,                   // 是否显示遮罩层
   },
 
-  onLoad: function() {
-    if (!wx.cloud) {
-      wx.redirectTo({
-        url: '../chooseLib/chooseLib',
-      })
-      return
-    }
-    if (wx.getUserProfile) {
+  // 获取屏幕中心经纬度
+  getCenterLocation:function(){
+    this.mapCtx.getCenterLocation({
+      success:(res)=>{
+        console.log(res.longitude+','+res.latitude)
+      }
+    })
+  },
+
+  // 显示功能页面
+  showFunction:function(){
+    if(this.data.isMoreTrue){
       this.setData({
-        canIUseGetUserProfile: true,
+        isMoreTrue:false
+      })
+    }
+    else{
+      this.setData({
+        isMoreTrue:true
       })
     }
   },
 
-  getUserProfile() {
-    // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认，开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
-    wx.getUserProfile({
-      desc: '展示用户信息', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-      success: (res) => {
+  // 弹窗函数 
+  popup:function(e){
+    this.setData({
+      func : e.currentTarget.dataset.item
+    })
+    // 根据用户选择，显示不同的页面
+    switch(this.data.func){
+      case "海报":{
         this.setData({
-          avatarUrl: res.userInfo.avatarUrl,
-          userInfo: res.userInfo,
-          hasUserInfo: true,
+          pagePosition:"center",
+          isMoreTrue: false
+        })
+        break;
+      }
+      case "搜索":{
+        this.setData({
+          pagePosition:"top",
+          isMoreTrue: false
+        })
+        break;
+      }
+      case "添加":{
+        this.setData({
+          isMoreTrue: false
+        })
+        break;
+      }
+      case "筛选":{
+        this.setData({
+          isMoreTrue:false,
+        })
+        break;
+      }
+      default:{
+        this.setData({
+          isMoreTrue:false
         })
       }
-    })
-  },
-
-  onGetUserInfo: function(e) {
-    if (!this.data.logged && e.detail.userInfo) {
-      this.setData({
-        logged: true,
-        avatarUrl: e.detail.userInfo.avatarUrl,
-        userInfo: e.detail.userInfo,
-        hasUserInfo: true,
-      })
+      break;
     }
-  },
-
-  onGetOpenid: function() {
-    // 调用云函数
-    wx.cloud.callFunction({
-      name: 'login',
-      data: {},
-      success: res => {
-        console.log('[云函数] [login] user openid: ', res.result.openid)
-        app.globalData.openid = res.result.openid
-        wx.navigateTo({
-          url: '../userConsole/userConsole',
-        })
-      },
-      fail: err => {
-        console.error('[云函数] [login] 调用失败', err)
-        wx.navigateTo({
-          url: '../deployFunctions/deployFunctions',
-        })
-      }
+    this.setData({
+      showPage: true,
     })
   },
 
-  // 上传图片
-  doUpload: function () {
-    // 选择图片
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['compressed'],
-      sourceType: ['album', 'camera'],
-      success: function (res) {
-        wx.showLoading({
-          title: '上传中',
-        })
-
-        const filePath = res.tempFilePaths[0]
-        
-        // 上传图片
-        const cloudPath = `my-image${filePath.match(/\.[^.]+?$/)[0]}`
-        wx.cloud.uploadFile({
-          cloudPath,
-          filePath,
-          success: res => {
-            console.log('[上传文件] 成功：', res)
-
-            app.globalData.fileID = res.fileID
-            app.globalData.cloudPath = cloudPath
-            app.globalData.imagePath = filePath
-            
-            wx.navigateTo({
-              url: '../storageConsole/storageConsole'
-            })
-          },
-          fail: e => {
-            console.error('[上传文件] 失败：', e)
-            wx.showToast({
-              icon: 'none',
-              title: '上传失败',
-            })
-          },
-          complete: () => {
-            wx.hideLoading()
-          }
-        })
-      },
-      fail: e => {
-        console.error(e)
-      }
+  // 退出功能页面
+  showPrev(){
+    this.setData({
+      showPage:false
     })
   },
-  main:function(){
-    
+
+  // page-container的触发函数，不写以下这些函数会警告
+  onBeforeEnter(res) {
+    console.log(res)
+  },
+  onEnter(res) {
+    console.log(res)
+  },
+  onAfterEnter(res) {
+    console.log(res)
+  },
+  onBeforeLeave(res) {
+    console.log(res)
+  },
+  onLeave(res) {
+    console.log(res)
+  },
+  onAfterLeave(res) {
+    console.log(res)
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    // 加载后生成MapContext对象
+    this.mapCtx = wx.createMapContext('myMap', this)
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+
   }
-
 })
