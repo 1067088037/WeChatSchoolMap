@@ -1,2 +1,2 @@
 <!--pages/designPage/designPage.wxml-->
-<text>pages/designPage/designPage.wxml</text>
+<input type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx" confirm-type="search"></input>

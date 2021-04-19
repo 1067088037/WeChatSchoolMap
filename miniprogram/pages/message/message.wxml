@@ -1,2 +1,13 @@
 <!--pages/message/message.wxml-->
-<text>pages/message/message.wxml</text>
+<input type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx" confirm-type="search"></input>
+
+<view class="MessageContainer" wx:if="{{hasMessage}}">
+  <view class="MessageBoxs" wx:for="{{messageData}}">
+    <view class="MessageBox">
+      <image src="{{item.src}}" mode="widthFix" class="MessageImage"></image>
+      <text>{{item.msg}}</text>
+      <text class="span" wx:if="{{item.msgNum>0&&item.msgNum<=99}}">{{item.msgNum}}</text>
+      <text class="span" wx:if="{{item.msgNum > 99}}">99+</text>
+    </view>
+  </view>
+</view>

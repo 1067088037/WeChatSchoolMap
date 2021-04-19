@@ -1,1 +1,43 @@
 /* pages/message/message.wxss */
+
+/* 输入框的样式 */
+input {
+  border-radius: 10rpx;
+  border: 1rpx black;
+  box-shadow: darkgray 5rpx 5rpx 10rpx;
+  width: 720rpx;
+  text-align: center;
+  margin-left: 15rpx;
+  height: 60rpx;
+}
+.MessageBox{
+  border-radius: 10rpx;
+  border: 1rpx  black;
+  background-color: lightgrey;
+  /* box-shadow: darkgray 5rpx 5rpx 10rpx; */
+  margin-top: 40rpx;
+  margin-left: 10rpx;
+  margin-right: 10rpx;
+}
+.MessageImage{
+  
+  width: 110rpx;
+  height: 110rpx;
+
+}
+
+.MessageBox .span{
+  position: absolute;
+
+  right: 3rpx; 
+  display: inline-block;
+  padding:0.15em 0.4em;
+  min-width: 16rpx;
+  border-radius: 55rpx;
+  background-color: #fa5151;
+
+  color:#fff;
+  line-height:1.0;
+  text-align:center;
+  font-size:28rpx
+}

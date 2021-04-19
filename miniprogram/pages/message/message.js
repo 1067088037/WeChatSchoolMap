@@ -5,7 +5,29 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    hasMessage:true,
+    messageData:[
+      {
+        src:"/images/tabBarIcon/design_selected.png",
+        msg:"Hello",
+        msgNum:1
+      },
+      {
+        src:"/images/tabBarIcon/index_selected.png",
+        msg:"Me too",
+        msgNum:3
+      },
+      {
+        src:"/images/tabBarIcon/message_selected.png",
+        msg:"LOL",
+        msgNum:2
+      },
+      {
+        src:"/images/tabBarIcon/myCenter_selected.png",
+        msg:"Good one",
+        msgNum:0
+      }
+    ],
   },
 
   /**
