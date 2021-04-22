@@ -1,1 +1,13 @@
 /* pages/designPage/designPage.wxss */
+input {
+  border-radius: 10rpx;
+  border: 1rpx black;
+  box-shadow: darkgray 5rpx 5rpx 10rpx;
+  width: 720rpx;
+  text-align: center;
+  margin-left: 15rpx;
+  height: 60rpx;
+}
+
+
+

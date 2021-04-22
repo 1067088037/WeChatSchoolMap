@@ -1,86 +1,317 @@
 // pages/schoolMap/schoolMap.js
+
+// 宿舍点
+const dormPoint = [{
+  id: 1,
+  title: "C1",
+  longitude: 113.40182571464311,
+  latitude: 23.046767824328636
+}, {
+  id: 2,
+  title: "C2",
+  longitude: 113.40120928117472,
+  latitude: 23.0471646583267
+}, {
+  id: 3,
+
+  title: "C3",
+  longitude: 113.40185021415175,
+  latitude: 23.047504186700028
+}, {
+  id: 4,
+  title: "C4",
+  longitude: 113.40054522533796,
+  latitude: 23.047954877693126
+}, {
+  id: 5,
+  title: "C5",
+  longitude: 113.40153348539627,
+  latitude: 23.04808106296843
+}, {
+  id: 6,
+  title: "C6",
+  longitude: 113.40149859469557,
+  latitude: 23.048927878982695
+}, {
+  id: 7,
+  title: "C7",
+  longitude: 113.40034925086616,
+  latitude: 23.048802272349267
+}, {
+  id: 8,
+  title: "C8",
+  longitude: 113.4010858530205,
+  latitude: "23.04949424941177"
+}, {
+  id: 9,
+  title: "C9",
+  longitude: 113.40125681993754,
+  latitude: 23.050102380343247
+}, {
+  id: 10,
+  title: "C10",
+  longitude: 113.40164970605144,
+  latitude: 23.050733632220382
+}, {
+  id: 11,
+  title: "C11",
+  longitude: 113.40054931683858,
+  latitude: 23.050845904343497
+}, {
+  id: 12,
+  name: "C12",
+  longitude: 113.40021512898329,
+  latitude: 23.051718927598355
+}, {
+  id: 13,
+  title: "C13",
+  longitude: 113.40095258016413,
+  latitude: 23.05209316546067
+}, {
+  id: 14,
+  title: "C14",
+  longitude: 113.40095258016413,
+  latitude: 23.05209316546067
+}, {
+  id: 15,
+  title: "C15",
+  longitude: 113.40284351234652,
+  latitude: 23.05287646883959
+}, {
+  id: 16,
+  title: "C16",
+  longitude: 113.40274251516541,
+  latitude: 23.052148280064554
+}, {
+  id: 17,
+  title: "C17",
+  longitude: 113.40181814367634,
+  latitude: 23.051614075600956
+}, {
+  id: 18,
+  title: "D5",
+  longitude: 113.40228047286575,
+  latitude: 23.04808907708455
+}, {
+  id: 19,
+  title: "D3",
+  longitude: 113.40291996021574,
+  latitude: 23.047460629981458
+}]
+const classRoomPoint = [{
+  id: 1,
+  title: "A1",
+  longitude: 113.40556827398132,
+  latitude: 23.047712869258447
+}, {
+  id: 2,
+  title: "A2",
+  longitude: 113.4055623261861,
+  latitude: 23.048541478195286
+}, {
+  id: 3,
+  title: "A3",
+  longitude: 113.40546513492075,
+  latitude: 23.049398833812845
+}, {
+  id: 4,
+  title: "A4/A5",
+  longitude: 113.4060915745905,
+  latitude: 23.05017228010393
+}] // 教学楼点
+const collgePoint = [{
+    id: 1,
+    title: "B1国际楼",
+    longitude: 113.40971094123438,
+    latitude: 23.045284933369096
+  },{
+    id: 2,
+    title: "B2医学院",
+    longitude: 113.4086426292954,
+    latitude: 23.04351926552582
+  },{
+    id: 3,
+    title: "B3计算机科学与工程学院",
+    longitude: 113.40868765581808,
+    latitude: 23.045283987726666
+  },{
+    id: 4,
+    title: "B4环境与能源学院",
+    longitude: 113.40820212982726,
+    latitude: 23.04456072757484
+  },{
+    id: 5,
+    title: "B5能源研究学院",
+    longitude: 113.40798590988652,
+    latitude: 23.04575321449248
+  },{
+    id: 6,
+    title: "B6生命科学于工程学院",
+    longitude: 113.40741639450039,
+    latitude: 23.04494517662861
+  },{
+    id: 7,
+    title: "B7软件学院",
+    longitude: 113.40742290742037,
+    latitude: 23.046054516291566
+  }, {
+    id: 8,
+    title: "B8软件学院",
+    longitude: 113.40683712367672,
+    latitude: 23.045217041240647
+  }, {
+    id: 9,
+    title: "B9法学院",
+    longitude: 113.40752034838943,
+    latitude: 23.04816555065419
+  },{
+    id: 10,
+    title: "B9新闻与传播学院",
+    longitude: 113.40755053568273,
+    latitude: 23.047758523388648
+  },{
+    id: 11,
+    title: "B10经济与金融学院",
+    longitude: 113.40734142376141,
+    latitude: 23.049188072396547
+  },{
+    id: 12,
+    title: "B10电子商务系",
+    longitude: 113.40749441572348,
+    latitude: 23.048559842489716
+  },{
+    id: 13,
+    title: "B10旅游管理系",
+    longitude: 113.4075529575232,
+    latitude: 23.048885688944768
+  },{
+    id: 13,
+    title: "B11设计学院/艺术学院",
+    longitude: 113.40766014558994,
+    latitude: 23.050032315286327
+  },
+] // 学院点
+const canteenPoint = [
+  {
+    id: 1,
+    title: "第一学生饭堂",
+    longitude: 113.40268387434162,
+    latitude: 23.04866925793428
+  },{
+    id: 2,
+    title: "第二学生饭堂",
+    longitude: 113.40333534303113,
+    latitude: 23.051645364973492
+  },{
+    id: 3,
+    title: "世博超市",
+    longitude: 113.40203129147403,
+    latitude: 23.048593578356705
+  },{
+    id: 4,
+    title: "未来商店",
+    longitude: 113.40235747403517,
+    latitude: 23.047952836541615
+  },{
+    id: 5,
+    title: "7-11便利店",
+    longitude: 113.40188492453046,
+    latitude: 23.051165789442734
+  },{
+    id: 6,
+    title: "真功夫&猫熊煮茶",
+    longitude: 113.40232360687605,
+    latitude: 23.051009822324243
+  }
+] // 饭堂以及世博点
+const deliverPickUpPoint = [] // 拿快递的点
+const vouchCenterPoint = [] // 充值点
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    mapCtx:     null,                // MapContext对象
-    longitude:  113.40275985754079,  // 小程序一开始显示的经纬度
-    latitude:   23.048671682072218,
-    isMoreTrue: false,               // 是否需要选择更多功能
-    functions:[                      // 功能名称数组
+    mapCtx: null, // MapContext对象
+    longitude: 113.40275985754079, // 小程序一开始显示的经纬度
+    latitude: 23.048671682072218,
+    isMoreTrue: false, // 是否需要选择更多功能
+    functions: [ // 功能名称数组
       "海报",
       "添加",
       "搜索",
       "筛选"
     ],
-    func:'',                          // 功能名称
-    showPage:false,                   // 是否显示功能页面
-    pagePosition: 'center',           // 弹出的方式
-    pageDuration: 500,                // 动画时长
-    overlay: false,                   // 是否显示遮罩层
+    markers: [],
+    func: '', // 功能名称
+    showPage: false, // 是否显示功能页面
+    pagePosition: 'center', // 弹出的方式
+    pageDuration: 500, // 动画时长
+    overlay: false, // 是否显示遮罩层
+
   },
 
   // 获取屏幕中心经纬度
-  getCenterLocation:function(){
+  getCenterLocation: function () {
     this.mapCtx.getCenterLocation({
-      success:(res)=>{
-        console.log(res.longitude+','+res.latitude)
+      success: (res) => {
+        console.log(res.longitude + ',' + res.latitude)
       }
     })
   },
 
   // 显示功能页面
-  showFunction:function(){
-    if(this.data.isMoreTrue){
+  showFunction: function () {
+    if (this.data.isMoreTrue) {
       this.setData({
-        isMoreTrue:false
+        isMoreTrue: false
       })
-    }
-    else{
+    } else {
       this.setData({
-        isMoreTrue:true
+        isMoreTrue: true
       })
     }
   },
 
   // 弹窗函数 
-  popup:function(e){
+  popup: function (e) {
     this.setData({
-      func : e.currentTarget.dataset.item
+      func: e.currentTarget.dataset.item
     })
     // 根据用户选择，显示不同的页面
-    switch(this.data.func){
-      case "海报":{
+    switch (this.data.func) {
+      case "海报": {
         this.setData({
-          pagePosition:"center",
+          pagePosition: "center",
           isMoreTrue: false
         })
         break;
       }
-      case "搜索":{
+      case "搜索": {
         this.setData({
-          pagePosition:"top",
+          pagePosition: "top",
           isMoreTrue: false
         })
         break;
       }
-      case "添加":{
+      case "添加": {
         this.setData({
+          pagePosition: "center",
           isMoreTrue: false
         })
         break;
       }
-      case "筛选":{
+      case "筛选": {
         this.setData({
-          isMoreTrue:false,
+          pagePosition: "center",
+          isMoreTrue: false
         })
         break;
       }
-      default:{
+      default: {
         this.setData({
-          isMoreTrue:false
+          pagePosition: "center",
+          isMoreTrue: false
         })
       }
       break;
@@ -89,11 +320,42 @@ Page({
       showPage: true,
     })
   },
-
-  // 退出功能页面
-  showPrev(){
+  // 只显示宿舍
+  DormOnly() {
+    const markers = dormPoint;
     this.setData({
-      showPage:false
+      markers,
+      showPage: false
+    })
+  },
+  // 只显示教学楼
+  ClassRoomOnly() {
+    const markers = classRoomPoint;
+    this.setData({
+      markers,
+      showPage: false
+    })
+  },
+  // 只显示学院楼
+  collgeOnly(){
+    const markers = collgePoint;
+    this.setData({
+      markers,
+      showPage: false
+    })
+  },
+  // 只显示可吃饭的地方
+  canteenOnly(){
+    const markers = canteenPoint;
+    this.setData({
+      markers,
+      showPage: false
+    })
+  },
+  // 退出功能页面
+  showPrev() {
+    this.setData({
+      showPage: false
     })
   },
 

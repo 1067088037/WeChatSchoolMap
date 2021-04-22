@@ -8,17 +8,17 @@ Page({
     hasMessage:true,
     messageData:[
       {
-        src:"/images/tabBarIcon/design_selected.png",
+        src:"/images/tabBarIcon/myCenter_selected.png",
         msg:"Hello",
         msgNum:1
       },
       {
-        src:"/images/tabBarIcon/index_selected.png",
+        src:"/images/tabBarIcon/myCenter_selected.png",
         msg:"Me too",
         msgNum:3
       },
       {
-        src:"/images/tabBarIcon/message_selected.png",
+        src:"/images/tabBarIcon/myCenter_selected.png",
         msg:"LOL",
         msgNum:2
       },
