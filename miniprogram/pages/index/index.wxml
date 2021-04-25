@@ -40,26 +40,28 @@
           <cover-view>最新活动</cover-view>
           <cover-view>更多>></cover-view>
         </cover-view>
-        <cover-view class="post">
-          <cover-view>
-            <cover-view>绿植领养活动</cover-view>
-            <cover-image
-              src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
-            </cover-image>
+        <scroll-view class="scrollPost" scroll-y="true">
+          <cover-view class="post">
+            <cover-view>
+              <cover-view>绿植领养活动</cover-view>
+              <cover-image
+                src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
+              </cover-image>
+            </cover-view>
+            <cover-view>
+              <cover-view>绿植领养活动</cover-view>
+              <cover-image
+                src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
+              </cover-image>
+            </cover-view>
+            <cover-view>
+              <cover-view>绿植领养活动</cover-view>
+              <cover-image
+                src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
+              </cover-image>
+            </cover-view>
           </cover-view>
-          <cover-view>
-            <cover-view>绿植领养活动</cover-view>
-            <cover-image
-              src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
-            </cover-image>
-          </cover-view>
-          <cover-view>
-            <cover-view>绿植领养活动</cover-view>
-            <cover-image
-              src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
-            </cover-image>
-          </cover-view>
-        </cover-view>
+        </scroll-view>
       </cover-view>
       <!-- 搜索框 -->
       <cover-view wx:if="{{func=='搜索'}}">

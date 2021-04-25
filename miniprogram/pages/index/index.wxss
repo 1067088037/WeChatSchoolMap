@@ -81,3 +81,7 @@ input {
   margin:20rpx;
   height: 60rpx;
 }
+.scrollPost{
+  height : 900rpx;
+  white-space: nowrap;
+}
