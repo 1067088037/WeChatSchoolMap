@@ -1,8 +1,8 @@
 /* 加号的样式 */
-.more{
+.more {
   display: block;
- /* border: 1px solid red; */
-  width: 100rpx; 
+  /* border: 1px solid red; */
+  width: 100rpx;
   text-align: center;
   line-height: 60rpx;
   color: blue;
@@ -15,16 +15,17 @@
 }
 
 /* 功能页面的样式 */
-.funcMask{
+.funcMask {
   height: 100%;
   width: 100%;
   position: fixed;
-  background-color:rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, .5);
   z-index: 2;
   top: 0;
   left: 0;
 }
-.funcMaskContent{
+
+.funcMaskContent {
   padding: 20rpx 0;
   width: 70%;
   background: #e1d2b1;
@@ -32,11 +33,12 @@
   border-radius: 20rpx;
   display: flex;
   flex-direction: column;
-  justify-content: space-around; 
+  justify-content: space-around;
   align-items: center;
   position: relative;
 }
-.funcMaskText{
+
+.funcMaskText {
   width: 80%;
   font-size: 30rpx;
   color: #856d5f;
@@ -45,7 +47,8 @@
   align-items: center;
   margin: 25rpx 0 25rpx 0;
 }
-.index{
+
+.index {
   color: #fff;
   font-size: 40rpx;
   height: 60rpx;
@@ -57,20 +60,24 @@
   border-radius: 30rpx;
   margin-right: 10rpx;
 }
-.item{
+
+.item {
   background-color: #fff;
 }
 
-.ruleHide{
-  height: 60rpx!important;
-  width: 60rpx!important;
+.ruleHide {
+  height: 60rpx !important;
+  width: 60rpx !important;
   position: absolute;
   top: 0rpx;
   right: -0rpx;
 }
-.title{
-  display: flex;justify-content: space-between;
+
+.title {
+  display: flex;
+  justify-content: space-between;
 }
+
 input {
   border-radius: 10rpx;
   border: 1rpx black;
@@ -78,10 +85,11 @@ input {
   width: 720rpx;
   text-align: center;
   margin-left: 15rpx;
-  margin:20rpx;
+  margin: 20rpx;
   height: 60rpx;
 }
-.scrollPost{
-  height : 900rpx;
+
+.scrollPost {
+  height: 900rpx;
   white-space: nowrap;
 }
