@@ -1,3 +1,5 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "mp-badget":"weui-miniprogram/badge/badge"
+  }
 }

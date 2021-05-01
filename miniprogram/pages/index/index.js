@@ -1,191 +1,190 @@
 // pages/schoolMap/schoolMap.js
-
+const app = getApp();
 // 宿舍点
 const dormPoint = [{
-  id: 1,
+  id: 101,
   title: "C1",
   longitude: 113.40182571464311,
   latitude: 23.046767824328636
 }, {
-  id: 2,
+  id: 102,
   title: "C2",
   longitude: 113.40120928117472,
   latitude: 23.0471646583267
 }, {
-  id: 3,
-
+  id: 103,
   title: "C3",
   longitude: 113.40185021415175,
   latitude: 23.047504186700028
 }, {
-  id: 4,
+  id: 104,
   title: "C4",
   longitude: 113.40054522533796,
   latitude: 23.047954877693126
 }, {
-  id: 5,
+  id: 105,
   title: "C5",
   longitude: 113.40153348539627,
   latitude: 23.04808106296843
 }, {
-  id: 6,
+  id: 106,
   title: "C6",
   longitude: 113.40149859469557,
   latitude: 23.048927878982695
 }, {
-  id: 7,
+  id: 107,
   title: "C7",
   longitude: 113.40034925086616,
   latitude: 23.048802272349267
 }, {
-  id: 8,
+  id: 108,
   title: "C8",
   longitude: 113.4010858530205,
   latitude: "23.04949424941177"
 }, {
-  id: 9,
+  id: 109,
   title: "C9",
   longitude: 113.40125681993754,
   latitude: 23.050102380343247
 }, {
-  id: 10,
+  id: 110,
   title: "C10",
   longitude: 113.40164970605144,
   latitude: 23.050733632220382
 }, {
-  id: 11,
+  id: 111,
   title: "C11",
   longitude: 113.40054931683858,
   latitude: 23.050845904343497
 }, {
-  id: 12,
+  id: 112,
   name: "C12",
   longitude: 113.40021512898329,
   latitude: 23.051718927598355
 }, {
-  id: 13,
+  id: 113,
   title: "C13",
   longitude: 113.40095258016413,
   latitude: 23.05209316546067
 }, {
-  id: 14,
+  id: 114,
   title: "C14",
   longitude: 113.40095258016413,
   latitude: 23.05209316546067
 }, {
-  id: 15,
+  id: 115,
   title: "C15",
   longitude: 113.40284351234652,
   latitude: 23.05287646883959
 }, {
-  id: 16,
+  id: 116,
   title: "C16",
   longitude: 113.40274251516541,
   latitude: 23.052148280064554
 }, {
-  id: 17,
+  id: 117,
   title: "C17",
   longitude: 113.40181814367634,
   latitude: 23.051614075600956
 }, {
-  id: 18,
+  id: 118,
   title: "D5",
   longitude: 113.40228047286575,
   latitude: 23.04808907708455
 }, {
-  id: 19,
+  id: 119,
   title: "D3",
   longitude: 113.40291996021574,
   latitude: 23.047460629981458
 }]
 const classRoomPoint = [{
-  id: 1,
+  id: 201,
   title: "A1",
   longitude: 113.40556827398132,
   latitude: 23.047712869258447
 }, {
-  id: 2,
+  id: 202,
   title: "A2",
   longitude: 113.4055623261861,
   latitude: 23.048541478195286
 }, {
-  id: 3,
+  id: 203,
   title: "A3",
   longitude: 113.40546513492075,
   latitude: 23.049398833812845
 }, {
-  id: 4,
+  id: 204,
   title: "A4/A5",
   longitude: 113.4060915745905,
   latitude: 23.05017228010393
 }] // 教学楼点
 const collgePoint = [{
-    id: 1,
+    id: 301,
     title: "B1国际楼",
     longitude: 113.40971094123438,
     latitude: 23.045284933369096
   },{
-    id: 2,
+    id: 302,
     title: "B2医学院",
     longitude: 113.4086426292954,
     latitude: 23.04351926552582
   },{
-    id: 3,
+    id: 303,
     title: "B3计算机科学与工程学院",
     longitude: 113.40868765581808,
     latitude: 23.045283987726666
   },{
-    id: 4,
+    id: 304,
     title: "B4环境与能源学院",
     longitude: 113.40820212982726,
     latitude: 23.04456072757484
   },{
-    id: 5,
+    id: 305,
     title: "B5能源研究学院",
     longitude: 113.40798590988652,
     latitude: 23.04575321449248
   },{
-    id: 6,
+    id: 306,
     title: "B6生命科学于工程学院",
     longitude: 113.40741639450039,
     latitude: 23.04494517662861
   },{
-    id: 7,
+    id: 307,
     title: "B7软件学院",
     longitude: 113.40742290742037,
     latitude: 23.046054516291566
   }, {
-    id: 8,
+    id: 308,
     title: "B8软件学院",
     longitude: 113.40683712367672,
     latitude: 23.045217041240647
   }, {
-    id: 9,
+    id: 309,
     title: "B9法学院",
     longitude: 113.40752034838943,
     latitude: 23.04816555065419
   },{
-    id: 10,
+    id: 310,
     title: "B9新闻与传播学院",
     longitude: 113.40755053568273,
     latitude: 23.047758523388648
   },{
-    id: 11,
+    id: 311,
     title: "B10经济与金融学院",
     longitude: 113.40734142376141,
     latitude: 23.049188072396547
   },{
-    id: 12,
+    id: 312,
     title: "B10电子商务系",
     longitude: 113.40749441572348,
     latitude: 23.048559842489716
   },{
-    id: 13,
+    id: 313,
     title: "B10旅游管理系",
     longitude: 113.4075529575232,
     latitude: 23.048885688944768
   },{
-    id: 13,
+    id: 314,
     title: "B11设计学院/艺术学院",
     longitude: 113.40766014558994,
     latitude: 23.050032315286327
@@ -226,6 +225,7 @@ const canteenPoint = [
 ] // 饭堂以及世博点
 const deliverPickUpPoint = [] // 拿快递的点
 const vouchCenterPoint = [] // 充值点
+var flag = 0;
 Page({
 
   /**
@@ -242,13 +242,14 @@ Page({
       "搜索",
       "筛选"
     ],
-    markers: [],
+    markers: new Array,
     func: '', // 功能名称
     showPage: false, // 是否显示功能页面
     pagePosition: 'center', // 弹出的方式
     pageDuration: 500, // 动画时长
     overlay: false, // 是否显示遮罩层
-
+    showDialog : false,
+    buttons :[{text:'退出'},{text:'了解更多'}]
   },
 
   // 获取屏幕中心经纬度
@@ -325,32 +326,162 @@ Page({
     const markers = dormPoint;
     this.setData({
       markers,
-      showPage: false
+      showPage: false,
+      
     })
+    flag = 1
   },
   // 只显示教学楼
   ClassRoomOnly() {
     const markers = classRoomPoint;
     this.setData({
       markers,
-      showPage: false
+      showPage: false,
+      
     })
+    flag = 2
   },
   // 只显示学院楼
   collgeOnly(){
     const markers = collgePoint;
     this.setData({
       markers,
-      showPage: false
+      showPage: false,
+      
     })
+    flag = 3
   },
   // 只显示可吃饭的地方
   canteenOnly(){
-    const markers = canteenPoint;
+    const markers = canteenPoint
     this.setData({
       markers,
-      showPage: false
+      showPage: false,
+      
     })
+    flag= 4
+    console.log(flag)
+  },
+   // 根据markerID获取经纬度
+  getLatitude(id){
+    let markerArr;
+    console.log(flag)
+    switch(flag)
+    {
+      case 1:
+      {  markerArr = dormPoint
+          markerArr.forEach(function(item){
+            if(item.id == id)
+              return item.latitude;
+          })
+      }
+      case 2:
+      {
+          markerArr = classRoomPoint
+          markerArr.forEach(function(item){
+            if(item.id == id)
+              return item.latitude;
+          })
+      }
+      case 3:
+      {
+          markerArr = collgePoint
+          markerArr.forEach(function(item){
+            if(item.id == id)
+              return item.latitude;
+          })
+      }
+      case 4:
+      {
+          markerArr = canteenPoint
+          for(var i = 0 ; i < markerArr.length; i ++)
+          {
+              console.log(markerArr[i].id)
+              if(id == markerArr[i].id)
+                return markerArr[i].latitude
+          }
+      
+      }
+    }
+    
+  },
+  getLongtitude(id){
+    let markerArr;
+    console.log(flag)
+    switch(flag)
+    {
+      case 1:
+      {  markerArr = dormPoint
+          markerArr.forEach(function(item){
+            if(item.id == id)
+              return item.longitude;
+          })
+      }
+      case 2:
+      {
+          markerArr = classRoomPoint
+          markerArr.forEach(function(item){
+            if(item.id == id)
+              return item.longitude;
+          })
+      }
+      case 3:
+      {
+          markerArr = collgePoint
+          markerArr.forEach(function(item){
+            if(item.id == id)
+              return item.longitude;
+          })
+      }
+      case 4:
+      {
+          markerArr = canteenPoint
+          for(var i = 0 ; i < markerArr.length; i ++)
+          {
+              console.log(markerArr[i].id)
+              if(id == markerArr[i].id)
+                return markerArr[i].longitude
+          }
+      }
+    }
+    return 0;
+  },
+  // 进入具体建筑的“攻略”界面
+  markerstap(e){
+    console.log(e.detail.markerId)
+    
+    // TODO: 获取目标点的经纬度，传到云端，供导航所用
+    app.globalData.markerId = e.detail.markerId
+    app.globalData.desLatitude = this.getLatitude(e.detail.markerId)
+    app.globalData.desLongtitude = this.getLongtitude(e.detail.markerId)
+    this.setData({
+      showDialog:true
+    })
+     
+  },
+ 
+  toDetailPage(e){
+    console.log(e);
+    if(e.detail.item.text == "退出"){
+      app.globalData.markerId = 0
+      app.globalData.desLatitude = 0
+      app.globalData.desLongtitude = 0
+    }
+    else if (e.detail.item.text == "了解更多")
+    {
+        wx.redirectTo({
+          url: '../building/building',
+          success:(res)=>{
+            console.log(666)
+          }
+        })
+    }
+    this.setData({
+      showDialog:false
+    })
+  },
+  poiTap(e){
+    console.log(e.detail);
   },
   // 退出功能页面
   showPrev() {
@@ -384,7 +515,20 @@ Page({
    */
   onLoad: function (options) {
     // 加载后生成MapContext对象
-    this.mapCtx = wx.createMapContext('myMap', this)
+    this.setData({
+      mapCtx : wx.createMapContext('myMap', this)
+    })
+    // TODO: 获取用户的位置权限，传到云端，供导航所用
+    wx.getLocation({
+      type : "wsg84",
+      success(res){
+        const latitude = res.latitude
+        const longitude = res.longitude
+        console.log(latitude,longitude)
+      }
+    })
+    
+    
   },
 
   /**

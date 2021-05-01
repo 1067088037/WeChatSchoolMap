@@ -93,3 +93,6 @@ input {
   height: 900rpx;
   white-space: nowrap;
 }
+.PosterArea{
+ margin-top:200rpx;
+}

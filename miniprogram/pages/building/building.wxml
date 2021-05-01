@@ -1,0 +1,13 @@
+<!--pages/building/building.wxml-->
+<view class="Canteen" wx:if="{{markerId == 1}}">
+  <view class="Images">
+    图片区
+  </view>
+  <view>------------------------------------------------------</view>
+  <view class="commentArea">
+      评论区
+  </view>
+  <view class="postComment">
+    <input></input>
+  </view>
+</view>

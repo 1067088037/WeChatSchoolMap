@@ -18,6 +18,7 @@ input {
   margin-top: 40rpx;
   margin-left: 10rpx;
   margin-right: 10rpx;
+  position: relative;
 }
 .MessageImage{
   
@@ -41,3 +42,4 @@ input {
   text-align:center;
   font-size:28rpx
 }
+

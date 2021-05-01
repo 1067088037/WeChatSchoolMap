@@ -8,6 +8,24 @@ input {
   margin-left: 15rpx;
   height: 60rpx;
 }
-
+.uploadPoster{
+  margin-top: 10rpx;
+  border-radius: 10rpx;
+  border:1rpx black;
+  box-shadow: darkgray 5rpx 5rpx 10rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  position: relative;
+}
+ image{
+  position: relative;
+  widows: 110rpx;
+  height:110rpx;
+  
+}
+._hover_list{
+  opacity: 0.9;
+  background: #eeeeee;
+}
 
 

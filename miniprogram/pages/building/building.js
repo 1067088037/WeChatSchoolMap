@@ -1,17 +1,14 @@
-// pages/designPage/designPage.js
+// pages/building/building.js
+const app = getApp();
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    showUploadPostArea:false
+    markerId:1,
   },
-  nevigaToUpLoadPoster(){
-    this.setData({
-      showUploadPostArea:true
-    })
-  },
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -23,7 +20,14 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    console.log(app.globalData.markerId)
+    if(app.globalData.markerId){
+      this.setData({
+        markerId: app.globalData.markerId
+        
+      })
+    }
+    console.log(app.globalData.markerId,app.globalData.desLatitude,app.globalData.desLongtitude)
   },
 
   /**

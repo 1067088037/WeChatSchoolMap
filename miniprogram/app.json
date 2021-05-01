@@ -5,7 +5,8 @@
     "pages/login/login",
     "pages/designPage/designPage",
     "pages/message/message",
-    "pages/myCenter/myCenter"
+    "pages/myCenter/myCenter",
+    "pages/building/building"
   ],
   "permission": {
     "scope.userLocation": {
@@ -48,6 +49,10 @@
         "selectedIconPath": "images/tabBarIcon/myCenter_selected.png"
       }
     ]
+  },
+  "useExtendedLib": {
+    "kbone": true,
+    "weui": true
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2"
