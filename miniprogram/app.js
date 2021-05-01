@@ -3,6 +3,7 @@ const qqMapWxSDK = require('./util/map/qqmap-wx-jssdk')
 
 App({
   globalData: {
+    openid: null, //用户开放识别码
     userInfo: null, //用户信息
     qqMap: null, //腾讯位置服务实例
     db: null, //数据库实例

@@ -29,7 +29,7 @@ Page({
           wx.getUserProfile({
             desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
             success: (res) => {
-              // db.users.addUserInfo(res.userInfo)
+              db.users.setUserInfo(getApp().globalData.openid, res.userInfo)
               that.setData({
                 userInfo: res.userInfo,
                 hasUserInfo: true
@@ -47,11 +47,23 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if (wx.getUserProfile) {
-      this.setData({
-        canIUseGetUserProfile: true,
-      })
-    }
+    db.users.getOpenId().then(openid => {
+      getApp().globalData.openid = openid
+      let tempUserInfo = db.users.getUserInfo(openid).then(res => {
+        if (res != null) {
+          console.log("用户信息获取成功")
+          getApp().globalData.userInfo = res
+          this.next()
+        } else {
+          console.log("用户信息为空")
+          if (wx.getUserProfile) {
+            this.setData({
+              canIUseGetUserProfile: true,
+            })
+          }
+        }
+      }) //从服务器获取的用户信息
+    })
   },
 
   /**
