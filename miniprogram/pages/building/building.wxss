@@ -1,1 +1,73 @@
 /* pages/building/building.wxss */
+.imageBanner {
+  margin-top: 20rpx;
+  /* margin-left: 20rpx; */
+}
+.imageBanner image{
+  width: 750rpx;
+}
+.Introduction{
+  width: 720rpx;
+  margin-top: 20rpx;
+  margin-left: 15rpx;
+  height: 240rpx;
+  border: 1rpx solid lightgray;
+}
+.tipsAreaButton{
+  margin-top:20rpx;
+  display: inline-block;
+  position: relative;
+  margin-left: 45rpx;
+  width:660rpx;
+  height: 128rpx;
+  border-radius: 55rpx;
+  border:1rpx solid lightgray;
+  align-items: center;
+  background:snow;
+  text-align:center;
+  line-height: 128rpx;
+}
+._hover_class{
+  opacity: 0.9;
+  background: #eeeeee;
+}
+.postComment{
+  position: relative;
+  bottom:0rpx;
+  background:snow;
+  height: 70rpx;
+  width: 750rpx;
+  border-radius: 20rpx;
+  align-items: center;
+}
+.postComment input{
+  margin-top: 10rpx;
+  margin-left: 5rpx;
+  position: absolute;
+  border: 3rpx solid lightgray;
+  background:lightgray;
+  border-radius: 20rpx;
+  width: 745rpx;
+  height: 50rpx;
+  align-items: center;
+  text-align:center
+}
+.tip{
+  width: 350rpx;
+  height: 400rpx;
+}
+
+.Tips{
+  display: inline-block;
+  width: 350rpx;
+  height: 400rpx;
+  
+  margin-left: 20rpx;
+  border-radius: 20rpx;
+  margin-top: 20rpx;
+  
+}
+.TipsArea image{
+  width: 350rpx;
+  height: 400rpx;
+}

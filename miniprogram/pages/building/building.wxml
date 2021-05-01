@@ -1,13 +1,45 @@
 <!--pages/building/building.wxml-->
 <view class="Canteen" wx:if="{{markerId == 1}}">
+  <!-- 建筑的图片 -->
   <view class="Images">
-    图片区
+    <swiper class="imageBanner" indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff"
+      circular="{{true}}" autoplay="{{true}}" interval="3000">
+      <swiper-item>
+        <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png"
+          mode="widthFix"></image>
+      </swiper-item>
+      <swiper-item>
+        <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png"
+          mode="widthFix"></image>
+      </swiper-item>
+      <swiper-item>
+        <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png"
+          mode="widthFix"></image>
+      </swiper-item>
+    </swiper>
   </view>
-  <view>------------------------------------------------------</view>
-  <view class="commentArea">
-      评论区
+<!-- 建筑的简介 -->
+  <view class="Introduction" wx:if="{{introArea}}"> 
+    这里是简介
   </view>
-  <view class="postComment">
-    <input></input>
+  <view class="tipsAreaButton" hover-class="_hover_class" bindtap="tipsAreaTap"
+    wx:if="{{showTipsArea == false }}">
+    攻略
   </view>
+  <!-- 攻略区 -->
+  <view class="TipsArea">
+    <view class="Tips" wx:for="{{tips}}" wx:key="{{index}}">
+      <view class="tip" >
+        <image src="{{item.src}}" ></image>
+        <text style="display:block">这里是攻略</text>
+      </view>
+    </view>
+    <!-- 发表评论 -->
+    <view class="postComment" wx:if="{{showTipsArea}}">
+      <form action="">
+        <input class="commentInput" placeholder="随便说点什么..." type="text" confirm-type="send"></input>
+      </form> 
+    </view>
+  </view>
+
 </view>

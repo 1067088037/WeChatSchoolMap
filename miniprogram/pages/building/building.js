@@ -1,13 +1,42 @@
 // pages/building/building.js
 const app = getApp();
+const db = wx.cloud.database();
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    markerId:1,
+    markerId: 1,
+    introArea: true,
+    showTipsArea: false,
   },
+
+
+  /**
+   * tipsAreaTap
+   * @param e
+   * @returns void
+   * @todo 显示攻略区
+   */
+  tipsAreaTap(e) {
+    this.setData({
+      showTipsArea: true,
+      introArea: false,
+      // 测试数据tips,正常使用时应从数据库获取
+      tips: [{
+        src: "/images/tabBarIcon/design_selected.png"
+      }, {
+        src: "/images/tabBarIcon/design_selected.png"
+      }, {
+        src: "/images/tabBarIcon/design_selected.png"
+      }, {
+        src: "/images/tabBarIcon/design_selected.png"
+      }, {
+        src: "/images/tabBarIcon/design_selected.png"
+      }]
+    })
+  }, // end function
 
   /**
    * 生命周期函数--监听页面加载
@@ -21,13 +50,13 @@ Page({
    */
   onReady: function () {
     console.log(app.globalData.markerId)
-    if(app.globalData.markerId){
+    if (app.globalData.markerId) {
       this.setData({
         markerId: app.globalData.markerId
-        
+
       })
     }
-    console.log(app.globalData.markerId,app.globalData.desLatitude,app.globalData.desLongtitude)
+    console.log(app.globalData.markerId, app.globalData.desLatitude, app.globalData.desLongtitude)
   },
 
   /**

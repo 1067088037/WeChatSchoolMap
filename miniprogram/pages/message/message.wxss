@@ -36,7 +36,7 @@ input {
   min-width: 16rpx;
   border-radius: 55rpx;
   background-color: #fa5151;
-
+  
   color:#fff;
   line-height:1.0;
   text-align:center;
