@@ -446,11 +446,9 @@ Page({
     }
     return 0;
   },
-  // 进入具体建筑的“攻略”界面
+  // 进入具体建筑的简介弹窗
   markerstap(e){
     console.log(e.detail.markerId)
-    
-    // TODO: 获取目标点的经纬度，传到云端，供导航所用
     app.globalData.markerId = e.detail.markerId
     app.globalData.desLatitude = this.getLatitude(e.detail.markerId)
     app.globalData.desLongtitude = this.getLongtitude(e.detail.markerId)
@@ -459,7 +457,12 @@ Page({
     })
      
   },
- 
+ /**
+  * toDetailPage
+  * @param {*} e  -- 按钮数据
+  * @return void
+  * @todo 导航到具体建筑的页面并把该建筑的经纬度传到全局变量
+  */
   toDetailPage(e){
     console.log(e);
     if(e.detail.item.text == "退出"){
@@ -480,9 +483,7 @@ Page({
       showDialog:false
     })
   },
-  poiTap(e){
-    console.log(e.detail);
-  },
+  
   // 退出功能页面
   showPrev() {
     this.setData({
@@ -518,7 +519,7 @@ Page({
     this.setData({
       mapCtx : wx.createMapContext('myMap', this)
     })
-    // TODO: 获取用户的位置权限，传到云端，供导航所用
+    
     wx.getLocation({
       type : "wsg84",
       success(res){

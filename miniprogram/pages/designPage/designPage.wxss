@@ -9,7 +9,6 @@ input {
   height: 60rpx;
 }
 .uploadPoster{
-  margin-top: 10rpx;
   border-radius: 10rpx;
   border:1rpx black;
   box-shadow: darkgray 5rpx 5rpx 10rpx;
@@ -28,4 +27,7 @@ input {
   background: #eeeeee;
 }
 
-
+.post{
+  margin-top: 20rpx;
+  margin-left: 620rpx;
+}
