@@ -1,5 +1,9 @@
-const users = require('./users')
+const user = require('./user')
+const school = require('./school')
+const map = require('./map')
 
 module.exports = {
-  users: users.users
+  user: user.user,
+  school: school,
+  map: map
 }

@@ -1,6 +1,6 @@
 const db = wx.cloud.database() //数据库对象
 
-class Users {
+class User {
   /**
    * 获取用户的开放ID
    * @returns {Promise} 需要使用.then()获取
@@ -19,7 +19,7 @@ class Users {
    * @param {object} userinfo 用户信息
    */
   setUserInfo(openid, userinfo) {
-    db.collection('users').doc(openid).set({
+    db.collection('user').doc(openid).set({
       data: {
         userinfo: userinfo
       }
@@ -33,7 +33,7 @@ class Users {
    */
   async getUserInfo(openid) {
     try {
-      return await (await db.collection('users').doc(openid).get()).data.userinfo
+      return await (await db.collection('user').doc(openid).get()).data.userinfo
     } catch(e) {
       return null
     }
@@ -41,5 +41,5 @@ class Users {
 }
 
 module.exports = {
-  users: new Users()
+  user: new User()
 }

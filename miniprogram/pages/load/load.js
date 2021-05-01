@@ -4,7 +4,7 @@ const db = getApp().globalData.db
 
 function getUserInfo(that, openid) {
   console.log(openid)
-  db.users.getUserInfo(openid).then(res => {
+  db.user.getUserInfo(openid).then(res => {
     getApp().globalData.userInfo = res
     console.log(`从数据库获取到的用户信息空属性:` + (res == null))
     if (res != null) {
@@ -46,7 +46,7 @@ Page({
             desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
             success: (res) => {
               console.log("获取用户信息成功")
-              db.users.setUserInfo(getApp().globalData.openid, res.userInfo)
+              db.user.setUserInfo(getApp().globalData.openid, res.userInfo)
               that.setData({
                 userInfo: res.userInfo,
               })
@@ -73,7 +73,7 @@ Page({
       },
       fail() {
         console.log("在缓存中获取openid失败")
-        db.users.getOpenId().then(openid => {
+        db.user.getOpenId().then(openid => {
           console.log("从服务器拉取openid成功")
           wx.setStorage({
             key: 'openid',

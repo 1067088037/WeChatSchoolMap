@@ -7,9 +7,9 @@ App({
     userInfo: null, //用户信息
     qqMap: null, //腾讯位置服务实例
     db: null, //数据库实例
-    markerId:0,       // 标记的的ID（暂存）
-    desLatitude:0,    // 目的地的纬度（暂存）
-    desLongtitude:0   // 目的地的经度（暂存）
+    markerId: 0,       // 标记的的ID（暂存）
+    desLatitude: 0,    // 目的地的纬度（暂存）
+    desLongtitude: 0   // 目的地的经度（暂存）
   },
   onLaunch: function () {
     if (!wx.cloud) {
