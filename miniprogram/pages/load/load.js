@@ -1,6 +1,8 @@
 // pages/load/load.js
-Page({
 
+const db = getApp().globalData.db
+
+Page({
   /**
    * 页面的初始数据
    */
@@ -10,12 +12,10 @@ Page({
     canIUseGetUserProfile: false,
   },
   //如果成功获取用户信息则跳转到
-  next:function()
-  {
-    console.log(getApp().globalData.userInfo)
-    if(getApp().globalData.userInfo != undefined)
+  next: function () {
+    if (getApp().globalData.userInfo != undefined)
       wx.switchTab({
-        url: '/pages/schoolMap/schoolMap'
+        url: '../index/index'
       })
   },
   // 获取用户信息的函数
@@ -25,23 +25,23 @@ Page({
     // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
     wx.getSetting({
       success(res) {
-
-      if (res.authSetting['scope.userInfo']){
-      wx.getUserProfile({
-        desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-        success: (res) => {
-          that.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
+        if (res.authSetting['scope.userInfo']) {
+          wx.getUserProfile({
+            desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+            success: (res) => {
+              // db.users.addUserInfo(res.userInfo)
+              that.setData({
+                userInfo: res.userInfo,
+                hasUserInfo: true
+              })
+              getApp().globalData.userInfo = res.userInfo;
+              console.log(getApp().globalData.userInfo)
+              that.next();
+            }
           })
-          getApp().globalData.userInfo = res.userInfo;
-          console.log(getApp().globalData.userInfo)
-          that.next();
         }
-      })
-    }
-    }
-  })
+      }
+    })
   },
   /**
    * 生命周期函数--监听页面加载
@@ -51,8 +51,8 @@ Page({
       this.setData({
         canIUseGetUserProfile: true,
       })
-  }
-},
+    }
+  },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
