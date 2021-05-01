@@ -23,11 +23,6 @@
           "pathName": "pages/load/load",
           "query": "",
           "scene": null
-        },
-        {
-          "name": "pages/building/building",
-          "pathName": "pages/building/building",
-          "scene": null
         }
       ]
     }

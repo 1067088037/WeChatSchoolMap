@@ -2,14 +2,30 @@
 
 const db = getApp().globalData.db
 
+function getUserInfo(that, openid) {
+  console.log(openid)
+  db.users.getUserInfo(openid).then(res => {
+    getApp().globalData.userInfo = res
+    console.log(`从数据库获取到的用户信息空属性:` + (res == null))
+    if (res != null) {
+      that.next()
+    } else {
+      if (wx.getUserProfile) {
+        that.setData({
+          needToGetUserInfo: true
+        })
+      }
+    }
+  }).catch(e => console.log(e))
+}
+
 Page({
   /**
    * 页面的初始数据
    */
   data: {
     userInfo: {},
-    hasUserInfo: false,
-    canIUseGetUserProfile: false,
+    needToGetUserInfo: false
   },
   //如果成功获取用户信息则跳转到
   next: function () {
@@ -19,7 +35,7 @@ Page({
       })
   },
   // 获取用户信息的函数
-  getUserProfile(e) {
+  getUserProfile() {
     var that = this
     // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
     // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
@@ -29,13 +45,12 @@ Page({
           wx.getUserProfile({
             desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
             success: (res) => {
+              console.log("获取用户信息成功")
               db.users.setUserInfo(getApp().globalData.openid, res.userInfo)
               that.setData({
                 userInfo: res.userInfo,
-                hasUserInfo: true
               })
               getApp().globalData.userInfo = res.userInfo;
-              console.log(getApp().globalData.userInfo)
               that.next();
             }
           })
@@ -43,26 +58,31 @@ Page({
       }
     })
   },
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    db.users.getOpenId().then(openid => {
-      getApp().globalData.openid = openid
-      let tempUserInfo = db.users.getUserInfo(openid).then(res => {
-        if (res != null) {
-          console.log("用户信息获取成功")
-          getApp().globalData.userInfo = res
-          this.next()
-        } else {
-          console.log("用户信息为空")
-          if (wx.getUserProfile) {
-            this.setData({
-              canIUseGetUserProfile: true,
-            })
-          }
-        }
-      }) //从服务器获取的用户信息
+    var that = this
+    wx.getStorage({
+      key: 'openid',
+      success(res) {
+        console.log("在缓存中获取openid成功")
+        getApp().globalData.openid = res.data
+        getUserInfo(that, res.data)
+      },
+      fail() {
+        console.log("在缓存中获取openid失败")
+        db.users.getOpenId().then(openid => {
+          console.log("从服务器拉取openid成功")
+          wx.setStorage({
+            key: 'openid',
+            data: openid,
+          }) //设置缓存
+          getApp().globalData.openid = openid
+          getUserInfo(that, openid)
+        }).catch(e => console.log(e))
+      }
     })
   },
 

@@ -1,13 +1,11 @@
 <!--pages/load/load.wxml-->
 <!-- 获取用户信息页面 -->
 <view class="container">
-  <view class="userInfo">
-    <block wx:if="{{!hasUserInfo}}">
-      <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile" type="primary"> 获取头像昵称 </button>
-      <view class='med'>————— · —————</view>
-      <view class='txt'>
-      \t\t欢迎使用小程序，我们需要一些您的公开信息，包括微信昵称、头像等。请放心，我们会妥善保管您的信息~
-      </view>
-    </block>
-  </view>
+  <block wx:if="{{needToGetUserInfo}}">
+    <button bindtap="getUserProfile" type="primary"> 获取头像昵称 </button>
+    <view class='med'>————— · —————</view>
+    <view class='txt'>
+      欢迎使用小程序，我们需要一些您的公开信息，包括微信昵称和头像。请放心，我们会妥善保管您的信息~
+    </view>
+  </block>
 </view>
