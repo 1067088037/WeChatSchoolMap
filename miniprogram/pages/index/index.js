@@ -514,16 +514,6 @@ Page({
    */
   onLoad: function (options) {
     // 加载后生成MapContext对象
-    let mCampus = getApp().globalData.campus
-    this.setData({
-      longitude: mCampus.center.longitude,
-      latitude: mCampus.center.latitude
-    })
-    this.setData({
-      mapCtx: wx.createMapContext('myMap', this),
-      // longitude: getApp().globalData.campus.longitude,
-    })
-
     wx.getLocation({
       type: "wsg84",
       success(res) {
@@ -539,7 +529,15 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    let mCampus = getApp().globalData.campus
+    this.setData({
+      longitude: mCampus.center.longitude,
+      latitude: mCampus.center.latitude
+    })
+    this.setData({
+      mapCtx: wx.createMapContext('myMap', this),
+      // longitude: getApp().globalData.campus.longitude,
+    })
   },
 
   /**
