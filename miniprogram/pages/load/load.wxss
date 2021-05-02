@@ -2,12 +2,27 @@
 .container {
   margin-left: 20rpx;
   margin-right: 20rpx;
-  margin-top: 50%;
+  margin-top: 40%;
 }
 
 .med {
   color: #8a8a8a;
   font-size: 40rpx;
+  text-align: center;
+}
+
+.choosePicker {
+  margin-top: 60rpx;
+}
+
+.confirmBtn {
+  margin-top: 80rpx;
+}
+
+.chooseRes {
+  color: #8a8a8a;
+  margin-top: 16rpx;
+  font-size: 36rpx;
   text-align: center;
 }
 

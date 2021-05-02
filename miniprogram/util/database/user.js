@@ -34,10 +34,37 @@ class User {
   async getUserInfo(openid) {
     try {
       return await (await db.collection('user').doc(openid).get()).data.userinfo
-    } catch(e) {
+    } catch (e) {
       return null
     }
   }
+
+  /**
+   * 设置用户的学校和校区
+   */
+  setSchoolAndCampus(openid, schoolId, campusId) {
+    db.collection('user').doc(openid).update({
+      data: {
+        school: {
+          schoolId: schoolId,
+          campusId: campusId
+        }
+      }
+    })
+  }
+
+  /**
+   * 获取用户的学校和校区
+   * @param {String} openid 
+   */
+  async getSchoolAndCampus(openid) {
+    try {
+      return await (await db.collection('user').doc(openid).get()).data.school
+    } catch (e) {
+      return null
+    }
+  }
+
 }
 
 module.exports = {

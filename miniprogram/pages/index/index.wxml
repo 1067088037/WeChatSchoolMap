@@ -2,7 +2,7 @@
 <view class="Container">
   <map id="myMap" style="width:750rpx;height:1600rpx;" latitude="{{latitude}}" longitude="{{longitude}}" scale="17"
     rotate="240" skew="35" markers="{{markers}}" bindcallouttap="markerstap" enable-poi="{{true}}"
-     max-scale="20" min-scale="18">
+     max-scale="20" min-scale="15">
     <!-- 以下按钮用于获取屏幕中心的经纬度，主要是测试开发用，实际上线可以删去 -->
     <cover-view class="centerLocation" style="padding:50 0; width:80rpx; height:80rpx; position:relative">
       <button class="btn-getLoc" bindtap="getCenterLocation"

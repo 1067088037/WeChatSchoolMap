@@ -1,5 +1,6 @@
 // pages/schoolMap/schoolMap.js
-const app = getApp();
+const app = getApp()
+const db = getApp().globalData.db
 // 宿舍点
 const dormPoint = [{
   id: 101,
@@ -119,76 +120,76 @@ const classRoomPoint = [{
   latitude: 23.05017228010393
 }] // 教学楼点
 const collgePoint = [{
-    id: 301,
-    title: "B1国际楼",
-    longitude: 113.40971094123438,
-    latitude: 23.045284933369096
-  },{
-    id: 302,
-    title: "B2医学院",
-    longitude: 113.4086426292954,
-    latitude: 23.04351926552582
-  },{
-    id: 303,
-    title: "B3计算机科学与工程学院",
-    longitude: 113.40868765581808,
-    latitude: 23.045283987726666
-  },{
-    id: 304,
-    title: "B4环境与能源学院",
-    longitude: 113.40820212982726,
-    latitude: 23.04456072757484
-  },{
-    id: 305,
-    title: "B5能源研究学院",
-    longitude: 113.40798590988652,
-    latitude: 23.04575321449248
-  },{
-    id: 306,
-    title: "B6生命科学于工程学院",
-    longitude: 113.40741639450039,
-    latitude: 23.04494517662861
-  },{
-    id: 307,
-    title: "B7软件学院",
-    longitude: 113.40742290742037,
-    latitude: 23.046054516291566
-  }, {
-    id: 308,
-    title: "B8软件学院",
-    longitude: 113.40683712367672,
-    latitude: 23.045217041240647
-  }, {
-    id: 309,
-    title: "B9法学院",
-    longitude: 113.40752034838943,
-    latitude: 23.04816555065419
-  },{
-    id: 310,
-    title: "B9新闻与传播学院",
-    longitude: 113.40755053568273,
-    latitude: 23.047758523388648
-  },{
-    id: 311,
-    title: "B10经济与金融学院",
-    longitude: 113.40734142376141,
-    latitude: 23.049188072396547
-  },{
-    id: 312,
-    title: "B10电子商务系",
-    longitude: 113.40749441572348,
-    latitude: 23.048559842489716
-  },{
-    id: 313,
-    title: "B10旅游管理系",
-    longitude: 113.4075529575232,
-    latitude: 23.048885688944768
-  },{
-    id: 314,
-    title: "B11设计学院/艺术学院",
-    longitude: 113.40766014558994,
-    latitude: 23.050032315286327
-  },
+  id: 301,
+  title: "B1国际楼",
+  longitude: 113.40971094123438,
+  latitude: 23.045284933369096
+}, {
+  id: 302,
+  title: "B2医学院",
+  longitude: 113.4086426292954,
+  latitude: 23.04351926552582
+}, {
+  id: 303,
+  title: "B3计算机科学与工程学院",
+  longitude: 113.40868765581808,
+  latitude: 23.045283987726666
+}, {
+  id: 304,
+  title: "B4环境与能源学院",
+  longitude: 113.40820212982726,
+  latitude: 23.04456072757484
+}, {
+  id: 305,
+  title: "B5能源研究学院",
+  longitude: 113.40798590988652,
+  latitude: 23.04575321449248
+}, {
+  id: 306,
+  title: "B6生命科学于工程学院",
+  longitude: 113.40741639450039,
+  latitude: 23.04494517662861
+}, {
+  id: 307,
+  title: "B7软件学院",
+  longitude: 113.40742290742037,
+  latitude: 23.046054516291566
+}, {
+  id: 308,
+  title: "B8软件学院",
+  longitude: 113.40683712367672,
+  latitude: 23.045217041240647
+}, {
+  id: 309,
+  title: "B9法学院",
+  longitude: 113.40752034838943,
+  latitude: 23.04816555065419
+}, {
+  id: 310,
+  title: "B9新闻与传播学院",
+  longitude: 113.40755053568273,
+  latitude: 23.047758523388648
+}, {
+  id: 311,
+  title: "B10经济与金融学院",
+  longitude: 113.40734142376141,
+  latitude: 23.049188072396547
+}, {
+  id: 312,
+  title: "B10电子商务系",
+  longitude: 113.40749441572348,
+  latitude: 23.048559842489716
+}, {
+  id: 313,
+  title: "B10旅游管理系",
+  longitude: 113.4075529575232,
+  latitude: 23.048885688944768
+}, {
+  id: 314,
+  title: "B11设计学院/艺术学院",
+  longitude: 113.40766014558994,
+  latitude: 23.050032315286327
+},
 ] // 学院点
 const canteenPoint = [
   {
@@ -196,27 +197,27 @@ const canteenPoint = [
     title: "第一学生饭堂",
     longitude: 113.40268387434162,
     latitude: 23.04866925793428
-  },{
+  }, {
     id: 2,
     title: "第二学生饭堂",
     longitude: 113.40333534303113,
     latitude: 23.051645364973492
-  },{
+  }, {
     id: 3,
     title: "世博超市",
     longitude: 113.40203129147403,
     latitude: 23.048593578356705
-  },{
+  }, {
     id: 4,
     title: "未来商店",
     longitude: 113.40235747403517,
     latitude: 23.047952836541615
-  },{
+  }, {
     id: 5,
     title: "7-11便利店",
     longitude: 113.40188492453046,
     latitude: 23.051165789442734
-  },{
+  }, {
     id: 6,
     title: "真功夫&猫熊煮茶",
     longitude: 113.40232360687605,
@@ -233,8 +234,8 @@ Page({
    */
   data: {
     mapCtx: null, // MapContext对象
-    longitude: 113.40275985754079, // 小程序一开始显示的经纬度
-    latitude: 23.048671682072218,
+    longitude: 0, // 小程序一开始显示的经纬度
+    latitude: 0,
     isMoreTrue: false, // 是否需要选择更多功能
     functions: [ // 功能名称数组
       "海报",
@@ -248,8 +249,8 @@ Page({
     pagePosition: 'center', // 弹出的方式
     pageDuration: 500, // 动画时长
     overlay: false, // 是否显示遮罩层
-    showDialog : false,
-    buttons :[{text:'退出'},{text:'了解更多'}]
+    showDialog: false,
+    buttons: [{ text: '退出' }, { text: '了解更多' }]
   },
 
   // 获取屏幕中心经纬度
@@ -315,7 +316,7 @@ Page({
           isMoreTrue: false
         })
       }
-      break;
+        break;
     }
     this.setData({
       showPage: true,
@@ -327,7 +328,7 @@ Page({
     this.setData({
       markers,
       showPage: false,
-      
+
     })
     flag = 1
   },
@@ -337,153 +338,150 @@ Page({
     this.setData({
       markers,
       showPage: false,
-      
+
     })
     flag = 2
   },
   // 只显示学院楼
-  collgeOnly(){
+  collgeOnly() {
     const markers = collgePoint;
     this.setData({
       markers,
       showPage: false,
-      
+
     })
     flag = 3
   },
   // 只显示可吃饭的地方
-  canteenOnly(){
+  canteenOnly() {
     const markers = canteenPoint
     this.setData({
       markers,
       showPage: false,
-      
+
     })
-    flag= 4
+    flag = 4
     console.log(flag)
   },
-   // 根据markerID获取经纬度
-  getLatitude(id){
+  // 根据markerID获取经纬度
+  getLatitude(id) {
     let markerArr;
     console.log(flag)
-    switch(flag)
-    {
+    switch (flag) {
       case 1:
-      {  markerArr = dormPoint
-          markerArr.forEach(function(item){
-            if(item.id == id)
+        {
+          markerArr = dormPoint
+          markerArr.forEach(function (item) {
+            if (item.id == id)
               return item.latitude;
           })
-      }
+        }
       case 2:
-      {
+        {
           markerArr = classRoomPoint
-          markerArr.forEach(function(item){
-            if(item.id == id)
+          markerArr.forEach(function (item) {
+            if (item.id == id)
               return item.latitude;
           })
-      }
+        }
       case 3:
-      {
+        {
           markerArr = collgePoint
-          markerArr.forEach(function(item){
-            if(item.id == id)
+          markerArr.forEach(function (item) {
+            if (item.id == id)
               return item.latitude;
           })
-      }
+        }
       case 4:
-      {
+        {
           markerArr = canteenPoint
-          for(var i = 0 ; i < markerArr.length; i ++)
-          {
-              console.log(markerArr[i].id)
-              if(id == markerArr[i].id)
-                return markerArr[i].latitude
+          for (var i = 0; i < markerArr.length; i++) {
+            console.log(markerArr[i].id)
+            if (id == markerArr[i].id)
+              return markerArr[i].latitude
           }
-      
-      }
+
+        }
     }
-    
+
   },
-  getLongtitude(id){
+  getLongtitude(id) {
     let markerArr;
     console.log(flag)
-    switch(flag)
-    {
+    switch (flag) {
       case 1:
-      {  markerArr = dormPoint
-          markerArr.forEach(function(item){
-            if(item.id == id)
+        {
+          markerArr = dormPoint
+          markerArr.forEach(function (item) {
+            if (item.id == id)
               return item.longitude;
           })
-      }
+        }
       case 2:
-      {
+        {
           markerArr = classRoomPoint
-          markerArr.forEach(function(item){
-            if(item.id == id)
+          markerArr.forEach(function (item) {
+            if (item.id == id)
               return item.longitude;
           })
-      }
+        }
       case 3:
-      {
+        {
           markerArr = collgePoint
-          markerArr.forEach(function(item){
-            if(item.id == id)
+          markerArr.forEach(function (item) {
+            if (item.id == id)
               return item.longitude;
           })
-      }
+        }
       case 4:
-      {
+        {
           markerArr = canteenPoint
-          for(var i = 0 ; i < markerArr.length; i ++)
-          {
-              console.log(markerArr[i].id)
-              if(id == markerArr[i].id)
-                return markerArr[i].longitude
+          for (var i = 0; i < markerArr.length; i++) {
+            console.log(markerArr[i].id)
+            if (id == markerArr[i].id)
+              return markerArr[i].longitude
           }
-      }
+        }
     }
     return 0;
   },
   // 进入具体建筑的简介弹窗
-  markerstap(e){
+  markerstap(e) {
     console.log(e.detail.markerId)
     app.globalData.markerId = e.detail.markerId
     app.globalData.desLatitude = this.getLatitude(e.detail.markerId)
     app.globalData.desLongtitude = this.getLongtitude(e.detail.markerId)
     this.setData({
-      showDialog:true
+      showDialog: true
     })
-     
+
   },
- /**
-  * toDetailPage
-  * @param {*} e  -- 按钮数据
-  * @return void
-  * @todo 导航到具体建筑的页面并把该建筑的经纬度传到全局变量
-  */
-  toDetailPage(e){
+  /**
+   * toDetailPage
+   * @param {*} e  -- 按钮数据
+   * @return void
+   * @todo 导航到具体建筑的页面并把该建筑的经纬度传到全局变量
+   */
+  toDetailPage(e) {
     console.log(e);
-    if(e.detail.item.text == "退出"){
+    if (e.detail.item.text == "退出") {
       app.globalData.markerId = 0
       app.globalData.desLatitude = 0
       app.globalData.desLongtitude = 0
     }
-    else if (e.detail.item.text == "了解更多")
-    {
-        wx.redirectTo({
-          url: '../building/building',
-          success:(res)=>{
-            console.log(666)
-          }
-        })
+    else if (e.detail.item.text == "了解更多") {
+      wx.redirectTo({
+        url: '../building/building',
+        success: (res) => {
+          console.log(666)
+        }
+      })
     }
     this.setData({
-      showDialog:false
+      showDialog: false
     })
   },
-  
+
   // 退出功能页面
   showPrev() {
     this.setData({
@@ -516,20 +514,25 @@ Page({
    */
   onLoad: function (options) {
     // 加载后生成MapContext对象
+    let mCampus = getApp().globalData.campus
     this.setData({
-      mapCtx : wx.createMapContext('myMap', this)
+      longitude: mCampus.center.longitude,
+      latitude: mCampus.center.latitude
     })
-    
+    this.setData({
+      mapCtx: wx.createMapContext('myMap', this),
+      // longitude: getApp().globalData.campus.longitude,
+    })
+
     wx.getLocation({
-      type : "wsg84",
-      success(res){
+      type: "wsg84",
+      success(res) {
         const latitude = res.latitude
         const longitude = res.longitude
-        console.log(latitude,longitude)
+        console.log(latitude, longitude)
       }
     })
-    
-    
+
   },
 
   /**

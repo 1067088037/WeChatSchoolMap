@@ -2,13 +2,14 @@
 
 const db = getApp().globalData.db
 
+var schoolData = []
+var campusData = []
+
 function getUserInfo(that, openid) {
-  console.log(openid)
   db.user.getUserInfo(openid).then(res => {
     getApp().globalData.userInfo = res
-    console.log(`从数据库获取到的用户信息空属性:` + (res == null))
     if (res != null) {
-      that.next()
+      loadSchoolAndCampus(that)
     } else {
       if (wx.getUserProfile) {
         that.setData({
@@ -19,13 +20,82 @@ function getUserInfo(that, openid) {
   }).catch(e => console.log(e))
 }
 
+function loadSchoolAndCampus(that) {
+  db.user.getSchoolAndCampus(getApp().globalData.openid).then(res => {
+    // console.log(res)
+    if (res) {
+      db.school.getSchoolById(res.schoolId.id).then(school => {
+        getApp().globalData.school = school
+        // console.log(school)
+        school.campus.forEach(function (e) {
+          if (e.id == res.campusId.id) {
+            getApp().globalData.campus = e
+            that.next()
+          }
+        })
+      })
+    } else {
+      getSchoolAndCampusToChoose(that)
+    }
+  })
+}
+
+function getSchoolAndCampusToChoose(that) {
+  that.setData({
+    needToGetUserInfo: false
+  })
+  db.cloud.collection('index').doc('school').get().then(res => {
+    let tempSchool = []
+    let data = res.data.data
+    schoolData = data
+    data.forEach(element => {
+      tempSchool.push(element.name)
+    });
+    that.setData({
+      chooseSchool: true,
+      schoolArray: tempSchool
+    })
+  })
+}
+
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    userInfo: {},
-    needToGetUserInfo: false
+    needToGetUserInfo: false,
+    chooseSchool: false,
+    schoolArray: [],
+    schoolIndex: -1,
+    campusArray: [],
+    campusIndex: -1
+  },
+  //学校选择器
+  bindSchoolPickerChange: function (e) {
+    let index = e.detail.value
+    if (index == -1) return
+    db.school.getCampusById(schoolData[index].id).then(res => {
+      campusData = res
+      let tempCampus = []
+      res.forEach(element => {
+        tempCampus.push(element.name)
+      });
+      this.setData({
+        schoolIndex: index,
+        campusArray: tempCampus
+      })
+    })
+  },
+  //校区选择器
+  bindCampusPickerChange: function (e) {
+    this.setData({
+      campusIndex: e.detail.value
+    })
+  },
+  //
+  onConfirmTapped: function () {
+    db.user.setSchoolAndCampus(getApp().globalData.openid, schoolData[this.data.schoolIndex], campusData[this.data.campusIndex])
+    loadSchoolAndCampus(this)
   },
   //如果成功获取用户信息则跳转到
   next: function () {
@@ -47,11 +117,8 @@ Page({
             success: (res) => {
               console.log("获取用户信息成功")
               db.user.setUserInfo(getApp().globalData.openid, res.userInfo)
-              that.setData({
-                userInfo: res.userInfo,
-              })
               getApp().globalData.userInfo = res.userInfo;
-              that.next();
+              loadSchoolAndCampus(that)
             }
           })
         }

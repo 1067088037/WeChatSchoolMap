@@ -8,4 +8,22 @@
       欢迎使用小程序，我们需要一些您的公开信息，包括微信昵称和头像。请放心，我们会妥善保管您的信息~
     </view>
   </block>
+
+  <block wx:if="{{chooseSchool}}">
+    <picker bindchange="bindSchoolPickerChange" value="{{schoolIndex}}" range="{{schoolArray}}">
+      <button type="default">选择学校</button>
+    </picker>
+    <view class="chooseRes">
+      当前选择 {{schoolArray[schoolIndex]}}
+    </view>
+    
+    <picker class="choosePicker" bindchange="bindCampusPickerChange" value="{{campusIndex}}" range="{{campusArray}}">
+      <button type="default" disabled="{{schoolIndex == -1}}">选择校区</button>
+    </picker>
+    <view class="chooseRes">
+      当前选择 {{campusArray[campusIndex]}}
+    </view>
+
+    <button class="confirmBtn" bindtap="onConfirmTapped" disabled="{{campusIndex == -1}}" type="primary">确定</button>
+  </block>
 </view>
