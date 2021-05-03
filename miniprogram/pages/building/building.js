@@ -10,8 +10,32 @@ Page({
     markerId: 1,
     introArea: true,
     showTipsArea: false,
+    isLike:false,
+    likeNum:0,
+    likePicIndex:null
   },
-
+  likeClick(e){
+    console.log(e);
+    
+    if(this.data.isLike)
+    {
+      var likeNum = this.data.likeNum
+      likeNum--
+      this.setData({
+        isLike:false,
+        likeNum
+      })
+    }
+    else
+    {
+      var likeNum = this.data.likeNum
+      likeNum++
+      this.setData({
+        isLike:true,
+        likeNum
+      })
+    }
+  },
 
   /**
    * tipsAreaTap
@@ -36,6 +60,7 @@ Page({
         src: "/images/tabBarIcon/design_selected.png"
       }]
     })
+    
   }, // end function
 
   /**

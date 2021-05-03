@@ -31,7 +31,14 @@
     <view class="Tips" wx:for="{{tips}}" wx:key="{{index}}">
       <view class="tip" >
         <image src="{{item.src}}" ></image>
-        <text style="display:block">这里是攻略</text>
+        <text style="display:block">这里是攻略攻略攻略攻略攻略攻略</text>
+        <view class="like-btn">
+          <image class="like" src="/images/building/like.png" mode="widthFix" wx:if="{{isLike==false}}" bindtap="likeClick" id = "{{index}}" />
+          <image class="no-like" src="/images/building/like_selected.png" wx:if="{{isLike}}" bindtap="likeClick"/> <text>{{likeNum}}</text>
+        </view>
+        <view class="comment-btn">
+          <image class="comment" src="/images/building/comment.png" mode="widthFix" />
+        </view>
       </view>
     </view>
     <!-- 发表评论 -->

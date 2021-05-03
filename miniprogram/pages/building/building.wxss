@@ -54,20 +54,58 @@
 }
 .tip{
   width: 350rpx;
-  height: 400rpx;
+  height: auto;
 }
 
 .Tips{
   display: inline-block;
   width: 350rpx;
-  height: 400rpx;
-  
+  height: auto;
+  background: white;
   margin-left: 20rpx;
   border-radius: 20rpx;
   margin-top: 20rpx;
+  align-items: center;
   
 }
 .TipsArea image{
   width: 350rpx;
-  height: 400rpx;
+  height: 300rpx;
+}
+.TipsArea text{
+  display: inline;
+  margin-left: 20rpx;
+  text-align:left;
+  
+}
+.like-btn{
+  margin-left: 140rpx;
+  display: inline-block;
+  height: 60rpx;
+  width: 100rpx;
+  align-items: center;
+  
+}
+.like-btn text{
+  position: absolute;
+  margin-left: 10rpx;
+  margin-right: 10rpx;
+  padding-bottom: 20rpx;
+}
+.like-btn image{
+  
+  height: 50rpx;
+  width:50rpx;
+  position: relative;
+}
+.comment-btn{
+  
+  display: inline-block;
+  height: 60rpx;
+  width: 110rpx;
+}
+.comment-btn image{
+  height: 50rpx;
+  width:50rpx;
+  position: relative;
 }
