@@ -1,6 +1,6 @@
 // pages/schoolMap/schoolMap.js
 const app = getApp()
-const db = getApp().globalData.db
+// const db = getApp().globalData.db
 // 宿舍点
 const dormPoint = [{
   id: 101,
@@ -590,7 +590,6 @@ Page({
         console.log(latitude, longitude)
       }
     })
-
   },
 
   /**
@@ -598,9 +597,10 @@ Page({
    */
   onReady: function () {
     let mCampus = getApp().globalData.campus
+    // console.log(mCampus.geo.center.latitude)
     this.setData({
-      longitude: mCampus.center.longitude,
-      latitude: mCampus.center.latitude
+      longitude: mCampus.geo.center.longitude,
+      latitude: mCampus.geo.center.latitude
     })
     this.setData({
       mapCtx: wx.createMapContext('myMap', this),

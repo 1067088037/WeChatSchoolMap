@@ -1,13 +1,11 @@
-const db = wx.cloud.database() //数据库对象
+import { User } from './user'
+import { School } from './school'
+import { Campus } from './campus'
 
-const user = require('./user')
-const school = require('./school')
-const map = require('./map')
-
-module.exports = {
-  cloud: wx.cloud.database(),
-  user: user.user,
-  school: school.school,
-  map: map.map,
-  Geo: db.Geo
+export class DataBase {
+  user = new User()
+  school = new School()
+  campus =  new Campus()
 }
+
+export const db = new DataBase()

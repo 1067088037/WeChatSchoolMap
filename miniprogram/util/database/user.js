@@ -1,72 +1,61 @@
-const db = wx.cloud.database() //数据库对象
+const db = wx.cloud.database()
 
-class User {
+export class User {
   /**
-   * 获取用户的开放ID
-   * @returns {Promise} 需要使用.then()获取
+   * 调用云函数获取openid
    */
   async getOpenId() {
-    let openid = null
-    await wx.cloud.callFunction({
-      name: 'login'
-    }).then(res => openid = res.result.openid)
-    return openid
+    try {
+      return await wx.cloud.callFunction({
+        name: 'login'
+      })
+    } catch (err) {
+      return null
+    }
   }
 
   /**
    * 设置用户信息
-   * @param {String} openid 用户开放ID
-   * @param {object} userinfo 用户信息
+   * @param {string} openid 
+   * @param {object} userInfo 
    */
-  setUserInfo(openid, userinfo) {
-    db.collection('user').doc(openid).set({
-      data: {
-        userinfo: userinfo
-      }
+  setUserInfo(openid, userInfo) {
+    db.collection('user').doc(openid).get().then(res => {
+      db.collection('user').doc(openid).update({
+        data: {
+          userInfo: userInfo,
+        }
+      })
+    }).catch(e => {
+      db.collection('user').add({
+        data: {
+          _id: openid,
+          userInfo: userInfo,
+          info: {},
+          point: [],
+          favorite: []
+        }
+      })
     })
   }
 
-  /**
-   * 读取UserInfo
-   * @param {String} openid 用户开放ID
-   * @returns {Promise} 需要使用.then()获取
-   */
-  async getUserInfo(openid) {
-    try {
-      return await (await db.collection('user').doc(openid).get()).data.userinfo
-    } catch (e) {
-      return null
-    }
-  }
-
-  /**
-   * 设置用户的学校和校区
-   */
-  setSchoolAndCampus(openid, schoolId, campusId) {
+  setInfo(openid, info) {
     db.collection('user').doc(openid).update({
       data: {
-        school: {
-          schoolId: schoolId,
-          campusId: campusId
-        }
+        info: info
       }
     })
   }
 
   /**
-   * 获取用户的学校和校区
-   * @param {String} openid 
+   * 通过openid获取用户
+   * @param {string} openid 
    */
-  async getSchoolAndCampus(openid) {
+  async getUser(openid) {
     try {
-      return await (await db.collection('user').doc(openid).get()).data.school
+      return await (await db.collection('user').doc(openid).get()).data
     } catch (e) {
       return null
     }
   }
-
-}
-
-module.exports = {
-  user: new User()
 }
