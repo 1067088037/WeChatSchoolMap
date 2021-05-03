@@ -78,7 +78,7 @@
   justify-content: space-between;
 }
 
-input {
+.search {
   border-radius: 10rpx;
   border: 1rpx black;
   box-shadow: darkgray 5rpx 5rpx 10rpx;
@@ -95,4 +95,14 @@ input {
 }
 .PosterArea{
  margin-top:200rpx;
+}
+.markerName{
+  text-align:center;
+}
+.begin-date  {
+  text-align:center;
+  
+}
+.end-date{
+  text-align:center;
 }

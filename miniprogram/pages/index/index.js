@@ -189,43 +189,42 @@ const collgePoint = [{
   title: "B11设计学院/艺术学院",
   longitude: 113.40766014558994,
   latitude: 23.050032315286327
-},
-] // 学院点
-const canteenPoint = [
-  {
-    id: 1,
-    title: "第一学生饭堂",
-    longitude: 113.40268387434162,
-    latitude: 23.04866925793428
-  }, {
-    id: 2,
-    title: "第二学生饭堂",
-    longitude: 113.40333534303113,
-    latitude: 23.051645364973492
-  }, {
-    id: 3,
-    title: "世博超市",
-    longitude: 113.40203129147403,
-    latitude: 23.048593578356705
-  }, {
-    id: 4,
-    title: "未来商店",
-    longitude: 113.40235747403517,
-    latitude: 23.047952836541615
-  }, {
-    id: 5,
-    title: "7-11便利店",
-    longitude: 113.40188492453046,
-    latitude: 23.051165789442734
-  }, {
-    id: 6,
-    title: "真功夫&猫熊煮茶",
-    longitude: 113.40232360687605,
-    latitude: 23.051009822324243
-  }
-] // 饭堂以及世博点
+}, ] // 学院点
+const canteenPoint = [{
+  id: 1,
+  title: "第一学生饭堂",
+  longitude: 113.40268387434162,
+  latitude: 23.04866925793428
+}, {
+  id: 2,
+  title: "第二学生饭堂",
+  longitude: 113.40333534303113,
+  latitude: 23.051645364973492
+}, {
+  id: 3,
+  title: "世博超市",
+  longitude: 113.40203129147403,
+  latitude: 23.048593578356705
+}, {
+  id: 4,
+  title: "未来商店",
+  longitude: 113.40235747403517,
+  latitude: 23.047952836541615
+}, {
+  id: 5,
+  title: "7-11便利店",
+  longitude: 113.40188492453046,
+  latitude: 23.051165789442734
+}, {
+  id: 6,
+  title: "真功夫&猫熊煮茶",
+  longitude: 113.40232360687605,
+  latitude: 23.051009822324243
+}] // 饭堂以及世博点
 const deliverPickUpPoint = [] // 拿快递的点
 const vouchCenterPoint = [] // 充值点
+var activitiesPoint = [] // 活动标记点 -- 暂存
+var isAdd = false; // 是否添加的标记
 var flag = 0;
 Page({
 
@@ -243,14 +242,65 @@ Page({
       "搜索",
       "筛选"
     ],
-    markers: new Array,
+    markers: [],
     func: '', // 功能名称
     showPage: false, // 是否显示功能页面
     pagePosition: 'center', // 弹出的方式
     pageDuration: 500, // 动画时长
     overlay: false, // 是否显示遮罩层
-    showDialog: false,
-    buttons: [{ text: '退出' }, { text: '了解更多' }]
+    showBuildingDialog: false, // 是否显示对话框 -- 用于点击具体建筑时弹出的简介
+    showMarkerDialog: false, // 是否显示对话框 -- 用于添加标点时
+    isAddedMarker: false, // 是否添加了marker
+    buildingBtns: [{
+      text: '退出'
+    }, {
+      text: '了解更多'
+    }], // 对话框的按钮文字
+    markerBtns: [{
+      text: '取消'
+    }, {
+      text: '确定'
+    }], // 添加标点对话框的按钮
+    bgdate: "2021-05-03", // 活动开始日期 暂存
+    endate: "2021-05-04", // 活动结束日期 
+    radioItems:[
+      {name:"全校可见",value:'0',checked:true},
+      {name:"仅本学院可见",value:'1'}
+    ] // 可见性选项
+  },
+  /**
+   * bindDateChange
+   * @param {*} e 
+   * @todo 改变日期
+   */
+  bindDateChange(e) {
+    this.setData({
+      date: e.detail.value,
+      [`formData.date`]: e.detail.value
+    })
+  },
+  /**
+   * mapTap
+   * @param {*} e 点击处的信息
+   * @todo 获取点击处的经纬度
+   */
+  mapTap(e) {
+    // console.log(e.detail);
+    if (isAdd) {
+      let latitude_ = e.detail.latitude;
+      let longitude_ = e.detail.longitude;
+      activitiesPoint.push({
+        longitude: longitude_,
+        latitude: latitude_,
+      })
+      // console.log(latitude_) 
+      this.setData({
+          markers: activitiesPoint,
+          showMarkerDialog: true
+        }),
+        isAdd = false;
+    } else
+      return 0;
   },
 
   // 获取屏幕中心经纬度
@@ -299,8 +349,10 @@ Page({
       case "添加": {
         this.setData({
           pagePosition: "center",
-          isMoreTrue: false
+          isMoreTrue: false,
+
         })
+        isAdd = true;
         break;
       }
       case "筛选": {
@@ -316,11 +368,14 @@ Page({
           isMoreTrue: false
         })
       }
-        break;
+      break;
     }
+    if (isAdd == true)
+      return;
     this.setData({
       showPage: true,
     })
+    console.log(isAdd);
   },
   // 只显示宿舍
   DormOnly() {
@@ -368,40 +423,36 @@ Page({
     let markerArr;
     console.log(flag)
     switch (flag) {
-      case 1:
-        {
-          markerArr = dormPoint
-          markerArr.forEach(function (item) {
-            if (item.id == id)
-              return item.latitude;
-          })
+      case 1: {
+        markerArr = dormPoint
+        markerArr.forEach(function (item) {
+          if (item.id == id)
+            return item.latitude;
+        })
+      }
+      case 2: {
+        markerArr = classRoomPoint
+        markerArr.forEach(function (item) {
+          if (item.id == id)
+            return item.latitude;
+        })
+      }
+      case 3: {
+        markerArr = collgePoint
+        markerArr.forEach(function (item) {
+          if (item.id == id)
+            return item.latitude;
+        })
+      }
+      case 4: {
+        markerArr = canteenPoint
+        for (var i = 0; i < markerArr.length; i++) {
+          console.log(markerArr[i].id)
+          if (id == markerArr[i].id)
+            return markerArr[i].latitude
         }
-      case 2:
-        {
-          markerArr = classRoomPoint
-          markerArr.forEach(function (item) {
-            if (item.id == id)
-              return item.latitude;
-          })
-        }
-      case 3:
-        {
-          markerArr = collgePoint
-          markerArr.forEach(function (item) {
-            if (item.id == id)
-              return item.latitude;
-          })
-        }
-      case 4:
-        {
-          markerArr = canteenPoint
-          for (var i = 0; i < markerArr.length; i++) {
-            console.log(markerArr[i].id)
-            if (id == markerArr[i].id)
-              return markerArr[i].latitude
-          }
 
-        }
+      }
     }
 
   },
@@ -409,39 +460,35 @@ Page({
     let markerArr;
     console.log(flag)
     switch (flag) {
-      case 1:
-        {
-          markerArr = dormPoint
-          markerArr.forEach(function (item) {
-            if (item.id == id)
-              return item.longitude;
-          })
+      case 1: {
+        markerArr = dormPoint
+        markerArr.forEach(function (item) {
+          if (item.id == id)
+            return item.longitude;
+        })
+      }
+      case 2: {
+        markerArr = classRoomPoint
+        markerArr.forEach(function (item) {
+          if (item.id == id)
+            return item.longitude;
+        })
+      }
+      case 3: {
+        markerArr = collgePoint
+        markerArr.forEach(function (item) {
+          if (item.id == id)
+            return item.longitude;
+        })
+      }
+      case 4: {
+        markerArr = canteenPoint
+        for (var i = 0; i < markerArr.length; i++) {
+          console.log(markerArr[i].id)
+          if (id == markerArr[i].id)
+            return markerArr[i].longitude
         }
-      case 2:
-        {
-          markerArr = classRoomPoint
-          markerArr.forEach(function (item) {
-            if (item.id == id)
-              return item.longitude;
-          })
-        }
-      case 3:
-        {
-          markerArr = collgePoint
-          markerArr.forEach(function (item) {
-            if (item.id == id)
-              return item.longitude;
-          })
-        }
-      case 4:
-        {
-          markerArr = canteenPoint
-          for (var i = 0; i < markerArr.length; i++) {
-            console.log(markerArr[i].id)
-            if (id == markerArr[i].id)
-              return markerArr[i].longitude
-          }
-        }
+      }
     }
     return 0;
   },
@@ -452,10 +499,32 @@ Page({
     app.globalData.desLatitude = this.getLatitude(e.detail.markerId)
     app.globalData.desLongtitude = this.getLongtitude(e.detail.markerId)
     this.setData({
-      showDialog: true
+      showBuildingDialog: true
     })
 
   },
+  /**
+   * showMarkerInfoPage
+   * @param {*} e 对话框按钮信息
+   * @todo 确定标记点是否设为当前位置，如果是则进入标记点信息填写界面，不是则删除该标记点
+   */
+  showMarkerInfoPage(e) {
+    if (e.detail.item.text == "取消") {
+      activitiesPoint.pop();
+      this.setData({
+        markers: activitiesPoint,
+        isAddedMarker: false
+      })
+    } else if (e.detail.item.text == "确定") {
+      this.setData({
+        isAddedMarker: true
+      })
+    }
+    this.setData({
+      showMarkerDialog: false
+    })
+  },
+  
   /**
    * toDetailPage
    * @param {*} e  -- 按钮数据
@@ -463,13 +532,12 @@ Page({
    * @todo 导航到具体建筑的页面并把该建筑的经纬度传到全局变量
    */
   toDetailPage(e) {
-    console.log(e);
+    // console.log(e);
     if (e.detail.item.text == "退出") {
       app.globalData.markerId = 0
       app.globalData.desLatitude = 0
       app.globalData.desLongtitude = 0
-    }
-    else if (e.detail.item.text == "了解更多") {
+    } else if (e.detail.item.text == "了解更多") {
       wx.redirectTo({
         url: '../building/building',
         success: (res) => {
@@ -478,7 +546,7 @@ Page({
       })
     }
     this.setData({
-      showDialog: false
+      showBuildingDialog: false
     })
   },
 

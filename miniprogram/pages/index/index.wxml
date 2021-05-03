@@ -1,8 +1,8 @@
 <!--pages/schoolMap/schoolMap.wxml-->
-<view class="Container">
+<view class="Container" wx:if="{{isAddedMarker == false}}">
   <map id="myMap" style="width:750rpx;height:1600rpx;" latitude="{{latitude}}" longitude="{{longitude}}" scale="17"
-    rotate="240" skew="35" markers="{{markers}}" bindcallouttap="markerstap" enable-poi="{{true}}"
-     max-scale="20" min-scale="15">
+    rotate="240" skew="35" markers="{{markers}}" bindcallouttap="markerstap" enable-poi="{{true}}" max-scale="20"
+    min-scale="15" bindtap="mapTap">
     <!-- 以下按钮用于获取屏幕中心的经纬度，主要是测试开发用，实际上线可以删去 -->
     <cover-view class="centerLocation" style="padding:50 0; width:80rpx; height:80rpx; position:relative">
       <button class="btn-getLoc" bindtap="getCenterLocation"
@@ -37,25 +37,26 @@
       bindclickoverlay="onClickOverlay">
       <!-- 海报界面 -->
       <cover-view wx:if="{{func=='海报'}}" class="PosterArea">
-        <swiper indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff" circular="{{true}}" autoplay="{{true}}" interval="3000">
+        <swiper indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff" circular="{{true}}"
+          autoplay="{{true}}" interval="3000">
           <cover-view>
             <swiper-item>
               <cover-image
-                  src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
+                src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
               </cover-image>
             </swiper-item>
           </cover-view>
           <cover-view>
             <swiper-item>
               <cover-image
-                  src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
+                src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
               </cover-image>
             </swiper-item>
           </cover-view>
           <cover-view>
             <swiper-item>
               <cover-image
-                  src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
+                src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
               </cover-image>
             </swiper-item>
           </cover-view>
@@ -63,7 +64,7 @@
       </cover-view>
       <!-- 搜索框 -->
       <cover-view wx:if="{{func=='搜索'}}">
-        <input type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx"
+        <input class="search" type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx"
           confirm-type="search"></input>
       </cover-view>
       <!-- 筛选界面 -->
@@ -81,10 +82,50 @@
       <button class="screen2-button" bindtap="showPrev" hidden="{{!showPage}}" hover-class="none"
         style="display: block;margin: 24px auto; background-color: blue;color:white;height: 50rpx;">Exit</button>
     </page-container>
+    <!-- 建筑的简介对话框 -->
     <cover-view>
-      <mp-dialog title="test" show="{{showDialog}}" bindbuttontap="toDetailPage" buttons="{{buttons}}">
+      <mp-dialog title="test" show="{{showBuildingDialog}}" bindbuttontap="toDetailPage" buttons="{{buildingBtns}}">
+      </mp-dialog>
+    </cover-view>
+    <cover-view>
+      <mp-dialog title="test2" show="{{showMarkerDialog}}" buttons="{{markerBtns}}" bindbuttontap="showMarkerInfoPage">
       </mp-dialog>
     </cover-view>
 
+
   </map>
+</view>
+<view wx:if="{{isAddedMarker}}">
+  <mp-cells title="标记点信息">
+    <mp-cell prop="markerPointName" title="标记点名称">
+      <input class="markerName" type="text" placeholder="请输入活动名称" placeholder-class="markerName"></input>
+    </mp-cell>
+    <mp-cell prop="beginDate" title="开始日期">
+      <picker date-field="date" mode="date" value="{{bgdate}}" start="2021-05-03" end="2021-12-31"
+        bindchange="bindDateChange">
+        <view class="begin-date">
+          {{bgdate}}
+        </view>
+      </picker>
+    </mp-cell>
+    <mp-cell prop="endDate" title="结束日期">
+      <picker date-field="date" mode="date" value="{{endate}}" start="2021-05-03" end="2021-12-31"
+        bindchange="bindDateChange">
+        <view class="end-date">
+          {{endate}}
+        </view>
+      </picker>
+    </mp-cell>
+
+  </mp-cells>
+  <mp-cells title="标记可见性">
+    <mp-checkbox-group prop="radio" multi="{{false}}">
+      <mp-checkbox wx:for="{{radioItems}}" wx:key="value" label="{{item.name}}" value="{{item.value}}"
+        checked="{{item.checked}}"></mp-checkbox>
+    </mp-checkbox-group>
+  </mp-cells>
+  <mp-uploader title="标记图片上传">
+  </mp-uploader>
+
+  <button>确定</button>
 </view>
