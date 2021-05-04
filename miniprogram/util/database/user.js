@@ -1,4 +1,5 @@
 const db = wx.cloud.database()
+const cmd = db.command
 
 export class User {
   /**
@@ -30,7 +31,6 @@ export class User {
       db.collection('user').add({
         data: {
           _id: openid,
-          openid: '{openid}',
           userInfo: userInfo,
           info: {},
           point: [],
@@ -46,6 +46,48 @@ export class User {
         info: info
       }
     })
+  }
+
+  /**
+   * 添加标点
+   * @param {*} pointid 标点ID
+   */
+  async addPoint(openid, pointid) {
+    try {
+      return await wx.cloud.callFunction({
+        name: 'addInArray',
+        data: {
+          collection: 'user',
+          docid: openid,
+          array: 'point',
+          push: pointid
+        }
+      }).then(res => {
+        console.log(res)
+      })
+    } catch (e) {
+      return null
+    }
+  }
+
+  /**
+   * 删除指定标点
+   * @param {string} pointid 要删除的ID
+   */
+  async removePoint(openid, pointid) {
+    try {
+      return await wx.cloud.callFunction({
+        name: 'removeInArray',
+        data: {
+          collection: 'user',
+          docid: openid,
+          array: 'point',
+          remove: pointid
+        }
+      })
+    } catch (e) {
+      return null
+    }
   }
 
   /**
