@@ -40,6 +40,10 @@ export class User {
     })
   }
 
+  /**
+   * 设置信息
+   * @param {object} info 学校和校区信息
+   */
   setInfo(openid, info) {
     return db.collection('user').doc(openid).update({
       data: {
