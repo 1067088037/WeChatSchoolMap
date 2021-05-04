@@ -49,6 +49,84 @@ export class User {
   }
 
   /**
+   * 获取所有收藏
+   * @param {string} openid 
+   */
+  async getFavorite(openid) {
+    try {
+      return await wx.cloud.callFunction({
+        name: 'getItem',
+        data: {
+          collection: 'user',
+          docid: openid,
+          item: 'favorite'
+        }
+      }).then(res => res.result)
+    } catch (e) {
+      return null
+    }
+  }
+
+  /**
+   * 添加收藏
+   * @param {*} pointid 标点ID
+   */
+  async addFavorite(openid, pointid) {
+    try {
+      return await wx.cloud.callFunction({
+        name: 'addInArray',
+        data: {
+          collection: 'user',
+          docid: openid,
+          array: 'favorite',
+          push: pointid
+        }
+      })
+    } catch (e) {
+      return null
+    }
+  }
+
+  /**
+   * 删除指定收藏
+   * @param {string} pointid 要删除的ID
+   */
+  async removeFavorite(openid, pointid) {
+    try {
+      return await wx.cloud.callFunction({
+        name: 'removeInArray',
+        data: {
+          collection: 'user',
+          docid: openid,
+          array: 'favorite',
+          remove: pointid
+        }
+      })
+    } catch (e) {
+      return null
+    }
+  }
+
+  /**
+   * 获取所有标点
+   * @param {string} openid 
+   */
+  async getPoint(openid) {
+    try {
+      return await wx.cloud.callFunction({
+        name: 'getItem',
+        data: {
+          collection: 'user',
+          docid: openid,
+          item: 'point'
+        }
+      }).then(res => res.result)
+    } catch (e) {
+      return null
+    }
+  }
+
+  /**
    * 添加标点
    * @param {*} pointid 标点ID
    */
@@ -62,8 +140,6 @@ export class User {
           array: 'point',
           push: pointid
         }
-      }).then(res => {
-        console.log(res)
       })
     } catch (e) {
       return null

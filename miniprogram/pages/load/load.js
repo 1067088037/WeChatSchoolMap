@@ -174,7 +174,19 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+    // db.user.addPoint(_openid, "123456")
+    //   .then(data => {
+    //     db.user.removePoint(_openid, "123456")
+    //     .then(data => {
+    //       db.user.getPoint(_openid).then(res => {
+    //         console.log(res)
+    //       })
+    //     })
+    //   })
 
+    // db.user.addFavorite(_openid, "qwsdcvbnjkoiuytgfvb")
+    // db.user.removeFavorite(_openid, "qwsdcvbnjkoiuytgfvb")
+    // db.user.getFavorite(_openid).then(res => console.log(res))
   },
 
   /**
