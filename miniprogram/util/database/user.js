@@ -30,6 +30,7 @@ export class User {
       db.collection('user').add({
         data: {
           _id: openid,
+          openid: '{openid}',
           userInfo: userInfo,
           info: {},
           point: [],
@@ -40,7 +41,7 @@ export class User {
   }
 
   setInfo(openid, info) {
-    db.collection('user').doc(openid).update({
+    return db.collection('user').doc(openid).update({
       data: {
         info: info
       }

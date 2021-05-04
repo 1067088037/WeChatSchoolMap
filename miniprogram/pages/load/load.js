@@ -53,7 +53,7 @@ function getSchoolAndCampusToChoose(that) {
     let tempSchool = []
     let data = res.result.data
     schoolData = data
-    console.log(schoolData)
+    // console.log(schoolData)
     data.forEach(element => {
       tempSchool.push(element.name)
     });
@@ -101,13 +101,14 @@ Page({
     })
   },
   //点击确定键
-  onConfirmTapped: function () {
+  onConfirmTapped: async function () {
     // console.log(schoolData[this.data.schoolIndex])
     // console.log(campusData[this.data.campusIndex])
-    db.user.setInfo(_openid, {
-      school: schoolData[this.data.schoolIndex]._id, campus: campusData[this.data.campusIndex]._id, permission: 0
+    await db.user.setInfo(_openid, {
+      school: schoolData[this.data.schoolIndex]._id, campus: campusData[this.data.campusIndex]._id
+    }).then(res => {
+      loadSchoolAndCampus(this)
     })
-    loadSchoolAndCampus(this)
   },
   //如果成功获取用户信息则跳转到
   next: function () {
