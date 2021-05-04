@@ -5,6 +5,7 @@ import { School } from './school'
 import { Campus } from './campus'
 import { Arch } from './arch'
 import { Comment } from './comment'
+import { Permission } from './permission'
 
 export class DataBase {
   _db = _db //数据库实例
@@ -15,6 +16,7 @@ export class DataBase {
   campus =  new Campus()
   arch = new Arch()
   comment = new Comment()
+  permission = new Permission()
 }
 
 export const db = new DataBase()
