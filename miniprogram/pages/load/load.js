@@ -175,7 +175,7 @@ Page({
    */
   onReady: function () {
     // db.arch.getArchList('1ace8ef160901b1b008f69ae08b0ee8a').then(res => console.log(res))
-    db.arch.getArchArray('1ace8ef160901b1b008f69ae08b0ee8a').then(res => {
+    db.arch.getArchIdArray('1ace8ef160901b1b008f69ae08b0ee8a').then(res => {
       // console.log(res)
     })
   },

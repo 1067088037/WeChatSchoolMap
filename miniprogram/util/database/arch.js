@@ -14,11 +14,11 @@ export class Arch {
 
   /**
    * 通过ID获取建筑物数组
-   * @param {string} id 校区ID
+   * @param {string} campusId 校区ID
    */
-  async getArchArray(id) {
+  async getArchIdArray(campusId) {
     try {
-      return this.getArchList(id)
+      return this.getArchList(campusId)
         .then(async listId => {
           // console.log(listId)
           return await wx.cloud.callFunction({
@@ -34,6 +34,26 @@ export class Arch {
         })
     } catch (e) {
       return null
+    }
+  }
+
+  /**
+   * 获取全部建筑物信息
+   * @param {string} campusId 校区ID
+   */
+  async getArchArray(campusId) {
+    try {
+      return await this.getArchList(campusId).then(async archListId => {
+        console.log(archListId)
+        return await wx.cloud.callFunction({
+          name: 'getAllArch',
+          data: {
+            archListId: archListId
+          }
+        }).then(res => { return res.result })
+      })
+    } catch (err) {
+      return err
     }
   }
 
