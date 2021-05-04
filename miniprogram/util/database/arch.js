@@ -16,7 +16,7 @@ export class Arch {
    * 通过ID获取建筑物数组
    * @param {string} id 校区ID
    */
-  async getArch(id) {
+  async getArchArray(id) {
     try {
       return this.getArchList(id)
         .then(async listId => {
@@ -46,36 +46,63 @@ export class Arch {
     let archId = util.randomId()
     return await db.comment.bindNewCommentList(archId, 'arch')
       .then(async res => { //res是commit-list的ID
-        await _db.collection('arch').add({
-          data: {
-            _id: archId,
-            super: {
-              _id: campusId,
-              type: 'campus'
-            },
-            name: arch.name,
-            logo: arch.logo,
-            type: arch.type,
-            commit: res,
-            geo: arch.geo
-          }
-        }).then(async res => {
-          this.getArchList(campusId).then(async listId =>{
-            try {
-              return await wx.cloud.callFunction({
-                name: 'addInArray',
-                data: {
-                  collection: 'arch-list',
-                  docid: listId,
-                  array: 'list',
-                  push: res._id
-                }
-              })
-            } catch (e) {
-              return null
+        await this.getArchList(campusId).then(async archListId => {
+          console.log(archListId)
+          await _db.collection('arch').add({
+            data: {
+              _id: archId,
+              super: {
+                _id: archListId,
+                type: 'arch-list'
+              },
+              name: arch.name,
+              logo: arch.logo,
+              type: arch.type,
+              comment: res,
+              geo: arch.geo
             }
+          }).then(async res => {
+            this.getArchList(campusId).then(async listId => {
+              try {
+                return await wx.cloud.callFunction({
+                  name: 'addInArray',
+                  data: {
+                    collection: 'arch-list',
+                    docid: listId,
+                    array: 'list',
+                    push: res._id
+                  }
+                })
+              } catch (e) {
+                return null
+              }
+            })
           })
         })
       })
+  }
+
+  /**
+   * 删除指定建筑物
+   * @param {string} archId 
+   */
+  removeArch(archId) {
+    db.comment.removeAllComment(archId)
+    try {
+      _db.collection('arch').doc(archId).get().then(arch => {
+        // console.log("archid = " + archId)
+        // console.log(arch)
+        wx.cloud.callFunction({
+          name: 'removeInArray',
+          data: {
+            collection: 'arch-list',
+            docid: arch.data.super._id,
+            array: 'list',
+            remove: archId
+          }
+        })
+        _db.collection('arch').doc(archId).remove()
+      })
+    } catch (e) { }
   }
 }

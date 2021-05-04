@@ -3,20 +3,14 @@ const cloud = require('wx-server-sdk')
 
 cloud.init()
 const db = cloud.database()
+const cmd = db.command
 
 // 云函数入口函数
 exports.main = async (event, context) => {
   console.log(event)
-  return db.collection(event.collection).doc(event.docid).get().then(res => {
-    let data = res.data
-    let newArray = []
-    data[event.array].forEach(function (e) {
-      if (e != event.remove) point.push()
-    })
-    db.collection(event.collection).doc(event.docid).update({
-      data: {
-        [event.array]: newArray
-      }
-    })
+  db.collection(event.collection).doc(event.docid).update({
+    data: {
+        [event.array]: cmd.pull(event.remove)
+    }
   })
 }

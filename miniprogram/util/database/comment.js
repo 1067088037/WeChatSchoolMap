@@ -18,4 +18,27 @@ export class Comment {
       }
     }).then(res => res._id)
   }
+
+  /**
+   * 删除以superId为父级的所有评论
+   * @param {string} superId 父级id
+   */
+  async removeAllComment(superId) {
+    try {
+      _db.collection('comment-list').where({
+        "super._id": superId
+      }).get().then(res => {
+        if (res.data[0] != null) {
+          res.data[0].list.forEach(e => {
+            // console.log(e)
+            _db.collection('comment').doc(e).remove() //删除属于这个评论列表的所有评论
+          })
+          // console.log(res.data)
+          _db.collection('comment-list').doc(res.data[0]._id).remove() //删除主评论表
+        }
+      })
+    } catch (e) {
+      
+    }
+  }
 }

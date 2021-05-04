@@ -654,15 +654,22 @@ Page({
    */
   onShow: function () {
     // dormPoint.forEach(e => {
-      let e = dormPoint[0]
-      let arch = {
-        name: e.title,
-        logo: null,
-        type: "dorm",
-        geo: db.Geo.Point(e.longitude, e.latitude)
-      }
-      // db.arch.addArch('1ace8ef160901b1b008f69ae08b0ee8a', arch)
-      // console.log(e)
+    //   // let e = dormPoint[0]
+    //   let arch = {
+    //     name: e.title,
+    //     logo: null,
+    //     type: "dorm",
+    //     geo: db.Geo.Point(e.longitude, e.latitude)
+    //   }
+    //   db.arch.addArch('1ace8ef160901b1b008f69ae08b0ee8a', arch)
+    //   console.log(e)
+    // })
+
+    // db.arch.getArchArray('1ace8ef160901b1b008f69ae08b0ee8a').then(arr => {
+    //   arr.forEach(e => {
+    //     db.arch.removeArch(e)
+    //     // console.log(e)
+    //   })
     // })
   },
 
