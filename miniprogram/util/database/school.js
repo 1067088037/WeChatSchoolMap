@@ -1,4 +1,4 @@
-const db = wx.cloud.database()
+const _db = wx.cloud.database()
 
 export class School {
   /**
@@ -20,7 +20,7 @@ export class School {
    */
   async getSchool(id) {
     try {
-      return await (await db.collection('school').doc(id).get()).data
+      return await (await _db.collection('school').doc(id).get()).data
     } catch(e) {
       return null
     }

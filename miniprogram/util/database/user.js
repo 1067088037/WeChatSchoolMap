@@ -1,5 +1,5 @@
-const db = wx.cloud.database()
-const cmd = db.command
+const _db = wx.cloud.database()
+const cmd = _db.command
 
 export class User {
   /**
@@ -21,14 +21,14 @@ export class User {
    * @param {object} userInfo 
    */
   setUserInfo(openid, userInfo) {
-    db.collection('user').doc(openid).get().then(res => {
-      db.collection('user').doc(openid).update({
+    _db.collection('user').doc(openid).get().then(res => {
+      _db.collection('user').doc(openid).update({
         data: {
           userInfo: userInfo,
         }
       })
     }).catch(e => {
-      db.collection('user').add({
+      _db.collection('user').add({
         data: {
           _id: openid,
           userInfo: userInfo,
@@ -45,7 +45,7 @@ export class User {
    * @param {object} info 学校和校区信息
    */
   setInfo(openid, info) {
-    return db.collection('user').doc(openid).update({
+    return _db.collection('user').doc(openid).update({
       data: {
         info: info
       }
@@ -176,7 +176,7 @@ export class User {
    */
   async getUser(openid) {
     try {
-      return await (await db.collection('user').doc(openid).get()).data
+      return await (await _db.collection('user').doc(openid).get()).data
     } catch (e) {
       return null
     }

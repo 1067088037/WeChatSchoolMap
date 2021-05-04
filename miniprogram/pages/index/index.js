@@ -1,7 +1,5 @@
-import {db} from '../../util/database/database'
-// pages/schoolMap/schoolMap.js
 const app = getApp()
-// const db = getApp().globalData.db
+import { db } from '../../util/database/database'
 
 // 宿舍点
 const dormPoint = [{
@@ -43,7 +41,7 @@ const dormPoint = [{
   id: 108,
   title: "C8",
   longitude: 113.4010858530205,
-  latitude: "23.04949424941177"
+  latitude: 23.04949424941177
 }, {
   id: 109,
   title: "C9",
@@ -191,7 +189,7 @@ const collgePoint = [{
   title: "B11设计学院/艺术学院",
   longitude: 113.40766014558994,
   latitude: 23.050032315286327
-}, ] // 学院点
+},] // 学院点
 const canteenPoint = [{
   id: 1,
   title: "第一学生饭堂",
@@ -265,9 +263,9 @@ Page({
     }], // 添加标点对话框的按钮
     bgdate: "2021-05-03", // 活动开始日期 暂存
     endate: "2021-05-04", // 活动结束日期 
-    radioItems:[
-      {name:"全校可见",value:'0',checked:true},
-      {name:"仅本学院可见",value:'1'}
+    radioItems: [
+      { name: "全校可见", value: '0', checked: true },
+      { name: "仅本学院可见", value: '1' }
     ] // 可见性选项
   },
   /**
@@ -297,46 +295,46 @@ Page({
       }]
       // console.log(latitude_) 
       this.setData({
-          markers: userPoint,
-          showMarkerDialog: true
-        });
-        
+        markers: userPoint,
+        showMarkerDialog: true
+      });
+
     } else
       return 0;
   },
- 
-  returnMarker(e){
+
+  returnMarker(e) {
     isAdd = false;
     this.data.markers.pop()
     this.setData({
-      markers:[],
-      isAddedMarker:false,
-      showMarkerDialog:false
+      markers: [],
+      isAddedMarker: false,
+      showMarkerDialog: false
     });
-    
+
   },
-  cancelMarker(){
+  cancelMarker() {
     this.data.markers.pop()
     this.setData({
-      markers:[],
-      showMarkerDialog:false,
-     
+      markers: [],
+      showMarkerDialog: false,
+
     })
-    isAdd=false
+    isAdd = false
   },
-  confirmMarker(){
+  confirmMarker() {
     this.setData({
-      isAddedMarker:true,
-      showMarkerDialogfa:false
+      isAddedMarker: true,
+      showMarkerDialogfa: false
     })
   },
-  confirmTap(e){
+  confirmTap(e) {
     isAdd = false;
     activitiesPoint.push(this.data.markers.pop())
     this.setData({
-      markers:activitiesPoint,
-      isAddedMarker:false,
-      showMarkerDialog:false
+      markers: activitiesPoint,
+      isAddedMarker: false,
+      showMarkerDialog: false
     })
 
   },
@@ -345,7 +343,7 @@ Page({
   getCenterLocation_() {
     this.data.mapCtx.getCenterLocation({
       success: (res) => {
-        return [{longitude:res.longitude , latitude:res.latitude}]
+        return [{ longitude: res.longitude, latitude: res.latitude }]
       }
     })
   },
@@ -386,11 +384,11 @@ Page({
         break;
       }
       case "添加": {
-        var markers_ = [{latitude:23.04866925793428 ,longitude: 113.40268387434162}];
+        var markers_ = [{ latitude: 23.04866925793428, longitude: 113.40268387434162 }];
         this.setData({
           pagePosition: "center",
           isMoreTrue: false,
-          markers:markers_
+          markers: markers_
         })
         isAdd = true;
         break;
@@ -408,7 +406,7 @@ Page({
           isMoreTrue: false
         })
       }
-      break;
+        break;
     }
     if (isAdd == true)
       return;
@@ -565,7 +563,7 @@ Page({
       showMarkerDialog: false
     })
   },
-  
+
   /**
    * toDetailPage
    * @param {*} e  -- 按钮数据
@@ -631,7 +629,7 @@ Page({
         console.log(latitude, longitude)
       }
     })
-    
+
   },
 
 
@@ -655,7 +653,17 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    // dormPoint.forEach(e => {
+      let e = dormPoint[0]
+      let arch = {
+        name: e.title,
+        logo: null,
+        type: "dorm",
+        geo: db.Geo.Point(e.longitude, e.latitude)
+      }
+      // db.arch.addArch('1ace8ef160901b1b008f69ae08b0ee8a', arch)
+      // console.log(e)
+    // })
   },
 
   /**
