@@ -1,16 +1,16 @@
 <!--pages/schoolMap/schoolMap.wxml-->
 <view class="Container" wx:if="{{isAddedMarker == false}}">
-  <map id="myMap" style="width:750rpx;height:1600rpx;" latitude="{{latitude}}" longitude="{{longitude}}" scale="17"
+  <map id="myMap" style="width:750rpx;height:1120rpx;" latitude="{{latitude}}" longitude="{{longitude}}" scale="17"
     rotate="240" skew="35" markers="{{markers}}" bindcallouttap="markerstap" enable-poi="{{true}}" max-scale="20"
     min-scale="15" bindtap="mapTap">
     <!-- 以下按钮用于获取屏幕中心的经纬度，主要是测试开发用，实际上线可以删去 -->
-    <cover-view class="centerLocation" style="padding:50 0; width:80rpx; height:80rpx; position:relative">
+    <!-- <cover-view class="centerLocation" style="padding:50 0; width:80rpx; height:80rpx; position:relative">
       <button class="btn-getLoc" bindtap="getCenterLocation"
         style="width:100%;height:100%;position:absolute;opacity:0;">
       </button>
       <cover-image src="/images/index/centerLocation.png" mode="scaleToFill">
       </cover-image>
-    </cover-view>
+    </cover-view> -->
 
     <!-- 添加图标的实现 -->
     <cover-view class="moreFunctionIcon">
@@ -87,15 +87,20 @@
       <mp-dialog title="test" show="{{showBuildingDialog}}" bindbuttontap="toDetailPage" buttons="{{buildingBtns}}">
       </mp-dialog>
     </cover-view>
-    <cover-view>
+    <!-- 标点确定对话框 -->
+    <!-- <cover-view>
       <mp-dialog title="test2" show="{{showMarkerDialog}}" buttons="{{markerBtns}}" bindbuttontap="showMarkerInfoPage">
       </mp-dialog>
+    </cover-view> -->
+    <cover-view class="markerPosBtn"  wx:if="{{showMarkerDialog}}">
+      <button  bindtap="cancelMarker">取消</button>
+      <button bindtap="confirmMarker">确定</button>
     </cover-view>
 
 
   </map>
 </view>
-<view wx:if="{{isAddedMarker}}">
+<view class="markerInfoPage" wx:if="{{isAddedMarker}}">
   <mp-cells title="标记点信息">
     <mp-cell prop="markerPointName" title="标记点名称">
       <input class="markerName" type="text" placeholder="请输入活动名称" placeholder-class="markerName"></input>
@@ -124,8 +129,8 @@
         checked="{{item.checked}}"></mp-checkbox>
     </mp-checkbox-group>
   </mp-cells>
-  <mp-uploader title="标记图片上传">
+  <mp-uploader  ext-class="uploader" title="标记图片上传">
   </mp-uploader>
-
-  <button>确定</button>
+  <button type="primary" bindtap="confirmTap">确定</button>
+  <button type="" bindtap="returnMarker">返回</button>
 </view>

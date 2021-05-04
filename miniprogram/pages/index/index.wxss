@@ -106,3 +106,24 @@
 .end-date{
   text-align:center;
 }
+.markerPosBtn{
+  padding-left: 20rpx;
+  position: absolute;
+  background:white;
+  height: 100rpx;
+  bottom:0rpx;
+}
+.markerPosBtn button{
+  
+  display: inline-block;
+  text-align: center;
+  height: 75rpx;
+  width: 20rpx;
+}
+.uploader{
+  color:rgb(151, 151, 151);
+  
+}
+.markerInfoPage button{
+  margin-top: 35rpx;
+}

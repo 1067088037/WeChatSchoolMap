@@ -1,6 +1,8 @@
+import {db} from '../../util/database/database'
 // pages/schoolMap/schoolMap.js
 const app = getApp()
 // const db = getApp().globalData.db
+
 // 宿舍点
 const dormPoint = [{
   id: 101,
@@ -289,25 +291,61 @@ Page({
     if (isAdd) {
       let latitude_ = e.detail.latitude;
       let longitude_ = e.detail.longitude;
-      activitiesPoint.push({
+      let userPoint = [{
         longitude: longitude_,
         latitude: latitude_,
-      })
+      }]
       // console.log(latitude_) 
       this.setData({
-          markers: activitiesPoint,
+          markers: userPoint,
           showMarkerDialog: true
-        }),
-        isAdd = false;
+        });
+        
     } else
       return 0;
   },
+ 
+  returnMarker(e){
+    isAdd = false;
+    this.data.markers.pop()
+    this.setData({
+      markers:[],
+      isAddedMarker:false,
+      showMarkerDialog:false
+    });
+    
+  },
+  cancelMarker(){
+    this.data.markers.pop()
+    this.setData({
+      markers:[],
+      showMarkerDialog:false,
+     
+    })
+    isAdd=false
+  },
+  confirmMarker(){
+    this.setData({
+      isAddedMarker:true,
+      showMarkerDialogfa:false
+    })
+  },
+  confirmTap(e){
+    isAdd = false;
+    activitiesPoint.push(this.data.markers.pop())
+    this.setData({
+      markers:activitiesPoint,
+      isAddedMarker:false,
+      showMarkerDialog:false
+    })
+
+  },
 
   // 获取屏幕中心经纬度
-  getCenterLocation: function () {
-    this.mapCtx.getCenterLocation({
+  getCenterLocation_() {
+    this.data.mapCtx.getCenterLocation({
       success: (res) => {
-        console.log(res.longitude + ',' + res.latitude)
+        return [{longitude:res.longitude , latitude:res.latitude}]
       }
     })
   },
@@ -327,6 +365,7 @@ Page({
 
   // 弹窗函数 
   popup: function (e) {
+    var that = this;
     this.setData({
       func: e.currentTarget.dataset.item
     })
@@ -347,10 +386,11 @@ Page({
         break;
       }
       case "添加": {
+        var markers_ = [{latitude:23.04866925793428 ,longitude: 113.40268387434162}];
         this.setData({
           pagePosition: "center",
           isMoreTrue: false,
-
+          markers:markers_
         })
         isAdd = true;
         break;
@@ -519,6 +559,7 @@ Page({
       this.setData({
         isAddedMarker: true
       })
+      isAdd = false;
     }
     this.setData({
       showMarkerDialog: false
@@ -590,7 +631,9 @@ Page({
         console.log(latitude, longitude)
       }
     })
+    
   },
+
 
   /**
    * 生命周期函数--监听页面初次渲染完成
