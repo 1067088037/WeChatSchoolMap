@@ -18,35 +18,45 @@
       </swiper-item>
     </swiper>
   </view>
-<!-- 建筑的简介 -->
-  <view class="Introduction" wx:if="{{introArea}}"> 
+  <!-- 建筑的简介 -->
+  <view class="Introduction" wx:if="{{introArea}}">
     这里是简介
   </view>
-  <view class="tipsAreaButton" hover-class="_hover_class" bindtap="tipsAreaTap"
-    wx:if="{{showTipsArea == false }}">
+  <view wx:if="{{!showComment}}">
+  <view class="tipsAreaButton" hover-class="_hover_class" bindtap="tipsAreaTap" wx:if="{{showTipsArea == false }}">
     攻略
   </view>
+  </view>
   <!-- 攻略区 -->
-  <view class="TipsArea">
+  <view class="TipsArea" wx:if="{{!showComment}}">
     <view class="Tips" wx:for="{{tips}}" wx:key="{{index}}">
-      <view class="tip" >
-        <image src="{{item.src}}" ></image>
+      <view class="tip">
+        <image src="{{item.src}}"></image>
         <text style="display:block">这里是攻略攻略攻略攻略攻略攻略</text>
         <view class="like-btn">
-          <image class="like" src="/images/building/like.png" mode="widthFix" wx:if="{{isLike==false}}" bindtap="likeClick" id = "{{index}}" />
-          <image class="no-like" src="/images/building/like_selected.png" wx:if="{{isLike}}" bindtap="likeClick"/> <text>{{likeNum}}</text>
+          <image class="like" src="/images/building/like.png" mode="widthFix" wx:if="{{isLike==false}}"
+            bindtap="likeClick" id="{{index}}" />
+          <image class="no-like" src="/images/building/like_selected.png" wx:if="{{isLike}}" bindtap="likeClick" />
+          <text>{{likeNum}}</text>
         </view>
         <view class="comment-btn">
-          <image class="comment" src="/images/building/comment.png" mode="widthFix" />
+          <image class="comment" src="/images/building/comment.png" mode="widthFix" bindtap="intoCommentClick"></image>
         </view>
       </view>
     </view>
     <!-- 发表评论 -->
-    <view class="postComment" wx:if="{{showTipsArea}}">
-      <form action="">
-        <input class="commentInput" placeholder="随便说点什么..." type="text" confirm-type="send"></input>
-      </form> 
-    </view>
   </view>
+    <view wx:if="{{showComment}}">
+      
+
+
+
+      <view class="postComment">
+        <input class="input" bindinput="getComment"placeholder="随便说点什么"></input>
+      </view>
+      <view>
+        <button type="primary" bindtap="sendComment">发表评论</button>
+      </view>
+    </view>
 
 </view>

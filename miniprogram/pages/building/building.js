@@ -1,6 +1,7 @@
 // pages/building/building.js
 const app = getApp();
-const db = wx.cloud.database();
+import { Campus } from '../../util/database/campus';
+import { db } from '../../util/database/database'
 Page({
 
   /**
@@ -10,33 +11,54 @@ Page({
     markerId: 1,
     introArea: true,
     showTipsArea: false,
-    isLike:false,
-    likeNum:0,
-    likePicIndex:null
+    showComment: false,
+    isLike: false,
+    likeNum: 0,
+    likePicIndex: null,
+    commentValue: null,
+    intoComment: false
   },
-  likeClick(e){
+  //获取用户输入的评论内容
+  getComment(e) {
+    this.setData({
+      commentValue: e.detail.value
+    })
+  },
+  //发表评论
+  sendComment() {
+    db.comment.addComment(1, Campus, {
+      reply: null,
+      text: this.data.commentValue,
+      image: null
+    })
+  },
+
+  likeClick(e) {
     console.log(e);
-    
-    if(this.data.isLike)
-    {
+
+    if (this.data.isLike) {
       var likeNum = this.data.likeNum
       likeNum--
       this.setData({
-        isLike:false,
+        isLike: false,
         likeNum
       })
     }
-    else
-    {
+    else {
       var likeNum = this.data.likeNum
       likeNum++
       this.setData({
-        isLike:true,
+        isLike: true,
         likeNum
       })
     }
   },
-
+  intoCommentClick(e) {
+    this.setData({
+      showTipsArea: false,
+      showComment: true
+    })
+  },
   /**
    * tipsAreaTap
    * @param e
@@ -60,7 +82,7 @@ Page({
         src: "/images/tabBarIcon/design_selected.png"
       }]
     })
-    
+
   }, // end function
 
   /**
@@ -88,7 +110,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    db.comment.getAllComment('1').then(res => {
+      console.log(res)
+    })
   },
 
   /**

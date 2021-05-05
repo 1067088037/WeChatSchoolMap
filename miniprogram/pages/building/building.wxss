@@ -109,3 +109,8 @@
   width:50rpx;
   position: relative;
 }
+.input{
+  border:2px solid gainsboro;
+  margin-top: 30rpx;
+  margin-bottom:30rpx;
+}
