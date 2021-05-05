@@ -50,7 +50,7 @@ export class Arch {
           data: {
             archListId: archListId
           }
-        }).then(res => { return res.result })
+        }).then(res => { return res.result.data })
       })
     } catch (err) {
       return err

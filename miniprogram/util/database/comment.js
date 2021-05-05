@@ -1,4 +1,6 @@
 const _db = wx.cloud.database()
+const cmd = _db.command
+const util = require('../util')
 
 export class Comment {
   /**
@@ -40,5 +42,34 @@ export class Comment {
     } catch (e) {
       
     }
+  }
+
+  addComment(superId, comment) {
+    return
+    let commentId = util.randomId()
+    let commentListId = null
+    _db.collection('comment-list').where({
+      'super._id': superId
+    }).get().then(res => {
+      commentListId = res.data._id
+      console.log(commentListId)
+      _db.collection('comment-list').doc(commentListId).update({
+        list: cmd.push(commentId)
+      })
+      _db.collection('comment').add({
+        data: {
+          _id: commentId,
+          super: {
+            _id: commentListId,
+            type: "comment-list"
+          },
+          user: comment.user,
+          reply: comment.reply,
+          text: comment.text,
+          image: comment.image,
+          like: comment.like
+        }
+      })
+    })
   }
 }

@@ -105,7 +105,7 @@ Page({
     // console.log(schoolData[this.data.schoolIndex])
     // console.log(campusData[this.data.campusIndex])
     await db.user.setInfo(_openid, {
-      school: schoolData[this.data.schoolIndex]._id, campus: campusData[this.data.campusIndex]._id
+      school: schoolData[this.data.schoolIndex]._id, campus: campusData[this.data.campusIndex]._id, permission: 16
     }).then(res => {
       loadSchoolAndCampus(this)
     })
