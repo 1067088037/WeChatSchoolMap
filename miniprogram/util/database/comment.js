@@ -34,21 +34,25 @@ export class Comment {
    * 插入评论
    * @param {string} superId 
    * @param {string} superType 
-   * @param {string} comment 
+   * @param {object} comment 需要包含 reply,text,images
    */
   addComment(superId, superType, comment) {
-    _db.collection('comment').add({
-      data: {
-        super: {
-          _id: superId,
-          type: superType
-        },
-        time: _db.serverDate(),
-        reply: comment.reply,
-        text: comment.text,
-        image: comment.image
-      }
-    })
+    if (comment.constructor != Object) {
+      console.error("comment类型非法")
+    } else {
+      _db.collection('comment').add({
+        data: {
+          super: {
+            _id: superId,
+            type: superType
+          },
+          time: _db.serverDate(),
+          reply: comment.reply,
+          text: comment.text,
+          images: comment.images
+        }
+      })
+    }
   }
 
   /**

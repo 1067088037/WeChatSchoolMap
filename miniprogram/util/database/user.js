@@ -22,23 +22,27 @@ export class User {
    * @param {object} userInfo 
    */
   setUserInfo(openid, userInfo) {
-    _db.collection('user').doc(openid).get().then(res => {
-      _db.collection('user').doc(openid).update({
-        data: {
-          userInfo: userInfo,
-        }
+    if (userInfo.constructor != Object) {
+      console.error('userInfo类型非法')
+    } else {
+      _db.collection('user').doc(openid).get().then(res => {
+        _db.collection('user').doc(openid).update({
+          data: {
+            userInfo: userInfo,
+          }
+        })
+      }).catch(e => {
+        _db.collection('user').add({
+          data: {
+            _id: openid,
+            userInfo: userInfo,
+            info: {},
+            point: [],
+            favorite: []
+          }
+        })
       })
-    }).catch(e => {
-      _db.collection('user').add({
-        data: {
-          _id: openid,
-          userInfo: userInfo,
-          info: {},
-          point: [],
-          favorite: []
-        }
-      })
-    })
+    }
   }
 
   /**
@@ -46,11 +50,15 @@ export class User {
    * @param {object} info 学校和校区信息
    */
   setInfo(openid, info) {
-    return _db.collection('user').doc(openid).update({
-      data: {
-        info: info
-      }
-    })
+    if (info.constructor != Object) {
+      console.error('info类型非法')
+    } else {
+      return _db.collection('user').doc(openid).update({
+        data: {
+          info: info
+        }
+      })
+    }
   }
 
   /**
