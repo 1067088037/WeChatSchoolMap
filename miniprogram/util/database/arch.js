@@ -4,6 +4,7 @@ export class Arch {
   /**
    * 获取全部建筑物信息
    * @param {string} campusId 校区ID
+   * @returns {Array} 建筑物数组 
    */
   async getArchArray(campusId) {
     try {
@@ -15,7 +16,7 @@ export class Arch {
         }
       }).then(res => res.result.data)
     } catch (e) {
-      return null
+      return []
     }
   }
 

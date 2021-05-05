@@ -4,6 +4,7 @@ const cmd = _db.command
 export class User {
   /**
    * 调用云函数获取openid
+   * @returns {string} openid
    */
   async getOpenId() {
     try {
@@ -73,9 +74,9 @@ export class User {
 
   /**
    * 添加收藏
-   * @param {*} pointid 标点ID
+   * @param {*} pointId 标点ID
    */
-  async addFavorite(openid, pointid) {
+  async addFavorite(openid, pointId) {
     try {
       return await wx.cloud.callFunction({
         name: 'addInArray',
@@ -83,7 +84,7 @@ export class User {
           collection: 'user',
           docid: openid,
           array: 'favorite',
-          push: pointid
+          push: pointId
         }
       })
     } catch (e) {

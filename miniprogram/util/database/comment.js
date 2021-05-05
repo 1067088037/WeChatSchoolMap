@@ -3,7 +3,8 @@ const _db = wx.cloud.database()
 export class Comment {
   /**
    * 获取属于该父级的所有评论
-   * @param {string} superId 
+   * @param {string} superId 父级ID
+   * @returns {Array} 评论数组
    */
   async getAllComment(superId) {
     try {
@@ -15,7 +16,7 @@ export class Comment {
         }
       }).then(res => res.result.data)
     } catch (e) {
-      return null
+      return []
     }
   }
 

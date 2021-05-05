@@ -661,7 +661,7 @@ Page({
     //     type: "dorm",
     //     geo: db.Geo.Point(e.longitude, e.latitude)
     //   }
-    //   db.arch.addArch('1ace8ef160901b1b008f69ae08b0ee8a', arch)
+    //   db.arch.addArch(app.globalData.campus._id, arch)
     //   console.log(e)
     // })
 
@@ -671,6 +671,12 @@ Page({
     //     // console.log(e)
     //   })
     // })
+
+    db.comment.getAllComment('28ee4e3e6092564b16069c306ff52fd5').then(res => {
+      res.forEach(ele => {
+        console.log(ele)
+      })
+    })
   },
 
   /**
