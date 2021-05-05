@@ -7,11 +7,13 @@ import { Arch } from './arch'
 import { Comment } from './comment'
 import { Permission } from './permission'
 import { Point } from './point'
+import { Like } from './like'
 
 export class DataBase {
   _db = _db //数据库实例
   Geo = _db.Geo //地理位置实例
   serverDate = _db.serverDate //服务器时间
+  cmd = _db.command //操作指令
   user = new User()
   school = new School()
   campus =  new Campus()
@@ -19,6 +21,7 @@ export class DataBase {
   comment = new Comment()
   permission = new Permission()
   point = new Point()
+  like = new Like()
 }
 
 export const db = new DataBase()

@@ -2,6 +2,25 @@ const _db = wx.cloud.database()
 
 export class Point {
   /**
+   * 获取校区下全部的标点
+   * @param {string} campusId
+   * @returns {Array} 标点数组
+   */
+  async getPointArray(campusId) {
+    try {
+      return await wx.cloud.callFunction({
+        name: 'getAllBySuperId',
+        data: {
+          collection: 'point',
+          superId: campusId
+        }
+      }).then(res => res.result.data)
+    } catch (err) {
+      return []
+    }
+  }
+
+  /**
    * 新建标点
    * @param {string} campusId 
    * @param {Array} belong 
@@ -11,7 +30,7 @@ export class Point {
    */
   addPoint(campusId, belong, time, desc, geo) {
     if (belong.constructor != Array) {
-      console.error('belong类型非法')
+      console.error('belong类型非法，如果为空请传入[]')
     } else if (time.constructor != Object) {
       console.error('time类型非法')
     } else if (desc.constructor != Object) {
@@ -81,5 +100,24 @@ export class Point {
         images: images
       }
     }
+  }
+
+  /**
+   * 删除指定标点
+   * @param {string} pointId 
+   */
+  removePoint(pointId) {
+    _db.collection('point').doc(pointId).remove()
+  }
+
+  /**
+   * 更新标点
+   * @param {string} pointId 标点ID
+   * @param {object} data 要更新的内容
+   */
+  updatePoint(pointId, data) {
+    _db.collection('point').doc(pointId).update({
+      data: data
+    })
   }
 }

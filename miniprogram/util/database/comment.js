@@ -1,4 +1,5 @@
 const _db = wx.cloud.database()
+const util = require('../util')
 
 export class Comment {
   /**
@@ -25,9 +26,12 @@ export class Comment {
    * @param {string} superId 父级id
    */
   async removeAllComment(superId) {
-    _db.collection('comment').where({
-      'super._id': superId
-    }).remove()
+    await wx.cloud.callFunction({
+      name: 'removeAllComment',
+      data: {
+        superId: superId
+      }
+    })
   }
 
   /**
@@ -37,11 +41,13 @@ export class Comment {
    * @param {object} comment 需要包含 reply,text,images
    */
   addComment(superId, superType, comment) {
+    let commentId = util.randomId()
     if (comment.constructor != Object) {
       console.error("comment类型非法")
     } else {
       _db.collection('comment').add({
         data: {
+          _id: commentId,
           super: {
             _id: superId,
             type: superType
@@ -50,6 +56,19 @@ export class Comment {
           reply: comment.reply,
           text: comment.text,
           images: comment.images
+        }
+      })
+      _db.collection('like').add({
+        data: {
+          super: {
+            _id: commentId,
+            type: 'comment',
+            super: {
+              _id: superId,
+              type: superType
+            }
+          },
+          like: []
         }
       })
     }
@@ -61,5 +80,8 @@ export class Comment {
    */
   removeComment(commentId) {
     _db.collection('comment').doc(commentId).remove()
+    _db.collection('like').where({
+      'super._id': commentId
+    }).remove()
   }
 }
