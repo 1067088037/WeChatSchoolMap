@@ -672,11 +672,40 @@ Page({
     //   })
     // })
 
-    db.comment.getAllComment('28ee4e3e6092564b16069c306ff52fd5').then(res => {
-      res.forEach(ele => {
-        console.log(ele)
-      })
-    })
+    // db.point.addPoint(app.globalData.campus._id, [], 
+    //   db.point.generateTimeObj(Date('2020-1-1'),Date('2020-1-2'),Date('2020-1-3'),Date('2020-1-4')),
+    //   db.point.generateDescObj('哈哈哈', 'cloud:/',[]), db.Geo.Point(1,1))
+
+    // db.point.getPointArray(app.globalData.campus._id).then(res => {
+    //   console.log(res)
+    // })
+
+    // db.point.updatePoint('79550af2609276ce1475f6ef13718594', {
+    //   belong: db.cmd.push('123456')
+    // })
+
+    // db.point.removePoint('79550af2609276ce1475f6ef13718594')
+
+    // db.like.giveALike('123456')
+
+    // for (let i = 0; i < 5; i++) {
+      // db.comment.addComment('123', 'arch', {
+      //   reply: null,
+      //   text: 'qwq',
+      //   images: []
+      // })
+    // }
+
+    // db.comment.removeComment('e810o28g1ekfvswpx7ul7qmlfbq6g3ii')
+    // db.comment.removeAllComment('123')
+
+    // db.like.giveALike('bcnefaoh58nbpfecpu2b3xewag4ahmqq')
+    // db.like.countLike('bcnefaoh58nbpfecpu2b3xewag4ahmqq').then(res => {
+    //   console.log(res)
+    // })
+
+    // db.like.cancelLike('bcnefaoh58nbpfecpu2b3xewag4ahmqq')
+    // db.like.countLike('bcnefaoh58nbpfecpu2b3xewag4ahmqq').then(res => console.log(res))
   },
 
   /**

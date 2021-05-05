@@ -26,18 +26,22 @@ export class Arch {
    * @param {object} arch 建筑物
    */
   async addArch(campusId, arch) {
-    _db.collection('arch').add({
-      data: {
-        super: {
-          _id: campusId,
-          type: 'campus'
-        },
-        name: arch.name,
-        logo: arch.logo,
-        type: arch.type,
-        geo: arch.geo
-      }
-    })
+    if (arch.constructor != Object) {
+      console.error('arch类型非法')
+    } else {
+      _db.collection('arch').add({
+        data: {
+          super: {
+            _id: campusId,
+            type: 'campus'
+          },
+          name: arch.name,
+          logo: arch.logo,
+          type: arch.type,
+          geo: arch.geo
+        }
+      })
+    }
   }
 
   /**
@@ -46,10 +50,14 @@ export class Arch {
    * @param {object} arch 
    */
   updateArch(archId, arch) {
-    console.log(arch)
-    _db.collection('arch').doc(archId).update({
-      data: arch
-    })
+    if (arch.constructor != Object) {
+      console.error('arch类型非法')
+    } else {
+      // console.log(arch)
+      _db.collection('arch').doc(archId).update({
+        data: arch
+      })
+    }
   }
 
   /**
