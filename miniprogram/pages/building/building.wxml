@@ -23,9 +23,9 @@
     这里是简介
   </view>
   <view wx:if="{{!showComment}}">
-  <view class="tipsAreaButton" hover-class="_hover_class" bindtap="tipsAreaTap" wx:if="{{showTipsArea == false }}">
-    攻略
-  </view>
+    <view class="tipsAreaButton" hover-class="_hover_class" bindtap="tipsAreaTap" wx:if="{{showTipsArea == false }}">
+      攻略
+    </view>
   </view>
   <!-- 攻略区 -->
   <view class="TipsArea" wx:if="{{!showComment}}">
@@ -46,17 +46,19 @@
     </view>
     <!-- 发表评论 -->
   </view>
-    <view wx:if="{{showComment}}">
-      
-
-
-
-      <view class="postComment">
-        <input class="input" bindinput="getComment"placeholder="随便说点什么"></input>
-      </view>
-      <view>
-        <button type="primary" bindtap="sendComment">发表评论</button>
-      </view>
+  <view wx:if="{{showComment}}">
+    <view wx:for="{{comments}}" wx:key="index">
+      <text>{{item.text}}</text>
     </view>
+
+
+
+    <view class="postComment">
+      <input class="input" bindinput="getComment" placeholder="随便说点什么"></input>
+    </view>
+    <view>
+      <button type="primary" bindtap="sendComment">发表评论</button>
+    </view>
+  </view>
 
 </view>
