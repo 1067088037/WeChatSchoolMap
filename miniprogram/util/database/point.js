@@ -1,6 +1,8 @@
 const _db = wx.cloud.database()
 const util = require('../util')
 
+const dateConstructor = new Date('2020-1-1').constructor
+
 export class Point {
   /**
    * 获取校区下全部的标点
@@ -68,7 +70,6 @@ export class Point {
    * @param {Date} hide 标点结束展示的时间
    */
   generateTimeObj(show, start, end, hide) {
-    let dateConstructor = Date('2020-1-1').constructor
     if (show.constructor != dateConstructor) {
       console.error('show类型非法')
     } else if (start.constructor != dateConstructor) {
