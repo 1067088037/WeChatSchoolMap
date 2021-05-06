@@ -56,7 +56,8 @@ export class Point {
           time: time,
           desc: desc,
           geo: geo,
-          markId: util.randomNumberId()
+          markId: util.randomNumberId(),
+          type:type
         }
       })
     }

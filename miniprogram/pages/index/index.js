@@ -1,5 +1,11 @@
-const app = getApp()
-import { db } from '../../util/database/database'
+import {
+  db
+} from '../../util/database/database'
+// pages/schoolMap/schoolMap.js
+let SCREEN_WIDTH = 750; // 屏幕宽度
+let RATE = wx.getSystemInfoSync().screenHeight / wx.getSystemInfoSync().screenWidth // 比率
+const app = getApp()  // 小程序全局
+// const db = getApp().globalData.db
 
 // 宿舍点
 const dormPoint = [{
@@ -41,7 +47,7 @@ const dormPoint = [{
   id: 108,
   title: "C8",
   longitude: 113.4010858530205,
-  latitude: 23.04949424941177
+  latitude: "23.04949424941177"
 }, {
   id: 109,
   title: "C9",
@@ -119,7 +125,7 @@ const classRoomPoint = [{
   longitude: 113.4060915745905,
   latitude: 23.05017228010393
 }] // 教学楼点
-const collgePoint = [{
+const collegePoint = [{
   id: 301,
   title: "B1国际楼",
   longitude: 113.40971094123438,
@@ -189,7 +195,7 @@ const collgePoint = [{
   title: "B11设计学院/艺术学院",
   longitude: 113.40766014558994,
   latitude: 23.050032315286327
-},] // 学院点
+}, ] // 学院点
 const canteenPoint = [{
   id: 1,
   title: "第一学生饭堂",
@@ -226,12 +232,18 @@ const vouchCenterPoint = [] // 充值点
 var activitiesPoint = [] // 活动标记点 -- 暂存
 var isAdd = false; // 是否添加的标记
 var flag = 0;
+var visibleArchArray = new Array;
+var selectedArchType = new Array;
+var archArray = new Array;
+var realTimeInfoArray = new Array;
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    mapWidth: SCREEN_WIDTH,
+    mapHeight: SCREEN_WIDTH * RATE,
     mapCtx: null, // MapContext对象
     longitude: 0, // 小程序一开始显示的经纬度
     latitude: 0,
@@ -262,21 +274,154 @@ Page({
       text: '确定'
     }], // 添加标点对话框的按钮
     bgdate: "2021-05-03", // 活动开始日期 暂存
+    bgtime: "08:00",
+    edtime: "22:30",
     endate: "2021-05-04", // 活动结束日期 
-    radioItems: [
-      { name: "全校可见", value: '0', checked: true },
-      { name: "仅本学院可见", value: '1' }
-    ] // 可见性选项
+    archItems: [{
+      value: "dorm",
+      name: "宿舍",
+      checked: false
+    }, {
+      value: "classRoom",
+      name: "教室"
+    }, {
+      value: "college",
+      name: '学院'
+    }, {
+      value: "canteen",
+      name: "饭堂"
+    }, {
+      value: "shop",
+      name: "商店"
+    }, {
+      value: "canteen",
+      name: "饭堂"
+    }, {
+      value: "vouchCenter",
+      name: "充值点"
+    }, {
+      value: "activity",
+      name: "活动"
+    }, {
+      value: "deliveryPickUp",
+      name: "快递外卖提取点"
+    }], // 筛选建筑的选项
+    departmentsItem: [
+      "(全校)", "软件学院", "百步梯", "校学生会"
+    ], // belong 属于那个部门
+    departmentsIndex: 0, // 
+    pickerNum: [1],
+    markerTypes: ['实时消息', '活动'], //type
+    markerType: 1,
+    newMarkerTitle: "",
+    newMarkerDesc: ""
   },
   /**
-   * bindDateChange
-   * @param {*} e 
-   * @todo 改变日期
-   */
-  bindDateChange(e) {
+   * addPicker()
+   * @todo 添加选择器，在添加标点界面中
+   * @param null
+   * 
+  */
+  addPicker() {
+    this.data.pickerNum.push(1)
+    var pickerNum = this.data.pickerNum
     this.setData({
-      date: e.detail.value,
-      [`formData.date`]: e.detail.value
+      pickerNum
+    })
+  },
+  /**
+   * deletePicker()
+   * @todo 删除选择器，在添加标点界面中
+   * @param null
+   * 
+  */
+  deletePicker() {
+    if (this.data.pickerNum.length > 1) {
+      this.data.pickerNum.pop()
+      var pickerNum = this.data.pickerNum
+      this.setData({
+        pickerNum
+      })
+    } else
+      return
+  },
+  /**
+   * inputMarkerName(e)
+   * @todo 输入标点的题目/名字
+   * @param e  --- 输入框的对象
+   * 
+  */
+  inputMarkerName(e) {
+    console.log(e)
+    this.setData({
+      newMarkerTitle: e.detail.value
+    })
+  },
+  inputMarkerDesc(e) {
+    console.log(e)
+    this.setData({
+      newMarkerDesc: e.detail.value
+    })
+  },
+  /**
+   * bindBeginDateChange
+   * @param {*} e  picker中的对象
+   * @todo 改变开始日期
+   */
+  bindBeginDateChange(e) {
+    this.setData({
+      bgdate: e.detail.value,
+    })
+  },
+  /**
+   * bindEndDateChange
+   * @param {*} e  picker中的对象
+   * @todo 改变结束日期
+   */
+  bindEndDateChange(e) {
+    this.setData({
+      endate: e.detail.value,
+    })
+  },
+  /**
+   * bindBeginTimeChange
+   * @param {*} e  picker中的对象
+   * @todo 改变开始时间
+   */
+  bindBeginTimeChange(e) {
+    this.setData({
+      bgtime: e.detail.value
+    })
+  },
+   /**
+   * bindEndTimeChange
+   * @param {*} e  picker中的对象
+   * @todo 改变结束时间
+   */
+  bindEndTimeChange(e) {
+    this.setData({
+      edtime: e.detail.value
+    })
+  },
+  /**
+   * markerTypeChange
+   * @param {*} e  picker中的对象
+   * @todo 改变新加标点的type
+   */
+  markerTypeChange(e) {
+    this.setData({
+      markerType: e.detail.value
+    })
+  },
+  /**
+   * visibleChange
+   * @param {*} e  picker中的对象
+   * @todo 改变新加标点的可见性 注：尚未完成
+   */
+  visibleChange(e) {
+    console.log(e)
+    this.setData({
+      departmentsIndex: e.detail.value,
     })
   },
   /**
@@ -285,6 +430,11 @@ Page({
    * @todo 获取点击处的经纬度
    */
   mapTap(e) {
+    if (this.data.showPage) {
+      this.setData({
+        showPage: false
+      })
+    }
     // console.log(e.detail);
     if (isAdd) {
       let latitude_ = e.detail.latitude;
@@ -302,7 +452,11 @@ Page({
     } else
       return 0;
   },
-
+  /**
+   * returnMarker
+   * @todo 返回。放弃添加标点 --- 在添加标点具体页面中
+   * @param {*} e 
+   */
   returnMarker(e) {
     isAdd = false;
     this.data.markers.pop()
@@ -311,8 +465,12 @@ Page({
       isAddedMarker: false,
       showMarkerDialog: false
     });
-
   },
+  /**
+   * cancelMarker
+   * @todo 返回。放弃添加标点 --- 在地图上
+   * @param {*} e 
+   */
   cancelMarker() {
     this.data.markers.pop()
     this.setData({
@@ -322,17 +480,45 @@ Page({
     })
     isAdd = false
   },
+  /**
+   * confirmMarker
+   * @todo 确定添加标点位置，进入标点添加信息界面 --- 在地图上
+   * @param {*} e 
+   */
   confirmMarker() {
     this.setData({
       isAddedMarker: true,
       showMarkerDialogfa: false
     })
   },
+  /**
+   * confirmTap
+   * @todo 确定添加标点，将用户所填写的标点信息上传到云端数据库 --- 在标点添加信息界面
+   * @param {*}  
+   */
   confirmTap(e) {
     isAdd = false;
-    activitiesPoint.push(this.data.markers.pop())
+
+    let newPoint = this.data.markers.pop()
+    let campusId = app.globalData.campus._id;
+    let belong = [this.data.departmentsItem[this.data.departmentsIndex]]
+    let type;
+    if (this.data.markerTypes[this.data.markerType] == '实时消息') {
+      type = "current"
+    } else {
+      type = "activity"
+    }
+    let show = new Date(this.data.bgdate + " 00:00")
+    let start = new Date(this.data.bgdate + " " + this.data.bgtime)
+    let end = new Date(this.data.endate + " " + this.data.edtime)
+    let hide = new Date(this.data.endate + " 23:59")
+    let time = db.point.generateTimeObj(show, start, end, hide)
+    let name = this.data.newMarkerTitle
+    let text = this.data.newMarkerDesc
+    let desc = db.point.generateDescObj(name, text, "", [])
+
+    db.point.addPoint(campusId, belong, type, time, desc, db.Geo.Point(newPoint.longitude, newPoint.latitude))
     this.setData({
-      markers: activitiesPoint,
       isAddedMarker: false,
       showMarkerDialog: false
     })
@@ -343,7 +529,10 @@ Page({
   getCenterLocation_() {
     this.data.mapCtx.getCenterLocation({
       success: (res) => {
-        return [{ longitude: res.longitude, latitude: res.latitude }]
+        return [{
+          longitude: res.longitude,
+          latitude: res.latitude
+        }]
       }
     })
   },
@@ -384,18 +573,22 @@ Page({
         break;
       }
       case "添加": {
-        var markers_ = [{ latitude: 23.04866925793428, longitude: 113.40268387434162 }];
+        var markers_ = [{
+          latitude: 23.04866925793428,
+          longitude: 113.40268387434162
+        }];
         this.setData({
           pagePosition: "center",
           isMoreTrue: false,
-          markers: markers_
+          markers: markers_,
+          showMarkerDialog: true
         })
         isAdd = true;
         break;
       }
       case "筛选": {
         this.setData({
-          pagePosition: "center",
+          pagePosition: "top",
           isMoreTrue: false
         })
         break;
@@ -406,7 +599,7 @@ Page({
           isMoreTrue: false
         })
       }
-        break;
+      break;
     }
     if (isAdd == true)
       return;
@@ -415,9 +608,58 @@ Page({
     })
     console.log(isAdd);
   },
+  /**
+   * selectArchFunc
+   * @todo 筛选显示在地图上标点
+   * @param {*} e  checkbox对象
+   */
+  selectArchFunc(e) {
+
+    //   如果selectArchType中含有不在e.detail.value中的type 则删除
+    if (selectedArchType.length > 0) {
+      selectedArchType.forEach((value, index) => {
+        console.log(e.detail.value.indexOf(value))
+        if (e.detail.value.indexOf(value) == -1)
+          selectedArchType.splice(index, 1)
+      })
+    }
+
+    // 选择arrchArray中有e.detail.value的type 且selectedArchType中没有的type
+    // push进selectArchType
+    archArray.forEach((value, index) => {
+      if (e.detail.value.indexOf(value.type) != -1 && selectedArchType.indexOf(value.type) == -1) {
+        selectedArchType.push(value.type)
+      }
+    })
+    activitiesPoint.forEach((value, index) => {
+      if (e.detail.value.indexOf(value.type) != -1 && selectedArchType.indexOf(value.type) == -1) {
+        selectedArchType.push(value.type)
+      }
+    })
+
+    visibleArchArray = [].concat(realTimeInfoArray)
+    // 更新可视建筑
+    archArray.forEach((value, index) => {
+      if (selectedArchType.indexOf(value.type) != -1) {
+        visibleArchArray.push(value)
+      }
+    })
+    activitiesPoint.forEach((value, index) => {
+      if (selectedArchType.indexOf(value.type) != -1) {
+        visibleArchArray.push(value)
+      }
+    })
+    console.log(selectedArchType)
+    //visibleArchArray = visibleArchArray.concat(activitiesPoint)
+    this.setData({
+      markers: visibleArchArray
+    })
+  },
+  
+  // 以下Only函数要取代，无需看
   // 只显示宿舍
   DormOnly() {
-    const markers = dormPoint;
+    const markers = dormPoint_db;
     this.setData({
       markers,
       showPage: false,
@@ -436,8 +678,8 @@ Page({
     flag = 2
   },
   // 只显示学院楼
-  collgeOnly() {
-    const markers = collgePoint;
+  collegeOnly() {
+    const markers = collegePoint;
     this.setData({
       markers,
       showPage: false,
@@ -456,6 +698,7 @@ Page({
     flag = 4
     console.log(flag)
   },
+
   // 根据markerID获取经纬度
   getLatitude(id) {
     let markerArr;
@@ -476,7 +719,7 @@ Page({
         })
       }
       case 3: {
-        markerArr = collgePoint
+        markerArr = collegePoint
         markerArr.forEach(function (item) {
           if (item.id == id)
             return item.latitude;
@@ -513,7 +756,7 @@ Page({
         })
       }
       case 3: {
-        markerArr = collgePoint
+        markerArr = collegePoint
         markerArr.forEach(function (item) {
           if (item.id == id)
             return item.longitude;
@@ -530,9 +773,10 @@ Page({
     }
     return 0;
   },
+
   // 进入具体建筑的简介弹窗
   markerstap(e) {
-    console.log(e.detail.markerId)
+    console.log(e)
     app.globalData.markerId = e.detail.markerId
     app.globalData.desLatitude = this.getLatitude(e.detail.markerId)
     app.globalData.desLongtitude = this.getLongtitude(e.detail.markerId)
@@ -595,7 +839,18 @@ Page({
       showPage: false
     })
   },
-
+  // 搜索功能
+  search(e) {
+    visibleArchArray = []
+    archArray.forEach((value, index) => {
+      if (value.title == e.detail.value) {
+        visibleArchArray.push(value)
+      }
+    })
+    this.setData({
+      markers: visibleArchArray
+    })
+  },
   // page-container的触发函数，不写以下这些函数会警告
   onBeforeEnter(res) {
     console.log(res)
@@ -630,6 +885,7 @@ Page({
       }
     })
 
+
   },
 
 
@@ -647,12 +903,66 @@ Page({
       mapCtx: wx.createMapContext('myMap', this),
       // longitude: getApp().globalData.campus.longitude,
     })
+    // 从数据库中获取建筑的标点对象
+    db.arch.getArchArray(app.globalData.campus._id).then(res => {
+      console.log(res)
+      res.forEach((value, index) => {
+        archArray.push({
+          _id: value._id,
+          id: value.markId,
+          latitude: value.geo.coordinates[1],
+          longitude: value.geo.coordinates[0],
+          type: value.type,
+          title: value.name,
+          width: 30,
+          height: 40
+        })
+      })
+    })
+    // 从数据库中获取标点对象
+    db.point.getPointArray(app.globalData.campus._id).then(res => {
+      res.forEach((value, index) => {
+        if (value.type == 'activity')
+          activitiesPoint.push({
+            _id: value._id,
+            id: value.markId,
+            title: value.desc.name,
+            longitude: value.geo.coordinates[0],
+            latitude: value.geo.coordinates[1],
+            width: 30,
+            height: 40,
+            type: value.type
+          })
+        else {
+          realTimeInfoArray.push({
+            _id: value._id,
+            id: value.markId,
+            title: value.desc.name,
+            longitude: value.geo.coordinates[0],
+            latitude: value.geo.coordinates[1],
+            width: 30,
+            height: 40,
+            type: value.type
+          })
+        }
+      })
+    })
+
+    // 默认显示实时信息标点。
+    const that = this
+    visibleArchArray = realTimeInfoArray
+    setTimeout(() => {
+      that.setData({
+        markers: visibleArchArray
+      })
+    }, 2000)
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+
     // dormPoint.forEach(e => {
     //   // let e = dormPoint[0]
     //   let arch = {

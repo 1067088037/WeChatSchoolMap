@@ -1,8 +1,8 @@
 <!--pages/schoolMap/schoolMap.wxml-->
 <view class="Container" wx:if="{{isAddedMarker == false}}">
-  <map id="myMap" style="width:750rpx;height:1120rpx;" latitude="{{latitude}}" longitude="{{longitude}}" scale="17"
-    rotate="240" skew="35" markers="{{markers}}" bindcallouttap="markerstap" enable-poi="{{true}}" max-scale="20"
-    min-scale="15" bindtap="mapTap">
+  <map id="myMap" style="width:{{mapWidth}}rpx;height:{{mapHeight}}rpx;" latitude="{{latitude}}"
+    longitude="{{longitude}}" scale="17" rotate="240" skew="35" markers="{{markers}}" bindcallouttap="markerstap"
+    enable-poi="{{true}}" max-scale="20" min-scale="15" bindtap="mapTap">
     <!-- 以下按钮用于获取屏幕中心的经纬度，主要是测试开发用，实际上线可以删去 -->
     <!-- <cover-view class="centerLocation" style="padding:50 0; width:80rpx; height:80rpx; position:relative">
       <button class="btn-getLoc" bindtap="getCenterLocation"
@@ -16,6 +16,9 @@
     <cover-view class="moreFunctionIcon">
       <cover-image class="more" bindtap="showFunction" src="/images/global/add.png"></cover-image>
     </cover-view>
+    <!-- <view class="moreFunctionIcon">
+      <image class="more" bindtap="showFunction" src="/images/global/add.png"></image>
+    </view> -->
     <!-- 选择功能页面的实现 -->
     <cover-view>
       <cover-view wx:if="{{isMoreTrue}}">
@@ -30,57 +33,68 @@
       </cover-view>
     </cover-view>
 
+
+
     <!-- 实现点击功能弹出相应的页面 -->
     <page-container show="{{showPage}}" overlay="{{overlay}}" close-on-slide-down duration="{{pageDuration}}"
       position="{{pagePosition}}" bindbeforeenter="onBeforeEnter" bindenter="onEnter" bindafterenter="onAfterEnter"
       bindbeforeleave="onBeforeLeave" bindleave="onLeave" bindafterleave="onAfterLeave"
       bindclickoverlay="onClickOverlay">
       <!-- 海报界面 -->
-      <cover-view wx:if="{{func=='海报'}}" class="PosterArea">
+      <view wx:if="{{func=='海报'}}" class="PosterArea">
         <swiper indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff" circular="{{true}}"
           autoplay="{{true}}" interval="3000">
-          <cover-view>
+          <view>
             <swiper-item>
-              <cover-image
+              <image
                 src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
-              </cover-image>
+              </image>
             </swiper-item>
-          </cover-view>
-          <cover-view>
+          </view>
+          <view>
             <swiper-item>
-              <cover-image
+              <image
                 src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
-              </cover-image>
+              </image>
             </swiper-item>
-          </cover-view>
-          <cover-view>
+          </view>
+          <view>
             <swiper-item>
-              <cover-image
+              <image
                 src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
-              </cover-image>
+              </image>
             </swiper-item>
-          </cover-view>
+          </view>
         </swiper>
-      </cover-view>
+      </view>
       <!-- 搜索框 -->
       <cover-view wx:if="{{func=='搜索'}}">
         <input class="search" type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx"
-          confirm-type="search"></input>
+          confirm-type="search" bindconfirm="search"></input>
       </cover-view>
-      <!-- 筛选界面 -->
+      <!-- 筛选界面  -->
       <cover-view wx:if="{{func=='筛选'}}">
-        <button bindtap="DormOnly"
+        <checkbox-group bindchange="selectArchFunc">
+          <cover-view class="checkboxView" wx:for="{{archItems}}" wx:key="{{item.value}}">
+            <cover-view style="display:inline-block">
+              <checkbox value="{{item.value}}" checked="{{item.checked}}">
+              </checkbox>
+            </cover-view>
+            <cover-view style="display:inline-block">{{item.name}}</cover-view>
+          </cover-view>
+        </checkbox-group>
+        <!-- <button bindtap="DormOnly"
           style="display: block;margin: 24px auto; background-color: blue;color:white;height: 50rpx; text-align:center">宿舍</button>
         <button bindtap="ClassRoomOnly"
           style="display: block;margin: 24px auto; background-color: blue;color:white;height: 50rpx;text-align:center">教学楼</button>
-        <button bindtap="collgeOnly"
+        <button bindtap="collegeOnly"
           style="display: block;margin: 24px auto; background-color: blue;color:white;height: 50rpx;text-align:center">学院</button>
         <button bindtap="canteenOnly"
-          style="display: block;margin: 24px auto; background-color: blue;color:white;height: 50rpx;text-align:center">吃饭</button>
+          style="display: block;margin: 24px auto; background-color: blue;color:white;height: 50rpx;text-align:center">吃饭</button> -->
       </cover-view>
       <!-- 返回按钮 -->
-      <button class="screen2-button" bindtap="showPrev" hidden="{{!showPage}}" hover-class="none"
-        style="display: block;margin: 24px auto; background-color: blue;color:white;height: 50rpx;">Exit</button>
+      <!-- <button class="screen2-button" bindtap="showPrev" hidden="{{!showPage}}" hover-class="none"
+        style="display: block;margin: 24px auto; background-color: blue;color:white;height: 50rpx;">Exit</button> -->
     </page-container>
     <!-- 建筑的简介对话框 -->
     <cover-view>
@@ -92,45 +106,79 @@
       <mp-dialog title="test2" show="{{showMarkerDialog}}" buttons="{{markerBtns}}" bindbuttontap="showMarkerInfoPage">
       </mp-dialog>
     </cover-view> -->
-    <cover-view class="markerPosBtn"  wx:if="{{showMarkerDialog}}">
-      <button  bindtap="cancelMarker">取消</button>
+    <cover-view class="markerPosBtn" wx:if="{{showMarkerDialog}}">
+      <button bindtap="cancelMarker">取消</button>
       <button bindtap="confirmMarker">确定</button>
     </cover-view>
 
-
   </map>
 </view>
+
 <view class="markerInfoPage" wx:if="{{isAddedMarker}}">
   <mp-cells title="标记点信息">
     <mp-cell prop="markerPointName" title="标记点名称">
-      <input class="markerName" type="text" placeholder="请输入活动名称" placeholder-class="markerName"></input>
+      <input class="markerName" type="text" placeholder="请输入活动名称" placeholder-class="markerName" confirm-type="done" bindconfirm="inputMarkerName"></input>
     </mp-cell>
     <mp-cell prop="beginDate" title="开始日期">
       <picker date-field="date" mode="date" value="{{bgdate}}" start="2021-05-03" end="2021-12-31"
-        bindchange="bindDateChange">
-        <view class="begin-date">
+        bindchange="bindBeginDateChange">
+        <view class="begin-date" >
           {{bgdate}}
+        </view>
+      </picker>
+    </mp-cell>
+    <mp-cell prop="beginTime" title="开始时间">
+      <picker date-field="time" mode="time" value="{{bgtime}}" start="12:00" end="22:00"
+        bindchange="bindBeginTimeChange">
+        <view class="begintime" style="text-align:center;">
+          {{bgtime}}
         </view>
       </picker>
     </mp-cell>
     <mp-cell prop="endDate" title="结束日期">
       <picker date-field="date" mode="date" value="{{endate}}" start="2021-05-03" end="2021-12-31"
-        bindchange="bindDateChange">
+        bindchange="bindEndDateChange">
         <view class="end-date">
           {{endate}}
         </view>
       </picker>
     </mp-cell>
+    <mp-cell prop="endTime" title="结束时间">
+      <picker date-field="time" mode="time" value="{{edtime}}" start="08:00" end="23:00"
+        bindchange="bindEndTimeChange">
+        <view class="begin-date">
+          {{edtime}}
+        </view>
+      </picker>
+    </mp-cell>
+    <mp-cell prop="markerType" title="标记类型">
+        <picker data-field="" mode="selector" range="{{markerTypes}}" value="{{0}}" bindchange="markerTypeChange">
+          <view class="departPick">{{markerTypes[markerType]}}</view>
+        </picker>
+    </mp-cell>
+    <mp-cell prop="visible" title="标记可见性">
+      <view wx:for="{{pickerNum}}" wx:key="item">
+        <picker data-field="" mode="selector" range="{{departmentsItem}}" value="{{0}}" bindchange="visibleChange">
+          <view class="departPick">{{departmentsItem[departmentsIndex]}}</view>
+        </picker>
+      </view>
+    </mp-cell>
+    <button class="morePicker" style="width: 200rpx; text-align:center;padding:0;margin-left: 0rpx; margin-top:0rpx; display:inline-block"
+      bindtap="addPicker">+</button>
+    <button class="morePicker" style="width: 200rpx; text-align:center;padding:0;margin-left: 330rpx; margin-top:0rpx;display:inline-block"
+      bindtap="deletePicker">-</button>
+  
+  </mp-cells>
+  <view class="marker_desc">标记简介</view>
+  <view class="description-cell">
+    <textarea class="description-area" name="markerDesc"  placeholder="请输入标记简介" confirm-type="done" bindconfirm="inputMarkerDesc" maxlength="200" placeholder-class="textAreaPlaceHolder"></textarea>
+  </view>
 
-  </mp-cells>
-  <mp-cells title="标记可见性">
-    <mp-checkbox-group prop="radio" multi="{{false}}">
-      <mp-checkbox wx:for="{{radioItems}}" wx:key="value" label="{{item.name}}" value="{{item.value}}"
-        checked="{{item.checked}}"></mp-checkbox>
-    </mp-checkbox-group>
-  </mp-cells>
-  <mp-uploader  ext-class="uploader" title="标记图片上传">
-  </mp-uploader>
+  <view class="markerIcon">标记图示</view>
+  <view class="markerIcon-cell" >
+    <mp-uploader ext-class="uploader" title="标记图示上传">
+    </mp-uploader>
+  </view>
   <button type="primary" bindtap="confirmTap">确定</button>
   <button type="" bindtap="returnMarker">返回</button>
 </view>
