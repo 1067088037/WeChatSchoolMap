@@ -1,7 +1,12 @@
 // pages/building/building.js
 const app = getApp();
-import { Campus } from '../../util/database/campus';
-import { db } from '../../util/database/database'
+var archArray = new Array;
+import {
+  Campus
+} from '../../util/database/campus';
+import {
+  db
+} from '../../util/database/database'
 Page({
 
   /**
@@ -43,8 +48,7 @@ Page({
         isLike: false,
         likeNum
       })
-    }
-    else {
+    } else {
       var likeNum = this.data.likeNum
       likeNum++
       this.setData({
@@ -101,6 +105,7 @@ Page({
 
       },
 
+<<<<<<< HEAD
       /**
        * 生命周期函数--监听页面初次渲染完成
        */
@@ -114,6 +119,33 @@ Page({
         }
         console.log(app.globalData.markerId, app.globalData.desLatitude, app.globalData.desLongtitude)
       },
+=======
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+    console.log(app.globalData.markerId)
+    if (app.globalData.markerId) {
+      this.setData({
+        markerId: app.globalData.markerId
+      })
+    }
+    db.arch.getArchArray(app.globalData.campus._id).then(res => {
+      console.log(res)
+      res.forEach((value, index) => {
+        archArray.push({
+          id: value._id,
+          latitude: value.geo.coordinates[1],
+          longitude: value.geo.coordinates[0],
+          type: value.type,
+          title: value.name,
+          width: 50,
+          height: 50
+        })
+      })
+    })
+  },
+>>>>>>> dev
 
       /**
        * 生命周期函数--监听页面显示

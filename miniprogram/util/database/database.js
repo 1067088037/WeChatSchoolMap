@@ -8,6 +8,7 @@ import { Comment } from './comment'
 import { Permission } from './permission'
 import { Point } from './point'
 import { Like } from './like'
+import { Section } from './section'
 
 export class DataBase {
   _db = _db //数据库实例
@@ -22,6 +23,7 @@ export class DataBase {
   permission = new Permission()
   point = new Point()
   like = new Like()
+  section = new Section()
 }
 
 export const db = new DataBase()

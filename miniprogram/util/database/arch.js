@@ -1,4 +1,5 @@
 const _db = wx.cloud.database()
+const util = require('../util')
 
 export class Arch {
   /**
@@ -38,7 +39,8 @@ export class Arch {
           name: arch.name,
           logo: arch.logo,
           type: arch.type,
-          geo: arch.geo
+          geo: arch.geo,
+          markId: util.randomNumberId()
         }
       })
     }
@@ -49,7 +51,7 @@ export class Arch {
    * @param {string} archId 
    * @param {object} arch 
    */
-  updateArch(archId, arch) {
+  updateArchById(archId, arch) {
     if (arch.constructor != Object) {
       console.error('arch类型非法')
     } else {
@@ -61,10 +63,37 @@ export class Arch {
   }
 
   /**
+   * 更新建筑物
+   * @param {string} markId 
+   * @param {object} arch 
+   */
+  updateArchByMarkId(markId, arch) {
+    if (arch.constructor != Object) {
+      console.error('arch类型非法')
+    } else {
+      _db.collection('arch').where({
+        markId: markId
+      }).update({
+        data: arch
+      })
+    }
+  }
+
+  /**
    * 删除指定建筑物
    * @param {string} archId 建筑物ID
    */
-  removeArch(archId) {
+  removeArchById(archId) {
     _db.collection('arch').doc(archId).remove()
+  }
+
+  /**
+   * 删除指定建筑物
+   * @param {string} markId 建筑物标注ID
+   */
+  removeArchByMarkId(markId) {
+    _db.collection('arch').where({
+      markId: markId
+    }).remove()
   }
 }

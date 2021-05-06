@@ -10,8 +10,7 @@
   font-size: 30rpx;
   border-radius: 30rpx;
   position: absolute;
-  top: 736rpx;
-  right: 8%;
+ 
 }
 
 /* 功能页面的样式 */
@@ -106,12 +105,16 @@
 .end-date{
   text-align:center;
 }
+.departPick {
+  text-align:center;
+}
 .markerPosBtn{
   padding-left: 20rpx;
-  position: absolute;
+  position: fixed;
+  bottom:0rpx;
   background:white;
   height: 100rpx;
-  bottom:0rpx;
+  
 }
 .markerPosBtn button{
   
@@ -122,8 +125,31 @@
 }
 .uploader{
   color:rgb(151, 151, 151);
-  
+  margin-top: 5rpx;
+  border: 0;
+  padding-left: 32rpx;
 }
 .markerInfoPage button{
   margin-top: 35rpx;
+}
+.selectArch{
+  background: white;
+  margin-top: 600rpx;
+  margin-left: 600rpx;
+ height: 400rpx;
+ widows: 400rpx;
+}
+.marker_desc{
+  color:rgb(151, 151, 151);
+  padding-left:32rpx;
+}
+.markerIcon{
+  color:rgb(151, 151, 151);
+  padding-left:32rpx;
+}
+.description-cell{
+  background: white;
+}
+.description-area{
+  padding-left: 32rpx;
 }

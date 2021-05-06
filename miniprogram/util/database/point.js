@@ -1,4 +1,7 @@
 const _db = wx.cloud.database()
+const util = require('../util')
+
+const dateConstructor = new Date('2020-1-1').constructor
 
 export class Point {
   /**
@@ -24,13 +27,18 @@ export class Point {
    * 新建标点
    * @param {string} campusId 
    * @param {Array} belong 
+   * @param {String} type 合法值：current实时，activity活动
    * @param {Object} time 
    * @param {Object} desc 
    * @param {DB.IGeoJSONPoint} geo 
    */
-  addPoint(campusId, belong, time, desc, geo) {
+  addPoint(campusId, belong, type, time, desc, geo) {
     if (belong.constructor != Array) {
       console.error('belong类型非法，如果为空请传入[]')
+    } else if (type.constructor != String) {
+      console.error('type类型非法')
+    } else if (type != 'current' && type != 'activity') {
+      console.error('type值非法')
     } else if (time.constructor != Object) {
       console.error('time类型非法')
     } else if (desc.constructor != Object) {
@@ -47,7 +55,9 @@ export class Point {
           belong: belong,
           time: time,
           desc: desc,
-          geo: geo
+          geo: geo,
+          markId: util.randomNumberId(),
+          type:type
         }
       })
     }
@@ -61,7 +71,6 @@ export class Point {
    * @param {Date} hide 标点结束展示的时间
    */
   generateTimeObj(show, start, end, hide) {
-    let dateConstructor = Date('2020-1-1').constructor
     if (show.constructor != dateConstructor) {
       console.error('show类型非法')
     } else if (start.constructor != dateConstructor) {
@@ -82,12 +91,15 @@ export class Point {
 
   /**
    * 生成描述对象
+   * @param {string} name
    * @param {string} text 
    * @param {string} icon 
    * @param {Array} images 
    */
-  generateDescObj(text, icon, images) {
-    if (text.constructor != String) {
+  generateDescObj(name, text, icon, images) {
+    if (name.constructor != String) {
+      console.error('name类型类型')
+    } else if (text.constructor != String) {
       console.error('text类型非法')
     } else if (icon.constructor != String) {
       console.error('icon类型非法')
@@ -95,6 +107,7 @@ export class Point {
       console.error('images类型非法')
     } else {
       return {
+        name: name,
         text: text,
         icon: icon,
         images: images
@@ -104,10 +117,20 @@ export class Point {
 
   /**
    * 删除指定标点
-   * @param {string} pointId 
+   * @param {string} pointId 数据库中ID
    */
-  removePoint(pointId) {
+  removePointById(pointId) {
     _db.collection('point').doc(pointId).remove()
+  }
+
+  /**
+   * 删除指定标点
+   * @param {string} markId 标注ID
+   */
+  removePointByMarkId(markId) {
+    _db.collection('point').where({
+      markId: markId
+    }).remove()
   }
 
   /**
@@ -115,8 +138,21 @@ export class Point {
    * @param {string} pointId 标点ID
    * @param {object} data 要更新的内容
    */
-  updatePoint(pointId, data) {
+  updatePointById(pointId, data) {
     _db.collection('point').doc(pointId).update({
+      data: data
+    })
+  }
+
+  /**
+   * 更新标点
+   * @param {string} markId 标点标注ID
+   * @param {object} data 要更新的内容
+   */
+  updatePointByMarkId(markId, data) {
+    _db.collection('point').where({
+      markId: markId
+    }).update({
       data: data
     })
   }
