@@ -1,4 +1,5 @@
 import { db } from '../../util/database/database'
+const util = require('../../util/util')
 
 var schoolData = []
 var campusData = []

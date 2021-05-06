@@ -1,3 +1,5 @@
+const maxInteger = Math.pow(2, 53) - 1 //2的53次方减1
+
 /** 
  * 生成随机的由字母数字组合的字符串
  */
@@ -13,7 +15,16 @@ export function randomWord(length) {
 
 /**
  * 生成随机32位id
+ * @returns {string} 32位ID
  */
 export function randomId() {
   return randomWord(32)
+}
+
+/**
+ * @returns {number} 返回0~2^53-1中任意数字
+ */
+export function randomNumberId() {
+  let id = parseInt(Math.random() * maxInteger)
+  return id
 }

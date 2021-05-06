@@ -672,9 +672,9 @@ Page({
     //   })
     // })
 
-    // db.point.addPoint(app.globalData.campus._id, [], 
+    // db.point.addPoint(app.globalData.campus._id, [], 'current',
     //   db.point.generateTimeObj(Date('2020-1-1'),Date('2020-1-2'),Date('2020-1-3'),Date('2020-1-4')),
-    //   db.point.generateDescObj('哈哈哈', 'cloud:/',[]), db.Geo.Point(1,1))
+    //   db.point.generateDescObj('标点','哈哈哈哈哈哈', 'cloud:/',[]), db.Geo.Point(1,1))
 
     // db.point.getPointArray(app.globalData.campus._id).then(res => {
     //   console.log(res)
@@ -685,6 +685,8 @@ Page({
     // })
 
     // db.point.removePoint('79550af2609276ce1475f6ef13718594')
+
+    db.point.removePointByMarkId(2733118894648745)
 
     // db.like.giveALike('123456')
 
