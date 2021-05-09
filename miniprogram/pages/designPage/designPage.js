@@ -20,42 +20,45 @@ Page({
       showUploadPostArea: false
     })
   },
-  
-   //下列一系列函数是图片上传相关函数
-   /**
-    * chooseImage(e)
-    * @param {e}   
-    * @todo 从相册或相机中上传图片，并将文件添加到data中的file
-    */   
+
+  //下列一系列函数是图片上传相关函数
+  /**
+   * chooseImage(e)
+   * @param {e}   
+   * @todo 从相册或相机中上传图片，并将文件添加到data中的file
+   */
   chooseImage(e) {
-    console.log("e",e)
+    console.log("e", e)
     let this_ = this
     wx.chooseImage({
+      sizeType: ['original', 'compressed'],
+      sourceType: ['album', 'camera'],
       success: (res) => {
         this_.setData({
-          sizeType: ['original', 'compressed'],
-          sourceType: ['album', 'camera'],
           file: this_.data.file.concat(res.tempFilePaths)
         })
       }
     })
   },
   /**
-    * uplaodFile(file)
-    * @param {file}   图片文件路径
-    * @todo 上传图片到uploader区域
-    * @returns Promise函数
-    */  
+   * uplaodFile(file)
+   * @param {file}   图片文件路径
+   * @todo 上传图片到uploader区域
+   * @returns Promise函数
+   */
   uplaodFile(files) {
     console.log('upload files', files)
+    var that = this
     // 文件上传的函数，返回一个promise
     return new Promise((resolve, reject) => {
-      
-      setTimeout(() => {
-       resolve(files.tempFilePaths[0])
-      }, 0)
-    }).then(function(){
-      console.log("good")
+      console.log(files.tempFilePaths)
+      var tempFilePaths = files.tempFilePaths;
+      that.setData({
+        filesUrl :tempFilePaths
+      })
+      var obj ={}
+      obj['urls'] =tempFilePaths
+      resolve(obj)
     })
   },
   uploadError(e) {

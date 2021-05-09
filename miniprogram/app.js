@@ -8,9 +8,7 @@ App({
     qqMap: null,       //腾讯位置服务实例
     school: null,      //校园信息
     campus: null,      //校区信息
-    markerId: 0,       // 标记的的ID（暂存）
-    desLatitude: 0,    // 目的地的纬度（暂存）
-    desLongtitude: 0   // 目的地的经度（暂存）
+    buildingSelected:null // 选中建筑对象
   },
   onLaunch: function () {
     if (!wx.cloud) {

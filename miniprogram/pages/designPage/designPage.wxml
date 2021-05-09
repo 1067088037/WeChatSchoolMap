@@ -13,7 +13,7 @@
   <button size="mini" class="post" type="primary">发表</button>
   <mp-cells>
     <mp-cell>
-      <mp-uploader delete="{{true}}" title="海报上传" max-count="9" files="{{file}}" select="{{selectFile}}" upload="{{uplaodFile}}" bindfail="{{uplaodError}}" bindsuccess="{{uploadSuccess}}">  </mp-uploader>
+      <mp-uploader delete="{{true}}" title="海报上传" max-count="9" files="{{file}}" select="{{selectFile}}" upload="{{uplaodFile}}" bindfail="uplaodError" bindsuccess="uploadSuccess">  </mp-uploader>
       <button bindtap="backToHomePage" >取消</button>
     </mp-cell>
   </mp-cells>

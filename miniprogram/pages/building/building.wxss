@@ -86,6 +86,31 @@
   align-items: center;
   
 }
+.commentLlikeBtn{
+  display: inline-block;
+  height: 60rpx;
+  width: 100rpx;
+  align-items: center;
+  margin-left: 430rpx;
+}
+.tipLlikeBtn{
+  display: inline-block;
+  height: 80rpx;
+  width: 100rpx;
+  align-items: center;
+  margin-left: 608rpx;
+}
+.tipLlikeBtn image{
+  top:10rpx;
+  height: 50rpx;
+  width:50rpx;
+  position: relative;
+}
+.commentLlikeBtn image{
+  height: 50rpx;
+  width:50rpx;
+  position: relative;
+}
 .like-btn text{
   position: absolute;
   margin-left: 10rpx;
@@ -113,4 +138,110 @@
   border:2px solid gainsboro;
   margin-top: 30rpx;
   margin-bottom:30rpx;
+}
+.addTip{
+  position: relative;
+}
+.tipImages{
+  margin: 10rpx auto;
+  width: 480rpx;
+  height: 480rpx;
+}
+.tipImageBanner {
+  width: 480rpx;
+  height: 480rpx;
+}
+.tipTitle{
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  font-size:40rpx;
+  font-weight: bold;
+  /* border-bottom-style: groove; */
+}
+.tipMainBody{
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  font-size: 35rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 0.5rpx solid rgb(187, 186, 186);
+}
+.inputTipTitle{
+  margin-top:26rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  border-bottom:0.5rpx solid rgb(187, 186, 186);
+}
+.inputMainBody{
+  margin-top:26rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  border-bottom:0.5rpx solid rgb(187, 186, 186);
+}
+.tipButtonSet{
+  position: fixed;
+  bottom: 0rpx;
+}
+.cancelNewTip{
+  display: inline-block;
+  border-radius: 20rpx;
+  width: 200rpx;
+}
+.DetailTipPage{
+  background-color: white;
+}
+.createNewTip{
+  width: 500rpx;
+  margin-left: 50rpx;
+  border-radius: 30rpx;
+  background:red;
+  display: inline-block;
+}
+.uploadPicture {
+  margin-left: 15rpx;
+}
+.commentTitle{
+  margin-top:15rpx;
+  margin-left: 15rpx;
+  font-size:35rpx;
+  font-weight: bold;
+}
+.comments{
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  border-bottom:1rpx solid #F2F2F2
+}
+.TipAreaInputComment{
+  border:2px solid gainsboro;
+  margin-top: 30rpx;
+  margin-bottom:30rpx;
+  
+  height: auto;
+}
+.postTipComment{
+  /* position: fixed; */
+  /* bottom: 0; */
+  position: fixed;
+  bottom:0rpx;
+  background:snow;
+  height: 70rpx;
+  width: 750rpx;
+  border-radius: 20rpx;
+  align-items: center;
+}
+.postTipComment input{
+  margin-top: 10rpx;
+  margin-left: 5rpx;
+  position: absolute;
+  border: 3rpx solid lightgray;
+  background:lightgray;
+  border-radius: 20rpx;
+  width: 745rpx;
+  height: 50rpx;
+  align-items: center;
+  text-align:center
+}
+.buildingContainer{
+  background-color: white;
+  width: 750rpx;
+  height: 1334rpx;
 }

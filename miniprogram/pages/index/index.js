@@ -4,7 +4,7 @@ import {
 // pages/schoolMap/schoolMap.js
 let SCREEN_WIDTH = 750; // 屏幕宽度
 let RATE = wx.getSystemInfoSync().screenHeight / wx.getSystemInfoSync().screenWidth // 比率
-const app = getApp()  // 小程序全局
+const app = getApp() // 小程序全局
 // const db = getApp().globalData.db
 
 // 宿舍点
@@ -226,9 +226,45 @@ const canteenPoint = [{
   title: "真功夫&猫熊煮茶",
   longitude: 113.40232360687605,
   latitude: 23.051009822324243
-}] // 饭堂以及世博点
+}] // 吃饭点
+const shopPoint = [{
+
+    title: "世博超市",
+    longitude: 113.40203129147403,
+    latitude: 23.048593578356705
+  },
+  {
+
+    title: "7-11便利店",
+    longitude: 113.40188492453046,
+    latitude: 23.051165789442734
+  },
+  {
+    title: "",
+    longitude: 113.40176343650955,
+    latitude: 23.05108920417096
+  }
+]
 const deliverPickUpPoint = [] // 拿快递的点
-const vouchCenterPoint = [] // 充值点
+const vouchCenterPoint = [{
+    id: 1,
+    title: "学生卡和水卡充值点",
+    longitude: 113.40268387434162,
+    latitude: 23.04866925793428
+  },
+  {
+    id: 2,
+    title: "学生卡和水卡充值点",
+    longitude: 113.40333534303113,
+    latitude: 23.051645364973492
+  }, {
+    title: "水卡充值点",
+    longitude: 113.40238690806586,
+    latitude: 23.04796789472804
+  }, {
+
+  }
+] // 充值点
 var activitiesPoint = [] // 活动标记点 -- 暂存
 var isAdd = false; // 是否添加的标记
 var flag = 0;
@@ -314,14 +350,15 @@ Page({
     markerTypes: ['实时消息', '活动'], //type
     markerType: 1,
     newMarkerTitle: "",
-    newMarkerDesc: ""
+    newMarkerDesc: "",
+    buildingSelected: null,
   },
   /**
    * addPicker()
    * @todo 添加选择器，在添加标点界面中
    * @param null
    * 
-  */
+   */
   addPicker() {
     this.data.pickerNum.push(1)
     var pickerNum = this.data.pickerNum
@@ -334,7 +371,7 @@ Page({
    * @todo 删除选择器，在添加标点界面中
    * @param null
    * 
-  */
+   */
   deletePicker() {
     if (this.data.pickerNum.length > 1) {
       this.data.pickerNum.pop()
@@ -350,7 +387,7 @@ Page({
    * @todo 输入标点的题目/名字
    * @param e  --- 输入框的对象
    * 
-  */
+   */
   inputMarkerName(e) {
     console.log(e)
     this.setData({
@@ -393,7 +430,7 @@ Page({
       bgtime: e.detail.value
     })
   },
-   /**
+  /**
    * bindEndTimeChange
    * @param {*} e  picker中的对象
    * @todo 改变结束时间
@@ -529,10 +566,9 @@ Page({
   getCenterLocation_() {
     this.data.mapCtx.getCenterLocation({
       success: (res) => {
-        return [{
-          longitude: res.longitude,
-          latitude: res.latitude
-        }]
+
+        console.log(res.longitude, res.latitude)
+
       }
     })
   },
@@ -655,7 +691,7 @@ Page({
       markers: visibleArchArray
     })
   },
-  
+
   // 以下Only函数要取代，无需看
   // 只显示宿舍
   DormOnly() {
@@ -699,44 +735,17 @@ Page({
     console.log(flag)
   },
 
-  // 根据markerID获取经纬度
-  getLatitude(id) {
-    let markerArr;
-    console.log(flag)
-    switch (flag) {
-      case 1: {
-        markerArr = dormPoint
-        markerArr.forEach(function (item) {
-          if (item.id == id)
-            return item.latitude;
-        })
+  getMarkerInfo(id) {
+    let obj = new Object
+    archArray.forEach(e => {
+      if (e.id == id) {
+        obj = e;
+        return obj;
       }
-      case 2: {
-        markerArr = classRoomPoint
-        markerArr.forEach(function (item) {
-          if (item.id == id)
-            return item.latitude;
-        })
-      }
-      case 3: {
-        markerArr = collegePoint
-        markerArr.forEach(function (item) {
-          if (item.id == id)
-            return item.latitude;
-        })
-      }
-      case 4: {
-        markerArr = canteenPoint
-        for (var i = 0; i < markerArr.length; i++) {
-          console.log(markerArr[i].id)
-          if (id == markerArr[i].id)
-            return markerArr[i].latitude
-        }
-
-      }
-    }
-
+    })
+    return obj;
   },
+  // 根据markerID获取经纬度
   getLongtitude(id) {
     let markerArr;
     console.log(flag)
@@ -776,14 +785,13 @@ Page({
 
   // 进入具体建筑的简介弹窗
   markerstap(e) {
-    console.log(e)
-    app.globalData.markerId = e.detail.markerId
-    app.globalData.desLatitude = this.getLatitude(e.detail.markerId)
-    app.globalData.desLongtitude = this.getLongtitude(e.detail.markerId)
+    console.log(e.detail.markerId)
+    app.globalData.buildingSelected = this.getMarkerInfo(e.detail.markerId)
+    console.log(app.globalData.buildingSelected)
     this.setData({
-      showBuildingDialog: true
+      showBuildingDialog: true,
+      buildingSelected: app.globalData.buildingSelected
     })
-
   },
   /**
    * showMarkerInfoPage
@@ -817,9 +825,7 @@ Page({
   toDetailPage(e) {
     // console.log(e);
     if (e.detail.item.text == "退出") {
-      app.globalData.markerId = 0
-      app.globalData.desLatitude = 0
-      app.globalData.desLongtitude = 0
+      app.globalData.buildingSelected = null;
     } else if (e.detail.item.text == "了解更多") {
       wx.redirectTo({
         url: '../building/building',
@@ -830,6 +836,14 @@ Page({
     }
     this.setData({
       showBuildingDialog: false
+    })
+  },
+  navigation(e) {
+    console.log(this.data.buildingSelected.latitude,this.data.buildingSelected.longitude)
+    wx.openLocation({
+      latitude: this.data.buildingSelected.latitude,
+      longitude: this.data.buildingSelected.longitude,
+      name: this.data.buildingSelected.title
     })
   },
 
@@ -877,15 +891,13 @@ Page({
   onLoad: function (options) {
     // 加载后生成MapContext对象
     wx.getLocation({
-      type: "wsg84",
+      type: "gcj02",
       success(res) {
         const latitude = res.latitude
         const longitude = res.longitude
         console.log(latitude, longitude)
       }
     })
-
-
   },
 
 
@@ -903,20 +915,36 @@ Page({
       mapCtx: wx.createMapContext('myMap', this),
       // longitude: getApp().globalData.campus.longitude,
     })
+    let campusId = app.globalData.campus._id
+
     // 从数据库中获取建筑的标点对象
     db.arch.getArchArray(app.globalData.campus._id).then(res => {
       console.log(res)
       res.forEach((value, index) => {
-        archArray.push({
-          _id: value._id,
-          id: value.markId,
-          latitude: value.geo.coordinates[1],
-          longitude: value.geo.coordinates[0],
-          type: value.type,
-          title: value.name,
-          width: 30,
-          height: 40
-        })
+        if (value.type == 'canteen') {
+          archArray.push({
+            _id: value._id,
+            id: value.markId,
+            latitude: value.geo.coordinates[1],
+            longitude: value.geo.coordinates[0],
+            type: value.type,
+            title: value.name,
+            width: 50,
+            height: 40,
+            iconPath: "/images/building/canteen.png"
+          })
+        }else{
+          archArray.push({
+            _id: value._id,
+            id: value.markId,
+            latitude: value.geo.coordinates[1],
+            longitude: value.geo.coordinates[0],
+            type: value.type,
+            title: value.name,
+            width: 40,
+            height: 50
+          })
+        }
       })
     })
     // 从数据库中获取标点对象
@@ -942,7 +970,8 @@ Page({
             latitude: value.geo.coordinates[1],
             width: 30,
             height: 40,
-            type: value.type
+            type: value.type,
+            iconPath:"/images/index/realtimeInfo.png"
           })
         }
       })

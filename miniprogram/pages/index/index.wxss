@@ -10,7 +10,8 @@
   font-size: 30rpx;
   border-radius: 30rpx;
   position: absolute;
- 
+  left: 620rpx;
+  top:900rpx
 }
 
 /* 功能页面的样式 */
@@ -152,4 +153,15 @@
 }
 .description-area{
   padding-left: 32rpx;
+}
+.Navigation{
+  width:65rpx;
+  height: 65rpx;
+  position: relative;
+  padding-left: 400rpx;
+}
+.introduce{
+  width:500rpx;
+  height: 400rpx;
+  border: 1rpx solid black;
 }
