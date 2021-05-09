@@ -48,6 +48,7 @@
           </view>
         </view>
       </view>
+      <!-- 添加攻略的按钮 -->
       <view class="addTip" style="left:600rpx;width:100rpx;height:100rpx;position:fixed; bottom:30rpx;">
         <button style="width:100%;height:100%;position:absolute;opacity:0;" bindtap="createNewTip"></button>
         <image src="/images/global/add.png" mode="scaleToFill" style="width:100%;height:100%"></image>
@@ -69,6 +70,7 @@
   </view>
   <!-- 具体攻略界面 -->
   <view class="DetailTipPage" id="{{selectedTip.id}}" wx:if="{{selectedTip.isClicked}}">
+    <!-- 用户添加的攻略图片 -->
     <view class="tipImages">
       <swiper class="tipImageBanner" indicator-dots indicator-color="rgba(255,255,255,0.5)"
         indicator-active-color="blue" circular="{{true}}" autoplay="{{false}}" interval="3000">
@@ -84,6 +86,7 @@
         </swiper-item>
       </swiper>
     </view>
+    <!-- 攻略具体内容 -->
     <view class="detailTipDescription">
       <view class="tipTitle">
         <text class="title" decode="{{true}}"> {{selectedTip.title}}</text>
@@ -92,6 +95,7 @@
         <text class="mainBody" decode="{{true}}">{{selectedTip.description}}</text>
       </view>
     </view>
+    <!-- 攻略底下的评论区 -->
     <view class="commentInPage">
       <view class="commentTitle">
         评论<text style="font-size:30rpx;color:gray;margin-left:10rpx">({{commentNum}})</text>
@@ -116,7 +120,6 @@
         </view>
       </view>
     </view>
-    
   </view>
   <!-- 添加攻略界面 -->
   <view class="newTips" wx:if="{{isCreateNewTip}}">

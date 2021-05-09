@@ -838,8 +838,13 @@ Page({
       showBuildingDialog: false
     })
   },
+  /**
+   * navigation
+   * @todo 导航函数
+   */
   navigation(e) {
     console.log(this.data.buildingSelected.latitude,this.data.buildingSelected.longitude)
+    // 打开app导航
     wx.openLocation({
       latitude: this.data.buildingSelected.latitude,
       longitude: this.data.buildingSelected.longitude,

@@ -30,6 +30,11 @@ Page({
     files: [],
     commentNum:5
   },
+  /**
+   * chooseImage
+   * @param {*} e 
+   * @todo 选择图片上传
+   */
   chooseImage: function (e) {
     var that = this;
     wx.chooseImage({
@@ -46,16 +51,31 @@ Page({
       }
     })
   },
+  /**
+   * previewImage
+   * @param {*} e 当前对象
+   * @todo 预览图片
+   */
   previewImage: function (e) {
     wx.previewImage({
       current: e.currentTarget.id, // 当前显示图片的http链接
       urls: this.data.files // 需要预览的图片http链接列表
     })
   },
+  /**
+   * selectFile
+   * @param {*} files 
+   * @todo 选择文件，mp-uploader里的函数 非必填
+   */
   selectFile(files) {
     console.log('files', files)
     // 返回false可以阻止某次文件上传
   },
+  /**
+   * uplaodFile
+   * @param {}} files 
+   * @todo 上传图片，mp-uploader的主要函数，但是目前没实现上传到云端 
+   */
   uplaodFile(files) {
     console.log('upload files', files)
     // 文件上传的函数，返回一个promise
@@ -69,9 +89,19 @@ Page({
       resolve(obj)
     })
   },
+  /**
+   * uploadError
+   * @param {}} e 
+   * @todo 上传失败的反馈函数
+   */
   uploadError(e) {
     console.log('upload error', e.detail)
   },
+  /**
+   * uploadSuccess
+   * @param {}} e 
+   * @todo 上传成功的反馈函数
+   */
   uploadSuccess(e) {
     console.log('upload success', e.detail)
   },
@@ -89,7 +119,12 @@ Page({
       image: null
     })
   },
-
+  /**
+   * likeClick
+   * @param {*} e 
+   * @todo 点赞函数，没有云端做法，需要接口获取数据库的攻略内容
+   *  
+   */
   likeClick(e) {
     let id = parseInt(e.currentTarget.id);
     console.log(id)
@@ -117,6 +152,11 @@ Page({
       tips
     })
   },
+  /**
+   * intoCommentClick
+   * @param {}} e 
+   * @todo 进入评论区界面，但是应该进入到具体攻略的评论区界面
+   */
   intoCommentClick(e) {
     db.comment.getAllComment('1').then(res => {
       //console.log(res[0].text)
@@ -131,12 +171,20 @@ Page({
       })
     })
   },
+  /**
+   * toHomePage
+   * @todo 从攻略去返回到简介区（主页面）
+   */
   toHomePage() {
     this.setData({
       showTipsArea: false,
       introArea: true
     })
   },
+  /**
+   * toTipsAreaPage
+   * @todo 从攻略的具体界面返回攻略界面
+   */
   toTipsAreaPage() {
     this.setData({
       selectedTip: null,
@@ -144,6 +192,10 @@ Page({
       showBuilidngBanner: true
     })
   },
+  /**
+   * returnTipArea
+   * @todo 从添加攻略界面返回到攻略界面
+   */
   returnTipArea(){
     this.setData({
       isCreateNewTip: false,
@@ -151,6 +203,10 @@ Page({
       showBuilidngBanner: true
     })
   },
+  /**
+   * createNewTip
+   * @todo 进入添加攻略界面
+   */
   createNewTip(e) {
     this.setData({
       isCreateNewTip: true,
@@ -213,8 +269,13 @@ Page({
     })
 
   }, // end function
+  /**
+   * intoDetailTip
+   * @param {} e 
+   * @todo 进入具体攻略区
+   */
   intoDetailTip(e) {
-
+    // 获取改攻略区的评论
     db.comment.getAllComment(e.currentTarget.id).then(res=>{
       this.setData({
         comments: [{
@@ -227,12 +288,14 @@ Page({
     let id = parseInt(e.currentTarget.id)
     console.log(e)
     let selectedTip = new Object
+    // 从所有发布的攻略中选出用户点击的那个攻略区，通过id选取
     this.data.tips.forEach((value, index) => {
       if (value.id == id) {
         selectedTip = value
         selectedTip.isClicked = true;
       }
     })
+    // 显示具体攻略区
     this.setData({
       selectedTip,
       showTipsArea: false,
