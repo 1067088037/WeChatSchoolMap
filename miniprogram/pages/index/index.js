@@ -1,11 +1,9 @@
-import {
-  db
-} from '../../util/database/database'
+import { db} from '../../util/database/database'
 // pages/schoolMap/schoolMap.js
 let SCREEN_WIDTH = 750; // 屏幕宽度
 let RATE = wx.getSystemInfoSync().screenHeight / wx.getSystemInfoSync().screenWidth // 比率
 const app = getApp() // 小程序全局
-// const db = getApp().globalData.db
+const tempTest = require('./tempTest')
 
 // 宿舍点
 const dormPoint = [{
@@ -996,6 +994,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    tempTest.launchTest() //用于临时测试
+    tempTest.dbExample() //数据库函数调用示例
 
     // dormPoint.forEach(e => {
     //   // let e = dormPoint[0]
@@ -1074,7 +1074,7 @@ Page({
     // console.log(getApp().globalData.openid)
     // console.log(db.like.countLike('ytff4it7v1afo3o63p2oqbnrykd1bk7a'))
 
-    // db.like.giveALike('mtqjtndfwfwlw1bsmdby4ds7xr87vdqm')
+    // db.like.giveALike('ytff4it7v1afo3o63p2oqbnrykd1bk7a')
   },
 
   /**
