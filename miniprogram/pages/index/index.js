@@ -65,7 +65,7 @@ const dormPoint = [{
   latitude: 23.050845904343497
 }, {
   id: 112,
-  name: "C12",
+  title: "C12",
   longitude: 113.40021512898329,
   latitude: 23.051718927598355
 }, {
@@ -1011,8 +1011,8 @@ Page({
 
     // db.arch.getArchArray('1ace8ef160901b1b008f69ae08b0ee8a').then(arr => {
     //   arr.forEach(e => {
-    //     db.arch.removeArch(e)
-    //     // console.log(e)
+    //     db.arch.removeArchById(e._id)
+    //     console.log(e)
     //   })
     // })
 
@@ -1024,11 +1024,11 @@ Page({
     //   console.log(res)
     // })
 
-    // db.point.updatePoint('79550af2609276ce1475f6ef13718594', {
+    // db.point.updatePointById('79550af2609276ce1475f6ef13718594', {
     //   belong: db.cmd.push('123456')
     // })
 
-    // db.point.removePoint('79550af2609276ce1475f6ef13718594')
+    // db.point.removePointById('79550af2609276ce1475f6ef13718594')
 
     // db.point.removePointByMarkId(2733118894648745)
 
@@ -1052,6 +1052,29 @@ Page({
 
     // db.like.cancelLike('bcnefaoh58nbpfecpu2b3xewag4ahmqq')
     // db.like.countLike('bcnefaoh58nbpfecpu2b3xewag4ahmqq').then(res => console.log(res))
+
+    // db.section.addSection('1ace8ef16090a631008f950170cb8165', {
+    //   name: '学生会',
+    //   desc: '就这里啊',
+    //   images: ['123'],
+    //   geo: db.Geo.Point(1,1)
+    // })
+
+    // console.log(new Date('2020-1-1').constructor)
+    // console.log(Date('2020-1-1').constructor)
+
+    // db.section.removeSection('79550af26093a82914b5da045773f1ce')
+
+    // db.comment.addComment('28ee4e3e6093a074165cb26a0b7cae41', 'arch', {
+    //   reply: null,
+    //   text: '6666',
+    //   images: []
+    // })
+
+    // console.log(getApp().globalData.openid)
+    // console.log(db.like.countLike('ytff4it7v1afo3o63p2oqbnrykd1bk7a'))
+
+    // db.like.giveALike('mtqjtndfwfwlw1bsmdby4ds7xr87vdqm')
   },
 
   /**

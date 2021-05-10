@@ -7,13 +7,18 @@ export class Like {
    * @param {string} commentId 
    */
   giveALike(commentId) {
-    _db.collection('like').where({
-      "super._id": commentId
-    }).update({
-      data: {
-        like: cmd.addToSet(getApp().globalData.openid)
-      }
-    })
+    let openid = getApp().globalData.openid
+    if (openid == null) {
+      console.error('点赞的openid为null')
+    } else {
+      _db.collection('like').where({
+        "super._id": commentId
+      }).update({
+        data: {
+          like: cmd.addToSet(openid)
+        }
+      })
+    }
   }
 
   /**
