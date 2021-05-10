@@ -1,9 +1,10 @@
 <!--pages/schoolMap/schoolMap.wxml-->
 <view class="Container" wx:if="{{isAddedMarker == false}}">
+
   <map id="myMap" style="width:{{mapWidth}}rpx;height:{{mapHeight}}rpx;" latitude="{{latitude}}"
     longitude="{{longitude}}" scale="17" rotate="240" skew="35" markers="{{markers}}" bindcallouttap="markerstap"
     enable-poi="{{true}}" max-scale="20" min-scale="15" bindtap="mapTap">
-    <!-- 以下按钮用于获取屏幕中心的经纬度，主要是测试开发用，实际上线可以删去 --> 
+    <!-- 以下按钮用于获取屏幕中心的经纬度，主要是测试开发用，实际上线可以删去 -->
     <cover-view class="centerLocation" style="padding:50 0; width:80rpx; height:80rpx; position:relative">
       <button class="btn-getLoc" bindtap="getCenterLocation_"
         style="width:100%;height:100%;position:absolute;opacity:0;">
@@ -12,10 +13,6 @@
       </cover-image>
     </cover-view>
 
-    <!-- 添加图标的实现 -->
-    <cover-view class="moreFunctionIcon">
-      <cover-image class="more" bindtap="showFunction" src="/images/global/add.png"></cover-image>
-    </cover-view>
     <!-- <view class="moreFunctionIcon">
       <image class="more" bindtap="showFunction" src="/images/global/add.png"></image>
     </view> -->
@@ -75,7 +72,8 @@
       <!-- 筛选界面  -->
       <cover-view wx:if="{{func=='筛选'}}">
         <checkbox-group bindchange="selectArchFunc">
-          <cover-view class="checkboxView" wx:for="{{archItems}}" wx:key="{{item.value}}" style="margin-top:10rpx;border-bottom:1rpx solid  gray">
+          <cover-view class="checkboxView" wx:for="{{archItems}}" wx:key="{{item.value}}"
+            style="margin-top:10rpx;border-bottom:1rpx solid  gray">
             <cover-view style="display:inline-block">
               <checkbox value="{{item.value}}" checked="{{item.checked}}">
               </checkbox>
@@ -98,12 +96,15 @@
     </page-container>
     <!-- 建筑的简介对话框 -->
     <cover-view>
-      <mp-dialog title="{{buildingSelected.title}}" show="{{showBuildingDialog}}" bindbuttontap="toDetailPage" buttons="{{buildingBtns}}">
+      <mp-dialog title="{{buildingSelected.title}}" show="{{showBuildingDialog}}" bindbuttontap="toDetailPage"
+        buttons="{{buildingBtns}}">
         <cover-view class="introduce">
         </cover-view>
-        <cover-view class="Navigation" >
-          <button class="navigation-btn" style="width:100%;height:100%;position:absolute;opacity:0;" bindtap="navigation"></button>
-          <cover-image src="/images/global/navigation.png" mode="scaleToFill" style="width:100%;height:100%"></cover-image>
+        <cover-view class="Navigation">
+          <button class="navigation-btn" style="width:100%;height:100%;position:absolute;opacity:0;"
+            bindtap="navigation"></button>
+          <cover-image src="/images/global/navigation.png" mode="scaleToFill" style="width:100%;height:100%">
+          </cover-image>
         </cover-view>
       </mp-dialog>
     </cover-view>
@@ -117,17 +118,23 @@
       <button bindtap="confirmMarker">确定</button>
     </cover-view>
   </map>
+
+  <!-- 添加图标的实现 -->
+  <view class="moreFunctionIcon">
+    <image class="more" bindtap="showFunction" src="/images/global/add.png"></image>
+  </view>
 </view>
 
 <view class="markerInfoPage" wx:if="{{isAddedMarker}}">
   <mp-cells title="标记点信息">
     <mp-cell prop="markerPointName" title="标记点名称">
-      <input class="markerName" type="text" placeholder="请输入活动名称" placeholder-class="markerName" confirm-type="done" bindconfirm="inputMarkerName"></input>
+      <input class="markerName" type="text" placeholder="请输入活动名称" placeholder-class="markerName" confirm-type="done"
+        bindconfirm="inputMarkerName"></input>
     </mp-cell>
     <mp-cell prop="beginDate" title="开始日期">
       <picker date-field="date" mode="date" value="{{bgdate}}" start="2021-05-03" end="2021-12-31"
         bindchange="bindBeginDateChange">
-        <view class="begin-date" >
+        <view class="begin-date">
           {{bgdate}}
         </view>
       </picker>
@@ -149,17 +156,16 @@
       </picker>
     </mp-cell>
     <mp-cell prop="endTime" title="结束时间">
-      <picker date-field="time" mode="time" value="{{edtime}}" start="08:00" end="23:00"
-        bindchange="bindEndTimeChange">
+      <picker date-field="time" mode="time" value="{{edtime}}" start="08:00" end="23:00" bindchange="bindEndTimeChange">
         <view class="begin-date">
           {{edtime}}
         </view>
       </picker>
     </mp-cell>
     <mp-cell prop="markerType" title="标记类型">
-        <picker data-field="" mode="selector" range="{{markerTypes}}" value="{{0}}" bindchange="markerTypeChange">
-          <view class="departPick">{{markerTypes[markerType]}}</view>
-        </picker>
+      <picker data-field="" mode="selector" range="{{markerTypes}}" value="{{0}}" bindchange="markerTypeChange">
+        <view class="departPick">{{markerTypes[markerType]}}</view>
+      </picker>
     </mp-cell>
     <mp-cell prop="visible" title="标记可见性">
       <view wx:for="{{pickerNum}}" wx:key="item">
@@ -168,19 +174,22 @@
         </picker>
       </view>
     </mp-cell>
-    <button class="morePicker" style="width: 200rpx; text-align:center;padding:0;margin-left: 0rpx; margin-top:0rpx; display:inline-block"
+    <button class="morePicker"
+      style="width: 200rpx; text-align:center;padding:0;margin-left: 0rpx; margin-top:0rpx; display:inline-block"
       bindtap="addPicker">+</button>
-    <button class="morePicker" style="width: 200rpx; text-align:center;padding:0;margin-left: 330rpx; margin-top:0rpx;display:inline-block"
+    <button class="morePicker"
+      style="width: 200rpx; text-align:center;padding:0;margin-left: 330rpx; margin-top:0rpx;display:inline-block"
       bindtap="deletePicker">-</button>
-  
+
   </mp-cells>
   <view class="marker_desc">标记简介</view>
   <view class="description-cell">
-    <textarea class="description-area" name="markerDesc"  placeholder="请输入标记简介" confirm-type="done" bindconfirm="inputMarkerDesc" maxlength="200" placeholder-class="textAreaPlaceHolder"></textarea>
+    <textarea class="description-area" name="markerDesc" placeholder="请输入标记简介" confirm-type="done"
+      bindconfirm="inputMarkerDesc" maxlength="200" placeholder-class="textAreaPlaceHolder"></textarea>
   </view>
 
   <view class="markerIcon">标记图示</view>
-  <view class="markerIcon-cell" >
+  <view class="markerIcon-cell">
     <mp-uploader ext-class="uploader" title="标记图示上传">
     </mp-uploader>
   </view>

@@ -11,7 +11,7 @@
   border-radius: 30rpx;
   position: absolute;
   left: 620rpx;
-  top:900rpx
+  top: 900rpx
 }
 
 /* 功能页面的样式 */
@@ -93,75 +93,91 @@
   height: 900rpx;
   white-space: nowrap;
 }
-.PosterArea{
- margin-top:200rpx;
+
+.PosterArea {
+  margin-top: 200rpx;
 }
-.markerName{
-  text-align:center;
+
+.markerName {
+  text-align: center;
 }
-.begin-date  {
-  text-align:center;
-  
+
+.begin-date {
+  text-align: center;
+
 }
-.end-date{
-  text-align:center;
+
+.end-date {
+  text-align: center;
 }
+
 .departPick {
-  text-align:center;
+  text-align: center;
 }
-.markerPosBtn{
+
+.markerPosBtn {
   padding-left: 20rpx;
   position: fixed;
-  bottom:0rpx;
-  background:white;
+  bottom: 0rpx;
+  background: white;
   height: 100rpx;
-  
+
 }
-.markerPosBtn button{
-  
+
+.markerPosBtn button {
+
   display: inline-block;
   text-align: center;
   height: 75rpx;
   width: 20rpx;
 }
-.uploader{
-  color:rgb(151, 151, 151);
+
+.uploader {
+  color: rgb(151, 151, 151);
   margin-top: 5rpx;
   border: 0;
   padding-left: 32rpx;
 }
-.markerInfoPage button{
+
+.markerInfoPage button {
   margin-top: 35rpx;
 }
-.selectArch{
+
+.selectArch {
   background: white;
   margin-top: 600rpx;
   margin-left: 600rpx;
- height: 400rpx;
- widows: 400rpx;
+  height: 400rpx;
+  widows: 400rpx;
 }
-.marker_desc{
-  color:rgb(151, 151, 151);
-  padding-left:32rpx;
-}
-.markerIcon{
-  color:rgb(151, 151, 151);
-  padding-left:32rpx;
-}
-.description-cell{
-  background: white;
-}
-.description-area{
+
+.marker_desc {
+  color: rgb(151, 151, 151);
   padding-left: 32rpx;
 }
-.Navigation{
-  width:65rpx;
+
+.markerIcon {
+  color: rgb(151, 151, 151);
+  padding-left: 32rpx;
+}
+
+.description-cell {
+  background: white;
+}
+
+.description-area {
+  padding-left: 32rpx;
+}
+
+.Navigation {
+  width: 65rpx;
   height: 65rpx;
   position: relative;
   padding-left: 400rpx;
 }
-.introduce{
-  width:500rpx;
+
+.introduce {
+  width: 500rpx;
   height: 400rpx;
   border: 1rpx solid black;
 }
