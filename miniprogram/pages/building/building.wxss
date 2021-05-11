@@ -91,7 +91,8 @@
   height: 60rpx;
   width: 100rpx;
   align-items: center;
-  margin-left: 430rpx;
+  position: absolute;
+  right: 1rpx;
 }
 .tipLlikeBtn{
   display: inline-block;
@@ -244,4 +245,10 @@
   background-color: white;
   width: 750rpx;
   height: 1334rpx;
+}
+.userAvatar{
+  border-radius: 50%;
+  width:50rpx;
+  height: 50rpx;
+
 }

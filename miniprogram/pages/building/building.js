@@ -28,7 +28,11 @@ Page({
     showBuilidngBanner: true,
     isCreateNewTip: false,
     files: [],
-    commentNum:5
+    commentNum: 0,
+    comments: [],
+    userAvatars: [],
+    userNickName: [],
+    likeNums: []
   },
   /**
    * chooseImage
@@ -82,7 +86,7 @@ Page({
     return new Promise((resolve, reject) => {
       var tempFilePaths = files.tempFilePaths;
       this.setData({
-        filesUrl :tempFilePaths
+        filesUrl: tempFilePaths
       })
       var obj = {}
       obj['urls'] = tempFilePaths;
@@ -113,10 +117,12 @@ Page({
   },
   //发表评论
   sendComment() {
-    db.comment.addComment("1", Campus, {
+    let superId = this.data.selectedTip.id.toString()
+    console.log(superId)
+    db.comment.addComment(superId, "arch", {
       reply: null,
       text: this.data.commentValue,
-      image: null
+      images: []
     })
   },
   /**
@@ -196,7 +202,7 @@ Page({
    * returnTipArea
    * @todo 从添加攻略界面返回到攻略界面
    */
-  returnTipArea(){
+  returnTipArea() {
     this.setData({
       isCreateNewTip: false,
       showTipsArea: true,
@@ -275,18 +281,53 @@ Page({
    * @todo 进入具体攻略区
    */
   intoDetailTip(e) {
-    // 获取改攻略区的评论
-    db.comment.getAllComment(e.currentTarget.id).then(res=>{
-      this.setData({
-        comments: [{
-          text: res[0].text
-        }, {
-          text: res[1].text
-        }]
+    // 获取该攻略区的评论
+    var that = this
+    let comments = []
+    db.comment.getAllComment(e.currentTarget.id).then(res => {
+      let avatars = []
+      let likeNums = []
+      res.forEach(v => {
+        var userAvatar;
+        var commentObj = {
+          text: v.text,
+          id: v._id,
+          
+        }
+        db.user.getUser(v._openid).then(value => {
+          that.setData({
+            userAvatars: that.data.userAvatars.concat([value.userInfo.avatarUrl]),
+            userNickName: that.data.userNickName.concat([value.userInfo.nickName]),
+          })
+        })
+        comments.push(commentObj)
       })
+      for(var i=0; i < comments.length;i++)
+      {
+        let comment = comments[i]
+        console.log(comment)
+        db.like.countLike(comments[i].id).then(r => {
+          // console.log(comment.id,r)
+          that.setData({
+            likeNums: that.data.likeNums.concat(r)
+          })
+        })
+        
+        db.like.isLike(comment.id).then( islike =>{
+          comment.isLike = islike 
+          console.log(comment.isLike)
+        })
+      }
+      setTimeout(()=>{
+        this.setData({
+          comments:comments,
+          commentNum: res.length
+        })
+      },1000)
+     
     })
     let id = parseInt(e.currentTarget.id)
-    console.log(e)
+    console.log(this.data.comments)
     let selectedTip = new Object
     // 从所有发布的攻略中选出用户点击的那个攻略区，通过id选取
     this.data.tips.forEach((value, index) => {
@@ -296,16 +337,60 @@ Page({
       }
     })
     // 显示具体攻略区
-    this.setData({
-      selectedTip,
-      showTipsArea: false,
-      showBuilidngBanner: false
+    wx.showLoading({
+      title: 'loading...',
     })
+    setTimeout(() => {
+      this.setData({
+        selectedTip,
+        showTipsArea: false,
+        showBuilidngBanner: false,
+      })
+      wx.hideLoading()
+    }, 1000)
+
+  },
+  giveLike(e) {
+    console.log(getApp().globalData.openid)
+    let index = parseInt(e.currentTarget.id)
+    var that = this
+    console.log(this.data.comments[index].id)
+    let isLike;
+    db.like.isLike(this.data.comments[index].id).then(r => {
+      isLike = r;
+      console.log(isLike)
+      if (!isLike) {
+        db.like.giveALike(this.data.comments[index].id)
+        let comment = this.data.comments
+        comment[index].isLike = true;
+        let likeNums = this.data.likeNums;
+        likeNums[index] = likeNums[index]+1
+        this.setData({
+          comments:comment,
+          likeNums:likeNums
+        })
+      }
+      else{
+        db.like.cancelLike(this.data.comments[index].id)
+        let comment = this.data.comments
+        comment[index].isLike = false;
+        let likeNums = this.data.likeNums;
+        likeNums[index] = likeNums[index]-1
+        this.setData({
+          comments:comment,
+          likeNums:likeNums
+        })
+      }
+    })
+    
+    
+
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+
     this.setData({
       selectFile: this.selectFile.bind(this),
       uplaodFile: this.uplaodFile.bind(this)
@@ -316,7 +401,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    console.log(app.globalData.markerId)
+    //console.log(app.globalData.markerId)
     if (app.globalData.markerId) {
       this.setData({
         markerId: app.globalData.markerId
