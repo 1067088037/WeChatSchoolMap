@@ -23,18 +23,18 @@
     <view class="Introduction" wx:if="{{introArea}}">
       这里是简介
     </view>
-    <view wx:if="{{!showComment}}">
-      <view class="tipsAreaButton" hover-class="_hover_class" bindtap="tipsAreaTap"
-        wx:if="{{showTipsArea == false&&(selectedTip.isClicked==false || selectedTip ==null && isCreateNewTip == false)}}">
+    <view wx:if="{{showStrategiesArea == false}}">
+      <view class="StrategiesAreaButton" hover-class="_hover_class" bindtap="StrategiesAreaTap"
+        wx:if="{{showStrategiesArea == false&&(selectedStrategy.isClicked==false || selectedStrategy ==null && isCreateNewStrategy == false)}}">
         攻略
       </view>
     </view>
     <!-- 攻略区 -->
-    <view class="TipsArea" wx:if="{{showTipsArea}}">
-      <view class="Tips" wx:for="{{tips}}" wx:key="item">
-        <view class="tip" id="{{item.id}}">
-          <image src="{{item.src}}" bindtap="intoDetailTip" id="{{item.id}}"></image>
-          <text style="display:block" bindtap="intoDetailTip" id="{{item.id}}">这里是攻略攻略攻略攻略攻略攻略</text>
+    <view class="StrategiesArea" wx:if="{{showStrategiesArea}}">
+      <view class="Strategies" wx:for="{{Strategies}}" wx:key="item">
+        <view class="Strategy" id="{{item.id}}">
+          <image src="{{item.src}}" bindtap="intoDetailStrategy" id="{{item.id}}"></image>
+          <text style="display:block" bindtap="intoDetailStrategy" id="{{item.id}}">这里是攻略攻略攻略攻略攻略攻略</text>
           <view class="like-btn">
             <image class="like" src="/images/building/like.png" mode="widthFix" wx:if="{{item.isLike==false}}"
               bindtap="likeClick" id="{{item.id}}" />
@@ -49,8 +49,8 @@
         </view>
       </view>
       <!-- 添加攻略的按钮 -->
-      <view class="addTip" style="left:600rpx;width:100rpx;height:100rpx;position:fixed; bottom:30rpx;">
-        <button style="width:100%;height:100%;position:absolute;opacity:0;" bindtap="createNewTip"></button>
+      <view class="addStrategy" style="left:600rpx;width:100rpx;height:100rpx;position:fixed; bottom:30rpx;">
+        <button style="width:100%;height:100%;position:absolute;opacity:0;" bindtap="createNewStrategy"></button>
         <image src="/images/global/add.png" mode="scaleToFill" style="width:100%;height:100%"></image>
       </view>
       <button bindtap="toHomePage">返回</button>
@@ -69,30 +69,30 @@
     </view>
   </view>
   <!-- 具体攻略界面 -->
-  <view class="DetailTipPage" id="{{selectedTip.id}}" wx:if="{{selectedTip.isClicked}}">
+  <view class="DetailStrategyPage" id="{{selectedStrategy.id}}" wx:if="{{selectedStrategy.isClicked}}">
     <!-- 用户添加的攻略图片 -->
-    <view class="tipImages">
-      <swiper class="tipImageBanner" indicator-dots indicator-color="rgba(255,255,255,0.5)"
+    <view class="StrategyImages">
+      <swiper class="StrategyImageBanner" indicator-dots indicator-color="rgba(255,255,255,0.5)"
         indicator-active-color="blue" circular="{{true}}" autoplay="{{false}}" interval="3000">
         <swiper-item>
-          <image src=" {{selectedTip.src}}" mode="heightFix">
+          <image src=" {{selectedStrategy.src}}" mode="heightFix">
           </image>
         </swiper-item>
         <swiper-item>
-          <image src="{{selectedTip.src}}" mode="heightFix"></image>
+          <image src="{{selectedStrategy.src}}" mode="heightFix"></image>
         </swiper-item>
         <swiper-item>
-          <image src="{{selectedTip.src}}" mode="heightFix"></image>
+          <image src="{{selectedStrategy.src}}" mode="heightFix"></image>
         </swiper-item>
       </swiper>
     </view>
     <!-- 攻略具体内容 -->
-    <view class="detailTipDescription">
-      <view class="tipTitle">
-        <text class="title" decode="{{true}}"> {{selectedTip.title}}</text>
+    <view class="detailStrategyDescription">
+      <view class="StrategyTitle">
+        <text class="title" decode="{{true}}"> {{selectedStrategy.title}}</text>
       </view>
-      <view class="tipMainBody">
-        <text class="mainBody" decode="{{true}}">{{selectedTip.description}}</text>
+      <view class="StrategyMainBody">
+        <text class="mainBody" decode="{{true}}">{{selectedStrategy.description}}</text>
       </view>
     </view>
     <!-- 攻略底下的评论区 -->
@@ -106,18 +106,19 @@
             <image class="userAvatar" src="{{userAvatars[index]}}" mode="cover"></image>
             <text style="margin-left:10rpx;bottom:16rpx;position:relative">{{userNickName[index]}}</text>
           </view>
-          <text >{{item.text}}{{item.isLike}}</text>
-          <view class="commentLlikeBtn" style="margin-right:0rpx" bindtap="giveLike" id = "{{index}}">
+          <text>{{item.text}}{{item.isLike}}</text>
+          <view class="commentLlikeBtn" style="margin-right:0rpx" bindtap="giveLike" id="{{index}}">
             <image wx:if="{{item.isLike == false}}" class="like" src="/images/building/like.png" mode="widthFix">
             </image>
             <image wx:if="{{item.isLike}}" class="like" src="/images/building/like_selected.png"></image>
             <text decode="{{true}}" space="nbsp" style="position:relative;bottom:10rpx">{{likeNums[index]}}</text>
           </view>
-        </view>       
-        <button style="position:absolute" bindtap="toTipsAreaPage">返回</button>
-        <view class="postTipComment">
-          <input style="width: 500rpx;" class="TipAreaInputComment" bindinput="getComment" placeholder="随便说点什么" bindconfirm="sendComment" confirm-type="send"></input>
-          <view class="tipLlikeBtn" style="margin-right:0rpx">
+        </view>
+        <button style="position:absolute" bindtap="toStrategiesAreaPage">返回</button>
+        <view class="postStrategyComment">
+          <input style="width: 500rpx;" class="StrategyAreaInputComment" bindinput="getComment" placeholder="随便说点什么"
+            bindconfirm="sendComment" confirm-type="send"></input>
+          <view class="StrategyLlikeBtn" style="margin-right:0rpx">
             <image class="like" src="/images/building/like.png" mode="widthFix">
             </image>
             <text decode="{{true}}" space="nbsp" style="position:relative;bottom:0rpx; "> 0</text>
@@ -127,27 +128,27 @@
     </view>
   </view>
   <!-- 添加攻略界面 -->
-  <view class="newTips" wx:if="{{isCreateNewTip}}">
+  <view class="newStrategies" wx:if="{{isCreateNewStrategy}}">
     <view class="uploadPicture">
       <mp-uploader bindfail="uploadError" bindsuccess="uploadSuccess" select="{{selectFile}}" upload="{{uplaodFile}}"
         files="{{files}}" max-count="9" title=""></mp-uploader>
     </view>
-    <view class="inputTipTitle">
+    <view class="inputStrategyTitle">
       <input type="text" name="" id="" placeholder="这里输入标题" bindinput="inputTitle"></input>
     </view>
     <view class="inputMainBody">
       <textarea name="" id="" cols="30" rows="10" placeholder="添加正文" bindinput="inputContent"></textarea>
     </view>
-    <view class="tipButtonSet">
-      <view class="cancelNewTip">
-        <button style="width:100%" bindtap="returnTipArea">取消</button>
+    <view class="StrategyButtonSet">
+      <view class="cancelNewStrategy">
+        <button style="width:100%" bindtap="returnStrategyArea">取消</button>
       </view>
-      <view class="createNewTip">
-        <button style="color:white;" bindtap="sendTip">发布攻略</button>
+      <view class="createNewStrategy">
+        <button style="color:white;" bindtap="sendStrategy">发布攻略</button>
       </view>
     </view>
-    <mp-dialog wx:if="{{isExitAddTip}}" buttons="{{dialogButtons}}">
-
+    <mp-dialog show="{{isExitAddStrategy}}" buttons="{{dialogButtons}}" bindbuttontap="isSaveEdit">
+      <view>是否需要保存编辑记录</view>
     </mp-dialog>
   </view>
 </view>

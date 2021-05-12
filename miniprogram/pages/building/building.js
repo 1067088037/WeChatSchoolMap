@@ -15,38 +15,40 @@ Page({
   data: {
     building: {
       type: 'canteen'
-    },
-    introArea: true,
-    showTipsArea: false,
-    showComment: false,
-    isLike: false,
-    likePicIndex: null,
-    commentValue: null,
-    intoComment: false,
-    tips: [],
-    selectedTip: null,
-    showBuilidngBanner: true,
-    isCreateNewTip: false,
-    files: [],
-    commentNum: 0,
-    comments: [],
-    userAvatars: [],
-    userNickName: [],
-    likeNums: [],
-    userUploadPhotoes:[],
-    tipTitle:"",
-    tipContent:"",
-    isExitAddTip:false,
-    dialogButtons:[]
+    }, // 保存点开的建筑
+    introArea: true, // 简介区域是否显示
+    showStrategiesArea: false, // 攻略区域是否显示
+    showComment: false, // 攻略按钮显示
+    isLike: false, // 攻略是否点赞
+    intoComment: false, // 是否进入评论区
+    strategies: [], // 攻略集合
+    selectedStrategy: null, // 选中的攻略
+    showBuilidngBanner: true, // 建筑图片区是否显示
+    isCreateNewStrategy: false, // 是否新建攻略
+    files: [], // 图片文件
+    commentNum: 0, // 评论数量
+    comments: [], // 评论数组
+    userAvatars: [], // 用户头像
+    userNickName: [], // 用户名称
+    likeNums: [], // 评论点赞数
+    userUploadPhotoes: [], // 用户上传的图片
+    strategyTitle: "", // 用户发布的攻略标题
+    strategyContent: "", // 用户发布的攻略内容
+    isExitAddStrategy: false, // 是否退出添加攻略界面，弹出对话框
+    dialogButtons: [{
+      text: "不保存"
+    }, {
+      text: "保存"
+    }] // 对话框按钮集
   },
-  inputTitle(e){
+  inputTitle(e) {
     this.setData({
-      tipTitle:e.detail.value
+      strategyTitle: e.detail.value
     })
   },
-  inputContent(e){
+  inputContent(e) {
     this.setData({
-      tipContent:e.detail.value
+      strategyContent: e.detail.value
     })
   },
   /**
@@ -124,7 +126,7 @@ Page({
   uploadSuccess(e) {
     console.log('upload success', e.detail)
     this.setData({
-      userUploadPhotoes:this.data.userUploadPhotoes.concat(e.detail.urls[0])
+      userUploadPhotoes: this.data.userUploadPhotoes.concat(e.detail.urls[0])
     })
   },
   //获取用户输入的评论内容
@@ -135,7 +137,7 @@ Page({
   },
   //发表评论
   sendComment() {
-    let superId = this.data.selectedTip.id.toString()
+    let superId = this.data.selectedStrategy.id.toString()
     console.log(superId)
     db.comment.addComment(superId, "arch", {
       reply: null,
@@ -152,28 +154,28 @@ Page({
   likeClick(e) {
     let id = parseInt(e.currentTarget.id);
     console.log(id)
-    let newtip = new Object
+    let newStrategy = new Object
     let idx = 0;
-    this.data.tips.forEach((value, index) => {
+    this.data.Strategies.forEach((value, index) => {
       if (value.id == id) {
         if (!value.isLike) {
-          newtip = value
-          newtip.isLike = true;
-          newtip.likeNum++;
+          newStrategy = value
+          newStrategy.isLike = true;
+          newStrategy.likeNum++;
           idx = index
         } else {
-          newtip = value
-          newtip.isLike = false;
-          newtip.likeNum--;
+          newStrategy = value
+          newStrategy.isLike = false;
+          newStrategy.likeNum--;
           idx = index
         }
       }
     })
-    console.log(newtip)
-    this.data.tips.splice(idx, 1, newtip)
-    let tips = this.data.tips
+    console.log(newStrategy)
+    this.data.Strategies.splice(idx, 1, newStrategy)
+    let Strategies = this.data.Strategies
     this.setData({
-      tips
+      Strategies
     })
   },
   /**
@@ -185,7 +187,7 @@ Page({
     db.comment.getAllComment('1').then(res => {
       //console.log(res[0].text)
       this.setData({
-        showTipsArea: false,
+        showStrategiesArea: false,
         showComment: true,
         comments: [{
           text: res[0].text
@@ -201,100 +203,155 @@ Page({
    */
   toHomePage() {
     this.setData({
-      showTipsArea: false,
+      showStrategiesArea: false,
       introArea: true
     })
   },
   /**
-   * toTipsAreaPage
+   * toStrategiesAreaPage
    * @todo 从攻略的具体界面返回攻略界面
    */
-  toTipsAreaPage() {
+  toStrategiesAreaPage() {
     this.setData({
-      selectedTip: null,
-      showTipsArea: true,
+      selectedStrategy: null,
+      showStrategiesArea: true,
       showBuilidngBanner: true
     })
   },
   /**
-   * returnTipArea
-   * @todo 从添加攻略界面返回到攻略界面
+   * returnStrategyArea
+   * @todo 从添加攻略界面返回到攻略界面,弹出对话框是否保存编辑
    */
-  returnTipArea() {
+  returnStrategyArea() {
 
     this.setData({
-      isExitAddTip:true,
-      isCreateNewTip: false,
-      showTipsArea: true,
-      showBuilidngBanner: true,
-      userUploadPhotoes:[]
+      isExitAddStrategy: true,
     })
   },
-  sendTip(){
-    let name = "一饭攻略";
-    let campusId = app.globalData.campus._id
-    let content = [];
-    let obj = new Object;
-    obj['desc'] = this.data.tipContent;
-    obj['name'] = this.data.tipTitle;
+  /**
+   * isSaveEdit
+   * @param {*} e 对话框按钮对象
+   * @todo  是否保存编辑，不保存则清空数据,保存则上传到数据库
+   */
+  isSaveEdit(e) {
+    console.log(e.detail.item.text)
+    if (e.detail.item.text == '不保存') {
+      // 清空数据并退出
+      this.setData({
+        isCreateNewStrategy: false,
+        showStrategiesArea: true,
+        showBuilidngBanner: true,
+        userUploadPhotoes: [],
+        StrategyTitle: "", 
+        StrategyContent: "", 
+      })
+      return;
+    }
+    if (e.detail.item.text == '保存') {
+      // 上传数据到云端
+      let name = this.getStrategyName()
+      let campusId = app.globalData.campus._id
+      let content = [];
+      let obj = new Object;
+      obj['desc'] = this.data.strategyContent;
+      obj['name'] = this.data.strategyTitle;
+      let images = this.updatePhotoesToCloud()
+      obj['image'] = images;
+      content.push(obj)
+      let strategy = {
+        name: name,
+        content: content,
+      }
+      content.push(obj);
+      db.strategy.addStrategy(campusId, strategy)
+      this.setData({
+        isCreateNewStrategy: false,
+        showStrategiesArea: true,
+        showBuilidngBanner: true,
+        userUploadPhotoes: []
+      })
+      return;
+    }
+  },
+  /**
+   * getStrategyName
+   * @todo 根据不同建筑，返回不同的name属性
+   */
+  getStrategyName() {
+    return this.data.building.title + "攻略"
+  },
+  /**
+   * updatePhotoesToCloud
+   * @todo 上传照片到云端，并且返回储存照片云端路径的数组
+   */
+  updatePhotoesToCloud() {
     let images = []
-    this.data.userUploadPhotoes.forEach((e,i)=>{
-      const filepath=e;
+    this.data.userUploadPhotoes.forEach((e, i) => {
+      const filepath = e;
       const name = i.toString()
-      const cloudpath="School/4144010561/images/Tips/tip"+name + filepath.match(/\.[^.]+?$/)[0]
+      const cloudpath = "School/4144010561/images/Strategies/Strategy" + name + filepath.match(/\.[^.]+?$/)[0]
       images.push(cloudpath)
       console.log(cloudpath)
       wx.cloud.uploadFile({
-        cloudPath:cloudpath,
-        filePath:filepath,
-        success:res=>{
+        cloudPath: cloudpath,
+        filePath: filepath,
+        success: res => {
           console.log(res.fileId)
         },
-        fail:console.error
+        fail: console.error
       })
     })
-    let time ={
-      firstCreate : new Date("2021/5/12"),
-      lastEdit: new Date("2021/5/14")
-    }
+    return images
+  },
+  /**
+   * sendStrategy
+   * @todo 上传攻略到数据库
+   */
+  sendStrategy() {
+    let name = this.getStrategyName();
+    let campusId = app.globalData.campus._id
+    let content = [];
+    let obj = new Object;
+    obj['desc'] = this.data.strategyContent;
+    obj['name'] = this.data.strategyTitle;
+    let images = this.updatePhotoesToCloud()
     obj['image'] = images;
     let strategy = {
-      name:name,
+      name: name,
       content: content,
-      time:time
     }
     content.push(obj);
     db.strategy.addStrategy(campusId, strategy)
     this.setData({
-      isCreateNewTip: false,
-      showTipsArea: true,
+      isCreateNewStrategy: false,
+      showStrategiesArea: true,
       showBuilidngBanner: true,
-      userUploadPhotoes:[]
+      userUploadPhotoes: []
     })
   },
   /**
-   * createNewTip
+   * createNewStrategy
    * @todo 进入添加攻略界面
    */
-  createNewTip(e) {
+  createNewStrategy(e) {
     this.setData({
-      isCreateNewTip: true,
-      showTipsArea: false,
+      isCreateNewStrategy: true,
+      showStrategiesArea: false,
       showBuilidngBanner: false
     })
   },
   /**
-   * tipsAreaTap
+   * StrategiesAreaTap
    * @param e
    * @returns void
    * @todo 显示攻略区
    */
-  tipsAreaTap(e) {
+  StrategiesAreaTap(e) {
     this.setData({
-      showTipsArea: true,
+      showStrategiesArea: true,
       introArea: false,
-      // 测试数据tips,正常使用时应从数据库获取
-      tips: [{
+      // 测试数据Strategies,正常使用时应从数据库获取
+      Strategies: [{
         src: "/images/tabBarIcon/design_selected.png",
         id: 1,
         likeNum: 0,
@@ -339,11 +396,11 @@ Page({
 
   }, // end function
   /**
-   * intoDetailTip
+   * intoDetailStrategy
    * @param {} e 
    * @todo 进入具体攻略区
    */
-  intoDetailTip(e) {
+  intoDetailStrategy(e) {
     // 获取该攻略区的评论
     var that = this
     let comments = []
@@ -355,7 +412,7 @@ Page({
         var commentObj = {
           text: v.text,
           id: v._id,
-          
+
         }
         db.user.getUser(v._openid).then(value => {
           that.setData({
@@ -365,8 +422,7 @@ Page({
         })
         comments.push(commentObj)
       })
-      for(var i=0; i < comments.length;i++)
-      {
+      for (var i = 0; i < comments.length; i++) {
         let comment = comments[i]
         console.log(comment)
         db.like.countLike(comments[i].id).then(r => {
@@ -375,28 +431,28 @@ Page({
             likeNums: that.data.likeNums.concat(r)
           })
         })
-        
-        db.like.isLike(comment.id).then( islike =>{
-          comment.isLike = islike 
+
+        db.like.isLike(comment.id).then(islike => {
+          comment.isLike = islike
           console.log(comment.isLike)
         })
       }
-      setTimeout(()=>{
+      setTimeout(() => {
         this.setData({
-          comments:comments,
+          comments: comments,
           commentNum: res.length
         })
-      },1000)
-     
+      }, 1000)
+
     })
     let id = parseInt(e.currentTarget.id)
     console.log(this.data.comments)
-    let selectedTip = new Object
+    let selectedStrategy = new Object
     // 从所有发布的攻略中选出用户点击的那个攻略区，通过id选取
-    this.data.tips.forEach((value, index) => {
+    this.data.Strategies.forEach((value, index) => {
       if (value.id == id) {
-        selectedTip = value
-        selectedTip.isClicked = true;
+        selectedStrategy = value
+        selectedStrategy.isClicked = true;
       }
     })
     // 显示具体攻略区
@@ -405,8 +461,8 @@ Page({
     })
     setTimeout(() => {
       this.setData({
-        selectedTip,
-        showTipsArea: false,
+        selectedStrategy,
+        showStrategiesArea: false,
         showBuilidngBanner: false,
       })
       wx.hideLoading()
@@ -427,26 +483,25 @@ Page({
         let comment = this.data.comments
         comment[index].isLike = true;
         let likeNums = this.data.likeNums;
-        likeNums[index] = likeNums[index]+1
+        likeNums[index] = likeNums[index] + 1
         this.setData({
-          comments:comment,
-          likeNums:likeNums
+          comments: comment,
+          likeNums: likeNums
         })
-      }
-      else{
+      } else {
         db.like.cancelLike(this.data.comments[index].id)
         let comment = this.data.comments
         comment[index].isLike = false;
         let likeNums = this.data.likeNums;
-        likeNums[index] = likeNums[index]-1
+        likeNums[index] = likeNums[index] - 1
         this.setData({
-          comments:comment,
-          likeNums:likeNums
+          comments: comment,
+          likeNums: likeNums
         })
       }
     })
-    
-    
+
+
 
   },
   /**

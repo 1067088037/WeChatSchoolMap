@@ -13,7 +13,7 @@
   height: 240rpx;
   border: 1rpx solid lightgray;
 }
-.tipsAreaButton{
+.StrategiesAreaButton{
   margin-top:20rpx;
   display: inline-block;
   position: relative;
@@ -52,12 +52,12 @@
   align-items: center;
   text-align:center
 }
-.tip{
+.Strategy{
   width: 350rpx;
   height: auto;
 }
 
-.Tips{
+.Strategies{
   display: inline-block;
   width: 350rpx;
   height: auto;
@@ -68,11 +68,11 @@
   align-items: center;
   
 }
-.TipsArea image{
+.StrategiesArea image{
   width: 350rpx;
   height: 300rpx;
 }
-.TipsArea text{
+.StrategiesArea text{
   display: inline;
   margin-left: 20rpx;
   text-align:left;
@@ -94,14 +94,14 @@
   position: absolute;
   right: 1rpx;
 }
-.tipLlikeBtn{
+.StrategyLlikeBtn{
   display: inline-block;
   height: 80rpx;
   width: 100rpx;
   align-items: center;
   margin-left: 608rpx;
 }
-.tipLlikeBtn image{
+.StrategyLlikeBtn image{
   top:10rpx;
   height: 50rpx;
   width:50rpx;
@@ -140,33 +140,33 @@
   margin-top: 30rpx;
   margin-bottom:30rpx;
 }
-.addTip{
+.addStrategy{
   position: relative;
 }
-.tipImages{
+.StrategyImages{
   margin: 10rpx auto;
   width: 480rpx;
   height: 480rpx;
 }
-.tipImageBanner {
+.StrategyImageBanner {
   width: 480rpx;
   height: 480rpx;
 }
-.tipTitle{
+.StrategyTitle{
   margin-left: 15rpx;
   margin-right: 15rpx;
   font-size:40rpx;
   font-weight: bold;
   /* border-bottom-style: groove; */
 }
-.tipMainBody{
+.StrategyMainBody{
   margin-left: 15rpx;
   margin-right: 15rpx;
   font-size: 35rpx;
   padding-bottom: 20rpx;
   border-bottom: 0.5rpx solid rgb(187, 186, 186);
 }
-.inputTipTitle{
+.inputStrategyTitle{
   margin-top:26rpx;
   margin-left: 15rpx;
   margin-right: 15rpx;
@@ -178,19 +178,19 @@
   margin-right: 15rpx;
   border-bottom:0.5rpx solid rgb(187, 186, 186);
 }
-.tipButtonSet{
+.StrategyButtonSet{
   position: fixed;
   bottom: 0rpx;
 }
-.cancelNewTip{
+.cancelNewStrategy{
   display: inline-block;
   border-radius: 20rpx;
   width: 200rpx;
 }
-.DetailTipPage{
+.DetailStrategyPage{
   background-color: white;
 }
-.createNewTip{
+.createNewStrategy{
   width: 500rpx;
   margin-left: 50rpx;
   border-radius: 30rpx;
@@ -211,14 +211,14 @@
   margin-right: 15rpx;
   border-bottom:1rpx solid #F2F2F2
 }
-.TipAreaInputComment{
+.StrategyAreaInputComment{
   border:2px solid gainsboro;
   margin-top: 30rpx;
   margin-bottom:30rpx;
   
   height: auto;
 }
-.postTipComment{
+.postStrategyComment{
   /* position: fixed; */
   /* bottom: 0; */
   position: fixed;
@@ -229,7 +229,7 @@
   border-radius: 20rpx;
   align-items: center;
 }
-.postTipComment input{
+.postStrategyComment input{
   margin-top: 10rpx;
   margin-left: 5rpx;
   position: absolute;
