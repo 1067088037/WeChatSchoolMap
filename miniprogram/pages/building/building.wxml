@@ -133,18 +133,21 @@
         files="{{files}}" max-count="9" title=""></mp-uploader>
     </view>
     <view class="inputTipTitle">
-      <input type="text" name="" id="" placeholder="这里输入标题"></input>
+      <input type="text" name="" id="" placeholder="这里输入标题" bindinput="inputTitle"></input>
     </view>
     <view class="inputMainBody">
-      <textarea name="" id="" cols="30" rows="10" placeholder="添加正文"></textarea>
+      <textarea name="" id="" cols="30" rows="10" placeholder="添加正文" bindinput="inputContent"></textarea>
     </view>
     <view class="tipButtonSet">
       <view class="cancelNewTip">
         <button style="width:100%" bindtap="returnTipArea">取消</button>
       </view>
       <view class="createNewTip">
-        <button style="color:white;">发布攻略</button>
+        <button style="color:white;" bindtap="sendTip">发布攻略</button>
       </view>
     </view>
+    <mp-dialog wx:if="{{isExitAddTip}}" buttons:"{{dialogButtons}}">
+
+    </mp-dialog>
   </view>
 </view>

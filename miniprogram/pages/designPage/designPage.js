@@ -6,7 +6,8 @@ Page({
    */
   data: {
     showUploadPostArea: false,
-    file: []
+    file: [],
+    userUploadPhotoes:[]
   },
   // 导航之上传海报界面
   nevigaToUpLoadPoster() {
@@ -17,10 +18,26 @@ Page({
   // 回到设计主页面
   backToHomePage() {
     this.setData({
-      showUploadPostArea: false
+      showUploadPostArea: false,
+      userUploadPhotoes:[]
     })
   },
-
+  sendPhoto(){
+    this.data.userUploadPhotoes.forEach((e,i)=>{
+      const filepath=e;
+      const name = i.toString()
+      const cloudpath="School/4144010561/images/Design/d"+name + filepath.match(/\.[^.]+?$/)[0]
+      console.log(cloudpath)
+      wx.cloud.uploadFile({
+        cloudPath:cloudpath,
+        filePath:filepath,
+        success:res=>{
+          console.log(res.fileId)
+        },
+        fail:console.error
+      })
+    })
+  },
   //下列一系列函数是图片上传相关函数
   /**
    * chooseImage(e)
@@ -66,7 +83,11 @@ Page({
   },
   uploadSuccess(e) {
     console.log('upload success', e.detail)
+    this.setData({
+      userUploadPhotoes:this.data.userUploadPhotoes.concat(e.detail.urls[0])
+    })
   },
+  
   selectFile(files) {
     console.log('files', files)
     // 返回false可以阻止某次文件上传

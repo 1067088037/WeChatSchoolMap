@@ -28,6 +28,7 @@ export class Strategy {
             _id: campusId,
             type: 'campus'
           },
+<<<<<<< HEAD
           version: {
             editVersion: 1,
             createTime: _db.serverDate(),
@@ -41,6 +42,11 @@ export class Strategy {
             name: strategy.name,
             content: strategy.content,
           }
+=======
+          name: strategy.name,
+          content: strategy.content,
+          time: strategy.time
+>>>>>>> dev
         }
       })
     }

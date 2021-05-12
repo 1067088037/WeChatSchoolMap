@@ -72,7 +72,7 @@
       <!-- 筛选界面  -->
       <cover-view wx:if="{{func=='筛选'}}">
         <checkbox-group bindchange="selectArchFunc">
-          <cover-view class="checkboxView" wx:for="{{archItems}}" wx:key="{{item.value}}"
+          <cover-view class="checkboxView" wx:for="{{archItems}}" wx:key="value"
             style="margin-top:10rpx;border-bottom:1rpx solid  gray">
             <cover-view style="display:inline-block">
               <checkbox value="{{item.value}}" checked="{{item.checked}}">
@@ -90,9 +90,7 @@
         <button bindtap="canteenOnly"
           style="display: block;margin: 24px auto; background-color: blue;color:white;height: 50rpx;text-align:center">吃饭</button> -->
       </cover-view>
-      <!-- 返回按钮 -->
-      <!-- <button class="screen2-button" bindtap="showPrev" hidden="{{!showPage}}" hover-class="none"
-        style="display: block;margin: 24px auto; background-color: blue;color:white;height: 50rpx;">Exit</button> -->
+
     </page-container>
     <!-- 建筑的简介对话框 -->
     <cover-view>
@@ -168,9 +166,10 @@
       </picker>
     </mp-cell>
     <mp-cell prop="visible" title="标记可见性">
-      <view wx:for="{{pickerNum}}" wx:key="item">
-        <picker data-field="" mode="selector" range="{{departmentsItem}}" value="{{0}}" bindchange="visibleChange">
-          <view class="departPick">{{departmentsItem[departmentsIndex]}}</view>
+      <view wx:for="{{pickerNum}}" wx:key="item" id="{{index}}">
+        <picker data-field="" mode="selector" range="{{departmentsItem}}" value="{{0}}" bindchange="visibleChange"
+          id="{{index}}">
+          <view class="departPick">{{departmentsItem[departmentsIndex[index]]}}</view>
         </picker>
       </view>
     </mp-cell>
@@ -190,7 +189,8 @@
 
   <view class="markerIcon">标记图示</view>
   <view class="markerIcon-cell">
-    <mp-uploader ext-class="uploader" title="标记图示上传">
+    <mp-uploader ext-class="uploader" title="标记图示上传" bindfail="uploadError" bindsuccess="uploadSuccess" select="{{selectFile}}" 
+    upload="{{uploadFile}}" files="{{files}}" max-count="1">
     </mp-uploader>
   </view>
   <button type="primary" bindtap="confirmTap">确定</button>

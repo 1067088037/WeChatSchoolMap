@@ -32,7 +32,22 @@ Page({
     comments: [],
     userAvatars: [],
     userNickName: [],
-    likeNums: []
+    likeNums: [],
+    userUploadPhotoes:[],
+    tipTitle:"",
+    tipContent:"",
+    isExitAddTip:false,
+    dialogButtons:[]
+  },
+  inputTitle(e){
+    this.setData({
+      tipTitle:e.detail.value
+    })
+  },
+  inputContent(e){
+    this.setData({
+      tipContent:e.detail.value
+    })
   },
   /**
    * chooseImage
@@ -108,6 +123,9 @@ Page({
    */
   uploadSuccess(e) {
     console.log('upload success', e.detail)
+    this.setData({
+      userUploadPhotoes:this.data.userUploadPhotoes.concat(e.detail.urls[0])
+    })
   },
   //获取用户输入的评论内容
   getComment(e) {
@@ -203,10 +221,55 @@ Page({
    * @todo 从添加攻略界面返回到攻略界面
    */
   returnTipArea() {
+
+    this.setData({
+      isExitAddTip:true,
+      isCreateNewTip: false,
+      showTipsArea: true,
+      showBuilidngBanner: true,
+      userUploadPhotoes:[]
+    })
+  },
+  sendTip(){
+    let name = "一饭攻略";
+    let campusId = app.globalData.campus._id
+    let content = [];
+    let obj = new Object;
+    obj['desc'] = this.data.tipContent;
+    obj['name'] = this.data.tipTitle;
+    let images = []
+    this.data.userUploadPhotoes.forEach((e,i)=>{
+      const filepath=e;
+      const name = i.toString()
+      const cloudpath="School/4144010561/images/Tips/tip"+name + filepath.match(/\.[^.]+?$/)[0]
+      images.push(cloudpath)
+      console.log(cloudpath)
+      wx.cloud.uploadFile({
+        cloudPath:cloudpath,
+        filePath:filepath,
+        success:res=>{
+          console.log(res.fileId)
+        },
+        fail:console.error
+      })
+    })
+    let time ={
+      firstCreate : new Date("2021/5/12"),
+      lastEdit: new Date("2021/5/14")
+    }
+    obj['image'] = images;
+    let strategy = {
+      name:name,
+      content: content,
+      time:time
+    }
+    content.push(obj);
+    db.strategy.addStrategy(campusId, strategy)
     this.setData({
       isCreateNewTip: false,
       showTipsArea: true,
-      showBuilidngBanner: true
+      showBuilidngBanner: true,
+      userUploadPhotoes:[]
     })
   },
   /**
