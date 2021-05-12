@@ -12,7 +12,7 @@ export class Strategy {
    * content是Array，数组中每个对象包括name，楼层，位置，描述和图像数组
    * time是Object，包含首次创建时间fisrtCreate和最后修改时间lastEdit
    */
-  addStrategy(campusId, strategy) {
+  async addStrategy(campusId, strategy) {
     if (strategy.constructor != Object) {
       console.error('strategy类型非法')
     } else if (strategy.name.constructor != String) {
@@ -21,6 +21,7 @@ export class Strategy {
       console.error('content类型非法，需要Array')
     } else {
       let _id = util.randomId()
+      await db.like.bindNewLike(_id, 'strategy', null)
       return _db.collection('strategy').add({
         data: {
           _id: _id,
@@ -35,15 +36,40 @@ export class Strategy {
           },
           publish: {
             name: strategy.name,
+            desc: strategy.desc,
             content: strategy.content,
           },
           draft: {
             name: strategy.name,
+            desc: strategy.desc,
             content: strategy.content,
           }
         }
       })
     }
+  }
+
+  /**
+   * 获取攻略
+   * @param {string} strategyId 攻略ID
+   */
+  async getStrategy(strategyId) {
+    return await _db.collection('strategy').doc(strategyId).get().then(res => {
+      return res.data
+    })
+  }
+
+  /**
+   * 获取校区内全部攻略的简要信息，不包含详情
+   * @param {string} campusId 
+   */
+  async getBriefStrategyArray(campusId) {
+    return wx.cloud.callFunction({
+      name: 'getBriefStrategy',
+      data: {
+        superId: campusId
+      }
+    }).then(res => res.result.data)
   }
 
   /**

@@ -19,6 +19,12 @@ export function launchTest() {
   //   ]
   // })
 
+  // db.like.giveALike('4wenija2tt4k6uptqkv758rlluieyp2x')
+
+  // db.like.countLike('4wenija2tt4k6uptqkv758rlluieyp2x').then(res => {
+  //   console.log(res)
+  // })
+
   // db.strategy.updateDraftStrategy('x2ix76c01ac9h5j8sk3ghb0bcdg0bplc', {
   //   name: '新新新攻略！！！',
   //   images: ['1']
@@ -27,6 +33,14 @@ export function launchTest() {
   // db.strategy.publishFromDraft('x2ix76c01ac9h5j8sk3ghb0bcdg0bplc')
 
   // db.strategy.removeStrategy('47g2v6ceb3mbuaj147hilc2vsf03fwa0')
+
+  // db.strategy.getStrategy('yy6esdh8r98g0ogy03q6nm5kpb7r05j6').then(res => {
+  //   console.log(res)
+  // })
+
+  // db.strategy.getBriefStrategyArray('1ace8ef160901b1b008f69ae08b0ee8a').then(res => {
+  //   console.log(res)
+  // })
 }
 
 export function dbExample() {
