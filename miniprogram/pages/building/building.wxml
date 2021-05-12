@@ -146,7 +146,7 @@
         <button style="color:white;" bindtap="sendTip">发布攻略</button>
       </view>
     </view>
-    <mp-dialog wx:if="{{isExitAddTip}}" buttons:"{{dialogButtons}}">
+    <mp-dialog wx:if="{{isExitAddTip}}" buttons="{{dialogButtons}}">
 
     </mp-dialog>
   </view>
