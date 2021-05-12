@@ -218,7 +218,7 @@ Page({
     this.data.userUploadPhotoes.forEach((e,i)=>{
       const filepath=e;
       const name = i.toString()
-      const cloudpath="Tips/"+name + filepath.match(/\.[^.]+?$/)[0]
+      const cloudpath="School/4144010561/images/Tips/tip"+name + filepath.match(/\.[^.]+?$/)[0]
       console.log(cloudpath)
       wx.cloud.uploadFile({
         cloudPath:cloudpath,
