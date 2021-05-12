@@ -637,8 +637,7 @@ Page({
     this.data.mapCtx.getCenterLocation({
       success: (res) => {
 
-        console.log(res.longitude, res.latitude)
-
+        console.log(""+res.longitude, res.latitude)
       }
     })
   },
@@ -679,7 +678,6 @@ Page({
         break;
       }
       case "添加": {
-        console.log()
         var markers_ = [{
           id:util.randomNumberId(),
           latitude: 23.04866925793428,
@@ -716,7 +714,7 @@ Page({
     this.setData({
       showPage: true,
     })
-    console.log(isAdd);
+    console.log("是否添加标点： "+isAdd);
   },
   /**
    * selectArchFunc
@@ -818,7 +816,7 @@ Page({
   // 根据markerID获取经纬度
   getLongtitude(id) {
     let markerArr;
-    console.log(flag)
+    //console.log(flag)
     switch (flag) {
       case 1: {
         markerArr = dormPoint
@@ -855,9 +853,9 @@ Page({
 
   // 进入具体建筑的简介弹窗
   markerstap(e) {
-    console.log(e.detail.markerId)
+   // console.log(e.detail.markerId)
     app.globalData.buildingSelected = this.getMarkerInfo(e.detail.markerId)
-    console.log(app.globalData.buildingSelected)
+    console.log("用户选择的建筑对象："+ app.globalData.buildingSelected)
     this.setData({
       showBuildingDialog: true,
       buildingSelected: app.globalData.buildingSelected
@@ -942,22 +940,22 @@ Page({
   },
   // page-container的触发函数，不写以下这些函数会警告
   onBeforeEnter(res) {
-    console.log(res)
+   // console.log(res)
   },
   onEnter(res) {
-    console.log(res)
+   // console.log(res)
   },
   onAfterEnter(res) {
-    console.log(res)
+   // console.log(res)
   },
   onBeforeLeave(res) {
-    console.log(res)
+   // console.log(res)
   },
   onLeave(res) {
-    console.log(res)
+   // console.log(res)
   },
   onAfterLeave(res) {
-    console.log(res)
+   // console.log(res)
   },
 
   /**

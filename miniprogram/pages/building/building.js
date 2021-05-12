@@ -34,12 +34,14 @@ Page({
     userUploadPhotoes: [], // 用户上传的图片
     strategyTitle: "", // 用户发布的攻略标题
     strategyContent: "", // 用户发布的攻略内容
+    strategyBriefIntro: "", // 用户发布的内容简介
     isExitAddStrategy: false, // 是否退出添加攻略界面，弹出对话框
     dialogButtons: [{
       text: "不保存"
     }, {
       text: "保存"
-    }] // 对话框按钮集
+    }] // 对话框按钮集,
+
   },
   inputTitle(e) {
     this.setData({
@@ -49,6 +51,11 @@ Page({
   inputContent(e) {
     this.setData({
       strategyContent: e.detail.value
+    })
+  },
+  inputBriefIntro(e) {
+    this.setData({
+      strategyBriefIntro: e.detail.value
     })
   },
   /**
@@ -242,8 +249,8 @@ Page({
         showStrategiesArea: true,
         showBuilidngBanner: true,
         userUploadPhotoes: [],
-        StrategyTitle: "", 
-        StrategyContent: "", 
+        StrategyTitle: "",
+        StrategyContent: "",
       })
       return;
     }
@@ -253,6 +260,7 @@ Page({
       let campusId = app.globalData.campus._id
       let content = [];
       let obj = new Object;
+      let desc = this.data.strategyBriefIntro
       obj['desc'] = this.data.strategyContent;
       obj['name'] = this.data.strategyTitle;
       let images = this.updatePhotoesToCloud()
@@ -261,6 +269,7 @@ Page({
       let strategy = {
         name: name,
         content: content,
+        desc:desc
       }
       content.push(obj);
       db.strategy.addStrategy(campusId, strategy)
@@ -312,6 +321,7 @@ Page({
     let campusId = app.globalData.campus._id
     let content = [];
     let obj = new Object;
+    let desc = this.data.strategyBriefIntro
     obj['desc'] = this.data.strategyContent;
     obj['name'] = this.data.strategyTitle;
     let images = this.updatePhotoesToCloud()
@@ -319,6 +329,7 @@ Page({
     let strategy = {
       name: name,
       content: content,
+      desc: desc
     }
     content.push(obj);
     db.strategy.addStrategy(campusId, strategy)

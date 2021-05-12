@@ -12,10 +12,6 @@
       <cover-image src="/images/index/centerLocation.png" mode="scaleToFill">
       </cover-image>
     </cover-view>
-
-    <!-- <view class="moreFunctionIcon">
-      <image class="more" bindtap="showFunction" src="/images/global/add.png"></image>
-    </view> -->
     <!-- 选择功能页面的实现 -->
     <cover-view>
       <cover-view wx:if="{{isMoreTrue}}">
@@ -29,9 +25,6 @@
         </cover-view>
       </cover-view>
     </cover-view>
-
-
-
     <!-- 实现点击功能弹出相应的页面 -->
     <page-container show="{{showPage}}" overlay="{{overlay}}" close-on-slide-down duration="{{pageDuration}}"
       position="{{pagePosition}}" bindbeforeenter="onBeforeEnter" bindenter="onEnter" bindafterenter="onAfterEnter"
@@ -81,16 +74,7 @@
             <cover-view style="display:inline-block;">{{item.name}}</cover-view>
           </cover-view>
         </checkbox-group>
-        <!-- <button bindtap="DormOnly"
-          style="display: block;margin: 24px auto; background-color: blue;color:white;height: 50rpx; text-align:center">宿舍</button>
-        <button bindtap="ClassRoomOnly"
-          style="display: block;margin: 24px auto; background-color: blue;color:white;height: 50rpx;text-align:center">教学楼</button>
-        <button bindtap="collegeOnly"
-          style="display: block;margin: 24px auto; background-color: blue;color:white;height: 50rpx;text-align:center">学院</button>
-        <button bindtap="canteenOnly"
-          style="display: block;margin: 24px auto; background-color: blue;color:white;height: 50rpx;text-align:center">吃饭</button> -->
       </cover-view>
-
     </page-container>
     <!-- 建筑的简介对话框 -->
     <cover-view>
@@ -106,11 +90,7 @@
         </cover-view>
       </mp-dialog>
     </cover-view>
-    <!-- 标点确定对话框 -->
-    <!-- <cover-view>
-      <mp-dialog title="test2" show="{{showMarkerDialog}}" buttons="{{markerBtns}}" bindbuttontap="showMarkerInfoPage">
-      </mp-dialog>
-    </cover-view> -->
+    <!-- 是否添加标点的按钮组 -->
     <cover-view class="markerPosBtn" wx:if="{{showMarkerDialog}}">
       <button bindtap="cancelMarker">取消</button>
       <button bindtap="confirmMarker">确定</button>
@@ -122,13 +102,15 @@
     <image class="more" bindtap="showFunction" src="/images/global/add.png"></image>
   </view>
 </view>
-
+<!-- 输入添加的标点的内容 -->
 <view class="markerInfoPage" wx:if="{{isAddedMarker}}">
   <mp-cells title="标记点信息">
+    <!-- 输入标点的名称 -->
     <mp-cell prop="markerPointName" title="标记点名称">
       <input class="markerName" type="text" placeholder="请输入活动名称" placeholder-class="markerName" confirm-type="done"
         bindconfirm="inputMarkerName"></input>
     </mp-cell>
+    <!-- 标点开始日期 -->
     <mp-cell prop="beginDate" title="开始日期">
       <picker date-field="date" mode="date" value="{{bgdate}}" start="2021-05-03" end="2021-12-31"
         bindchange="bindBeginDateChange">
@@ -137,6 +119,7 @@
         </view>
       </picker>
     </mp-cell>
+    <!-- 标点开始时间 -->
     <mp-cell prop="beginTime" title="开始时间">
       <picker date-field="time" mode="time" value="{{bgtime}}" start="12:00" end="22:00"
         bindchange="bindBeginTimeChange">
@@ -145,6 +128,7 @@
         </view>
       </picker>
     </mp-cell>
+    <!-- 标点结束日期 -->
     <mp-cell prop="endDate" title="结束日期">
       <picker date-field="date" mode="date" value="{{endate}}" start="2021-05-03" end="2021-12-31"
         bindchange="bindEndDateChange">
@@ -153,6 +137,7 @@
         </view>
       </picker>
     </mp-cell>
+    <!-- 标点结束时间 -->
     <mp-cell prop="endTime" title="结束时间">
       <picker date-field="time" mode="time" value="{{edtime}}" start="08:00" end="23:00" bindchange="bindEndTimeChange">
         <view class="begin-date">
@@ -160,11 +145,13 @@
         </view>
       </picker>
     </mp-cell>
+    <!-- 标点的类型 -->
     <mp-cell prop="markerType" title="标记类型">
       <picker data-field="" mode="selector" range="{{markerTypes}}" value="{{0}}" bindchange="markerTypeChange">
         <view class="departPick">{{markerTypes[markerType]}}</view>
       </picker>
     </mp-cell>
+    <!-- 标点可见性 -->
     <mp-cell prop="visible" title="标记可见性">
       <view wx:for="{{pickerNum}}" wx:key="item" id="{{index}}">
         <picker data-field="" mode="selector" range="{{departmentsItem}}" value="{{0}}" bindchange="visibleChange"
@@ -173,6 +160,7 @@
         </picker>
       </view>
     </mp-cell>
+    <!-- 增加可见性选择 -->
     <button class="morePicker"
       style="width: 200rpx; text-align:center;padding:0;margin-left: 0rpx; margin-top:0rpx; display:inline-block"
       bindtap="addPicker">+</button>
@@ -181,12 +169,13 @@
       bindtap="deletePicker">-</button>
 
   </mp-cells>
+  <!-- 输入标记简介 -->
   <view class="marker_desc">标记简介</view>
   <view class="description-cell">
     <textarea class="description-area" name="markerDesc" placeholder="请输入标记简介" confirm-type="done"
       bindconfirm="inputMarkerDesc" maxlength="200" placeholder-class="textAreaPlaceHolder"></textarea>
   </view>
-
+  <!-- 输入标记图示 -->
   <view class="markerIcon">标记图示</view>
   <view class="markerIcon-cell">
     <mp-uploader ext-class="uploader" title="标记图示上传" bindfail="uploadError" bindsuccess="uploadSuccess" select="{{selectFile}}" 

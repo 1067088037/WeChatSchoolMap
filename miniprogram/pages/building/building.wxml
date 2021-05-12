@@ -136,6 +136,9 @@
     <view class="inputStrategyTitle">
       <input type="text" name="" id="" placeholder="这里输入标题" bindinput="inputTitle"></input>
     </view>
+    <view class="inputStrategyShortBriefIntro">
+      <input type="text" name="" id="" placeholder="好的简介更引人入胜噢~" bindinput="inputBriefIntro"></input>
+    </view>
     <view class="inputMainBody">
       <textarea name="" id="" cols="30" rows="10" placeholder="添加正文" bindinput="inputContent"></textarea>
     </view>

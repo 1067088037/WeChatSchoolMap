@@ -172,8 +172,14 @@
   margin-right: 15rpx;
   border-bottom:0.5rpx solid rgb(187, 186, 186);
 }
-.inputMainBody{
+.inputStrategyShortBriefIntro{
   margin-top:26rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  border-bottom:0.5rpx solid rgb(187, 186, 186);
+}
+.inputMainBody{
+  margin-top:16rpx;
   margin-left: 15rpx;
   margin-right: 15rpx;
   border-bottom:0.5rpx solid rgb(187, 186, 186);
