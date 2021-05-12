@@ -90,9 +90,7 @@
         <button bindtap="canteenOnly"
           style="display: block;margin: 24px auto; background-color: blue;color:white;height: 50rpx;text-align:center">吃饭</button> -->
       </cover-view>
-      <!-- 返回按钮 -->
-      <!-- <button class="screen2-button" bindtap="showPrev" hidden="{{!showPage}}" hover-class="none"
-        style="display: block;margin: 24px auto; background-color: blue;color:white;height: 50rpx;">Exit</button> -->
+      
     </page-container>
     <!-- 建筑的简介对话框 -->
     <cover-view>

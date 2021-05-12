@@ -1,4 +1,7 @@
-import { db} from '../../util/database/database'
+import {
+  db
+} from '../../util/database/database'
+var util = require('../../util/util.js')
 // pages/schoolMap/schoolMap.js
 let SCREEN_WIDTH = 750; // 屏幕宽度
 let RATE = wx.getSystemInfoSync().screenHeight / wx.getSystemInfoSync().screenWidth // 比率
@@ -607,9 +610,13 @@ Page({
         break;
       }
       case "添加": {
+        console.log()
         var markers_ = [{
+          id:util.randomNumberId(),
           latitude: 23.04866925793428,
-          longitude: 113.40268387434162
+          longitude: 113.40268387434162,
+          width:40,
+          height:50
         }];
         this.setData({
           pagePosition: "center",
@@ -841,7 +848,7 @@ Page({
    * @todo 导航函数
    */
   navigation(e) {
-    console.log(this.data.buildingSelected.latitude,this.data.buildingSelected.longitude)
+    console.log(this.data.buildingSelected.latitude, this.data.buildingSelected.longitude)
     // 打开app导航
     wx.openLocation({
       latitude: this.data.buildingSelected.latitude,
@@ -936,7 +943,7 @@ Page({
             height: 40,
             iconPath: "/images/building/canteen.png"
           })
-        }else{
+        } else {
           archArray.push({
             _id: value._id,
             id: value.markId,
@@ -974,7 +981,7 @@ Page({
             width: 30,
             height: 40,
             type: value.type,
-            iconPath:"/images/index/realtimeInfo.png"
+            iconPath: "/images/index/realtimeInfo.png"
           })
         }
       })
