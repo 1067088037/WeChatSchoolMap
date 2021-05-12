@@ -9,6 +9,7 @@ import { Permission } from './permission'
 import { Point } from './point'
 import { Like } from './like'
 import { Section } from './section'
+import { Strategy } from './strategy'
 
 export class DataBase {
   _db = _db //数据库实例
@@ -24,6 +25,7 @@ export class DataBase {
   point = new Point()
   like = new Like()
   section = new Section()
+  strategy = new Strategy()
 }
 
 export const db = new DataBase()

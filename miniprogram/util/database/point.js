@@ -1,3 +1,5 @@
+import { db } from './database'
+
 const _db = wx.cloud.database()
 const util = require('../util')
 
@@ -57,7 +59,7 @@ export class Point {
           desc: desc,
           geo: geo,
           markId: util.randomNumberId(),
-          type:type
+          type: type
         }
       })
     }
@@ -121,6 +123,7 @@ export class Point {
    */
   removePointById(pointId) {
     _db.collection('point').doc(pointId).remove()
+    db.comment.removeAllComment([pointId])
   }
 
   /**
@@ -130,7 +133,12 @@ export class Point {
   removePointByMarkId(markId) {
     _db.collection('point').where({
       markId: markId
-    }).remove()
+    }).get().then(res => {
+      res.data.forEach(e => {
+        _db.collection('point').doc(e._id).remove()
+        _db.comment.removeAllComment(e._id)
+      })
+    })
   }
 
   /**

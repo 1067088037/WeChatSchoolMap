@@ -1,3 +1,5 @@
+import { db } from './database'
+
 const _db = wx.cloud.database()
 const util = require('../util')
 
@@ -85,6 +87,7 @@ export class Arch {
    */
   removeArchById(archId) {
     _db.collection('arch').doc(archId).remove()
+    db.comment.removeAllComment(archId)
   }
 
   /**
@@ -94,6 +97,11 @@ export class Arch {
   removeArchByMarkId(markId) {
     _db.collection('arch').where({
       markId: markId
-    }).remove()
+    }).get().then(res => {
+      res.data.forEach(e => {
+        _db.collection('arch').doc(e._id).remove()
+        _db.comment.removeAllComment(e._id)
+      })
+    })
   }
 }
