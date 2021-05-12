@@ -37,12 +37,12 @@ export class Strategy {
           },
           publish: {
             name: strategy.name,
-            desc:strategy.desc,
+            desc: strategy.desc,
             content: strategy.content,
           },
           draft: {
             name: strategy.name,
-            desc:strategy.desc,
+            desc: strategy.desc,
             content: strategy.content,
           }
         }
