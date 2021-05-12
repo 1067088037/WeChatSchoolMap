@@ -365,8 +365,8 @@ Page({
       db.strategy.getStrategy(id).then(res => {
         console.log("获取到该建筑的攻略： ", res)
         let srcs = []
-        res.publish.content[0].image.forEach(im=>{
-          im = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/"+im
+        res.publish.content[0].image.forEach(im => {
+          im = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/" + im
           srcs.push(im)
         })
         let strategy = {
@@ -381,7 +381,7 @@ Page({
         testStrategies.push(strategy)
       })
     })
-    setTimeout(()=>{
+    setTimeout(() => {
       this.setData({
         showStrategiesArea: true,
         introArea: false,
@@ -433,8 +433,8 @@ Page({
           description: "云山苍苍，珠水泱泱\n华工吾校，伟人遗芳\n" + "前贤创业，后人图强\n" + "崛起南国，培育栋梁\n金银岛畔，湖滨路旁\n红楼耸立，碑铭铿锵"
         }].concat(testStrategies)
       })
-    },1000)
-    
+    }, 1000)
+
 
   }, // end function
   /**
@@ -586,7 +586,7 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {},
+  onShow: function () { },
 
   /**
    * 生命周期函数--监听页面隐藏

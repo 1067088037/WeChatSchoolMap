@@ -58,7 +58,16 @@
     <!-- 发表评论 -->
     <view wx:if="{{showComment}}">
       <view wx:for="{{comments}}" wx:key="index">
-        <text>{{item.text}}</text>
+        <view class="specificComment">
+          <!-- 想得到评论人的头像和昵称
+          <image class="userinfo-avatar" src="{{userAvatars}}" mode="cover"></image>
+          <text class="userinfo-nickname">{{userNickName}}</text>
+        -->
+          <text>{{item.text}}</text>
+          <image class="commentLlikeBtn"
+            src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/like.png">
+          </image>
+        </view>
       </view>
       <view class="postComment">
         <input class="input" bindinput="getComment" placeholder="随便说点什么"></input>
