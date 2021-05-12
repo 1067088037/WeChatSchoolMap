@@ -7,12 +7,13 @@ const util = require('../util')
 export class Strategy {
   /**
    * 添加攻略 仅仅用于首次添加
-   * @param {string} campusId 校区ID
+   * @param {string} superId 父级ID
+   * @param {string} superType 父级类型 arch或campus
    * @param {object} strategy 策略 包括name，content; time会自动生成
    * content是Array，数组中每个对象包括name，楼层，位置，描述和图像数组
    * time是Object，包含首次创建时间fisrtCreate和最后修改时间lastEdit
    */
-  async addStrategy(campusId, strategy) {
+  async addStrategy(superId, superType, strategy) {
     if (strategy.constructor != Object) {
       console.error('strategy类型非法')
     } else if (strategy.name.constructor != String) {
@@ -26,8 +27,8 @@ export class Strategy {
         data: {
           _id: _id,
           super: {
-            _id: campusId,
-            type: 'campus'
+            _id: superId,
+            type: superType
           },
           version: {
             editVersion: 1,
@@ -60,15 +61,15 @@ export class Strategy {
   }
 
   /**
-   * 获取校区内全部攻略的简要信息，不包含详情
-   * @param {string} campusId 
+   * 获取父级拥有的全部攻略的简要信息，不包含详情
+   * @param {string} superId 
    */
-  async getBriefStrategyArray(campusId) {
+  async getBriefStrategyArray(superId) {
     try {
       return wx.cloud.callFunction({
         name: 'getBriefStrategy',
         data: {
-          superId: campusId
+          superId: superId
         }
       }).then(res => res.result)
     } catch (e) {

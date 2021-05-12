@@ -6,8 +6,9 @@
 import { db } from "../../util/database/database";
 
 export function launchTest() {
-  // db.strategy.addStrategy('1ace8ef160901b1b008f69ae08b0ee8a', {
+  // db.strategy.addStrategy('1ace8ef160901b1b008f69ae08b0ee8a', 'campus', {
   //   name: '攻略',
+  //   desc: '啦啦啦啦啦',
   //   content: [
   //     {
   //       name: '出发点',

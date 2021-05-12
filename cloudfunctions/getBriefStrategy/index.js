@@ -11,6 +11,7 @@ exports.main = async (event, context) => {
     'super._id': event.superId
   }).count()
   const total = countResult.total
+  if (total == 0) return []
   // 计算需分几次取
   const batchTimes = Math.ceil(total / 100)
   // 承载所有读操作的 promise 的数组
