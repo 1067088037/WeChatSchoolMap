@@ -30,7 +30,7 @@ export class Strategy {
             type: 'campus'
           },
           name: strategy.name,
-          content: strategy,
+          content: strategy.content,
           time: strategy.time
         }
       })

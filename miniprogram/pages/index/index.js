@@ -790,7 +790,6 @@ Page({
     this.setData({
       markers,
       showPage: false,
-
     })
     flag = 3
   },
