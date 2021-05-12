@@ -32,7 +32,8 @@ Page({
     comments: [],
     userAvatars: [],
     userNickName: [],
-    likeNums: []
+    likeNums: [],
+    userUploadPhotoes:[]
   },
   /**
    * chooseImage
@@ -108,6 +109,9 @@ Page({
    */
   uploadSuccess(e) {
     console.log('upload success', e.detail)
+    this.setData({
+      userUploadPhotoes:this.data.userUploadPhotoes.concat(e.detail.urls[0])
+    })
   },
   //获取用户输入的评论内容
   getComment(e) {
@@ -206,8 +210,26 @@ Page({
     this.setData({
       isCreateNewTip: false,
       showTipsArea: true,
-      showBuilidngBanner: true
+      showBuilidngBanner: true,
+      userUploadPhotoes:[]
     })
+  },
+  sendTip(){
+    this.data.userUploadPhotoes.forEach((e,i)=>{
+      const filepath=e;
+      const name = i.toString()
+      const cloudpath="Tips/"+name + filepath.match(/\.[^.]+?$/)[0]
+      console.log(cloudpath)
+      wx.cloud.uploadFile({
+        cloudPath:cloudpath,
+        filePath:filepath,
+        success:res=>{
+          console.log(res.fileId)
+        },
+        fail:console.error
+      })
+    })
+    
   },
   /**
    * createNewTip

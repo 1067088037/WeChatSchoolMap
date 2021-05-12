@@ -143,7 +143,7 @@
         <button style="width:100%" bindtap="returnTipArea">取消</button>
       </view>
       <view class="createNewTip">
-        <button style="color:white;">发布攻略</button>
+        <button style="color:white;" bindtap="sendTip">发布攻略</button>
       </view>
     </view>
   </view>
