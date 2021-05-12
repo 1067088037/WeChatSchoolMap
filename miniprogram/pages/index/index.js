@@ -346,13 +346,15 @@ Page({
     departmentsItem: [
       "(全校)", "软件学院", "百步梯", "校学生会"
     ], // belong 属于那个部门
-    departmentsIndex: 0, // 
+    departmentsIndex: [0], // 
     pickerNum: [1],
     markerTypes: ['实时消息', '活动'], //type
     markerType: 1,
     newMarkerTitle: "",
     newMarkerDesc: "",
     buildingSelected: null,
+    files:[],
+    userUploadIcons:""
   },
   /**
    * addPicker()
@@ -362,9 +364,12 @@ Page({
    */
   addPicker() {
     this.data.pickerNum.push(1)
+    this.data.departmentsIndex.push(0)
     var pickerNum = this.data.pickerNum
+    var departmentsIndex = this.data.departmentsIndex
     this.setData({
-      pickerNum
+      pickerNum,
+      departmentsIndex
     })
   },
   /**
@@ -458,8 +463,11 @@ Page({
    */
   visibleChange(e) {
     console.log(e)
+    var id = parseInt( e.currentTarget.id)
+    this.data.departmentsIndex[id] = e.detail.value
+    var departmentsIndex = this.data.departmentsIndex
     this.setData({
-      departmentsIndex: e.detail.value,
+      departmentsIndex
     })
   },
   /**
@@ -477,7 +485,11 @@ Page({
     if (isAdd) {
       let latitude_ = e.detail.latitude;
       let longitude_ = e.detail.longitude;
+      let id = util.randomNumberId();
       let userPoint = [{
+        id:id,
+        width:40,
+        height:50,
         longitude: longitude_,
         latitude: latitude_,
       }]
@@ -529,6 +541,54 @@ Page({
       showMarkerDialogfa: false
     })
   },
+  chooseImage:function(e){
+    console.log("e", e)
+    var that = this;
+    wx.chooseImage({
+      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success: function (res) {
+        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+        // console.log(res.tempFilePaths)
+        let obj = {}
+        obj['url'] = res.tempFilePaths[0]
+        that.setData({
+          files: that.data.files.push(obj)
+        })
+      }
+    })
+  },
+  previewImage: function (e) {
+    wx.previewImage({
+      current: e.currentTarget.id, // 当前显示图片的http链接
+      urls: this.data.files // 需要预览的图片http链接列表
+    })
+  },
+  uploadFile(files){
+    console.log('upload files', files)
+    // 文件上传的函数，返回一个promise
+    return new Promise((resolve, reject) => {
+      var tempFilePaths = files.tempFilePaths;
+      this.setData({
+        filesUrl: tempFilePaths
+      })
+      var obj = {}
+      obj['urls'] = tempFilePaths;
+      resolve(obj)
+    })
+  },
+  uploadError(e){
+    console.log('upload error', e.detail)
+  },
+  uploadSuccess(e){
+    console.log('upload success', e.detail)
+    this.setData({
+      userUploadIcons:(e.detail.urls[0])
+    })
+  },
+  selectFile(files){
+    console.log('files', files)
+  },
   /**
    * confirmTap
    * @todo 确定添加标点，将用户所填写的标点信息上传到云端数据库 --- 在标点添加信息界面
@@ -539,7 +599,15 @@ Page({
 
     let newPoint = this.data.markers.pop()
     let campusId = app.globalData.campus._id;
-    let belong = [this.data.departmentsItem[this.data.departmentsIndex]]
+    let belongs = []
+    for(var i = 0 ; i < this.data.pickerNum.length;i++)
+    {
+      let belong = [this.data.departmentsItem[this.data.departmentsIndex[i]]]
+      if(belong == "(全校)")
+        belong = null;
+      belongs.push(belong)
+    }
+    
     let type;
     if (this.data.markerTypes[this.data.markerType] == '实时消息') {
       type = "current"
@@ -553,9 +621,10 @@ Page({
     let time = db.point.generateTimeObj(show, start, end, hide)
     let name = this.data.newMarkerTitle
     let text = this.data.newMarkerDesc
-    let desc = db.point.generateDescObj(name, text, "", [])
+    let icon = this.data.userUploadIcons
+    let desc = db.point.generateDescObj(name, text, icon, [])
 
-    db.point.addPoint(campusId, belong, type, time, desc, db.Geo.Point(newPoint.longitude, newPoint.latitude))
+    db.point.addPoint(campusId, belongs, type, time, desc, db.Geo.Point(newPoint.longitude, newPoint.latitude))
     this.setData({
       isAddedMarker: false,
       showMarkerDialog: false
@@ -655,7 +724,6 @@ Page({
    * @param {*} e  checkbox对象
    */
   selectArchFunc(e) {
-
     //   如果selectArchType中含有不在e.detail.value中的type 则删除
     if (selectedArchType.length > 0) {
       selectedArchType.forEach((value, index) => {
@@ -664,7 +732,6 @@ Page({
           selectedArchType.splice(index, 1)
       })
     }
-
     // 选择arrchArray中有e.detail.value的type 且selectedArchType中没有的type
     // push进selectArchType
     archArray.forEach((value, index) => {
@@ -677,7 +744,6 @@ Page({
         selectedArchType.push(value.type)
       }
     })
-
     visibleArchArray = [].concat(realTimeInfoArray)
     // 更新可视建筑
     archArray.forEach((value, index) => {
@@ -908,6 +974,11 @@ Page({
         console.log(latitude, longitude)
       }
     })
+    // 绑定this才能上传
+    this.setData({
+      selectFile: this.selectFile.bind(this),
+      uploadFile: this.uploadFile.bind(this)
+    })
   },
 
 
@@ -969,7 +1040,8 @@ Page({
             latitude: value.geo.coordinates[1],
             width: 30,
             height: 40,
-            type: value.type
+            type: value.type,
+            iconPath:value.desc.icon
           })
         else {
           realTimeInfoArray.push({
