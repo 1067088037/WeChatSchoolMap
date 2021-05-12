@@ -32,7 +32,7 @@ export class Arch {
     if (arch.constructor != Object) {
       console.error('arch类型非法')
     } else {
-      _db.collection('arch').add({
+      return _db.collection('arch').add({
         data: {
           super: {
             _id: campusId,
@@ -58,7 +58,7 @@ export class Arch {
       console.error('arch类型非法')
     } else {
       // console.log(arch)
-      _db.collection('arch').doc(archId).update({
+      return _db.collection('arch').doc(archId).update({
         data: arch
       })
     }
@@ -73,7 +73,7 @@ export class Arch {
     if (arch.constructor != Object) {
       console.error('arch类型非法')
     } else {
-      _db.collection('arch').where({
+      return _db.collection('arch').where({
         markId: markId
       }).update({
         data: arch
@@ -85,22 +85,24 @@ export class Arch {
    * 删除指定建筑物
    * @param {string} archId 建筑物ID
    */
-  removeArchById(archId) {
-    _db.collection('arch').doc(archId).remove()
-    db.comment.removeAllComment(archId)
+  async removeArchById(archId) {
+    await _db.collection('arch').doc(archId).remove()
+    await _db.collection('strategy').where({ 'super._id': archId }).remove()
+    return db.comment.removeAllComment(archId)
   }
 
   /**
    * 删除指定建筑物
    * @param {string} markId 建筑物标注ID
    */
-  removeArchByMarkId(markId) {
-    _db.collection('arch').where({
+  async removeArchByMarkId(markId) {
+    return await _db.collection('arch').where({
       markId: markId
-    }).get().then(res => {
-      res.data.forEach(e => {
-        _db.collection('arch').doc(e._id).remove()
-        _db.comment.removeAllComment(e._id)
+    }).get().then(async res => {
+      res.data.forEach(async e => {
+        await _db.collection('arch').doc(e._id).remove()
+        await _db.collection('strategy').where({ 'super._id': e._id }).remove()
+        await _db.comment.removeAllComment(e._id)
       })
     })
   }

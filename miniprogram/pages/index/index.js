@@ -754,7 +754,7 @@ Page({
         visibleArchArray.push(value)
       }
     })
-    console.log(selectedArchType)
+    //console.log(selectedArchType)
     //visibleArchArray = visibleArchArray.concat(activitiesPoint)
     this.setData({
       markers: visibleArchArray

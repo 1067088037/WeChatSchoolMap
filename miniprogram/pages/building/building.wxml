@@ -33,8 +33,8 @@
     <view class="StrategiesArea" wx:if="{{showStrategiesArea}}">
       <view class="Strategies" wx:for="{{Strategies}}" wx:key="item">
         <view class="Strategy" id="{{item.id}}">
-          <image src="{{item.src}}" bindtap="intoDetailStrategy" id="{{item.id}}"></image>
-          <text style="display:block" bindtap="intoDetailStrategy" id="{{item.id}}">这里是攻略攻略攻略攻略攻略攻略</text>
+          <image src="{{item.src[0]}}" bindtap="intoDetailStrategy" id="{{item.id}}"></image>
+          <text style="display:block" bindtap="intoDetailStrategy" id="{{item.id}}">{{item.intro}}</text>
           <view class="like-btn">
             <image class="like" src="/images/building/like.png" mode="widthFix" wx:if="{{item.isLike==false}}"
               bindtap="likeClick" id="{{item.id}}" />

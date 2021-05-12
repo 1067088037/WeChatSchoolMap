@@ -40,7 +40,8 @@ Page({
       text: "不保存"
     }, {
       text: "保存"
-    }] // 对话框按钮集,
+    }], // 对话框按钮集,
+    strategiesIds: []
 
   },
   inputTitle(e) {
@@ -269,10 +270,10 @@ Page({
       let strategy = {
         name: name,
         content: content,
-        desc:desc
+        desc: desc
       }
       content.push(obj);
-      db.strategy.addStrategy(campusId, strategy)
+      db.strategy.addStrategy(campusId, "arch", strategy)
       this.setData({
         isCreateNewStrategy: false,
         showStrategiesArea: true,
@@ -317,6 +318,7 @@ Page({
    * @todo 上传攻略到数据库
    */
   sendStrategy() {
+    let superId = this.data.building._id
     let name = this.getStrategyName();
     let campusId = app.globalData.campus._id
     let content = [];
@@ -332,7 +334,7 @@ Page({
       desc: desc
     }
     content.push(obj);
-    db.strategy.addStrategy(campusId, strategy)
+    db.strategy.addStrategy(superId, "arch", strategy)
     this.setData({
       isCreateNewStrategy: false,
       showStrategiesArea: true,
@@ -358,52 +360,81 @@ Page({
    * @todo 显示攻略区
    */
   StrategiesAreaTap(e) {
-    this.setData({
-      showStrategiesArea: true,
-      introArea: false,
-      // 测试数据Strategies,正常使用时应从数据库获取
-      Strategies: [{
-        src: "/images/tabBarIcon/design_selected.png",
-        id: 1,
-        likeNum: 0,
-        isLike: false,
-        isClicked: false,
-        title: "华南理工大学",
-        description: "云山苍苍，珠水泱泱\n华工吾校，伟人遗芳\n" + "前贤创业，后人图强\n" + "崛起南国，培育栋梁\n金银岛畔，湖滨路旁\n红楼耸立，碑铭铿锵"
-      }, {
-        src: "/images/tabBarIcon/design_selected.png",
-        id: 2,
-        likeNum: 0,
-        isLike: false,
-        isClicked: false,
-        title: "华南理工大学",
-        description: "云山苍苍，珠水泱泱\n华工吾校，伟人遗芳\n" + "前贤创业，后人图强\n" + "崛起南国，培育栋梁\n金银岛畔，湖滨路旁\n红楼耸立，碑铭铿锵"
-      }, {
-        src: "/images/tabBarIcon/design_selected.png",
-        id: 3,
-        likeNum: 0,
-        isLike: false,
-        isClicked: false,
-        title: "华南理工大学",
-        description: "云山苍苍，珠水泱泱\n华工吾校，伟人遗芳\n" + "前贤创业，后人图强\n" + "崛起南国，培育栋梁\n金银岛畔，湖滨路旁\n红楼耸立，碑铭铿锵"
-      }, {
-        src: "/images/tabBarIcon/design_selected.png",
-        id: 4,
-        likeNum: 0,
-        isLike: false,
-        isClicked: false,
-        title: "华南理工大学",
-        description: "云山苍苍，珠水泱泱\n华工吾校，伟人遗芳\n" + "前贤创业，后人图强\n" + "崛起南国，培育栋梁\n金银岛畔，湖滨路旁\n红楼耸立，碑铭铿锵"
-      }, {
-        src: "/images/tabBarIcon/design_selected.png",
-        id: 5,
-        likeNum: 0,
-        isLike: false,
-        isClicked: false,
-        title: "华南理工大学",
-        description: "云山苍苍，珠水泱泱\n华工吾校，伟人遗芳\n" + "前贤创业，后人图强\n" + "崛起南国，培育栋梁\n金银岛畔，湖滨路旁\n红楼耸立，碑铭铿锵"
-      }]
+    let testStrategies = [];
+    this.data.strategiesIds.forEach(id => {
+      db.strategy.getStrategy(id).then(res => {
+        console.log("获取到该建筑的攻略： ", res)
+        let srcs = []
+        res.publish.content[0].image.forEach(im=>{
+          im = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/"+im
+          srcs.push(im)
+        })
+        let strategy = {
+          src: srcs,
+          id: res._id,
+          likeNum: 0,
+          isLike: false,
+          intro: res.publish.desc,
+          description: res.publish.content[0].desc,
+          title: res.publish.content[0].name
+        }
+        testStrategies.push(strategy)
+      })
     })
+    setTimeout(()=>{
+      this.setData({
+        showStrategiesArea: true,
+        introArea: false,
+        // 测试数据Strategies,正常使用时应从数据库获取
+        Strategies: [{
+          src: ["/images/tabBarIcon/design_selected.png"],
+          id: 1,
+          likeNum: 0,
+          isLike: false,
+          isClicked: false,
+          title: "华南理工大学",
+          intro: "这里是攻略这里是攻略",
+          description: "云山苍苍，珠水泱泱\n华工吾校，伟人遗芳\n" + "前贤创业，后人图强\n" + "崛起南国，培育栋梁\n金银岛畔，湖滨路旁\n红楼耸立，碑铭铿锵"
+        }, {
+          src: ["/images/tabBarIcon/design_selected.png"],
+          id: 2,
+          likeNum: 0,
+          isLike: false,
+          isClicked: false,
+          title: "华南理工大学",
+          intro: "这里是攻略这里是攻略",
+          description: "云山苍苍，珠水泱泱\n华工吾校，伟人遗芳\n" + "前贤创业，后人图强\n" + "崛起南国，培育栋梁\n金银岛畔，湖滨路旁\n红楼耸立，碑铭铿锵"
+        }, {
+          src: ["/images/tabBarIcon/design_selected.png"],
+          id: 3,
+          likeNum: 0,
+          isLike: false,
+          isClicked: false,
+          title: "华南理工大学",
+          intro: "这里是攻略这里是攻略",
+          description: "云山苍苍，珠水泱泱\n华工吾校，伟人遗芳\n" + "前贤创业，后人图强\n" + "崛起南国，培育栋梁\n金银岛畔，湖滨路旁\n红楼耸立，碑铭铿锵"
+        }, {
+          src: ["/images/tabBarIcon/design_selected.png"],
+          id: 4,
+          likeNum: 0,
+          isLike: false,
+          isClicked: false,
+          title: "华南理工大学",
+          intro: "这里是攻略这里是攻略",
+          description: "云山苍苍，珠水泱泱\n华工吾校，伟人遗芳\n" + "前贤创业，后人图强\n" + "崛起南国，培育栋梁\n金银岛畔，湖滨路旁\n红楼耸立，碑铭铿锵"
+        }, {
+          src: ["/images/tabBarIcon/design_selected.png"],
+          id: 5,
+          likeNum: 0,
+          isLike: false,
+          isClicked: false,
+          title: "华南理工大学",
+          intro: "这里是攻略这里是攻略",
+          description: "云山苍苍，珠水泱泱\n华工吾校，伟人遗芳\n" + "前贤创业，后人图强\n" + "崛起南国，培育栋梁\n金银岛畔，湖滨路旁\n红楼耸立，碑铭铿锵"
+        }].concat(testStrategies)
+      })
+    },1000)
+    
 
   }, // end function
   /**
@@ -519,17 +550,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
-    this.setData({
-      selectFile: this.selectFile.bind(this),
-      uplaodFile: this.uplaodFile.bind(this)
-    })
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
     //console.log(app.globalData.markerId)
     if (app.globalData.markerId) {
       this.setData({
@@ -541,6 +561,25 @@ Page({
         building: app.globalData.buildingSelected
       })
     }
+    this.setData({
+      selectFile: this.selectFile.bind(this),
+      uplaodFile: this.uplaodFile.bind(this)
+    })
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+    db.strategy.getBriefStrategyArray(this.data.building._id).then(res => {
+      console.log("获取到该建筑的简略信息", res)
+      res.forEach(e => {
+        let id = [e._id]
+        this.setData({
+          strategiesIds: this.data.strategiesIds.concat(id)
+        })
+      })
+    })
 
   },
 

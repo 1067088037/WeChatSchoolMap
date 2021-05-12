@@ -3,16 +3,35 @@ const cmd = _db.command
 
 export class Like {
   /**
-   * 点赞，赞的父类必须是评论
-   * @param {string} commentId 
+   * 绑定新的点赞
+   * @param {string} superId 
+   * @param {string} superType 
+   * @param {object} super_super 只有属于comment的点赞才需要，其他一概填null
    */
-  giveALike(commentId) {
+  async bindNewLike(superId, superType, super_super) {
+    return await _db.collection('like').add({
+      data: {
+        super: {
+          _id: superId,
+          type: superType,
+          super: super_super
+        },
+        like: []
+      }
+    })
+  }
+
+  /**
+   * 点赞 对于赞的父类不限制
+   * @param {string} superId 
+   */
+  async giveALike(superId) {
     let openid = getApp().globalData.openid
     if (openid == null) {
       console.error('点赞的openid为null')
     } else {
-      _db.collection('like').where({
-        "super._id": commentId
+      return await _db.collection('like').where({
+        "super._id": superId
       }).update({
         data: {
           like: cmd.addToSet(openid)
@@ -22,12 +41,12 @@ export class Like {
   }
 
   /**
-   * 取消点赞
-   * @param {string} commentId 
+   * 取消点赞 对于赞的父类不限制
+   * @param {string} superId 
    */
-  cancelLike(commentId) {
-    _db.collection('like').where({
-      "super._id": commentId
+  async cancelLike(superId) {
+    return await _db.collection('like').where({
+      "super._id": superId
     }).update({
       data: {
         like: cmd.pull(getApp().globalData.openid)
@@ -37,12 +56,12 @@ export class Like {
 
   /**
    * 判断是否已经点赞
-   * @param {string} commentId 
+   * @param {string} superId 
    */
-  async isLike(commentId) {
+  async isLike(superId) {
     try {
       return await _db.collection('like').where({
-        'super._id': commentId
+        'super._id': superId
       }).get().then(res => res.data[0].like.indexOf(getApp().globalData.openid) != -1)
     } catch (e) {
       return false
