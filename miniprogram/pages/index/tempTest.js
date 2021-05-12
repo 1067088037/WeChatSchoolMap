@@ -6,7 +6,7 @@
 import { db } from "../../util/database/database";
 
 export function launchTest() {
-  // db.strategy.addStrategy('233', {
+  // db.strategy.addStrategy('1ace8ef160901b1b008f69ae08b0ee8a', {
   //   name: '攻略',
   //   content: [
   //     {
@@ -32,15 +32,15 @@ export function launchTest() {
 
   // db.strategy.publishFromDraft('x2ix76c01ac9h5j8sk3ghb0bcdg0bplc')
 
-  // db.strategy.removeStrategy('47g2v6ceb3mbuaj147hilc2vsf03fwa0')
+  // db.strategy.removeStrategy('thpy9sqvm4vcgbuftjwqvxvqnv92cx21')
 
   // db.strategy.getStrategy('yy6esdh8r98g0ogy03q6nm5kpb7r05j6').then(res => {
   //   console.log(res)
   // })
 
-  // db.strategy.getBriefStrategyArray('1ace8ef160901b1b008f69ae08b0ee8a').then(res => {
-  //   console.log(res)
-  // })
+  db.strategy.getBriefStrategyArray('1ace8ef160901b1b008f69ae08b0ee8a').then(res => {
+    console.log(res)
+  })
 }
 
 export function dbExample() {

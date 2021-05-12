@@ -64,12 +64,16 @@ export class Strategy {
    * @param {string} campusId 
    */
   async getBriefStrategyArray(campusId) {
-    return wx.cloud.callFunction({
-      name: 'getBriefStrategy',
-      data: {
-        superId: campusId
-      }
-    }).then(res => res.result.data)
+    try {
+      return wx.cloud.callFunction({
+        name: 'getBriefStrategy',
+        data: {
+          superId: campusId
+        }
+      }).then(res => res.result)
+    } catch (e) {
+      return []
+    }
   }
 
   /**
@@ -78,6 +82,9 @@ export class Strategy {
    */
   async removeStrategy(strategyId) {
     await _db.collection('strategy').doc(strategyId).remove()
+    await _db.collection('like').where({
+      'super._id': strategyId
+    }).remove()
     return db.comment.removeAllComment(strategyId)
   }
 

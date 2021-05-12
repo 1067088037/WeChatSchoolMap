@@ -22,11 +22,26 @@ exports.main = async (event, context) => {
     tasks.push(promise)
   }
   // 等待所有
-  return (await Promise.all(tasks)).reduce((acc, cur) => {
-    console.log(cur)
+  let origin = await (await Promise.all(tasks)).reduce((acc, cur) => {
     return {
-      data: [],
+      data: acc.data.concat(cur.data),
       errMsg: acc.errMsg,
     }
   })
+  let result = []
+  await origin.data.forEach(e => {
+    let add = {
+      _id: e._id,
+      _openid: e._openid,
+      version: e.version,
+      publish: {
+        name: e.publish.name,
+        desc: e.publish.desc,
+        content: '简版不包含'
+      },
+      draft: '简版不包含'
+    }
+    result.push(add)
+  })
+  return result
 }
