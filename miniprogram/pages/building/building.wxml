@@ -31,7 +31,7 @@
     </view>
     <!-- 攻略区 -->
     <view class="StrategiesArea" wx:if="{{showStrategiesArea}}">
-      <view class="Strategies" wx:for="{{Strategies}}" wx:key="item">
+      <view class="Strategies" wx:for="{{strategies}}" wx:key="item">
         <view class="Strategy" id="{{item.id}}">
           <image src="{{item.src[0]}}" bindtap="intoDetailStrategy" id="{{item.id}}"></image>
           <text style="display:block" bindtap="intoDetailStrategy" id="{{item.id}}">{{item.intro}}</text>
@@ -43,7 +43,7 @@
             <text>{{item.likeNum}}</text>
           </view>
           <view class="comment-btn">
-            <image class="comment" src="/images/building/comment.png" mode="widthFix" bindtap="intoCommentClick">
+            <image class="comment" src="/images/building/comment.png" mode="widthFix" bindtap="intoDetailStrategy">
             </image>
           </view>
         </view>
@@ -56,7 +56,7 @@
       <button bindtap="toHomePage">返回</button>
     </view>
     <!-- 发表评论 -->
-    <view wx:if="{{showComment}}">
+    <!-- <view wx:if="{{showComment}}">
       <view wx:for="{{comments}}" wx:key="index">
         <text>{{item.text}}</text>
       </view>
@@ -66,7 +66,7 @@
       <view>
         <button type="primary" bindtap="sendComment">发表评论</button>
       </view>
-    </view>
+    </view> -->
   </view>
   <!-- 具体攻略界面 -->
   <view class="DetailStrategyPage" id="{{selectedStrategy.id}}" wx:if="{{selectedStrategy.isClicked}}">
@@ -74,16 +74,16 @@
     <view class="StrategyImages">
       <swiper class="StrategyImageBanner" indicator-dots indicator-color="rgba(255,255,255,0.5)"
         indicator-active-color="blue" circular="{{true}}" autoplay="{{false}}" interval="3000">
-        <swiper-item>
-          <image src=" {{selectedStrategy.src}}" mode="heightFix">
+        <swiper-item wx:for="{{selectedStrategy.src}}" wx:key="item">
+          <image src="{{item}}" mode="heightFix">
           </image>
         </swiper-item>
-        <swiper-item>
+        <!-- <swiper-item>
           <image src="{{selectedStrategy.src}}" mode="heightFix"></image>
         </swiper-item>
         <swiper-item>
           <image src="{{selectedStrategy.src}}" mode="heightFix"></image>
-        </swiper-item>
+        </swiper-item> -->
       </swiper>
     </view>
     <!-- 攻略具体内容 -->
