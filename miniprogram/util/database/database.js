@@ -10,12 +10,14 @@ import { Point } from './point'
 import { Like } from './like'
 import { Section } from './section'
 import { Strategy } from './strategy'
+import { Global } from './global'
 
 export class DataBase {
   _db = _db //数据库实例
   Geo = _db.Geo //地理位置实例
   serverDate = _db.serverDate //服务器时间
   cmd = _db.command //操作指令
+  global = new Global()
   user = new User()
   school = new School()
   campus =  new Campus()

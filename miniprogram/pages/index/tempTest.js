@@ -39,9 +39,11 @@ export function launchTest() {
   //   console.log(res)
   // })
 
-  db.strategy.getBriefStrategyArray('1ace8ef160901b1b008f69ae08b0ee8a').then(res => {
-    console.log(res)
-  })
+  // db.strategy.getBriefStrategyArray('1ace8ef160901b1b008f69ae08b0ee8a').then(res => {
+  //   console.log(res)
+  // })
+
+  db.global.clearUseless('like')
 }
 
 export function dbExample() {
