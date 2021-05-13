@@ -57,7 +57,6 @@
       <button bindtap="toHomePage">返回</button>
     </view>
     <!-- 发表评论 -->
-
     <!-- 攻略具体内容 -->
     <view class="DetailStrategyPage" id="{{selectedStrategy.id}}" wx:if="{{selectedStrategy.isClicked}}">
       <!-- 用户添加的攻略图片 -->

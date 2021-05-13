@@ -394,9 +394,12 @@ Page({
         },1000)
       })
     })
+<<<<<<< HEAD
     wx.showLoading({
       title: 'loading...',
     })
+=======
+>>>>>>> dev
     setTimeout(() => {
       this.setData({
         showStrategiesArea: true,
@@ -404,8 +407,12 @@ Page({
         // 测试数据Strategies,正常使用时应从数据库获取
         strategies: [].concat(testStrategies)
       })
+<<<<<<< HEAD
       wx.hideLoading()
     }, 1500)
+=======
+    }, 1000)
+>>>>>>> dev
 
 
   }, // end function
