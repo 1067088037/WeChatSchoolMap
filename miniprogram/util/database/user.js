@@ -17,6 +17,19 @@ export class User {
   }
 
   /**
+   * 获取该用户有权控制的用户
+   * @param {string} openid 默认传入此用户的ID
+   */
+  async getUserUnderControl(openid = getApp().globalData.openid) {
+    return await wx.cloud.callFunction({
+      name: 'getUserUnderControl',
+      data: {
+        _openid: openid
+      }
+    })
+  }
+
+  /**
    * 设置用户信息
    * @param {string} openid 
    * @param {object} userInfo 

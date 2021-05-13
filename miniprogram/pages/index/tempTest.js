@@ -43,7 +43,15 @@ export function launchTest() {
   //   console.log(res)
   // })
 
-  db.global.clearUseless('like')
+  db.strategy.getBriefStrategyArrayByOpenid(getApp().globalData.openid).then(res => {
+    console.log(res)
+  })
+
+  // db.global.clearUseless('like')
+
+  // db.user.getUserUnderControl().then(res => {
+  //   console.log(res)
+  // })
 }
 
 export function dbExample() {

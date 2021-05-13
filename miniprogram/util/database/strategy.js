@@ -78,6 +78,23 @@ export class Strategy {
   }
 
   /**
+   * 获取用户拥有的全部攻略的简要信息，不包含详情
+   * @param {string} openid 
+   */
+  async getBriefStrategyArrayByOpenid(openid) {
+    try {
+      return wx.cloud.callFunction({
+        name: 'getBriefStrategyByOpenid',
+        data: {
+          _openid: openid
+        }
+      }).then(res => res.result)
+    } catch (e) {
+      return []
+    }
+  }
+
+  /**
    * 删除指定攻略
    * @param {string} strategyId 
    */
