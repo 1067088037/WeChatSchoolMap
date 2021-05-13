@@ -60,7 +60,7 @@ export class Comment {
           images: comment.images
         }
       })
-      return db.like.bindNewLike(commentId, 'comment', { _id, superId, type: superType })
+      return db.like.bindNewLike(commentId, 'comment', { _id:superId, type: superType })
     }
   }
 

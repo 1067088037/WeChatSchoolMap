@@ -145,8 +145,8 @@ Page({
   },
   //发表评论
   sendComment() {
-    let superId = this.data.selectedStrategy.id.toString()
-    console.log(superId)
+    let superId = this.data.selectedStrategy.id
+    console.log("评论所属于的攻略的id为：", superId)
     db.comment.addComment(superId, "arch", {
       reply: null,
       text: this.data.commentValue,
@@ -160,31 +160,38 @@ Page({
    *  
    */
   likeClick(e) {
-    let id = parseInt(e.currentTarget.id);
-    console.log(id)
+    let id = (e.currentTarget.id);
+    console.log("点赞攻略的id是：", id)
     let newStrategy = new Object
     let idx = 0;
-    this.data.Strategies.forEach((value, index) => {
+    this.data.strategies.forEach((value, index) => {
       if (value.id == id) {
-        if (!value.isLike) {
-          newStrategy = value
-          newStrategy.isLike = true;
-          newStrategy.likeNum++;
-          idx = index
-        } else {
-          newStrategy = value
-          newStrategy.isLike = false;
-          newStrategy.likeNum--;
-          idx = index
-        }
+        db.like.isLike(id).then(res => {
+          if (!res) {
+            db.like.giveALike(id);
+            newStrategy = value
+            newStrategy.isLike = true;
+            newStrategy.likeNum++;
+            idx = index
+          } else {
+            db.like.cancelLike(id)
+            newStrategy = value
+            newStrategy.isLike = false;
+            newStrategy.likeNum--;
+            idx = index
+          }
+        })
       }
     })
-    console.log(newStrategy)
-    this.data.Strategies.splice(idx, 1, newStrategy)
-    let Strategies = this.data.Strategies
-    this.setData({
-      Strategies
-    })
+    setTimeout(()=>{
+      console.log(newStrategy)
+      this.data.strategies.splice(idx, 1, newStrategy)
+      let strategies = this.data.strategies
+      this.setData({
+        strategies
+      })
+    },1000)
+    
   },
   /**
    * intoCommentClick
@@ -369,71 +376,37 @@ Page({
           im = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/" + im
           srcs.push(im)
         })
-        let strategy = {
-          src: srcs,
-          id: res._id,
-          likeNum: 0,
-          isLike: false,
-          intro: res.publish.desc,
-          description: res.publish.content[0].desc,
-          title: res.publish.content[0].name
-        }
-        testStrategies.push(strategy)
+        let likeNum;
+        db.like.countLike(res._id).then(likenums=>{
+          likeNum = likenums;
+        })
+        setTimeout(()=>{
+          let strategy = {
+            src: srcs,
+            id: res._id,
+            likeNum: likeNum,
+            isLike: (likeNum)?true:false,
+            intro: res.publish.desc,
+            description: res.publish.content[0].desc,
+            title: res.publish.content[0].name
+          }
+          testStrategies.push(strategy)
+        },1000)
       })
+    })
+    wx.showLoading({
+      title: 'loading...',
     })
     setTimeout(() => {
       this.setData({
         showStrategiesArea: true,
         introArea: false,
         // 测试数据Strategies,正常使用时应从数据库获取
-        Strategies: [{
-          src: ["/images/tabBarIcon/design_selected.png"],
-          id: 1,
-          likeNum: 0,
-          isLike: false,
-          isClicked: false,
-          title: "华南理工大学",
-          intro: "这里是攻略这里是攻略",
-          description: "云山苍苍，珠水泱泱\n华工吾校，伟人遗芳\n" + "前贤创业，后人图强\n" + "崛起南国，培育栋梁\n金银岛畔，湖滨路旁\n红楼耸立，碑铭铿锵"
-        }, {
-          src: ["/images/tabBarIcon/design_selected.png"],
-          id: 2,
-          likeNum: 0,
-          isLike: false,
-          isClicked: false,
-          title: "华南理工大学",
-          intro: "这里是攻略这里是攻略",
-          description: "云山苍苍，珠水泱泱\n华工吾校，伟人遗芳\n" + "前贤创业，后人图强\n" + "崛起南国，培育栋梁\n金银岛畔，湖滨路旁\n红楼耸立，碑铭铿锵"
-        }, {
-          src: ["/images/tabBarIcon/design_selected.png"],
-          id: 3,
-          likeNum: 0,
-          isLike: false,
-          isClicked: false,
-          title: "华南理工大学",
-          intro: "这里是攻略这里是攻略",
-          description: "云山苍苍，珠水泱泱\n华工吾校，伟人遗芳\n" + "前贤创业，后人图强\n" + "崛起南国，培育栋梁\n金银岛畔，湖滨路旁\n红楼耸立，碑铭铿锵"
-        }, {
-          src: ["/images/tabBarIcon/design_selected.png"],
-          id: 4,
-          likeNum: 0,
-          isLike: false,
-          isClicked: false,
-          title: "华南理工大学",
-          intro: "这里是攻略这里是攻略",
-          description: "云山苍苍，珠水泱泱\n华工吾校，伟人遗芳\n" + "前贤创业，后人图强\n" + "崛起南国，培育栋梁\n金银岛畔，湖滨路旁\n红楼耸立，碑铭铿锵"
-        }, {
-          src: ["/images/tabBarIcon/design_selected.png"],
-          id: 5,
-          likeNum: 0,
-          isLike: false,
-          isClicked: false,
-          title: "华南理工大学",
-          intro: "这里是攻略这里是攻略",
-          description: "云山苍苍，珠水泱泱\n华工吾校，伟人遗芳\n" + "前贤创业，后人图强\n" + "崛起南国，培育栋梁\n金银岛畔，湖滨路旁\n红楼耸立，碑铭铿锵"
-        }].concat(testStrategies)
+        strategies: [].concat(testStrategies)
       })
-    }, 1000)
+      wx.hideLoading()
+    }, 1500)
+
 
 
   }, // end function
@@ -446,6 +419,7 @@ Page({
     // 获取该攻略区的评论
     var that = this
     let comments = []
+    console.log("选中的攻略id是", e.currentTarget.id)
     db.comment.getAllComment(e.currentTarget.id).then(res => {
       let avatars = []
       let likeNums = []
@@ -487,11 +461,11 @@ Page({
       }, 1000)
 
     })
-    let id = parseInt(e.currentTarget.id)
+    let id = (e.currentTarget.id)
     console.log(this.data.comments)
     let selectedStrategy = new Object
     // 从所有发布的攻略中选出用户点击的那个攻略区，通过id选取
-    this.data.Strategies.forEach((value, index) => {
+    this.data.strategies.forEach((value, index) => {
       if (value.id == id) {
         selectedStrategy = value
         selectedStrategy.isClicked = true;

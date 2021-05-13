@@ -56,7 +56,9 @@
   width: 350rpx;
   height: auto;
 }
-
+.StrategiesArea{
+  background:snow
+}
 .Strategies{
   display: inline-block;
   width: 350rpx;
