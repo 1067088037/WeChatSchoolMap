@@ -43,9 +43,9 @@ export function launchTest() {
   //   console.log(res)
   // })
 
-  db.strategy.getBriefStrategyArrayByOpenid(getApp().globalData.openid).then(res => {
-    console.log(res)
-  })
+  // db.strategy.getBriefStrategyArrayByOpenid(getApp().globalData.openid).then(res => {
+  //   console.log(res)
+  // })
 
   // db.global.clearUseless('like')
 

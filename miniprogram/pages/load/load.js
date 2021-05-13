@@ -106,7 +106,13 @@ Page({
     // console.log(schoolData[this.data.schoolIndex])
     // console.log(campusData[this.data.campusIndex])
     await db.user.setInfo(_openid, {
-      school: schoolData[this.data.schoolIndex]._id, campus: campusData[this.data.campusIndex]._id, permission: 16
+      school: schoolData[this.data.schoolIndex]._id,
+      campus: campusData[this.data.campusIndex]._id,
+      section: {
+        admin: null,
+        join: []
+      },
+      permission: 16
     }).then(res => {
       loadSchoolAndCampus(this)
     })
@@ -175,7 +181,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    
+
   },
 
   /**

@@ -21,12 +21,17 @@ export class User {
    * @param {string} openid 默认传入此用户的ID
    */
   async getUserUnderControl(openid = getApp().globalData.openid) {
-    return await wx.cloud.callFunction({
-      name: 'getUserUnderControl',
-      data: {
-        _openid: openid
-      }
-    })
+    try {
+      let res = (await wx.cloud.callFunction({
+        name: 'getUserUnderControl',
+        data: {
+          _openid: openid
+        }
+      })).result
+      return res
+    } catch (err) {
+      return []
+    }
   }
 
   /**
