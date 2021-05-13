@@ -8,226 +8,8 @@ let RATE = wx.getSystemInfoSync().screenHeight / wx.getSystemInfoSync().screenWi
 const app = getApp() // 小程序全局
 const tempTest = require('./tempTest')
 
-// 宿舍点
-const dormPoint = [{
-  id: 101,
-  title: "C1",
-  longitude: 113.40182571464311,
-  latitude: 23.046767824328636
-}, {
-  id: 102,
-  title: "C2",
-  longitude: 113.40120928117472,
-  latitude: 23.0471646583267
-}, {
-  id: 103,
-  title: "C3",
-  longitude: 113.40185021415175,
-  latitude: 23.047504186700028
-}, {
-  id: 104,
-  title: "C4",
-  longitude: 113.40054522533796,
-  latitude: 23.047954877693126
-}, {
-  id: 105,
-  title: "C5",
-  longitude: 113.40153348539627,
-  latitude: 23.04808106296843
-}, {
-  id: 106,
-  title: "C6",
-  longitude: 113.40149859469557,
-  latitude: 23.048927878982695
-}, {
-  id: 107,
-  title: "C7",
-  longitude: 113.40034925086616,
-  latitude: 23.048802272349267
-}, {
-  id: 108,
-  title: "C8",
-  longitude: 113.4010858530205,
-  latitude: "23.04949424941177"
-}, {
-  id: 109,
-  title: "C9",
-  longitude: 113.40125681993754,
-  latitude: 23.050102380343247
-}, {
-  id: 110,
-  title: "C10",
-  longitude: 113.40164970605144,
-  latitude: 23.050733632220382
-}, {
-  id: 111,
-  title: "C11",
-  longitude: 113.40054931683858,
-  latitude: 23.050845904343497
-}, {
-  id: 112,
-  title: "C12",
-  longitude: 113.40021512898329,
-  latitude: 23.051718927598355
-}, {
-  id: 113,
-  title: "C13",
-  longitude: 113.40095258016413,
-  latitude: 23.05209316546067
-}, {
-  id: 114,
-  title: "C14",
-  longitude: 113.40095258016413,
-  latitude: 23.05209316546067
-}, {
-  id: 115,
-  title: "C15",
-  longitude: 113.40284351234652,
-  latitude: 23.05287646883959
-}, {
-  id: 116,
-  title: "C16",
-  longitude: 113.40274251516541,
-  latitude: 23.052148280064554
-}, {
-  id: 117,
-  title: "C17",
-  longitude: 113.40181814367634,
-  latitude: 23.051614075600956
-}, {
-  id: 118,
-  title: "D5",
-  longitude: 113.40228047286575,
-  latitude: 23.04808907708455
-}, {
-  id: 119,
-  title: "D3",
-  longitude: 113.40291996021574,
-  latitude: 23.047460629981458
-}]
-const classRoomPoint = [{
-  id: 201,
-  title: "A1",
-  longitude: 113.40556827398132,
-  latitude: 23.047712869258447
-}, {
-  id: 202,
-  title: "A2",
-  longitude: 113.4055623261861,
-  latitude: 23.048541478195286
-}, {
-  id: 203,
-  title: "A3",
-  longitude: 113.40546513492075,
-  latitude: 23.049398833812845
-}, {
-  id: 204,
-  title: "A4/A5",
-  longitude: 113.4060915745905,
-  latitude: 23.05017228010393
-}] // 教学楼点
-const collegePoint = [{
-  id: 301,
-  title: "B1国际楼",
-  longitude: 113.40971094123438,
-  latitude: 23.045284933369096
-}, {
-  id: 302,
-  title: "B2医学院",
-  longitude: 113.4086426292954,
-  latitude: 23.04351926552582
-}, {
-  id: 303,
-  title: "B3计算机科学与工程学院",
-  longitude: 113.40868765581808,
-  latitude: 23.045283987726666
-}, {
-  id: 304,
-  title: "B4环境与能源学院",
-  longitude: 113.40820212982726,
-  latitude: 23.04456072757484
-}, {
-  id: 305,
-  title: "B5能源研究学院",
-  longitude: 113.40798590988652,
-  latitude: 23.04575321449248
-}, {
-  id: 306,
-  title: "B6生命科学于工程学院",
-  longitude: 113.40741639450039,
-  latitude: 23.04494517662861
-}, {
-  id: 307,
-  title: "B7软件学院",
-  longitude: 113.40742290742037,
-  latitude: 23.046054516291566
-}, {
-  id: 308,
-  title: "B8软件学院",
-  longitude: 113.40683712367672,
-  latitude: 23.045217041240647
-}, {
-  id: 309,
-  title: "B9法学院",
-  longitude: 113.40752034838943,
-  latitude: 23.04816555065419
-}, {
-  id: 310,
-  title: "B9新闻与传播学院",
-  longitude: 113.40755053568273,
-  latitude: 23.047758523388648
-}, {
-  id: 311,
-  title: "B10经济与金融学院",
-  longitude: 113.40734142376141,
-  latitude: 23.049188072396547
-}, {
-  id: 312,
-  title: "B10电子商务系",
-  longitude: 113.40749441572348,
-  latitude: 23.048559842489716
-}, {
-  id: 313,
-  title: "B10旅游管理系",
-  longitude: 113.4075529575232,
-  latitude: 23.048885688944768
-}, {
-  id: 314,
-  title: "B11设计学院/艺术学院",
-  longitude: 113.40766014558994,
-  latitude: 23.050032315286327
-}, ] // 学院点
-const canteenPoint = [{
-  id: 1,
-  title: "第一学生饭堂",
-  longitude: 113.40268387434162,
-  latitude: 23.04866925793428
-}, {
-  id: 2,
-  title: "第二学生饭堂",
-  longitude: 113.40333534303113,
-  latitude: 23.051645364973492
-}, {
-  id: 3,
-  title: "世博超市",
-  longitude: 113.40203129147403,
-  latitude: 23.048593578356705
-}, {
-  id: 4,
-  title: "未来商店",
-  longitude: 113.40235747403517,
-  latitude: 23.047952836541615
-}, {
-  id: 5,
-  title: "7-11便利店",
-  longitude: 113.40188492453046,
-  latitude: 23.051165789442734
-}, {
-  id: 6,
-  title: "真功夫&猫熊煮茶",
-  longitude: 113.40232360687605,
-  latitude: 23.051009822324243
-}] // 吃饭点
+
+
 const shopPoint = [{
 
     title: "世博超市",
@@ -245,7 +27,7 @@ const shopPoint = [{
     longitude: 113.40176343650955,
     latitude: 23.05108920417096
   }
-]
+] // 商店点
 const deliverPickUpPoint = [] // 拿快递的点
 const vouchCenterPoint = [{
     id: 1,
@@ -353,8 +135,8 @@ Page({
     newMarkerTitle: "",
     newMarkerDesc: "",
     buildingSelected: null,
-    files:[],
-    userUploadIcons:""
+    files: [],
+    userUploadIcons: ""
   },
   /**
    * addPicker()
@@ -463,7 +245,7 @@ Page({
    */
   visibleChange(e) {
     console.log(e)
-    var id = parseInt( e.currentTarget.id)
+    var id = parseInt(e.currentTarget.id)
     this.data.departmentsIndex[id] = e.detail.value
     var departmentsIndex = this.data.departmentsIndex
     this.setData({
@@ -487,9 +269,9 @@ Page({
       let longitude_ = e.detail.longitude;
       let id = util.randomNumberId();
       let userPoint = [{
-        id:id,
-        width:40,
-        height:50,
+        id: id,
+        width: 40,
+        height: 50,
         longitude: longitude_,
         latitude: latitude_,
       }]
@@ -541,7 +323,7 @@ Page({
       showMarkerDialogfa: false
     })
   },
-  chooseImage:function(e){
+  chooseImage: function (e) {
     console.log("e", e)
     var that = this;
     wx.chooseImage({
@@ -564,7 +346,7 @@ Page({
       urls: this.data.files // 需要预览的图片http链接列表
     })
   },
-  uploadFile(files){
+  uploadFile(files) {
     console.log('upload files', files)
     // 文件上传的函数，返回一个promise
     return new Promise((resolve, reject) => {
@@ -577,16 +359,16 @@ Page({
       resolve(obj)
     })
   },
-  uploadError(e){
+  uploadError(e) {
     console.log('upload error', e.detail)
   },
-  uploadSuccess(e){
+  uploadSuccess(e) {
     console.log('upload success', e.detail)
     this.setData({
-      userUploadIcons:(e.detail.urls[0])
+      userUploadIcons: (e.detail.urls[0])
     })
   },
-  selectFile(files){
+  selectFile(files) {
     console.log('files', files)
   },
   /**
@@ -600,14 +382,13 @@ Page({
     let newPoint = this.data.markers.pop()
     let campusId = app.globalData.campus._id;
     let belongs = []
-    for(var i = 0 ; i < this.data.pickerNum.length;i++)
-    {
+    for (var i = 0; i < this.data.pickerNum.length; i++) {
       let belong = [this.data.departmentsItem[this.data.departmentsIndex[i]]]
-      if(belong == "(全校)")
+      if (belong == "(全校)")
         belong = null;
       belongs.push(belong)
     }
-    
+
     let type;
     if (this.data.markerTypes[this.data.markerType] == '实时消息') {
       type = "current"
@@ -637,7 +418,7 @@ Page({
     this.data.mapCtx.getCenterLocation({
       success: (res) => {
 
-        console.log(""+res.longitude, res.latitude)
+        console.log("" + res.longitude, res.latitude)
       }
     })
   },
@@ -679,11 +460,11 @@ Page({
       }
       case "添加": {
         var markers_ = [{
-          id:util.randomNumberId(),
+          id: util.randomNumberId(),
           latitude: 23.04866925793428,
           longitude: 113.40268387434162,
-          width:40,
-          height:50
+          width: 40,
+          height: 50
         }];
         this.setData({
           pagePosition: "center",
@@ -714,7 +495,7 @@ Page({
     this.setData({
       showPage: true,
     })
-    console.log("是否添加标点： "+isAdd);
+    console.log("是否添加标点： " + isAdd);
   },
   /**
    * selectArchFunc
@@ -853,9 +634,9 @@ Page({
 
   // 进入具体建筑的简介弹窗
   markerstap(e) {
-   // console.log(e.detail.markerId)
+    // console.log(e.detail.markerId)
     app.globalData.buildingSelected = this.getMarkerInfo(e.detail.markerId)
-    console.log("用户选择的建筑对象："+ app.globalData.buildingSelected)
+    console.log("用户选择的建筑对象：" + app.globalData.buildingSelected)
     this.setData({
       showBuildingDialog: true,
       buildingSelected: app.globalData.buildingSelected
@@ -940,22 +721,22 @@ Page({
   },
   // page-container的触发函数，不写以下这些函数会警告
   onBeforeEnter(res) {
-   // console.log(res)
+    // console.log(res)
   },
   onEnter(res) {
-   // console.log(res)
+    // console.log(res)
   },
   onAfterEnter(res) {
-   // console.log(res)
+    // console.log(res)
   },
   onBeforeLeave(res) {
-   // console.log(res)
+    // console.log(res)
   },
   onLeave(res) {
-   // console.log(res)
+    // console.log(res)
   },
   onAfterLeave(res) {
-   // console.log(res)
+    // console.log(res)
   },
 
   /**
@@ -1038,7 +819,7 @@ Page({
             width: 30,
             height: 40,
             type: value.type,
-            iconPath:value.desc.icon
+            iconPath: value.desc.icon
           })
         else {
           realTimeInfoArray.push({
