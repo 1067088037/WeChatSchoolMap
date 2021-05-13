@@ -43,7 +43,8 @@
             <text>{{item.likeNum}}</text>
           </view>
           <view class="comment-btn">
-            <image class="comment" src="/images/building/comment.png" mode="widthFix" bindtap="intoDetailStrategy" id="{{item.id}}">
+            <image class="comment" src="/images/building/comment.png" mode="widthFix" bindtap="intoDetailStrategy"
+              id="{{item.id}}">
             </image>
           </view>
         </view>
@@ -55,8 +56,9 @@
       </view>
       <button bindtap="toHomePage">返回</button>
     </view>
+    <!-- 发表评论 -->
 
-    <!-- 具体攻略界面 -->
+    <!-- 攻略具体内容 -->
     <view class="DetailStrategyPage" id="{{selectedStrategy.id}}" wx:if="{{selectedStrategy.isClicked}}">
       <!-- 用户添加的攻略图片 -->
       <view class="StrategyImages">
@@ -68,7 +70,6 @@
           </swiper-item>
         </swiper>
       </view>
-      <!-- 攻略具体内容 -->
       <view class="detailStrategyDescription">
         <view class="StrategyTitle">
           <text class="title" decode="{{true}}"> {{selectedStrategy.title}}</text>
