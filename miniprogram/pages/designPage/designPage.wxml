@@ -1,20 +1,80 @@
 <!--pages/designPage/designPage.wxml-->
 <!-- 搜索框 -->
-<input type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx" confirm-type="search" wx:if="{{showUploadPostArea == false}}"></input>
-<!-- 设计内容区 -->
-<view class="markContainer" style="margin-top:20rpx" wx:if="{{showUploadPostArea == false}}">
-  <view class="uploadPoster" bindtap="nevigaToUpLoadPoster" hover-class="_hover_list">
+<view class="DesignPageContainer">
+  <input class="search" type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx" confirm-type="search"
+    wx:if="{{showUploadPostArea == false && showEditStrategy == false}}"></input>
+  <!-- 设计内容区 -->
+  <view class="markContainer" style="margin-top:20rpx"
+    wx:if="{{showUploadPostArea == false && showEditStrategy == false}}">
+    <view class="uploadPoster" bindtap="nevigaToUpLoadPoster" hover-class="_hover_list">
       <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
       <text>上传海报</text>
+    </view>
   </view>
-</view>
-<!-- 上传海报按钮 -->
-<view class="uploadPosterArea" wx:if="{{showUploadPostArea}}">
-  <button size="mini" class="post" type="primary" bindtap="sendPhoto">发表</button>
-  <mp-cells>
-    <mp-cell>
-      <mp-uploader delete="{{true}}" title="海报上传" max-count="9" files="{{file}}" select="{{selectFile}}" upload="{{uplaodFile}}" bindfail="uplaodError" bindsuccess="uploadSuccess">  </mp-uploader>
-      <button bindtap="backToHomePage" >取消</button>
-    </mp-cell>
-  </mp-cells>
+  <view class="markContainer" style="margin-top:20rpx"
+    wx:if="{{showUploadPostArea == false &&showEditStrategy == false}}">
+    <view class="uploadPoster" bindtap="nevigaToEditStrategy" hover-class="_hover_list">
+      <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
+      <text>草稿箱</text>
+    </view>
+  </view>
+  <!-- 上传海报按钮 -->
+  <view class="uploadPosterArea" wx:if="{{showUploadPostArea}}">
+    <button size="mini" class="post" type="primary" bindtap="sendPhoto">发表</button>
+    <mp-cells>
+      <mp-cell>
+        <mp-uploader delete="{{true}}" title="海报上传" max-count="9" files="{{file}}" select="{{selectFile}}"
+          upload="{{uplaodFile}}" bindfail="uplaodError" bindsuccess="uploadSuccess"> </mp-uploader>
+        <button bindtap="backToHomePage">取消</button>
+      </mp-cell>
+    </mp-cells>
+  </view>
+  <view class="EditStrategyArea" wx:if="{{showEditStrategy && draftStrategySelected == null}}">
+    <view class="unFinishStrategy">
+      <view class="showStrategyForArch" bindtap="toggleArch" decode>   ▼点评攻略草稿箱</view>
+      <view id="strategyForArchBox" class="{{firstClickArch?'show':'hide'}} {{stateArch?'open':'close'}}">
+        <scroll-view class="strategyForArchList" scroll-y="true">
+          <view class="strategyForArch" wx:for="{{draftStrategies}}" wx:key="item" id = "{{item.id}}" bindtap="EditDraftTap">
+            {{item.name}}
+          </view>
+        </scroll-view>
+      </view>
+      <view class="showStrategySchool" bindtap="toggleSchool">   ▼生活攻略草稿箱</view>
+      <view id="strategyForSchoolBox" class="{{firstClickSchool?'show':'hide'}} {{stateSchool?'open':'close'}}">
+        <scroll-view class="strategySchoolList" scroll-y="true">
+          <view class="strategyForSchool" wx:for="{{[1,2,3]}}" wx:key="item">
+            null
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{draftStrategySelected!= null}}">
+    <view class="newStrategies" >
+      <view class="uploadPicture">
+        <mp-uploader bindfail="uploadError" bindsuccess="uploadSuccess" select="{{selectFile}}" upload="{{uplaodFile}}"
+          files="{{files}}" max-count="9" title=""></mp-uploader>
+      </view>
+      <view class="inputStrategyTitle">
+        <input type="text" name="" id="" placeholder="这里输入标题" bindinput="inputTitle"></input>
+      </view>
+      <view class="inputStrategyShortBriefIntro">
+        <input type="text" name="" id="" placeholder="好的简介更引人入胜噢~" bindinput=""></input>
+      </view>
+      <view class="inputMainBody">
+        <textarea name="" id="" cols="30" rows="10" placeholder="添加正文" bindinput=""></textarea>
+      </view>
+      <view class="StrategyButtonSet">
+        <view class="cancelNewStrategy">
+          <button style="width:100%" bindtap="">取消</button>
+        </view>
+        <view class="createNewStrategy">
+          <button style="color:white;" bindtap="">发布攻略</button>
+        </view>
+      </view>
+      <mp-dialog show="{{isExitEditStrategy}}" buttons="{{dialogButtons}}" bindbuttontap="">
+        <view>是否需要保存编辑记录</view>
+      </mp-dialog>
+    </view>
+  </view>
 </view>

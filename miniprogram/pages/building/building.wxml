@@ -137,4 +137,9 @@
       </mp-dialog>
     </view>
   </view>
+
+  <view wx:if="{{building.type == 'college'}}"> 
+    
+  
+  </view>
 </view>

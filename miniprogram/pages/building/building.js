@@ -147,7 +147,7 @@ Page({
   sendComment() {
     let superId = this.data.selectedStrategy.id
     console.log("评论所属于的攻略的id为：", superId)
-    db.comment.addComment(superId, "arch", {
+    db.comment.addComment(superId, "strategy", {
       reply: null,
       text: this.data.commentValue,
       images: []
@@ -273,11 +273,11 @@ Page({
       obj['name'] = this.data.strategyTitle;
       let images = this.updatePhotoesToCloud()
       obj['image'] = images;
-      content.push(obj)
       let strategy = {
         name: name,
         content: content,
-        desc: desc
+        desc: desc,
+        type:'draft'
       }
       content.push(obj);
       db.strategy.addStrategy(campusId, "arch", strategy)
@@ -338,7 +338,8 @@ Page({
     let strategy = {
       name: name,
       content: content,
-      desc: desc
+      desc: desc,
+      type:'publish'
     }
     content.push(obj);
     db.strategy.addStrategy(superId, "arch", strategy)

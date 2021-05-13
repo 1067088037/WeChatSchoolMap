@@ -1,5 +1,5 @@
 /* pages/designPage/designPage.wxss */
-input {
+.search {
   border-radius: 10rpx;
   border: 1rpx black;
   box-shadow: darkgray 5rpx 5rpx 10rpx;
@@ -30,4 +30,146 @@ input {
 .post{
   margin-top: 20rpx;
   margin-left: 620rpx;
+}
+.showStrategyForArch{
+  margin-top:40rpx;
+  text-align: left;
+  text-justify: auto;
+  width:700rpx;
+  height: 80rpx;
+  border-radius: 8rpx;
+  margin-left: 10rpx;
+  background-color: snow;
+  box-shadow: darkgray 5rpx 5rpx 10rpx;
+}
+#strategyForArchBox{
+  width:700rpx;
+  border-top:1rpx solid #ddd;
+  overflow: hidden;
+  margin-left: 10rpx;
+  animation-fill-mode: forwards;
+  margin-top:10rpx;
+  border-radius:0  0 10rpx 10rpx;
+}
+.strategyForArchList{
+
+  border-bottom:1rpx solid darkgray;
+  
+  width:100%;
+  height: 300rpx;
+}
+.strategyForArchList view{
+  border-radius:0  0 10rpx 10rpx;
+  box-shadow: darkgray  5rpx 5rpx;
+  margin-top: 10rpx;
+  margin-bottom: 10rpx;
+  background-color: white;
+  overflow: auto;
+  white-space: nowrap;
+  height: 120rpx;
+  border-bottom:1rpx solid #ddd;
+
+}
+.showStrategySchool{
+  margin-top:20rpx;
+  text-align: left;
+  text-justify: auto;
+  width:700rpx;
+  height: 80rpx;
+  border-radius: 8rpx;
+  margin-left: 10rpx;
+  background-color: snow;
+  box-shadow: darkgray 5rpx 5rpx 10rpx;
+}
+#strategyForSchoolBox{
+  width:700rpx;
+  border-top:1rpx solid #ddd;
+  overflow: hidden;
+  margin-left: 10rpx;
+  animation-fill-mode: forwards;
+  margin-top:10rpx;
+  border-radius:0  0 10rpx 10rpx;
+}
+.strategySchoolList{
+  border-radius: 50rpx;
+  border-bottom:1rpx solid darkgray;
+  width:100%;
+  height: 300rpx;
+}
+.strategySchoolList view{
+  border-radius:0  0 10rpx 10rpx;
+  box-shadow: darkgray  5rpx 5rpx;
+  margin-top: 10rpx;
+  margin-bottom: 10rpx;
+  background-color: white;
+  overflow: auto;
+  white-space: nowrap;
+  height: 120rpx;
+  border-bottom:1rpx solid #ddd;
+}
+.uploadPicture {
+  margin-left: 15rpx;
+}
+.inputStrategyTitle{
+  margin-top:26rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  border-bottom:0.5rpx solid rgb(187, 186, 186);
+}
+.inputStrategyShortBriefIntro{
+  margin-top:26rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  border-bottom:0.5rpx solid rgb(187, 186, 186);
+}
+.inputMainBody{
+  margin-top:16rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  border-bottom:0.5rpx solid rgb(187, 186, 186);
+}
+.StrategyButtonSet{
+  position: fixed;
+  bottom: 0rpx;
+}
+.cancelNewStrategy{
+  display: inline-block;
+  border-radius: 20rpx;
+  width: 200rpx;
+}
+.createNewStrategy{
+  width: 500rpx;
+  margin-left: 50rpx;
+  border-radius: 30rpx;
+  background:red;
+  display: inline-block;
+}
+@keyframes slidedown{
+  from{
+    height: 0;
+  }
+  to{
+    height: 300rpx;
+  }
+}
+@keyframes slideup{
+  from{
+    height: 300rpx;
+  }
+  to{
+    height: 0;
+  }
+}
+.open{
+  animation:slidedown 1s;
+}
+.close{
+  animation: slideup 1s;
+}
+.hide{
+  display: none;
+}
+ 
+.show{
+  display: block;
 }

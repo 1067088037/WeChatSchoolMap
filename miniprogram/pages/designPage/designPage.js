@@ -1,3 +1,7 @@
+const {
+  db
+} = require("../../util/database/database");
+const app = getApp()
 // pages/designPage/designPage.js
 Page({
 
@@ -6,8 +10,51 @@ Page({
    */
   data: {
     showUploadPostArea: false,
+    showEditStrategy: false,
+    draftStrategiesId: [],
+    draftStrategies: [],
+    draftStrategySelected:null,
     file: [],
-    userUploadPhotoes:[]
+    userUploadPhotoes: [],
+    stateArch: false,
+    firstClickArch: false,
+    isExitEditStrategy:false
+  },
+  toggleArch() {
+    var list_state = this.data.stateArch,
+      first_state = this.data.firstClickArch;
+    if (!first_state) {
+      this.setData({
+        firstClickArch: true
+      });
+    }
+    if (list_state) {
+      this.setData({
+        stateArch: false
+      });
+    } else {
+      this.setData({
+        stateArch: true
+      });
+    }
+  },
+  toggleSchool() {
+    var list_state = this.data.stateSchool,
+      first_state = this.data.firstClickSchool;
+    if (!first_state) {
+      this.setData({
+        firstClickSchool: true
+      });
+    }
+    if (list_state) {
+      this.setData({
+        stateSchool: false
+      });
+    } else {
+      this.setData({
+        stateSchool: true
+      });
+    }
   },
   // 导航之上传海报界面
   nevigaToUpLoadPoster() {
@@ -19,22 +66,22 @@ Page({
   backToHomePage() {
     this.setData({
       showUploadPostArea: false,
-      userUploadPhotoes:[]
+      userUploadPhotoes: []
     })
   },
-  sendPhoto(){
-    this.data.userUploadPhotoes.forEach((e,i)=>{
-      const filepath=e;
+  sendPhoto() {
+    this.data.userUploadPhotoes.forEach((e, i) => {
+      const filepath = e;
       const name = i.toString()
-      const cloudpath="School/4144010561/images/Design/design"+name + filepath.match(/\.[^.]+?$/)[0]
+      const cloudpath = "School/4144010561/images/Design/design" + name + filepath.match(/\.[^.]+?$/)[0]
       console.log(cloudpath)
       wx.cloud.uploadFile({
-        cloudPath:cloudpath,
-        filePath:filepath,
-        success:res=>{
+        cloudPath: cloudpath,
+        filePath: filepath,
+        success: res => {
           console.log(res.fileId)
         },
-        fail:console.error
+        fail: console.error
       })
     })
   },
@@ -71,10 +118,10 @@ Page({
       console.log(files.tempFilePaths)
       var tempFilePaths = files.tempFilePaths;
       that.setData({
-        filesUrl :tempFilePaths
+        filesUrl: tempFilePaths
       })
-      var obj ={}
-      obj['urls'] =tempFilePaths
+      var obj = {}
+      obj['urls'] = tempFilePaths
       resolve(obj)
     })
   },
@@ -84,13 +131,48 @@ Page({
   uploadSuccess(e) {
     console.log('upload success', e.detail)
     this.setData({
-      userUploadPhotoes:this.data.userUploadPhotoes.concat(e.detail.urls[0])
+      userUploadPhotoes: this.data.userUploadPhotoes.concat(e.detail.urls[0])
     })
   },
-  
+
   selectFile(files) {
     console.log('files', files)
     // 返回false可以阻止某次文件上传
+  },
+
+
+  nevigaToEditStrategy(e) {
+    let draftStrategies = this.data.draftStrategies
+    this.data.draftStrategiesId.forEach(id=>{
+      db.strategy.getStrategy(id).then(res=>{
+        let draft = res.draft;
+        draft['id'] = res._id;
+        draftStrategies.push(draft)
+      })
+    })
+    
+
+    setTimeout(() => {
+      this.setData({
+        showEditStrategy: true,
+        draftStrategies
+      })
+    }, 1000)
+
+  },
+  EditDraftTap(e){
+    let id = e.currentTarget.id
+    let draftStrategySelected = new Object;
+    this.data.draftStrategies.forEach(item=>{
+      if(item.id == id)
+      {
+        draftStrategySelected = item;
+      }
+    })
+    this.setData({
+      draftStrategySelected,
+      files : draftStrategySelected.content[0].image
+    })
   },
   /**
    * 生命周期函数--监听页面加载
@@ -98,14 +180,27 @@ Page({
   onLoad: function (options) {
     this.setData({
       selectFile: this.selectFile.bind(this),
-      uplaodFile: this.uplaodFile.bind(this)
+      uplaodFile: this.uplaodFile.bind(this),
+      userOpenId:app.globalData.openid
     })
+
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+    let draftStrategiesId = this.data.draftStrategiesId
+    db.strategy.getBriefStrategyArrayByOpenid(this.data.userOpenId).then(res => {
+      let draftStrategiesId = this.data.draftStrategiesId
+      res.forEach(e => {
+        draftStrategiesId.push(e._id)
+      })
+      this.setData({
+        draftStrategiesId
+      })
+    })
+
 
   },
 

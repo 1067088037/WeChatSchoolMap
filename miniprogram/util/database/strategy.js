@@ -44,7 +44,8 @@ export class Strategy {
             name: strategy.name,
             desc: strategy.desc,
             content: strategy.content,
-          }
+          },
+          type:strategy.type
         }
       })
     }
@@ -76,7 +77,6 @@ export class Strategy {
       return []
     }
   }
-
   /**
    * 获取用户拥有的全部攻略的简要信息，不包含详情
    * @param {string} openid 
