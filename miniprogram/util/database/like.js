@@ -55,6 +55,19 @@ export class Like {
   }
 
   /**
+   * 获取是否点赞和计数数组
+   * @param {Array} superArray 
+   */
+  async getIsAndCountLike(superArray) {
+    return await wx.cloud.callFunction({
+      name: 'getIsAndCountLikeArray',
+      data: {
+        commentArray: Array.from(new Set(superArray))
+      }
+    }).catch(err => [])
+  }
+
+  /**
    * 判断是否已经点赞
    * @param {string} superId 
    */
@@ -66,12 +79,12 @@ export class Like {
 
   /**
    * 获取点赞个数
-   * @param {string} commentId 
+   * @param {string} superId 
    */
-  async countLike(commentId) {
+  async countLike(superId) {
     try {
       return await _db.collection('like').where({
-        'super._id': commentId
+        'super._id': superId
       }).get().then(res => res.data[0].like.length)
     } catch (err) {
       return 0
