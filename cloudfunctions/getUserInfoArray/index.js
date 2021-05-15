@@ -2,23 +2,26 @@ const cloud = require('wx-server-sdk')
 
 cloud.init()
 const db = cloud.database()
-const cmd = db.command
-const MAX_LIMIT = 100
 
 exports.main = async (event, context) => {
   console.log(event)
-  let result = []
-  await event._openidArray.forEach(async element => {
-    db.collection('user').where({
+  let tasks = []
+  event._openidArray.forEach(async element => {
+    console.log(element)
+    const promise = db.collection('user').where({
       _openid: element
-    }).get().then(res => {
-      result.push(res)
-      console.log(result)
-    })
+    }).get()
+    tasks.push(promise)
   })
 
-  console.log(result)
-  return
+  // 等待所有
+  let result = (await Promise.all(tasks)).reduce((acc, cur) => {
+    console.log(cur)
+    return {
+      data: acc.data.concat(cur.data),
+      errMsg: acc.errMsg,
+    }
+  })
 
   let data = []
   result.data.forEach(element => {
@@ -28,6 +31,5 @@ exports.main = async (event, context) => {
       nickName: element.userInfo.nickName
     })
   })
-
   return data
 }

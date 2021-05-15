@@ -25,7 +25,7 @@ export class User {
       return await wx.cloud.callFunction({
         name: 'getUserInfoArray',
         data: {
-          _openidArray: openidArray
+          _openidArray: Array.from(new Set(openidArray))
         }
       })
     } catch (err) {
