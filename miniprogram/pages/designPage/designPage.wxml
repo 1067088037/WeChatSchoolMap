@@ -36,6 +36,7 @@
       </mp-cell>
     </mp-cells>
   </view>
+  <!-- 草稿箱界面 -->
   <view class="EditStrategyArea" wx:if="{{showEditStrategy && draftStrategySelected == null}}">
     <view class="unFinishStrategy">
       <view class="showStrategyForArch" bindtap="toggleArch" decode> ▼点评攻略草稿箱</view>
@@ -57,6 +58,7 @@
       </view>
     </view>
   </view>
+  <!-- 编辑攻略界面 -->
   <view wx:if="{{draftStrategySelected!= null}}">
     <view class="newStrategies">
       <view class="uploadPicture">
@@ -94,5 +96,8 @@
           mode="scaleToFill" style="width:100%;height:100%"></image>
       </view>
     </view>
+  </view>
+  <view class="createLifeStrategy">
+    
   </view>
 </view>

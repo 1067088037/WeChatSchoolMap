@@ -85,15 +85,15 @@
         <view>
           <view class="comments" wx:for="{{comments}}" wx:key="index">
             <view style="margin-top:16rpx">
-              <image class="userAvatar" src="{{userAvatars[index]}}" mode="cover"></image>
-              <text style="margin-left:10rpx;bottom:16rpx;position:relative">{{userNickName[index]}}</text>
+              <image class="userAvatar" src="{{item.userAvatarUrl}}" mode="cover"></image>
+              <text style="margin-left:10rpx;bottom:16rpx;position:relative">{{item.nickName}}</text>
             </view>
             <text>{{item.text}}{{item.isLike}}</text>
             <view class="commentLlikeBtn" style="margin-right:0rpx" bindtap="giveLike" id="{{index}}">
               <image wx:if="{{item.isLike == false}}" class="like" src="/images/building/like.png" mode="widthFix">
               </image>
               <image wx:if="{{item.isLike}}" class="like" src="/images/building/like_selected.png"></image>
-              <text decode="{{true}}" space="nbsp" style="position:relative;bottom:10rpx">{{likeNums[index]}}</text>
+              <text decode="{{true}}" space="nbsp" style="position:relative;bottom:10rpx">{{item.likeNum}}</text>
             </view>
           </view>
           <button style="position:absolute" bindtap="toStrategiesAreaPage">返回</button>

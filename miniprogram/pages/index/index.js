@@ -280,9 +280,9 @@ Page({
         markers: userPoint,
         showMarkerDialog: true
       });
-
-    } else
-      return 0;
+    } else if(isAdd == false)
+    {  return 0;
+    }
   },
   /**
    * returnMarker
@@ -792,6 +792,19 @@ Page({
             height: 40,
             iconPath: "/images/building/canteen.png"
           })
+          this.setData({
+            markers: this.data.markers.concat({
+              _id: value._id,
+              id: value.markId,
+              latitude: value.geo.coordinates[1],
+              longitude: value.geo.coordinates[0],
+              type: value.type,
+              title: value.name,
+              width: 50,
+              height: 40,
+              iconPath: "/images/building/canteen.png"
+            })
+          })
         } else {
           archArray.push({
             _id: value._id,
@@ -842,7 +855,7 @@ Page({
     visibleArchArray = realTimeInfoArray
     setTimeout(() => {
       that.setData({
-        markers: visibleArchArray
+        markers: this.data.markers.concat(visibleArchArray)
       })
     }, 2000)
   },

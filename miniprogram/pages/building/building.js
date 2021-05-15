@@ -433,51 +433,89 @@ Page({
     var that = this
     let comments = []
     let openIdArray = []
-    let commentNum ;
+    let commentsIdArray = []
+    let userInfos = []
+    let isAndLikeNum = []
+    let commentNum;
     console.log("选中的攻略id是", e.currentTarget.id)
     db.comment.getAllComment(e.currentTarget.id).then(res => {
+      console.log("res: ", res)
       let avatars = []
       let likeNums = []
       commentNum = res.length
       res.forEach(v => {
         var userAvatar;
         var commentObj = {
+          openid : v._openid,
           text: v.text,
           id: v._id
         }
+        commentsIdArray.push(v._id)
         comments.push(commentObj)
         openIdArray.push(v._openid)
-        db.user.getUser(v._openid).then(value => {
-          that.setData({
-            userAvatars: that.data.userAvatars.concat([value.userInfo.avatarUrl]),
-            userNickName: that.data.userNickName.concat([value.userInfo.nickName]),
+        // db.user.getUser(v._openid).then(value => {
+        //   that.setData({
+        //     userAvatars: that.data.userAvatars.concat([value.userInfo.avatarUrl]),
+        //     userNickName: that.data.userNickName.concat([value.userInfo.nickName]),
+        //   })
+        // }).then(() => {
+        //   db.like.isLike(v._id).then((islike) => {
+        //     commentObj['isLike'] = islike
+        //     comments.push(commentObj)
+        //     this.setData({
+        //       comments: this.data.comments.concat(commentObj)
+        //     })
+        //   }).then(() => {
+        //     db.like.countLike(v._id).then((num) => {
+        //       //console.log(comment.id, r)
+        //       that.setData({
+        //         likeNums: that.data.likeNums.concat(num)
+        //       })
+        //     })
+        //   })
+        // })
+      })
+
+      db.user.getUserInfoArray(openIdArray).then(res=>{
+        res.result.forEach(e=>{
+          userInfos.push(e)
+        })
+        console.log("userInfo: ",userInfos)
+      }).then(()=>{
+        db.like.getIsAndCountLike(commentsIdArray).then(res=>{
+          res.result.forEach(e =>{
+            isAndLikeNum.push(e)
+          })
+          console.log("isAndLikeNum: ",isAndLikeNum)
+        }).then(()=>{
+          comments.forEach(comment=>{
+            let user = userInfos.find((item,index)=>{
+              console.log(item._openid,comment.openid)
+              return item._openid == comment.openid
+            })
+            comment['userAvatarUrl'] = user.avatarUrl
+            comment['nickName'] = user.nickName
+            let likeObj = isAndLikeNum.find((item,index)=>{
+              return comment.id == item.superId
+            })
+            comment['isLike'] = likeObj.isLike
+            comment['likeNum'] = likeObj.count
+          })
+            // 显示具体攻略区
+          this.setData({
+            selectedStrategy,
+            comments: comments,
+            commentNum: commentNum,
+            showStrategiesArea: false,
+            showBuilidngBanner: false,
           })
         })
       })
-    }).then(()=>{
-      for (var i = 0; i < comments.length; i++) {
-        let comment = comments[i]
-        console.log(comment)
-        db.like.countLike(comments[i].id).then(r => {
-          // console.log(comment.id,r)
-          that.setData({
-            likeNums: that.data.likeNums.concat(r)
-          })
-        })
-        db.like.isLike(comment.id).then(islike => {
-          comment.isLike = islike
-          //console.log(comment.isLike)
-        })
-      }
-      setTimeout(() => {
-        this.setData({
-          comments: comments,
-          commentNum: commentNum
-        })
-      }, 2000)
-    })
+            
+    })   
+    
     let id = (e.currentTarget.id)
-    console.log(this.data.comments)
+    
     let selectedStrategy = new Object
     // 从所有发布的攻略中选出用户点击的那个攻略区，通过id选取
     this.data.strategies.forEach((value, index) => {
@@ -486,24 +524,14 @@ Page({
         selectedStrategy.isClicked = true;
       }
     })
-    // 显示具体攻略区
-    wx.showLoading({
-      title: 'loading...',
-    })
-    setTimeout(() => {
-      this.setData({
-        selectedStrategy,
-        showStrategiesArea: false,
-        showBuilidngBanner: false,
-      })
-      wx.hideLoading()
-    }, 1500)
+  
+    
   },
   giveLike(e) {
     console.log(getApp().globalData.openid)
     let index = parseInt(e.currentTarget.id)
     var that = this
-    console.log(this.data.comments[index].id)
+    //console.log(this.data.comments[index].id)
     let isLike;
     db.like.isLike(this.data.comments[index].id).then(r => {
       isLike = r;
