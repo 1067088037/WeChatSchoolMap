@@ -425,13 +425,16 @@ Page({
     let commentNum;
     let targetStrategyId = (e.type == 'tap') ? e.currentTarget.id : e;
     console.log("选中的攻略id是", targetStrategyId)
-<<<<<<< HEAD
+
     wx.showLoading({
       title: 'loading...',
     })
-=======
+
     log.logTime("开始请求评论")
->>>>>>> dev
+
+
+    log.logTime("开始请求评论")
+
     db.comment.getAllComment(targetStrategyId).then(res => {
       log.logTime("评论请求完成")
       console.log("res: ", res)
@@ -452,15 +455,17 @@ Page({
           commentNum--;
         }
       })
-<<<<<<< HEAD
+
       db.user.getUserInfoArray(openIdArray).then(res => {
-=======
+
+
       log.logTime("初步处理完成")
 
       let tasks = []
       tasks.push(db.user.getUserInfoArray(openIdArray).then(res => {
         log.logTime("getUserInfoArray")
->>>>>>> dev
+
+
         res.result.forEach(e => {
           userInfos.push(e)
         })
@@ -487,12 +492,12 @@ Page({
           let likeObj = isAndLikeNum.find((item, index) => {
             return comment.id == item.superId
           })
-<<<<<<< HEAD
+
           wx.hideLoading();
-=======
+
           comment['isLike'] = likeObj.isLike
           comment['likeNum'] = likeObj.count
->>>>>>> dev
+
         })
         // 显示具体攻略区
         this.setData({
@@ -502,6 +507,19 @@ Page({
           showStrategiesArea: false,
           showBuilidngBanner: false,
         })
+
+          comment['isLike'] = likeObj.isLike
+          comment['likeNum'] = likeObj.count
+        })
+        // 显示具体攻略区
+        this.setData({
+          selectedStrategy,
+          comments: comments,
+          commentNum: commentNum,
+          showStrategiesArea: false,
+          showBuilidngBanner: false,
+        })
+
         log.logTime("页面加载完毕")
         log.refreshStTime()
       })
@@ -515,10 +533,11 @@ Page({
         selectedStrategy.isClicked = true;
       }
     })
-<<<<<<< HEAD
-=======
+
     log.logTime("异步请求发送完毕")
->>>>>>> dev
+
+    log.logTime("异步请求发送完毕")
+
   },
   giveLike(e) {
     console.log(getApp().globalData.openid)
