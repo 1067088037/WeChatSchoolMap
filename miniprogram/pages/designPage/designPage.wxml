@@ -1,4 +1,5 @@
 <!--pages/designPage/designPage.wxml-->
+
 <!-- 搜索框 -->
 <view class="DesignPageContainer">
   <input class="search" type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx"
@@ -37,7 +38,7 @@
     </mp-cells>
   </view>
   <!-- 草稿箱界面 -->
-  <view class="EditStrategyArea" wx:if="{{showEditStrategy && draftStrategySelected == null}}">
+  <view class="EditStrategyArea" wx:if="{{showEditStrategy && draftStrategySelected == null}}" bindtouchstart="touchStart" bindtouchmove="" bindtouchend="">
     <view class="unFinishStrategy">
       <view class="showStrategyForArch" bindtap="toggleArch" decode> ▼点评攻略草稿箱</view>
       <view id="strategyForArchBox" class="{{firstClickArch?'show':'hide'}} {{stateArch?'open':'close'}}">
