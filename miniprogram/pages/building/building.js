@@ -145,6 +145,7 @@ Page({
   },
   //发表评论
   sendComment() {
+    let that = this
     let superId = this.data.selectedStrategy.id
     console.log("评论所属于的攻略的id为：", superId)
 
@@ -153,15 +154,22 @@ Page({
       text: this.data.commentValue,
       images: []
     })
-    this.onPullDownRefresh()
-    wx.startPullDownRefresh()
-    setTimeout(() => {
-      wx.stopPullDownRefresh()
-      this.setData({
+    
+    wx.showLoading({
+      title: '发生中',
+    })
+    setTimeout(()=>{
+      this.intoDetailStrategy(superId)
+      wx.showToast({
+        title: '成功',
+        icon: 'success',
+        duration: 1000
+      })
+      that.setData({
         commentValue: "",
       })
-    }, 500)
-
+    },800)
+    
 
   },
   /**
@@ -381,10 +389,11 @@ Page({
    */
   StrategiesAreaTap(e) {
     let testStrategies = [];
+
     this.data.strategiesIds.forEach(id => {
       db.strategy.getStrategy(id).then(res => {
         console.log("获取到该建筑的攻略： ", res)
-        let srcs = []
+        let srcs = [];
         res.publish.content[0].image.forEach(im => {
           im = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/" + im
           srcs.push(im)
@@ -392,8 +401,7 @@ Page({
         let likeNum;
         db.like.countLike(res._id).then(likenums => {
           likeNum = likenums;
-        })
-        setTimeout(() => {
+        }).then(() => {
           let strategy = {
             src: srcs,
             id: res._id,
@@ -404,24 +412,15 @@ Page({
             title: res.publish.content[0].name
           }
           testStrategies.push(strategy)
-        }, 1000)
+          this.setData({
+            showStrategiesArea: true,
+            introArea: false,
+            // 测试数据Strategies,正常使用时应从数据库获取
+            strategies: [].concat(testStrategies)
+          })
+        })
       })
     })
-    wx.showLoading({
-      title: 'loading...',
-    })
-    setTimeout(() => {
-      this.setData({
-        showStrategiesArea: true,
-        introArea: false,
-        // 测试数据Strategies,正常使用时应从数据库获取
-        strategies: [].concat(testStrategies)
-      })
-      wx.hideLoading()
-    }, 1500)
-
-
-
   }, // end function
   /**
    * intoDetailStrategy
@@ -430,6 +429,7 @@ Page({
    */
   intoDetailStrategy(e) {
     // 获取该攻略区的评论
+    console.log(e)
     var that = this
     let comments = []
     let openIdArray = []
@@ -437,71 +437,55 @@ Page({
     let userInfos = []
     let isAndLikeNum = []
     let commentNum;
-    console.log("选中的攻略id是", e.currentTarget.id)
-    db.comment.getAllComment(e.currentTarget.id).then(res => {
+    let targetStrategyId  = (e.type == 'tap')? e.currentTarget.id:e;
+    console.log("选中的攻略id是", targetStrategyId)
+    db.comment.getAllComment(targetStrategyId).then(res => {
       console.log("res: ", res)
       let avatars = []
       let likeNums = []
       commentNum = res.length
       res.forEach(v => {
         var userAvatar;
-        var commentObj = {
-          openid : v._openid,
-          text: v.text,
-          id: v._id
+        if (v.text != undefined) {
+          var commentObj = {
+            openid: v._openid,
+            text: v.text,
+            id: v._id
+          }
+          commentsIdArray.push(v._id)
+          comments.push(commentObj)
+          openIdArray.push(v._openid)
+        } else {
+          commentNum--;
         }
-        commentsIdArray.push(v._id)
-        comments.push(commentObj)
-        openIdArray.push(v._openid)
-        // db.user.getUser(v._openid).then(value => {
-        //   that.setData({
-        //     userAvatars: that.data.userAvatars.concat([value.userInfo.avatarUrl]),
-        //     userNickName: that.data.userNickName.concat([value.userInfo.nickName]),
-        //   })
-        // }).then(() => {
-        //   db.like.isLike(v._id).then((islike) => {
-        //     commentObj['isLike'] = islike
-        //     comments.push(commentObj)
-        //     this.setData({
-        //       comments: this.data.comments.concat(commentObj)
-        //     })
-        //   }).then(() => {
-        //     db.like.countLike(v._id).then((num) => {
-        //       //console.log(comment.id, r)
-        //       that.setData({
-        //         likeNums: that.data.likeNums.concat(num)
-        //       })
-        //     })
-        //   })
-        // })
       })
 
-      db.user.getUserInfoArray(openIdArray).then(res=>{
-        res.result.forEach(e=>{
+      db.user.getUserInfoArray(openIdArray).then(res => {
+        res.result.forEach(e => {
           userInfos.push(e)
         })
-        console.log("userInfo: ",userInfos)
-      }).then(()=>{
-        db.like.getIsAndCountLike(commentsIdArray).then(res=>{
-          res.result.forEach(e =>{
+        //console.log("userInfo: ", userInfos)
+      }).then(() => {
+        db.like.getIsAndCountLike(commentsIdArray).then(res => {
+          res.result.forEach(e => {
             isAndLikeNum.push(e)
           })
-          console.log("isAndLikeNum: ",isAndLikeNum)
-        }).then(()=>{
-          comments.forEach(comment=>{
-            let user = userInfos.find((item,index)=>{
-              console.log(item._openid,comment.openid)
+          //console.log("isAndLikeNum: ", isAndLikeNum)
+        }).then(() => {
+          comments.forEach(comment => {
+            let user = userInfos.find((item, index) => {
+              //console.log(item._openid, comment.openid)
               return item._openid == comment.openid
             })
             comment['userAvatarUrl'] = user.avatarUrl
             comment['nickName'] = user.nickName
-            let likeObj = isAndLikeNum.find((item,index)=>{
+            let likeObj = isAndLikeNum.find((item, index) => {
               return comment.id == item.superId
             })
             comment['isLike'] = likeObj.isLike
             comment['likeNum'] = likeObj.count
           })
-            // 显示具体攻略区
+          // 显示具体攻略区
           this.setData({
             selectedStrategy,
             comments: comments,
@@ -511,11 +495,8 @@ Page({
           })
         })
       })
-            
-    })   
-    
-    let id = (e.currentTarget.id)
-    
+    })
+    let id = targetStrategyId
     let selectedStrategy = new Object
     // 从所有发布的攻略中选出用户点击的那个攻略区，通过id选取
     this.data.strategies.forEach((value, index) => {
@@ -524,8 +505,8 @@ Page({
         selectedStrategy.isClicked = true;
       }
     })
-  
-    
+
+
   },
   giveLike(e) {
     console.log(getApp().globalData.openid)
@@ -541,20 +522,17 @@ Page({
         let comment = this.data.comments
         comment[index].isLike = true;
         let likeNums = this.data.likeNums;
-        likeNums[index] = likeNums[index] + 1
+        comment[index].likeNum = comment[index].likeNum + 1
         this.setData({
           comments: comment,
-          likeNums: likeNums
         })
       } else {
         db.like.cancelLike(this.data.comments[index].id)
         let comment = this.data.comments
         comment[index].isLike = false;
-        let likeNums = this.data.likeNums;
-        likeNums[index] = likeNums[index] - 1
+        comment[index].likeNum = comment[index].likeNum - 1
         this.setData({
           comments: comment,
-          likeNums: likeNums
         })
       }
     })

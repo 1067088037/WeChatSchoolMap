@@ -214,10 +214,16 @@
   font-size:35rpx;
   font-weight: bold;
 }
+
+.Comments{
+  margin-bottom:80rpx;
+  border-bottom: 0.5rpx solid rgb(187, 186, 186);
+}
 .comments{
   margin-left: 15rpx;
   margin-right: 15rpx;
-  border-bottom:1rpx solid #F2F2F2
+  border-bottom:1rpx solid #F2F2F2;
+  
 }
 .StrategyAreaInputComment{
   border:2px solid gainsboro;

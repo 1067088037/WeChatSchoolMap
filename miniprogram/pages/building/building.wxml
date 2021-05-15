@@ -59,6 +59,7 @@
     <!-- 发表评论 -->
     <!-- 攻略具体内容 -->
     <view class="DetailStrategyPage" id="{{selectedStrategy.id}}" wx:if="{{selectedStrategy.isClicked}}">
+      <button style="position:fixed; top:0rpx; padding : 0; width:120rpx" bindtap="toStrategiesAreaPage">⬅返回</button>
       <!-- 用户添加的攻略图片 -->
       <view class="StrategyImages">
         <swiper class="StrategyImageBanner" indicator-dots indicator-color="rgba(255,255,255,0.5)"
@@ -82,13 +83,13 @@
         <view class="commentTitle">
           评论<text style="font-size:30rpx;color:gray;margin-left:10rpx">({{commentNum}})</text>
         </view>
-        <view>
+        <view class="Comments">
           <view class="comments" wx:for="{{comments}}" wx:key="index">
             <view style="margin-top:16rpx">
               <image class="userAvatar" src="{{item.userAvatarUrl}}" mode="cover"></image>
               <text style="margin-left:10rpx;bottom:16rpx;position:relative">{{item.nickName}}</text>
             </view>
-            <text>{{item.text}}{{item.isLike}}</text>
+            <text>{{item.text}}</text>
             <view class="commentLlikeBtn" style="margin-right:0rpx" bindtap="giveLike" id="{{index}}">
               <image wx:if="{{item.isLike == false}}" class="like" src="/images/building/like.png" mode="widthFix">
               </image>
@@ -96,17 +97,18 @@
               <text decode="{{true}}" space="nbsp" style="position:relative;bottom:10rpx">{{item.likeNum}}</text>
             </view>
           </view>
-          <button style="position:absolute" bindtap="toStrategiesAreaPage">返回</button>
-          <view class="postStrategyComment">
+          <view style="text-align:center;">--The End--</view>
+        </view>
+        
+        <view class="postStrategyComment">
             <input style="width: 500rpx;" class="StrategyAreaInputComment" bindinput="getComment" placeholder="随便说点什么"
-              bindconfirm="sendComment" confirm-type="send"></input>
+              bindconfirm="sendComment" confirm-type="send" value="{{commentValue}}"></input>
             <view class="StrategyLlikeBtn" style="margin-right:0rpx">
               <image class="like" src="/images/building/like.png" mode="widthFix">
               </image>
               <text decode="{{true}}" space="nbsp" style="position:relative;bottom:0rpx; "> 0</text>
             </view>
           </view>
-        </view>
       </view>
     </view>
     <!-- 添加攻略界面 -->
