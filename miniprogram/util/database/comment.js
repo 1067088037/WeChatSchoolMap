@@ -10,17 +10,13 @@ export class Comment {
    * @returns {Array} 评论数组
    */
   async getAllComment(superId) {
-    try {
-      return await wx.cloud.callFunction({
-        name: 'getAllBySuperId',
-        data: {
-          collection: 'comment',
-          superId: superId
-        }
-      }).then(res => res.result.data)
-    } catch (e) {
-      return []
-    }
+    return await wx.cloud.callFunction({
+      name: 'getAllBySuperId',
+      data: {
+        collection: 'comment',
+        superId: superId
+      }
+    }).then(res => res.result.data).catch(err => [])
   }
 
   /**
@@ -60,7 +56,7 @@ export class Comment {
           images: comment.images
         }
       })
-      return db.like.bindNewLike(commentId, 'comment', { _id:superId, type: superType })
+      return db.like.bindNewLike(commentId, 'comment', { _id: superId, type: superType })
     }
   }
 

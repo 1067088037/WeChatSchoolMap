@@ -6,6 +6,10 @@
 import { db } from "../../util/database/database";
 
 export function launchTest() {
+  db.user.getUserInfoArray(['ojr_35JJZSWh0xHtk_0k9GRJ4TqQ', 'ojr_35H0jfKYBBZq6nUO15vbH5n4', 'ojr_35JzCl7EX1aJezpxwEgbjW_k']).then(res => {
+    console.log(res)
+  })
+
   // db.strategy.addStrategy('1ace8ef160901b1b008f69ae08b0ee8a', 'campus', {
   //   name: '攻略',
   //   desc: '啦啦啦啦啦',

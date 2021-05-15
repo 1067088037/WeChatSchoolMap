@@ -17,6 +17,23 @@ export class User {
   }
 
   /**
+   * 根据openid数组获取用户信息，获取的是简化版信息
+   * @param {array} openidArray 
+   */
+  async getUserInfoArray(openidArray) {
+    try {
+      return await wx.cloud.callFunction({
+        name: 'getUserInfoArray',
+        data: {
+          _openidArray: openidArray
+        }
+      })
+    } catch (err) {
+      return []
+    }
+  }
+
+  /**
    * 获取该用户有权控制的用户
    * @param {string} openid 默认传入此用户的ID
    */
@@ -202,10 +219,6 @@ export class User {
    * @param {string} openid 
    */
   async getUser(openid) {
-    try {
-      return await (await _db.collection('user').doc(openid).get()).data
-    } catch (e) {
-      return null
-    }
+      return await _db.collection('user').doc(openid).get().then(res => res.data).catch(err => null)
   }
 }

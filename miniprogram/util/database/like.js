@@ -59,13 +59,9 @@ export class Like {
    * @param {string} superId 
    */
   async isLike(superId) {
-    try {
-      return await _db.collection('like').where({
-        'super._id': superId
-      }).get().then(res => res.data[0].like.indexOf(getApp().globalData.openid) != -1)
-    } catch (e) {
-      return false
-    }
+    return await _db.collection('like').where({
+      'super._id': superId
+    }).get().then(res => res.data[0].like.indexOf(getApp().globalData.openid) != -1).catch(err => false)
   }
 
   /**
