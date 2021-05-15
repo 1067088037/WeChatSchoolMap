@@ -6,6 +6,21 @@
 import { db } from "../../util/database/database";
 
 export function launchTest() {
+  // db.section.addSection('1ace8ef16090a631008f950170cb8165', {
+  //   name: "测试社团",
+  //   desc: "这个社团很好玩的",
+  //   images: [],
+  //   geo: db.Geo.Point(0, 0)
+  // })
+
+  // db.section.joinSection("cbddf0af609feb0a08bea6c82b6c3522")
+
+  // db.section.exitSection('cbddf0af609feb0a08bea6c82b6c3522')
+
+  db.section.getUserInSection('cbddf0af609feb0a08bea6c82b6c3522').then(res => {
+    console.log(res)
+  })
+
   // db.like.getIsAndCountLike(['scv4uf7gw1agp2n6lxhuo328bpkt31dk','ld86yr4r0mrs3r2cmcv8n0hloojkingh',['aaofcawodp8o650o75yr0wwyqutrj7gk']]).then(res => console.log(res))
 
   // db.strategy.addStrategy('1ace8ef160901b1b008f69ae08b0ee8a', 'campus', {

@@ -11,6 +11,7 @@ import { Like } from './like'
 import { Section } from './section'
 import { Strategy } from './strategy'
 import { Global } from './global'
+import { Application } from './application'
 
 export class DataBase {
   _db = _db //数据库实例
@@ -28,6 +29,7 @@ export class DataBase {
   like = new Like()
   section = new Section()
   strategy = new Strategy()
+  application = new Application()
 }
 
 export const db = new DataBase()
