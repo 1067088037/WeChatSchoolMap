@@ -7,13 +7,9 @@ export class User {
    * @returns {string} openid
    */
   async getOpenId() {
-    try {
-      return await wx.cloud.callFunction({
-        name: 'login'
-      })
-    } catch (err) {
-      return null
-    }
+    return await wx.cloud.callFunction({
+      name: 'login'
+    }).catch(err => null)
   }
 
   /**
@@ -21,16 +17,12 @@ export class User {
    * @param {array} openidArray 
    */
   async getUserInfoArray(openidArray) {
-    try {
-      return await wx.cloud.callFunction({
-        name: 'getUserInfoArray',
-        data: {
-          _openidArray: Array.from(new Set(openidArray))
-        }
-      })
-    } catch (err) {
-      return []
-    }
+    return await wx.cloud.callFunction({
+      name: 'getUserInfoArray',
+      data: {
+        _openidArray: Array.from(new Set(openidArray))
+      }
+    }).catch(err => [])
   }
 
   /**
@@ -38,17 +30,12 @@ export class User {
    * @param {string} openid 默认传入此用户的ID
    */
   async getUserUnderControl(openid = getApp().globalData.openid) {
-    try {
-      let res = (await wx.cloud.callFunction({
-        name: 'getUserUnderControl',
-        data: {
-          _openid: openid
-        }
-      })).result
-      return res
-    } catch (err) {
-      return []
-    }
+    return await wx.cloud.callFunction({
+      name: 'getUserUnderControl',
+      data: {
+        _openid: openid
+      }
+    }).then(res => res.result).catch(err => [])
   }
 
   /**
@@ -60,14 +47,14 @@ export class User {
     if (userInfo.constructor != Object) {
       console.error('userInfo类型非法')
     } else {
-      _db.collection('user').doc(openid).get().then(res => {
+      return _db.collection('user').doc(openid).get().then(res => {
         _db.collection('user').doc(openid).update({
           data: {
             userInfo: userInfo,
           }
         })
       }).catch(e => {
-        _db.collection('user').add({
+        return _db.collection('user').add({
           data: {
             _id: openid,
             userInfo: userInfo,
@@ -101,18 +88,14 @@ export class User {
    * @param {string} openid 
    */
   async getFavorite(openid) {
-    try {
-      return await wx.cloud.callFunction({
-        name: 'getItem',
-        data: {
-          collection: 'user',
-          docid: openid,
-          item: 'favorite'
-        }
-      }).then(res => res.result)
-    } catch (e) {
-      return null
-    }
+    return await wx.cloud.callFunction({
+      name: 'getItem',
+      data: {
+        collection: 'user',
+        docid: openid,
+        item: 'favorite'
+      }
+    }).then(res => res.result).catch(err => null)
   }
 
   /**
@@ -120,19 +103,15 @@ export class User {
    * @param {*} pointId 标点ID
    */
   async addFavorite(openid, pointId) {
-    try {
-      return await wx.cloud.callFunction({
-        name: 'addInArray',
-        data: {
-          collection: 'user',
-          docid: openid,
-          array: 'favorite',
-          push: pointId
-        }
-      })
-    } catch (e) {
-      return null
-    }
+    return await wx.cloud.callFunction({
+      name: 'addInArray',
+      data: {
+        collection: 'user',
+        docid: openid,
+        array: 'favorite',
+        push: pointId
+      }
+    }).catch(err => null)
   }
 
   /**
@@ -140,19 +119,15 @@ export class User {
    * @param {string} pointid 要删除的ID
    */
   async removeFavorite(openid, pointid) {
-    try {
-      return await wx.cloud.callFunction({
-        name: 'removeInArray',
-        data: {
-          collection: 'user',
-          docid: openid,
-          array: 'favorite',
-          remove: pointid
-        }
-      })
-    } catch (e) {
-      return null
-    }
+    return await wx.cloud.callFunction({
+      name: 'removeInArray',
+      data: {
+        collection: 'user',
+        docid: openid,
+        array: 'favorite',
+        remove: pointid
+      }
+    }).catch(err => null)
   }
 
   /**
@@ -160,18 +135,14 @@ export class User {
    * @param {string} openid 
    */
   async getPoint(openid) {
-    try {
-      return await wx.cloud.callFunction({
-        name: 'getItem',
-        data: {
-          collection: 'user',
-          docid: openid,
-          item: 'point'
-        }
-      }).then(res => res.result)
-    } catch (e) {
-      return null
-    }
+    return await wx.cloud.callFunction({
+      name: 'getItem',
+      data: {
+        collection: 'user',
+        docid: openid,
+        item: 'point'
+      }
+    }).then(res => res.result).catch(err => null)
   }
 
   /**
@@ -179,19 +150,15 @@ export class User {
    * @param {*} pointid 标点ID
    */
   async addPoint(openid, pointid) {
-    try {
-      return await wx.cloud.callFunction({
-        name: 'addInArray',
-        data: {
-          collection: 'user',
-          docid: openid,
-          array: 'point',
-          push: pointid
-        }
-      })
-    } catch (e) {
-      return null
-    }
+    return await wx.cloud.callFunction({
+      name: 'addInArray',
+      data: {
+        collection: 'user',
+        docid: openid,
+        array: 'point',
+        push: pointid
+      }
+    }).catch(err => null)
   }
 
   /**
@@ -199,19 +166,15 @@ export class User {
    * @param {string} pointid 要删除的ID
    */
   async removePoint(openid, pointid) {
-    try {
-      return await wx.cloud.callFunction({
-        name: 'removeInArray',
-        data: {
-          collection: 'user',
-          docid: openid,
-          array: 'point',
-          remove: pointid
-        }
-      })
-    } catch (e) {
-      return null
-    }
+    return await wx.cloud.callFunction({
+      name: 'removeInArray',
+      data: {
+        collection: 'user',
+        docid: openid,
+        array: 'point',
+        remove: pointid
+      }
+    }).catch(err => null)
   }
 
   /**
@@ -219,6 +182,6 @@ export class User {
    * @param {string} openid 
    */
   async getUser(openid) {
-      return await _db.collection('user').doc(openid).get().then(res => res.data).catch(err => null)
+    return await _db.collection('user').doc(openid).get().then(res => res.data).catch(err => null)
   }
 }

@@ -10,17 +10,13 @@ export class Arch {
    * @returns {Array} 建筑物数组 
    */
   async getArchArray(campusId) {
-    try {
-      return await wx.cloud.callFunction({
-        name: 'getAllBySuperId',
-        data: {
-          collection: 'arch',
-          superId: campusId
-        }
-      }).then(res => res.result.data)
-    } catch (e) {
-      return []
-    }
+    return await wx.cloud.callFunction({
+      name: 'getAllBySuperId',
+      data: {
+        collection: 'arch',
+        superId: campusId
+      }
+    }).then(res => res.result.data).catch(err => [])
   }
 
   /**

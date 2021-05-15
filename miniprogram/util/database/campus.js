@@ -7,10 +7,6 @@ export class Campus {
    * @returns {object} 校区
    */
   async getCampus(id) {
-    try {
-      return await (await _db.collection('campus').doc(id).get()).data
-    } catch(e) {
-      return null
-    }
+    return await _db.collection('campus').doc(id).get().then(res => res.data).catch(err => null)
   }
 }

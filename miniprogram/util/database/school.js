@@ -6,13 +6,9 @@ export class School {
    * @returns {Array} 学校数组
    */
   async getAllSchool() {
-    try {
-      return await wx.cloud.callFunction({
-        name: 'getAllSchool'
-      })
-    } catch(err) {
-      return []
-    }
+    return await wx.cloud.callFunction({
+      name: 'getAllSchool'
+    }).catch(err => [])
   }
 
   /**
@@ -21,10 +17,6 @@ export class School {
    * @returns {object} 学校
    */
   async getSchool(schoolId) {
-    try {
-      return await (await _db.collection('school').doc(schoolId).get()).data
-    } catch(e) {
-      return null
-    }
+      return await _db.collection('school').doc(schoolId).get().then(res => res.data).catch(err => null)
   }
 }

@@ -12,17 +12,13 @@ export class Point {
    * @returns {Array} 标点数组
    */
   async getPointArray(campusId) {
-    try {
-      return await wx.cloud.callFunction({
-        name: 'getAllBySuperId',
-        data: {
-          collection: 'point',
-          superId: campusId
-        }
-      }).then(res => res.result.data)
-    } catch (err) {
-      return []
-    }
+    return await wx.cloud.callFunction({
+      name: 'getAllBySuperId',
+      data: {
+        collection: 'point',
+        superId: campusId
+      }
+    }).then(res => res.result.data).catch(err => [])
   }
 
   /**
@@ -48,7 +44,7 @@ export class Point {
     } else if (geo.constructor != _db.Geo.Point(0, 0).constructor) {
       console.error("geo类型非法")
     } else {
-      _db.collection('point').add({
+      return _db.collection('point').add({
         data: {
           super: {
             _id: campusId,
@@ -121,17 +117,17 @@ export class Point {
    * 删除指定标点
    * @param {string} pointId 数据库中ID
    */
-  removePointById(pointId) {
-    _db.collection('point').doc(pointId).remove()
-    db.comment.removeAllComment([pointId])
+  async removePointById(pointId) {
+    await _db.collection('point').doc(pointId).remove()
+    return db.comment.removeAllComment([pointId])
   }
 
   /**
    * 删除指定标点
    * @param {string} markId 标注ID
    */
-  removePointByMarkId(markId) {
-    _db.collection('point').where({
+  async removePointByMarkId(markId) {
+    return _db.collection('point').where({
       markId: markId
     }).get().then(res => {
       res.data.forEach(e => {
@@ -147,7 +143,7 @@ export class Point {
    * @param {object} data 要更新的内容
    */
   updatePointById(pointId, data) {
-    _db.collection('point').doc(pointId).update({
+    return _db.collection('point').doc(pointId).update({
       data: data
     })
   }
@@ -158,7 +154,7 @@ export class Point {
    * @param {object} data 要更新的内容
    */
   updatePointByMarkId(markId, data) {
-    _db.collection('point').where({
+    return _db.collection('point').where({
       markId: markId
     }).update({
       data: data

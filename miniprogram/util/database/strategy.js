@@ -45,7 +45,7 @@ export class Strategy {
             desc: strategy.desc,
             content: strategy.content,
           },
-          type:strategy.type
+          type: strategy.type
         }
       })
     }
@@ -56,9 +56,7 @@ export class Strategy {
    * @param {string} strategyId 攻略ID
    */
   async getStrategy(strategyId) {
-    return await _db.collection('strategy').doc(strategyId).get().then(res => {
-      return res.data
-    })
+    return await _db.collection('strategy').doc(strategyId).get().then(res => res.data)
   }
 
   /**
@@ -66,32 +64,24 @@ export class Strategy {
    * @param {string} superId 
    */
   async getBriefStrategyArray(superId) {
-    try {
-      return wx.cloud.callFunction({
-        name: 'getBriefStrategy',
-        data: {
-          superId: superId
-        }
-      }).then(res => res.result)
-    } catch (e) {
-      return []
-    }
+    return wx.cloud.callFunction({
+      name: 'getBriefStrategy',
+      data: {
+        superId: superId
+      }
+    }).then(res => res.result).catch(err => [])
   }
   /**
    * 获取用户拥有的全部攻略的简要信息，不包含详情
    * @param {string} openid 
    */
   async getBriefStrategyArrayByOpenid(openid) {
-    try {
-      return wx.cloud.callFunction({
-        name: 'getBriefStrategyByOpenid',
-        data: {
-          _openid: openid
-        }
-      }).then(res => res.result)
-    } catch (e) {
-      return []
-    }
+    return wx.cloud.callFunction({
+      name: 'getBriefStrategyByOpenid',
+      data: {
+        _openid: openid
+      }
+    }).then(res => res.result).catch(err => [])
   }
 
   /**
@@ -130,7 +120,7 @@ export class Strategy {
     return _db.collection('strategy').doc(strategyId).update({
       data: {
         publish: res.data.draft,
-        type:"publish"
+        type: "publish"
       }
     })
   }

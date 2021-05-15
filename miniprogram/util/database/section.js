@@ -7,16 +7,12 @@ export class Section {
    * @param {string} schoolId 
    */
   async getSectionArray(schoolId) {
-    try {
-      return await wx.cloud.callFunction({
-        name: 'getAllBySuperId',
-        data: {
-          superId: schoolId
-        }
-      })
-    } catch (err) {
-      return []
-    }
+    return await wx.cloud.callFunction({
+      name: 'getAllBySuperId',
+      data: {
+        superId: schoolId
+      }
+    }).catch(err => [])
   }
 
   /**
@@ -25,7 +21,7 @@ export class Section {
    * @param {object} section 包含name,desc,images,geo
    */
   addSection(schoolId, section) {
-    _db.collection('section').add({
+    return _db.collection('section').add({
       data: {
         super: {
           _id: schoolId,
@@ -44,7 +40,7 @@ export class Section {
    * @param {string} sectionId 部门ID
    */
   removeSection(sectionId) {
-    _db.collection('section').doc(sectionId).remove()
+    return _db.collection('section').doc(sectionId).remove()
   }
 
   /**
@@ -53,7 +49,7 @@ export class Section {
    * @param {object} section 
    */
   updateSection(sectionId, section) {
-    _db.collection('section').doc(sectionId).update({
+    return _db.collection('section').doc(sectionId).update({
       data: section
     })
   }
