@@ -3,6 +3,9 @@ const {
 } = require("../../util/database/database");
 const app = getApp()
 const CloudPathFront = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/";
+var touchDotBegin;
+var interval;
+var time;
 // pages/designPage/designPage.js
 Page({
 
@@ -29,6 +32,8 @@ Page({
     }, {
       text: "保存"
     }], // 对话框按钮集,
+    showCreateLifeStrategy:false,
+    isShowDeleteDraft:false
   },
   toggleArch() {
     var list_state = this.data.stateArch,
@@ -268,6 +273,9 @@ Page({
     // 返回false可以阻止某次文件上传
   },
   navigaToEditStrategy(e) {
+    wx.showLoading({
+      title: 'loading....',
+    })
     let draftStrategies = this.data.draftStrategies
     this.data.draftStrategiesId.forEach(id => {
       db.strategy.getStrategy(id).then(res => {
@@ -276,16 +284,14 @@ Page({
           draft['id'] = res._id;
           draftStrategies.push(draft)
         }
+      }).then(()=>{
+        this.setData({
+          showEditStrategy: true,
+          draftStrategies
+        })
+        wx.hideLoading()
       })
     })
-
-    setTimeout(() => {
-      this.setData({
-        showEditStrategy: true,
-        draftStrategies
-      })
-    }, 1000)
-
   },
   EditDraftTap(e) {
     let id = e.currentTarget.id
@@ -294,7 +300,6 @@ Page({
     this.data.draftStrategies.forEach(item => {
       if (item.id == id) {
         draftStrategySelected = item;
-
         item.content[0].image.forEach(e => {
           e = CloudPathFront + e;
           image.push(e)
@@ -317,13 +322,73 @@ Page({
       files
     })
   },
+  showDeleteDraft(e){
+    wx.showModal({
+      title:"确定删除草稿吗？",
+      cancelText:"取消",
+      cancelColor: "#000000",
+      confirmText:"删除",
+      confirmColor:"#ff00000",
+      success:(res)=>{
+        if(res.confirm){
+          db.strategy.removeStrategy(this.data.draftStrategySelected.id)
+          this.data.draftStrategies.forEach((item,index)=>{
+            if(item.id == this.data.draftStrategySelected.id){
+              this.data.draftStrategySelected.splice(index,1);
+            }
+          })
+          let draftStrategies = this.data.draftStrategies
+          this.setData({
+              strategyTitle: "",
+              strategyContent: "",
+              strategyBriefIntro: "",
+              userUploadPhotoes: [],
+              isExitEditStrategy: false,
+              draftStrategySelected: null,
+              draftStrategies
+            })
+        }else if(res.cancel){
+          console.log(res)
+        }
+      }
+    })
+  },
   navigaToCreateLifeStrategy(e){
     this.setData({
-      
+      showCreateLifeStrategy:true
     })
   },
   touchStart(e){
     console.log(e)
+    touchDotBegin = e.touches[0].pageX;
+    if(touchDotBegin < 20)
+    {
+      interval = setInterval(function () {
+        time++;
+      }, 100);
+    }
+  },
+  touchMove(e){
+    
+    var touchMove = e.touches[0].pageX;
+    console.log("touchMove:" + touchMove + " touchDot:" + touchDotBegin + " diff:" + (touchMove - touchDotBegin));
+    if (touchMove - touchDotBegin <= -40 && time < 10) {
+      this.setData({
+        showEditStrategy : false
+      })
+      console.log(213)
+    }
+    if (touchMove - touchDotBegin >= 40 && time < 10) {
+      console.log('向右滑动');
+       this.setData({
+        showEditStrategy:false
+      })
+      console.log(54645)
+    }
+  },
+  touchEnd(e){
+    clearInterval(interval); // 清除setInterval 
+    time = 0;
   },
   /**
    * 生命周期函数--监听页面加载

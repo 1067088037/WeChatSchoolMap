@@ -371,7 +371,9 @@ Page({
    */
   StrategiesAreaTap(e) {
     let testStrategies = [];
-
+    wx.showLoading({
+      title: 'loading...',
+    })
     this.data.strategiesIds.forEach(id => {
       db.strategy.getStrategy(id).then(res => {
         console.log("获取到该建筑的攻略： ", res)
@@ -400,6 +402,7 @@ Page({
             // 测试数据Strategies,正常使用时应从数据库获取
             strategies: [].concat(testStrategies)
           })
+          wx.hideLoading()
         })
       })
     })
@@ -422,7 +425,16 @@ Page({
     let commentNum;
     let targetStrategyId = (e.type == 'tap') ? e.currentTarget.id : e;
     console.log("选中的攻略id是", targetStrategyId)
+
+    wx.showLoading({
+      title: 'loading...',
+    })
+
     log.logTime("开始请求评论")
+
+
+    log.logTime("开始请求评论")
+
     db.comment.getAllComment(targetStrategyId).then(res => {
       log.logTime("评论请求完成")
       console.log("res: ", res)
@@ -443,11 +455,17 @@ Page({
           commentNum--;
         }
       })
+
+      db.user.getUserInfoArray(openIdArray).then(res => {
+
+
       log.logTime("初步处理完成")
 
       let tasks = []
       tasks.push(db.user.getUserInfoArray(openIdArray).then(res => {
         log.logTime("getUserInfoArray")
+
+
         res.result.forEach(e => {
           userInfos.push(e)
         })
@@ -474,6 +492,22 @@ Page({
           let likeObj = isAndLikeNum.find((item, index) => {
             return comment.id == item.superId
           })
+
+          wx.hideLoading();
+
+          comment['isLike'] = likeObj.isLike
+          comment['likeNum'] = likeObj.count
+
+        })
+        // 显示具体攻略区
+        this.setData({
+          selectedStrategy,
+          comments: comments,
+          commentNum: commentNum,
+          showStrategiesArea: false,
+          showBuilidngBanner: false,
+        })
+
           comment['isLike'] = likeObj.isLike
           comment['likeNum'] = likeObj.count
         })
@@ -485,6 +519,7 @@ Page({
           showStrategiesArea: false,
           showBuilidngBanner: false,
         })
+
         log.logTime("页面加载完毕")
         log.refreshStTime()
       })
@@ -498,7 +533,11 @@ Page({
         selectedStrategy.isClicked = true;
       }
     })
+
     log.logTime("异步请求发送完毕")
+
+    log.logTime("异步请求发送完毕")
+
   },
   giveLike(e) {
     console.log(getApp().globalData.openid)
