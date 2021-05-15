@@ -267,8 +267,6 @@ Page({
     console.log('files', files)
     // 返回false可以阻止某次文件上传
   },
-
-
   navigaToEditStrategy(e) {
     let draftStrategies = this.data.draftStrategies
     this.data.draftStrategiesId.forEach(id => {

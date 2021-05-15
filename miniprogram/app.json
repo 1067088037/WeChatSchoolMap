@@ -2,28 +2,10 @@
   "pages": [
     "pages/load/load",
     "pages/myCenter/myCenter",
-    "pages/myCenter/myasso/myasso",
-    "pages/myCenter/joinasso/joinasso",
-    "pages/myCenter/focus/focus",
-    "pages/myCenter/creatasso/creatasso",
-    "pages/myCenter/myset/myset",
-    "pages/schoolMap/schoolMap",
     "pages/index/index",
     "pages/designPage/designPage",
     "pages/message/message",
-    "pages/building/building",
-    "pages/userConsole/userConsole",
-    "pages/storageConsole/storageConsole",
-    "pages/databaseGuide/databaseGuide",
-    "pages/addFunction/addFunction",
-    "pages/deployFunctions/deployFunctions",
-    "pages/chooseLib/chooseLib",
-    "pages/openapi/openapi",
-    "pages/openapi/serverapi/serverapi",
-    "pages/openapi/callback/callback",
-    "pages/openapi/cloudid/cloudid",
-    "pages/im/im",
-    "pages/im/room/room"
+    "pages/building/building"
   ],
   "permission": {
     "scope.userLocation": {
