@@ -389,7 +389,9 @@ Page({
    */
   StrategiesAreaTap(e) {
     let testStrategies = [];
-
+    wx.showLoading({
+      title: 'loading...',
+    })
     this.data.strategiesIds.forEach(id => {
       db.strategy.getStrategy(id).then(res => {
         console.log("获取到该建筑的攻略： ", res)
@@ -418,6 +420,7 @@ Page({
             // 测试数据Strategies,正常使用时应从数据库获取
             strategies: [].concat(testStrategies)
           })
+          wx.hideLoading()
         })
       })
     })
@@ -439,6 +442,9 @@ Page({
     let commentNum;
     let targetStrategyId  = (e.type == 'tap')? e.currentTarget.id:e;
     console.log("选中的攻略id是", targetStrategyId)
+    wx.showLoading({
+      title: 'loading...',
+    })
     db.comment.getAllComment(targetStrategyId).then(res => {
       console.log("res: ", res)
       let avatars = []
@@ -459,7 +465,6 @@ Page({
           commentNum--;
         }
       })
-
       db.user.getUserInfoArray(openIdArray).then(res => {
         res.result.forEach(e => {
           userInfos.push(e)
@@ -493,6 +498,7 @@ Page({
             showStrategiesArea: false,
             showBuilidngBanner: false,
           })
+          wx.hideLoading();
         })
       })
     })
@@ -505,8 +511,6 @@ Page({
         selectedStrategy.isClicked = true;
       }
     })
-
-
   },
   giveLike(e) {
     console.log(getApp().globalData.openid)
