@@ -23,14 +23,14 @@ exports.main = async (event, context) => {
     tasks.push(promise)
   }
   // 等待所有
-  let origin = await (await Promise.all(tasks)).reduce((acc, cur) => {
+  let origin = (await Promise.all(tasks)).reduce((acc, cur) => {
     return {
       data: acc.data.concat(cur.data),
       errMsg: acc.errMsg,
     }
   })
   let result = []
-  await origin.data.forEach(e => {
+  origin.data.forEach(e => {
     let add = {
       _id: e._id,
       _openid: e._openid,
