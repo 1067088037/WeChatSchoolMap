@@ -147,7 +147,7 @@ Page({
   sendComment() {
     let superId = this.data.selectedStrategy.id
     console.log("评论所属于的攻略的id为：", superId)
-    
+
     db.comment.addComment(superId, "strategy", {
       reply: null,
       text: this.data.commentValue,
@@ -155,14 +155,14 @@ Page({
     })
     this.onPullDownRefresh()
     wx.startPullDownRefresh()
-    setTimeout(()=>{
+    setTimeout(() => {
       wx.stopPullDownRefresh()
       this.setData({
-        commentValue:"",
+        commentValue: "",
       })
-    },500)
-    
-    
+    }, 500)
+
+
   },
   /**
    * likeClick
@@ -432,25 +432,29 @@ Page({
     // 获取该攻略区的评论
     var that = this
     let comments = []
+    let openIdArray = []
+    let commentNum ;
     console.log("选中的攻略id是", e.currentTarget.id)
     db.comment.getAllComment(e.currentTarget.id).then(res => {
       let avatars = []
       let likeNums = []
+      commentNum = res.length
       res.forEach(v => {
         var userAvatar;
         var commentObj = {
           text: v.text,
-          id: v._id,
-
+          id: v._id
         }
+        comments.push(commentObj)
+        openIdArray.push(v._openid)
         db.user.getUser(v._openid).then(value => {
           that.setData({
             userAvatars: that.data.userAvatars.concat([value.userInfo.avatarUrl]),
             userNickName: that.data.userNickName.concat([value.userInfo.nickName]),
           })
         })
-        comments.push(commentObj)
       })
+    }).then(()=>{
       for (var i = 0; i < comments.length; i++) {
         let comment = comments[i]
         console.log(comment)
@@ -468,10 +472,9 @@ Page({
       setTimeout(() => {
         this.setData({
           comments: comments,
-          commentNum: res.length
+          commentNum: commentNum
         })
-      }, 3000)
-
+      }, 2000)
     })
     let id = (e.currentTarget.id)
     console.log(this.data.comments)

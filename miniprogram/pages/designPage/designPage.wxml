@@ -89,7 +89,7 @@
         <view>是否需要保存编辑记录</view>
       </mp-dialog>
       <view class="deleteStrategy" style="height:45rpx;width:40rpx">
-        <button style="width:100%;height:100%;position:absolute;opacity:0;"></button>
+        <button style="width:45rpx;height:40rpx;position:absolute;opacity:0;"></button>
         <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/delete.png"
           mode="scaleToFill" style="width:100%;height:100%"></image>
       </view>
