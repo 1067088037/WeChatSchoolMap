@@ -2,6 +2,7 @@ const {
   db
 } = require("../../util/database/database");
 const app = getApp()
+const CloudPathFront = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/";
 // pages/designPage/designPage.js
 Page({
 
@@ -9,16 +10,25 @@ Page({
    * 页面的初始数据
    */
   data: {
-    showUploadPostArea: false,
-    showEditStrategy: false,
-    draftStrategiesId: [],
-    draftStrategies: [],
-    draftStrategySelected:null,
-    file: [],
-    userUploadPhotoes: [],
-    stateArch: false,
-    firstClickArch: false,
-    isExitEditStrategy:false
+    showUploadPostArea: false, // 显示上传海报界面
+    showEditStrategy: false, // 显示编辑攻略界面
+    draftStrategiesId: [], // 草稿攻略的id合集
+    draftStrategies: [], // 草稿攻略合集
+    draftStrategySelected: null, // 选择的攻略
+    file: [], // 海报文件数组
+    userUploadPosters: [], // 用户上传的海报
+    userUploadPhotoes: [], // 用户上传的照片
+    stateArch: false, // 建筑里的攻略草稿的状态 -- 是否显示下拉
+    firstClickArch: false, // 第一次点击建筑攻略草稿 
+    isExitEditStrategy: false, // 显示退出编辑攻略的页面
+    strategyTitle: "", // 用户发布的攻略标题
+    strategyContent: "", // 用户发布的攻略内容
+    strategyBriefIntro: "", // 用户发布的内容简介
+    dialogButtons: [{
+      text: "不保存"
+    }, {
+      text: "保存"
+    }], // 对话框按钮集,
   },
   toggleArch() {
     var list_state = this.data.stateArch,
@@ -66,13 +76,13 @@ Page({
   backToHomePage() {
     this.setData({
       showUploadPostArea: false,
-      userUploadPhotoes: []
+      userUploadPosters: []
     })
   },
   sendPhoto() {
-    this.data.userUploadPhotoes.forEach((e, i) => {
+    this.data.userUploadPosters.forEach((e, i) => {
       const filepath = e;
-      const name = i.toString()
+      const name = Math.round(Math.random * 10000).toString()
       const cloudpath = "School/4144010561/images/Design/design" + name + filepath.match(/\.[^.]+?$/)[0]
       console.log(cloudpath)
       wx.cloud.uploadFile({
@@ -131,26 +141,145 @@ Page({
   uploadSuccess(e) {
     console.log('upload success', e.detail)
     this.setData({
+      userUploadPosters: this.data.userUploadPosters.concat(e.detail.urls[0])
+    })
+  },
+  uploadPhotoesSuccess(e) {
+    console.log('upload success', e.detail)
+    this.setData({
       userUploadPhotoes: this.data.userUploadPhotoes.concat(e.detail.urls[0])
     })
   },
+  inputStrategyTitle(e) {
+    this.setData({
+      strategyTitle: e.detail.value
+    })
+  },
+  inputStrategyBriefIntro(e) {
+    this.setData({
+      strategyBriefIntro: e.detail.value
+    })
+  },
+  inputStrategyMainBody(e) {
+    this.setData({
+      strategyContent: e.detail.value
+    })
+  },
+  isShowSaveEditDialog(e) {
+    this.setData({
+      isExitEditStrategy: true
+    })
+  },
+  updatePhotoesToCloud() {
+    let images = []
+    this.data.userUploadPhotoes.forEach((e, i) => {
+      const filepath = e;
+      const name = Math.round(Math.random * 10000).toString()
+      const cloudpath = "School/4144010561/images/Strategies/Strategy" + name + filepath.match(/\.[^.]+?$/)[0]
+      images.push(cloudpath)
+      console.log(cloudpath)
+      wx.cloud.uploadFile({
+        cloudPath: cloudpath,
+        filePath: filepath,
+        success: res => {
+          console.log(res.fileId)
+        },
+        fail: console.error
+      })
+    })
+    return images
+  },
+  isSaveEdit(e) {
+    if (e.detail.item.text == '不保存') {
+      this.setData({
+        strategyTitle: "",
+        strategyContent: "",
+        strategyBriefIntro: "",
+        userUploadPhotoes: [],
+        isExitEditStrategy: false,
+        draftStrategySelected: null
+      })
+    } else if (e.detail.item.text == '保存') {
+      let content = [];
+      let image = this.updatePhotoesToCloud();
+      let contentObj = {
+        desc: this.data.strategyContent,
+        name: this.data.strategyTitle,
+        image: image
+      }
+      content.push(contentObj)
+      let draft = {
+        name: this.data.draftStrategySelected.name,
+        desc: this.data.strategyBriefIntro,
+        content: content
+      }
+      db.strategy.updateDraftStrategy(this.data.draftStrategySelected.id, draft)
+      this.data.draftStrategies.forEach(strategy => {
+        if (strategy.id == this.data.draftStrategySelected.id) {
+          strategy.content = content
+          strategy.desc = draft.desc
+        }
+      })
+      this.setData({
+        strategyTitle: "",
+        strategyContent: "",
+        strategyBriefIntro: "",
+        userUploadPhotoes: [],
+        isExitEditStrategy: false,
+        draftStrategySelected: null
+      })
+    }
+  },
+  publishDraft(e) {
+    let content = [];
+    let image = this.updatePhotoesToCloud();
+    let contentObj = {
+      desc: this.data.strategyContent,
+      name: this.data.strategyTitle,
+      image: image
+    }
+    content.push(contentObj)
+    let draft = {
+      name: this.data.draftStrategySelected.name,
+      desc: this.data.strategyBriefIntro,
+      content: content
+    }
+    db.strategy.updateDraftStrategy(this.data.draftStrategySelected.id, draft)
+    setTimeout(() => {
+      db.strategy.publishFromDraft(this.data.draftStrategySelected.id)
+      wx.showToast({
+        title: '成功',
+        icon: 'success',
+        duration: 1000
+      })
+      this.setData({
+        strategyTitle: "",
+        strategyContent: "",
+        strategyBriefIntro: "",
+        userUploadPhotoes: [],
+        isExitEditStrategy: false,
+        draftStrategySelected: null
+      })
+    }, 800)
 
+  },
   selectFile(files) {
     console.log('files', files)
     // 返回false可以阻止某次文件上传
   },
 
 
-  nevigaToEditStrategy(e) {
+  navigaToEditStrategy(e) {
     let draftStrategies = this.data.draftStrategies
-    this.data.draftStrategiesId.forEach(id=>{
-      db.strategy.getStrategy(id).then(res=>{
-        let draft = res.draft;
-        draft['id'] = res._id;
-        draftStrategies.push(draft)
+    this.data.draftStrategiesId.forEach(id => {
+      db.strategy.getStrategy(id).then(res => {
+        if (res.type == "draft") {
+          let draft = res.draft;
+          draft['id'] = res._id;
+          draftStrategies.push(draft)
+        }
       })
     })
-    
 
     setTimeout(() => {
       this.setData({
@@ -160,19 +289,38 @@ Page({
     }, 1000)
 
   },
-  EditDraftTap(e){
+  EditDraftTap(e) {
     let id = e.currentTarget.id
     let draftStrategySelected = new Object;
-    this.data.draftStrategies.forEach(item=>{
-      if(item.id == id)
-      {
+    let image = []
+    this.data.draftStrategies.forEach(item => {
+      if (item.id == id) {
         draftStrategySelected = item;
+
+        item.content[0].image.forEach(e => {
+          e = CloudPathFront + e;
+          image.push(e)
+        })
+        draftStrategySelected.content[0].image = image
       }
     })
-    this.setData({
-      draftStrategySelected,
-      files : draftStrategySelected.content[0].image
+    let files = []
+    draftStrategySelected.content[0].image.forEach(im => {
+      console.log(im)
+      files.push({
+        url: im
+      })
     })
+    this.setData({
+      strategyTitle: draftStrategySelected.content[0].name,
+      strategyContent: draftStrategySelected.content[0].desc,
+      strategyBriefIntro: draftStrategySelected.desc,
+      draftStrategySelected,
+      files
+    })
+  },
+  navigaToCreateLifeStrategy(e){
+
   },
   /**
    * 生命周期函数--监听页面加载
@@ -181,7 +329,7 @@ Page({
     this.setData({
       selectFile: this.selectFile.bind(this),
       uplaodFile: this.uplaodFile.bind(this),
-      userOpenId:app.globalData.openid
+      userOpenId: app.globalData.openid
     })
 
   },
@@ -192,6 +340,7 @@ Page({
   onReady: function () {
     let draftStrategiesId = this.data.draftStrategiesId
     db.strategy.getBriefStrategyArrayByOpenid(this.data.userOpenId).then(res => {
+      //console.log(res)
       let draftStrategiesId = this.data.draftStrategiesId
       res.forEach(e => {
         draftStrategiesId.push(e._id)

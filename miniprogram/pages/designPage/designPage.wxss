@@ -8,168 +8,202 @@
   margin-left: 15rpx;
   height: 60rpx;
 }
-.uploadPoster{
+
+.uploadPoster {
   border-radius: 10rpx;
-  border:1rpx black;
+  border: 1rpx black;
   box-shadow: darkgray 5rpx 5rpx 10rpx;
   margin-left: 15rpx;
   margin-right: 15rpx;
   position: relative;
 }
- image{
+
+image {
   position: relative;
   widows: 110rpx;
-  height:110rpx;
-  
+  height: 110rpx;
+
 }
-._hover_list{
+
+._hover_list {
   opacity: 0.9;
   background: #eeeeee;
 }
 
-.post{
+.post {
   margin-top: 20rpx;
   margin-left: 620rpx;
 }
-.showStrategyForArch{
-  margin-top:40rpx;
+
+.showStrategyForArch {
+  margin-top: 40rpx;
   text-align: left;
   text-justify: auto;
-  width:700rpx;
+  width: 700rpx;
   height: 80rpx;
   border-radius: 8rpx;
   margin-left: 10rpx;
   background-color: snow;
   box-shadow: darkgray 5rpx 5rpx 10rpx;
 }
-#strategyForArchBox{
-  width:700rpx;
-  border-top:1rpx solid #ddd;
+
+#strategyForArchBox {
+  width: 700rpx;
+  border-top: 1rpx solid #ddd;
   overflow: hidden;
   margin-left: 10rpx;
   animation-fill-mode: forwards;
-  margin-top:10rpx;
-  border-radius:0  0 10rpx 10rpx;
+  margin-top: 10rpx;
+  border-radius: 0 0 10rpx 10rpx;
 }
-.strategyForArchList{
 
-  border-bottom:1rpx solid darkgray;
-  
-  width:100%;
+.strategyForArchList {
+
+  border-bottom: 1rpx solid darkgray;
+
+  width: 100%;
   height: 300rpx;
 }
-.strategyForArchList view{
-  border-radius:0  0 10rpx 10rpx;
-  box-shadow: darkgray  5rpx 5rpx;
+
+.strategyForArchList view {
+  border-radius: 0 0 10rpx 10rpx;
+  box-shadow: darkgray 5rpx 5rpx;
   margin-top: 10rpx;
   margin-bottom: 10rpx;
   background-color: white;
   overflow: auto;
   white-space: nowrap;
   height: 120rpx;
-  border-bottom:1rpx solid #ddd;
+  border-bottom: 1rpx solid #ddd;
 
 }
-.showStrategySchool{
-  margin-top:20rpx;
+
+.showStrategySchool {
+  margin-top: 20rpx;
   text-align: left;
   text-justify: auto;
-  width:700rpx;
+  width: 700rpx;
   height: 80rpx;
   border-radius: 8rpx;
   margin-left: 10rpx;
   background-color: snow;
   box-shadow: darkgray 5rpx 5rpx 10rpx;
 }
-#strategyForSchoolBox{
-  width:700rpx;
-  border-top:1rpx solid #ddd;
+
+#strategyForSchoolBox {
+  width: 700rpx;
+  border-top: 1rpx solid #ddd;
   overflow: hidden;
   margin-left: 10rpx;
   animation-fill-mode: forwards;
-  margin-top:10rpx;
-  border-radius:0  0 10rpx 10rpx;
+  margin-top: 10rpx;
+  border-radius: 0 0 10rpx 10rpx;
 }
-.strategySchoolList{
+
+.strategySchoolList {
   border-radius: 50rpx;
-  border-bottom:1rpx solid darkgray;
-  width:100%;
+  border-bottom: 1rpx solid darkgray;
+  width: 100%;
   height: 300rpx;
 }
-.strategySchoolList view{
-  border-radius:0  0 10rpx 10rpx;
-  box-shadow: darkgray  5rpx 5rpx;
+
+.strategySchoolList view {
+  border-radius: 0 0 10rpx 10rpx;
+  box-shadow: darkgray 5rpx 5rpx;
   margin-top: 10rpx;
   margin-bottom: 10rpx;
   background-color: white;
   overflow: auto;
   white-space: nowrap;
   height: 120rpx;
-  border-bottom:1rpx solid #ddd;
+  border-bottom: 1rpx solid #ddd;
 }
+
 .uploadPicture {
   margin-left: 15rpx;
 }
-.inputStrategyTitle{
-  margin-top:26rpx;
+
+.inputStrategyTitle {
+  margin-top: 26rpx;
   margin-left: 15rpx;
   margin-right: 15rpx;
-  border-bottom:0.5rpx solid rgb(187, 186, 186);
+  border-bottom: 0.5rpx solid rgb(187, 186, 186);
 }
-.inputStrategyShortBriefIntro{
-  margin-top:26rpx;
+
+.inputStrategyShortBriefIntro {
+  margin-top: 26rpx;
   margin-left: 15rpx;
   margin-right: 15rpx;
-  border-bottom:0.5rpx solid rgb(187, 186, 186);
+  border-bottom: 0.5rpx solid rgb(187, 186, 186);
 }
-.inputMainBody{
-  margin-top:16rpx;
+
+.inputMainBody {
+  margin-top: 16rpx;
   margin-left: 15rpx;
   margin-right: 15rpx;
-  border-bottom:0.5rpx solid rgb(187, 186, 186);
+  border-bottom: 0.5rpx solid rgb(187, 186, 186);
 }
-.StrategyButtonSet{
+
+.StrategyButtonSet {
   position: fixed;
   bottom: 0rpx;
 }
-.cancelNewStrategy{
+
+.cancelNewStrategy {
   display: inline-block;
   border-radius: 20rpx;
   width: 200rpx;
 }
-.createNewStrategy{
+
+.createNewStrategy {
   width: 500rpx;
   margin-left: 50rpx;
   border-radius: 30rpx;
-  background:red;
+  background: red;
   display: inline-block;
 }
-@keyframes slidedown{
-  from{
+
+.createLifeStrategy {
+  border-radius: 10rpx;
+  border: 1rpx black;
+  box-shadow: darkgray 5rpx 5rpx 10rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  position: relative;
+}
+
+@keyframes slidedown {
+  from {
     height: 0;
   }
-  to{
+
+  to {
     height: 300rpx;
   }
 }
-@keyframes slideup{
-  from{
+
+@keyframes slideup {
+  from {
     height: 300rpx;
   }
-  to{
+
+  to {
     height: 0;
   }
 }
-.open{
-  animation:slidedown 1s;
+
+.open {
+  animation: slidedown 1s;
 }
-.close{
+
+.close {
   animation: slideup 1s;
 }
-.hide{
+
+.hide {
   display: none;
 }
- 
-.show{
+
+.show {
   display: block;
 }

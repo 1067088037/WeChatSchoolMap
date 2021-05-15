@@ -147,11 +147,22 @@ Page({
   sendComment() {
     let superId = this.data.selectedStrategy.id
     console.log("评论所属于的攻略的id为：", superId)
+    
     db.comment.addComment(superId, "strategy", {
       reply: null,
       text: this.data.commentValue,
       images: []
     })
+    this.onPullDownRefresh()
+    wx.startPullDownRefresh()
+    setTimeout(()=>{
+      wx.stopPullDownRefresh()
+      this.setData({
+        commentValue:"",
+      })
+    },500)
+    
+    
   },
   /**
    * likeClick
@@ -183,15 +194,15 @@ Page({
         })
       }
     })
-    setTimeout(()=>{
+    setTimeout(() => {
       console.log(newStrategy)
       this.data.strategies.splice(idx, 1, newStrategy)
       let strategies = this.data.strategies
       this.setData({
         strategies
       })
-    },1000)
-    
+    }, 1000)
+
   },
   /**
    * intoCommentClick
@@ -265,21 +276,21 @@ Page({
     if (e.detail.item.text == '保存') {
       // 上传数据到云端
       let name = this.getStrategyName()
-      let campusId = app.globalData.campus._id
+      let campusId = this.data.building._id
       let content = [];
-      let obj = new Object;
+      let contentobj = new Object;
       let desc = this.data.strategyBriefIntro
-      obj['desc'] = this.data.strategyContent;
-      obj['name'] = this.data.strategyTitle;
+      contentobj['desc'] = this.data.strategyContent;
+      contentobj['name'] = this.data.strategyTitle;
       let images = this.updatePhotoesToCloud()
-      obj['image'] = images;
+      contentobj['image'] = images;
+      content.push(contentobj);
       let strategy = {
         name: name,
         content: content,
         desc: desc,
-        type:'draft'
+        type: 'draft'
       }
-      content.push(obj);
       db.strategy.addStrategy(campusId, "arch", strategy)
       this.setData({
         isCreateNewStrategy: false,
@@ -290,6 +301,7 @@ Page({
       return;
     }
   },
+
   /**
    * getStrategyName
    * @todo 根据不同建筑，返回不同的name属性
@@ -305,7 +317,7 @@ Page({
     let images = []
     this.data.userUploadPhotoes.forEach((e, i) => {
       const filepath = e;
-      const name = i.toString()
+      const name = Math.round(Math.random * 1000).toString()
       const cloudpath = "School/4144010561/images/Strategies/Strategy" + name + filepath.match(/\.[^.]+?$/)[0]
       images.push(cloudpath)
       console.log(cloudpath)
@@ -327,7 +339,7 @@ Page({
   sendStrategy() {
     let superId = this.data.building._id
     let name = this.getStrategyName();
-    let campusId = app.globalData.campus._id
+    //let campusId = app.globalData.campus._id
     let content = [];
     let obj = new Object;
     let desc = this.data.strategyBriefIntro
@@ -339,7 +351,7 @@ Page({
       name: name,
       content: content,
       desc: desc,
-      type:'publish'
+      type: 'publish'
     }
     content.push(obj);
     db.strategy.addStrategy(superId, "arch", strategy)
@@ -378,21 +390,21 @@ Page({
           srcs.push(im)
         })
         let likeNum;
-        db.like.countLike(res._id).then(likenums=>{
+        db.like.countLike(res._id).then(likenums => {
           likeNum = likenums;
         })
-        setTimeout(()=>{
+        setTimeout(() => {
           let strategy = {
             src: srcs,
             id: res._id,
             likeNum: likeNum,
-            isLike: (likeNum)?true:false,
+            isLike: (likeNum) ? true : false,
             intro: res.publish.desc,
             description: res.publish.content[0].desc,
             title: res.publish.content[0].name
           }
           testStrategies.push(strategy)
-        },1000)
+        }, 1000)
       })
     })
     wx.showLoading({
@@ -448,10 +460,9 @@ Page({
             likeNums: that.data.likeNums.concat(r)
           })
         })
-
         db.like.isLike(comment.id).then(islike => {
           comment.isLike = islike
-          console.log(comment.isLike)
+          //console.log(comment.isLike)
         })
       }
       setTimeout(() => {
@@ -459,7 +470,7 @@ Page({
           comments: comments,
           commentNum: res.length
         })
-      }, 1000)
+      }, 3000)
 
     })
     let id = (e.currentTarget.id)
@@ -483,8 +494,7 @@ Page({
         showBuilidngBanner: false,
       })
       wx.hideLoading()
-    }, 1000)
-
+    }, 1500)
   },
   giveLike(e) {
     console.log(getApp().globalData.openid)
@@ -561,7 +571,7 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () { },
+  onShow: function () {},
 
   /**
    * 生命周期函数--监听页面隐藏

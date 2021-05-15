@@ -129,7 +129,8 @@ export class Strategy {
     const res = await _db.collection('strategy').doc(strategyId).get()
     return _db.collection('strategy').doc(strategyId).update({
       data: {
-        publish: res.data.draft
+        publish: res.data.draft,
+        type:"publish"
       }
     })
   }
