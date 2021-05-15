@@ -28,3 +28,21 @@ export function randomNumberId() {
   let id = parseInt(Math.random() * maxInteger)
   return id
 }
+
+export class LogTime {
+  stTime = new Date().getTime()
+  tag = "标签"
+
+  constructor(tag) {
+    this.tag = tag
+    this.stTime = new Date().getTime()
+  }
+
+  refreshStTime() {
+    this.stTime = new Date().getTime()
+  }
+
+  logTime(message = "?") {
+    console.log(this.tag, " 用时", (new Date().getTime() - this.stTime), "ms @", message)
+  }
+}

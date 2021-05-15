@@ -7,6 +7,7 @@ import {
 import {
   db
 } from '../../util/database/database'
+import { LogTime } from '../../util/util';
 Page({
 
   /**
@@ -154,11 +155,11 @@ Page({
       text: this.data.commentValue,
       images: []
     })
-    
+
     wx.showLoading({
       title: '发生中',
     })
-    setTimeout(()=>{
+    setTimeout(() => {
       this.intoDetailStrategy(superId)
       wx.showToast({
         title: '成功',
@@ -168,8 +169,8 @@ Page({
       that.setData({
         commentValue: "",
       })
-    },800)
-    
+    }, 800)
+
 
   },
   /**
@@ -211,25 +212,6 @@ Page({
       })
     }, 1000)
 
-  },
-  /**
-   * intoCommentClick
-   * @param {}} e 
-   * @todo 进入评论区界面，但是应该进入到具体攻略的评论区界面
-   */
-  intoCommentClick(e) {
-    db.comment.getAllComment('1').then(res => {
-      //console.log(res[0].text)
-      this.setData({
-        showStrategiesArea: false,
-        showComment: true,
-        comments: [{
-          text: res[0].text
-        }, {
-          text: res[1].text
-        }]
-      })
-    })
   },
   /**
    * toHomePage
@@ -431,6 +413,7 @@ Page({
    * @todo 进入具体攻略区
    */
   intoDetailStrategy(e) {
+    let log = new LogTime("进入具体攻略区")
     // 获取该攻略区的评论
     console.log(e)
     var that = this
@@ -440,18 +423,22 @@ Page({
     let userInfos = []
     let isAndLikeNum = []
     let commentNum;
-    let targetStrategyId  = (e.type == 'tap')? e.currentTarget.id:e;
+    let targetStrategyId = (e.type == 'tap') ? e.currentTarget.id : e;
     console.log("选中的攻略id是", targetStrategyId)
+<<<<<<< HEAD
     wx.showLoading({
       title: 'loading...',
     })
+=======
+    log.logTime("开始请求评论")
+>>>>>>> dev
     db.comment.getAllComment(targetStrategyId).then(res => {
+      log.logTime("评论请求完成")
       console.log("res: ", res)
       let avatars = []
       let likeNums = []
       commentNum = res.length
       res.forEach(v => {
-        var userAvatar;
         if (v.text != undefined) {
           var commentObj = {
             openid: v._openid,
@@ -465,41 +452,58 @@ Page({
           commentNum--;
         }
       })
+<<<<<<< HEAD
       db.user.getUserInfoArray(openIdArray).then(res => {
+=======
+      log.logTime("初步处理完成")
+
+      let tasks = []
+      tasks.push(db.user.getUserInfoArray(openIdArray).then(res => {
+        log.logTime("getUserInfoArray")
+>>>>>>> dev
         res.result.forEach(e => {
           userInfos.push(e)
         })
         //console.log("userInfo: ", userInfos)
-      }).then(() => {
-        db.like.getIsAndCountLike(commentsIdArray).then(res => {
-          res.result.forEach(e => {
-            isAndLikeNum.push(e)
-          })
-          //console.log("isAndLikeNum: ", isAndLikeNum)
-        }).then(() => {
-          comments.forEach(comment => {
-            let user = userInfos.find((item, index) => {
-              //console.log(item._openid, comment.openid)
-              return item._openid == comment.openid
-            })
-            comment['userAvatarUrl'] = user.avatarUrl
-            comment['nickName'] = user.nickName
-            let likeObj = isAndLikeNum.find((item, index) => {
-              return comment.id == item.superId
-            })
-            comment['isLike'] = likeObj.isLike
-            comment['likeNum'] = likeObj.count
-          })
-          // 显示具体攻略区
-          this.setData({
-            selectedStrategy,
-            comments: comments,
-            commentNum: commentNum,
-            showStrategiesArea: false,
-            showBuilidngBanner: false,
-          })
-          wx.hideLoading();
+      }))
+      tasks.push(db.like.getIsAndCountLike(commentsIdArray).then(res => {
+        log.logTime("getIsAndCountLike")
+        res.result.forEach(e => {
+          isAndLikeNum.push(e)
         })
+        //console.log("isAndLikeNum: ", isAndLikeNum)
+      }))
+      log.logTime("发送用户信息和点赞的请求")
+      Promise.all(tasks).then(res => {
+        log.logTime("网络请求完毕")
+        console.log(res)
+        comments.forEach(comment => {
+          let user = userInfos.find((item, index) => {
+            //console.log(item._openid, comment.openid)
+            return item._openid == comment.openid
+          })
+          comment['userAvatarUrl'] = user.avatarUrl
+          comment['nickName'] = user.nickName
+          let likeObj = isAndLikeNum.find((item, index) => {
+            return comment.id == item.superId
+          })
+<<<<<<< HEAD
+          wx.hideLoading();
+=======
+          comment['isLike'] = likeObj.isLike
+          comment['likeNum'] = likeObj.count
+>>>>>>> dev
+        })
+        // 显示具体攻略区
+        this.setData({
+          selectedStrategy,
+          comments: comments,
+          commentNum: commentNum,
+          showStrategiesArea: false,
+          showBuilidngBanner: false,
+        })
+        log.logTime("页面加载完毕")
+        log.refreshStTime()
       })
     })
     let id = targetStrategyId
@@ -511,6 +515,10 @@ Page({
         selectedStrategy.isClicked = true;
       }
     })
+<<<<<<< HEAD
+=======
+    log.logTime("异步请求发送完毕")
+>>>>>>> dev
   },
   giveLike(e) {
     console.log(getApp().globalData.openid)
@@ -584,7 +592,7 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {},
+  onShow: function () { },
 
   /**
    * 生命周期函数--监听页面隐藏
