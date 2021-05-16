@@ -7,7 +7,9 @@ import {
 import {
   db
 } from '../../util/database/database'
-import { LogTime } from '../../util/util';
+import {
+  LogTime
+} from '../../util/util';
 Page({
 
   /**
@@ -180,7 +182,8 @@ Page({
    *  
    */
   likeClick(e) {
-    let id = (e.currentTarget.id);
+    console.log(e)
+    let id =  e.currentTarget.id ;
     console.log("点赞攻略的id是：", id)
     let newStrategy = new Object
     let idx = 0;
@@ -200,27 +203,52 @@ Page({
             newStrategy.likeNum--;
             idx = index
           }
+        }).then(() => {
+          console.log(newStrategy)
+          this.data.strategies.splice(idx, 1, newStrategy)
+          let strategies = this.data.strategies
+          this.setData({
+            strategies
+          })
         })
       }
     })
-    setTimeout(() => {
-      console.log(newStrategy)
-      this.data.strategies.splice(idx, 1, newStrategy)
-      let strategies = this.data.strategies
-      this.setData({
-        strategies
-      })
-    }, 1000)
+    // setTimeout(() => {
+    //   console.log(newStrategy)
+    //   this.data.strategies.splice(idx, 1, newStrategy)
+    //   let strategies = this.data.strategies
+    //   this.setData({
+    //     strategies
+    //   })
+    // }, 1000)
 
+  },
+  strategyLike(e){
+    let newObject = this.data.selectedStrategy;
+    db.like.isLike(newObject.id).then(res=>{
+      if(!res){
+        db.like.giveALike(newObject.id)
+        newObject.likeNum++;
+        newObject.isLike = true;
+      }
+      else{
+        db.like.cancelLike(newObject.id)
+        newObject.likeNum--;
+        newObject.isLike = false;
+      }
+    }).then(()=>{
+      this.setData({
+        selectedStrategy:newObject
+      })
+    })
   },
   /**
    * toHomePage
-   * @todo 从攻略去返回到简介区（主页面）
+   * @todo 从攻略去返回到（主页面）
    */
   toHomePage() {
-    this.setData({
-      showStrategiesArea: false,
-      introArea: true
+    wx.reLaunch({
+      url: '../index/index',
     })
   },
   /**
@@ -425,16 +453,12 @@ Page({
     let commentNum;
     let targetStrategyId = (e.type == 'tap') ? e.currentTarget.id : e;
     console.log("选中的攻略id是", targetStrategyId)
-
     wx.showLoading({
       title: 'loading...',
     })
 
     log.logTime("开始请求评论")
-
-
     log.logTime("开始请求评论")
-
     db.comment.getAllComment(targetStrategyId).then(res => {
       log.logTime("评论请求完成")
       console.log("res: ", res)
@@ -455,74 +479,81 @@ Page({
           commentNum--;
         }
       })
+      if (commentNum > 0) {
+        db.user.getUserInfoArray(openIdArray).then(res => {
+          log.logTime("初步处理完成")
 
-      db.user.getUserInfoArray(openIdArray).then(res => {
+          let tasks = []
+          tasks.push(db.user.getUserInfoArray(openIdArray).then(res => {
+            log.logTime("getUserInfoArray")
 
+            console.log(res)
+            res.result.forEach(e => {
+              userInfos.push(e)
+            })
+            //console.log("userInfo: ", userInfos)
+          }))
+          tasks.push(db.like.getIsAndCountLike(commentsIdArray).then(res => {
+            console.log(res)
+            log.logTime("getIsAndCountLike")
+            res.result.forEach(e => {
+              isAndLikeNum.push(e)
+            })
+            //console.log("isAndLikeNum: ", isAndLikeNum)
+          }))
+          log.logTime("发送用户信息和点赞的请求")
 
-      log.logTime("初步处理完成")
+          Promise.all(tasks).then(res => {
+            log.logTime("网络请求完毕")
+            console.log(res)
+            comments.forEach(comment => {
+              let user = userInfos.find((item, index) => {
+                //console.log(item._openid, comment.openid)
+                return item._openid == comment.openid
+              })
+              comment['userAvatarUrl'] = user.avatarUrl
+              comment['nickName'] = user.nickName
+              let likeObj = isAndLikeNum.find((item, index) => {
+                return comment.id == item.superId
+              })
+              wx.hideLoading();
+              comment['isLike'] = likeObj.isLike
+              comment['likeNum'] = likeObj.count
+            })
+            // 显示具体攻略区
+            this.setData({
+              selectedStrategy,
+              comments: comments,
+              commentNum: commentNum,
+              showStrategiesArea: false,
+              showBuilidngBanner: false,
+            })
 
-      let tasks = []
-      tasks.push(db.user.getUserInfoArray(openIdArray).then(res => {
-        log.logTime("getUserInfoArray")
-
-
-        res.result.forEach(e => {
-          userInfos.push(e)
-        })
-        //console.log("userInfo: ", userInfos)
-      }))
-      tasks.push(db.like.getIsAndCountLike(commentsIdArray).then(res => {
-        log.logTime("getIsAndCountLike")
-        res.result.forEach(e => {
-          isAndLikeNum.push(e)
-        })
-        //console.log("isAndLikeNum: ", isAndLikeNum)
-      }))
-      log.logTime("发送用户信息和点赞的请求")
-      Promise.all(tasks).then(res => {
-        log.logTime("网络请求完毕")
-        console.log(res)
-        comments.forEach(comment => {
-          let user = userInfos.find((item, index) => {
-            //console.log(item._openid, comment.openid)
-            return item._openid == comment.openid
+            // comment['isLike'] = likeObj.isLike
+            // comment['likeNum'] = likeObj.count
           })
-          comment['userAvatarUrl'] = user.avatarUrl
-          comment['nickName'] = user.nickName
-          let likeObj = isAndLikeNum.find((item, index) => {
-            return comment.id == item.superId
+          // 显示具体攻略区
+          this.setData({
+            selectedStrategy,
+            comments: comments,
+            commentNum: commentNum,
+            showStrategiesArea: false,
+            showBuilidngBanner: false,
           })
 
-          wx.hideLoading();
-
-          comment['isLike'] = likeObj.isLike
-          comment['likeNum'] = likeObj.count
-
+          log.logTime("页面加载完毕")
+          log.refreshStTime()
         })
-        // 显示具体攻略区
+      } else {
         this.setData({
           selectedStrategy,
           comments: comments,
           commentNum: commentNum,
           showStrategiesArea: false,
           showBuilidngBanner: false,
-        })
-
-          comment['isLike'] = likeObj.isLike
-          comment['likeNum'] = likeObj.count
-        })
-        // 显示具体攻略区
-        this.setData({
-          selectedStrategy,
-          comments: comments,
-          commentNum: commentNum,
-          showStrategiesArea: false,
-          showBuilidngBanner: false,
-        })
-
-        log.logTime("页面加载完毕")
-        log.refreshStTime()
-      })
+        }) 
+        wx.hideLoading();
+      }
     })
     let id = targetStrategyId
     let selectedStrategy = new Object
@@ -596,22 +627,76 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    db.strategy.getBriefStrategyArray(this.data.building._id).then(res => {
-      console.log("获取到该建筑的简略信息", res)
-      res.forEach(e => {
-        let id = [e._id]
-        this.setData({
-          strategiesIds: this.data.strategiesIds.concat(id)
-        })
-      })
-    })
 
+    console.log(this.data.strategiesIds)
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () { },
+  onShow: function () {
+    wx.showLoading({
+      title: 'loading...',
+    })
+    let that = this
+    console.log("Ready")
+    let strategiesId = []
+    let testStrategies = []
+    db.strategy.getBriefStrategyArray(this.data.building._id).then(res => {
+      console.log("获取到该建筑的简略信息", res)
+      res.forEach(e => {
+
+        strategiesId.push(e._id);
+      })
+      console.log(strategiesId)
+      strategiesId.forEach(id => {
+        db.strategy.getStrategy(id).then(strategy => {
+          let tempStrategy = {}
+          console.log("获取到该建筑的攻略： ", strategy)
+          let srcs = [];
+          strategy.publish.content[0].image.forEach(im => {
+            im = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/" + im
+            srcs.push(im)
+          })
+          tempStrategy['src'] = srcs;
+          tempStrategy['id'] = strategy._id;
+          tempStrategy['intro'] = strategy.publish.desc;
+          tempStrategy['description'] = strategy.publish.content[0].desc;
+          tempStrategy['title'] = strategy.publish.content[0].name;
+          testStrategies.push(tempStrategy)
+        })
+      })
+    }).then(() => {
+      db.like.getIsAndCountLike(strategiesId).then(res => {
+        console.log(res)
+        testStrategies.forEach(s => {
+          let isAndlike = res.result.find((item, index) => {
+            return item.superId == s.id
+          })
+          s['likeNum'] = isAndlike.count;
+          s['isLike'] = isAndlike.isLike;
+        })
+      }).then(() => {
+        testStrategies.forEach(e => {
+          db.comment.getAllComment(e.id).then(com => {
+            e.commentNum = com.length
+            console.log(com.length)
+          }).then(() => {
+            this.setData({
+              strategies: testStrategies
+            })
+          })
+        })
+        this.setData({
+            //strategies: (testStrategies),
+            strategiesId
+          }),
+          wx.hideLoading({
+            success: (res) => {},
+          })
+      })
+    })
+  },
 
   /**
    * 生命周期函数--监听页面隐藏

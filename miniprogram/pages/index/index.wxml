@@ -107,7 +107,7 @@
   <mp-cells title="标记点信息">
     <!-- 输入标点的名称 -->
     <mp-cell prop="markerPointName" title="标记点名称">
-      <input class="markerName" type="text" placeholder="请输入活动名称" placeholder-class="markerName" confirm-type="done"
+      <input class="markerName" type="text" placeholder="请输入活动名称" placeholder-class="markerName" confirm-type="done" bindinput="inputMarkerName"
         bindconfirm="inputMarkerName"></input>
     </mp-cell>
     <!-- 标点开始日期 -->
@@ -172,7 +172,7 @@
   <!-- 输入标记简介 -->
   <view class="marker_desc">标记简介</view>
   <view class="description-cell">
-    <textarea class="description-area" name="markerDesc" placeholder="请输入标记简介" confirm-type="done"
+    <textarea class="description-area" name="markerDesc" placeholder="请输入标记简介" confirm-type="done" bindinput="inputMarkerDesc"
       bindconfirm="inputMarkerDesc" maxlength="200" placeholder-class="textAreaPlaceHolder"></textarea>
   </view>
   <!-- 输入标记图示 -->

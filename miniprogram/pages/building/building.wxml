@@ -20,17 +20,10 @@
       </swiper>
     </view>
     <!-- 建筑的简介 -->
-    <view class="Introduction" wx:if="{{introArea}}">
+    <view class="Introduction" wx:if="{{selectedStrategy ==null && isCreateNewStrategy == false}}">
       这里是简介
     </view>
-    <view wx:if="{{showStrategiesArea == false}}">
-      <view class="StrategiesAreaButton" hover-class="_hover_class" bindtap="StrategiesAreaTap"
-        wx:if="{{showStrategiesArea == false&&(selectedStrategy.isClicked==false || selectedStrategy ==null && isCreateNewStrategy == false)}}">
-        攻略
-      </view>
-    </view>
-    <!-- 攻略区 -->
-    <view class="StrategiesArea" wx:if="{{showStrategiesArea}}">
+    <view class="StrategiesArea" wx:if="{{selectedStrategy ==null && isCreateNewStrategy == false }}">
       <view class="Strategies" wx:for="{{strategies}}" wx:key="item">
         <view class="Strategy" id="{{item.id}}">
           <image src="{{item.src[0]}}" bindtap="intoDetailStrategy" id="{{item.id}}"></image>
@@ -46,6 +39,7 @@
             <image class="comment" src="/images/building/comment.png" mode="widthFix" bindtap="intoDetailStrategy"
               id="{{item.id}}">
             </image>
+            <text style="display:inline;margin-left:10rpx; position:relative; bottom:14rpx">{{item.commentNum}}</text>
           </view>
         </view>
       </view>
@@ -99,16 +93,17 @@
           </view>
           <view style="text-align:center;">--The End--</view>
         </view>
-        
         <view class="postStrategyComment">
-            <input style="width: 500rpx;" class="StrategyAreaInputComment" bindinput="getComment" placeholder="随便说点什么"
-              bindconfirm="sendComment" confirm-type="send" value="{{commentValue}}"></input>
-            <view class="StrategyLlikeBtn" style="margin-right:0rpx">
-              <image class="like" src="/images/building/like.png" mode="widthFix">
-              </image>
-              <text decode="{{true}}" space="nbsp" style="position:relative;bottom:0rpx; "> 0</text>
-            </view>
+          <input style="width: 500rpx;" class="StrategyAreaInputComment" bindinput="getComment" placeholder="随便说点什么"
+            bindconfirm="sendComment" confirm-type="send" value="{{commentValue}}"></input>
+          <view class="StrategyLlikeBtn" style="margin-right:0rpx">
+            <image class="like" src="/images/building/like.png" mode="widthFix" wx:if="{{selectedStrategy.isLike==false}}"
+              bindtap="strategyLike" id="{{selectedStrategy.id}}" />
+            <image class="no-like" src="/images/building/like_selected.png" wx:if="{{selectedStrategy.isLike}}" id="{{selectedStrategy.id}}"
+              bindtap="strategyLike" />
+            <text>{{selectedStrategy.likeNum}}</text>
           </view>
+        </view>
       </view>
     </view>
     <!-- 添加攻略界面 -->
@@ -136,12 +131,13 @@
       </view>
       <mp-dialog show="{{isExitAddStrategy}}" buttons="{{dialogButtons}}" bindbuttontap="isSaveEdit">
         <view>是否需要保存编辑记录</view>
+        <view>记录将保存在['设计'-'草稿箱']中</view>
       </mp-dialog>
     </view>
   </view>
 
-  <view wx:if="{{building.type == 'college'}}"> 
-    
-  
+  <view wx:if="{{building.type == 'college'}}">
+
+
   </view>
 </view>

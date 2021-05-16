@@ -202,7 +202,7 @@
   width: 500rpx;
   margin-left: 50rpx;
   border-radius: 30rpx;
-  background:greenyellow;
+  background:red;
   display: inline-block;
 }
 .uploadPicture {
