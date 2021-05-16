@@ -5,7 +5,8 @@
     "pages/index/index",
     "pages/designPage/designPage",
     "pages/message/message",
-    "pages/building/building"
+    "pages/building/building",
+    "pages/posterArea/posterArea"
   ],
   "permission": {
     "scope.userLocation": {

@@ -27,6 +27,12 @@ Page({
     strategyTitle: "", // 用户发布的攻略标题
     strategyContent: "", // 用户发布的攻略内容
     strategyBriefIntro: "", // 用户发布的内容简介
+    postTitleInput:"",//上传海报时填写的活动名称
+    postContentInput:"",//上传海报时填写的活动内容（简介）
+    postTime:"",//上传海报时的时间
+    postSenderAvator:[],//海报作者头像
+    postSenderNickname:[],//海报作者昵称
+
     dialogButtons: [{
       text: "不保存"
     }, {
@@ -389,6 +395,16 @@ Page({
   touchEnd(e){
     clearInterval(interval); // 清除setInterval 
     time = 0;
+  },
+  getPostTitle(e) {
+    this.setData({
+      postTitleInput: e.detail.value
+    })
+  },
+  getPostContent(e) {
+    this.setData({
+      postContentInput: e.detail.value
+    })
   },
   /**
    * 生命周期函数--监听页面加载

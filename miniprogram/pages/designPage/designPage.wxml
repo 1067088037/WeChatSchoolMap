@@ -31,11 +31,23 @@
   <view class="uploadPosterArea" wx:if="{{showUploadPostArea}}">
     <button size="mini" class="post" type="primary" bindtap="sendPhoto">发表</button>
     <mp-cells>
+
+      <mp-cell title="活动名称">
+        <input type="text" placeholder="请输入活动名称" bindinput="getTitleInput"></input>
+      </mp-cell>
+
       <mp-cell>
         <mp-uploader delete="{{true}}" title="海报上传" max-count="9" files="{{file}}" select="{{selectFile}}"
           upload="{{uplaodFile}}" bindfail="uplaodError" bindsuccess="uploadSuccess"> </mp-uploader>
-        <button bindtap="backToHomePage">取消</button>
       </mp-cell>
+
+      <mp-cell title="活动介绍">
+        <input type="text" placeholder="请输入活动介绍" bindinput="getContentInput"></input>
+      </mp-cell>
+
+      <button bindtap="backToHomePage">取消</button>
+      <!--sendPhoto函数要写成sendPost函数-->
+      <button size="mini" class="post" type="primary" bindtap="sendPhoto">发表</button>
     </mp-cells>
   </view>
   <!-- 草稿箱界面 -->

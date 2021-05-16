@@ -33,6 +33,12 @@
         {
           "name": "pages/designPage/designPage",
           "pathName": "pages/designPage/designPage",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/posterArea/posterArea",
+          "pathName": "pages/posterArea/posterArea",
           "scene": null
         }
       ]
