@@ -17,9 +17,9 @@ export function launchTest() {
 
   // db.section.exitSection('cbddf0af609feb0a08bea6c82b6c3522')
 
-  db.section.getUserInSection('cbddf0af609feb0a08bea6c82b6c3522').then(res => {
-    console.log(res)
-  })
+  // db.section.getUserInSection('cbddf0af609feb0a08bea6c82b6c3522').then(res => {
+  //   console.log(res)
+  // })
 
   // db.like.getIsAndCountLike(['scv4uf7gw1agp2n6lxhuo328bpkt31dk','ld86yr4r0mrs3r2cmcv8n0hloojkingh',['aaofcawodp8o650o75yr0wwyqutrj7gk']]).then(res => console.log(res))
 
