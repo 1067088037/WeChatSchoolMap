@@ -275,7 +275,7 @@ Page({
         longitude: longitude_,
         latitude: latitude_,
       }]
-      // console.log(latitude_) 
+      console.log(latitude_) 
       this.setData({
         markers: userPoint,
         showMarkerDialog: true
@@ -371,6 +371,24 @@ Page({
   selectFile(files) {
     console.log('files', files)
   },
+  uploadIcontoCloud(){
+    
+    let name = util.randomId()
+    let fileName = this.data.userUploadIcons;
+    let type = this.data.markerTypes[this.data.markerType]
+    console.log(cloudPath)
+    let cloudPath  = "School/4144010561/images/Point/"+type +name + fileName.match(/\.[^.]+?$/)[0]
+    console.log(cloudPath)
+    wx.cloud.uploadFile({
+      cloudPath: cloudPath,
+      filePath: fileName,
+      success: res => {
+        console.log(res.fileId)
+      },
+      fail: console.error
+    })
+    return cloudPath
+  },
   /**
    * confirmTap
    * @todo 确定添加标点，将用户所填写的标点信息上传到云端数据库 --- 在标点添加信息界面
@@ -404,15 +422,15 @@ Page({
     let time = db.point.generateTimeObj(show, start, end, hide)
     let name = this.data.newMarkerTitle
     let text = this.data.newMarkerDesc
-    let icon = this.data.userUploadIcons
+    let icon = this.uploadIcontoCloud()
     let desc = db.point.generateDescObj(name, text, icon, [])
-
+    
     db.point.addPoint(campusId, belongs, type, time, desc, db.Geo.Point(newPoint.longitude, newPoint.latitude))
     this.setData({
       isAddedMarker: false,
       showMarkerDialog: false
     })
-
+    this.onReady()
   },
 
   // 获取屏幕中心经纬度
@@ -544,47 +562,8 @@ Page({
     })
   },
 
-  // 以下Only函数要取代，无需看
-  // 只显示宿舍
-  DormOnly() {
-    const markers = dormPoint_db;
-    this.setData({
-      markers,
-      showPage: false,
 
-    })
-    flag = 1
-  },
-  // 只显示教学楼
-  ClassRoomOnly() {
-    const markers = classRoomPoint;
-    this.setData({
-      markers,
-      showPage: false,
-
-    })
-    flag = 2
-  },
-  // 只显示学院楼
-  collegeOnly() {
-    const markers = collegePoint;
-    this.setData({
-      markers,
-      showPage: false,
-    })
-    flag = 3
-  },
-  // 只显示可吃饭的地方
-  canteenOnly() {
-    const markers = canteenPoint
-    this.setData({
-      markers,
-      showPage: false,
-
-    })
-    flag = 4
-    console.log(flag)
-  },
+  
 
   getMarkerInfo(id) {
     let obj = new Object
@@ -822,6 +801,7 @@ Page({
     })
     // 从数据库中获取标点对象
     db.point.getPointArray(app.globalData.campus._id).then(res => {
+      console.log(res)
       res.forEach((value, index) => {
         if (value.type == 'activity')
           activitiesPoint.push({
@@ -830,10 +810,10 @@ Page({
             title: value.desc.name,
             longitude: value.geo.coordinates[0],
             latitude: value.geo.coordinates[1],
-            width: 30,
-            height: 40,
+            width: 60,
+            height: 70,
             type: value.type,
-            iconPath: value.desc.icon
+            iconPath: (value.desc.icon=="")?value.desc.icon:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/"+value.desc.icon
           })
         else {
           realTimeInfoArray.push({

@@ -10,6 +10,7 @@ import {
 import {
   LogTime
 } from '../../util/util';
+const util = require('../../util/util')
 Page({
 
   /**
@@ -333,9 +334,10 @@ Page({
    */
   updatePhotoesToCloud() {
     let images = []
+    
     this.data.userUploadPhotoes.forEach((e, i) => {
       const filepath = e;
-      const name = Math.round(Math.random * 1000).toString()
+      let name = util.randomId()
       const cloudpath = "School/4144010561/images/Strategies/Strategy" + name + filepath.match(/\.[^.]+?$/)[0]
       images.push(cloudpath)
       console.log(cloudpath)
