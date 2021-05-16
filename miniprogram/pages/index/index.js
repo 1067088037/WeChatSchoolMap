@@ -130,7 +130,7 @@ Page({
     ], // belong 属于那个部门
     departmentsIndex: [0], // 
     pickerNum: [1],
-    markerTypes: ['实时消息', '活动'], //type
+    markerTypes: ['实时消息', '活动','失物招领','诈骗防范','地点'], //type
     markerType: 1,
     newMarkerTitle: "",
     newMarkerDesc: "",
@@ -392,8 +392,10 @@ Page({
     let type;
     if (this.data.markerTypes[this.data.markerType] == '实时消息') {
       type = "current"
-    } else {
+    } else if(this.data.markerTypes[this.data.markerType] == '活动')  {
       type = "activity"
+    } else{
+      type = this.data.markerTypes[this.data.markerType];
     }
     let show = new Date(this.data.bgdate + " 00:00")
     let start = new Date(this.data.bgdate + " " + this.data.bgtime)
