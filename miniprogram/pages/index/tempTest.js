@@ -72,5 +72,9 @@ export function launchTest() {
 }
 
 export function dbExample() {
-
+  // db.point.updatePointByMarkId(233, {
+  //   tag: db.cmd.push('233'), //无条件插入数组
+  //   tag: db.cmd.addToSet('233'), //在数组中没有该元素的情况下插入
+  //   tag: db.cmd.pull('233'), //移除数组中指定元素
+  // })
 }

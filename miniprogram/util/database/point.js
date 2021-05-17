@@ -29,7 +29,7 @@ export class Point {
    * @param {Object} time 
    * @param {Object} desc 
    * @param {DB.IGeoJSONPoint} geo 
-   * @param {String} tag
+   * @param {Array} tag 标签数组
    */
   addPoint(campusId, belong, type, time, desc, geo, tag) {
     if (belong.constructor != Array) {
@@ -44,7 +44,7 @@ export class Point {
       console.error('desc类型非法')
     } else if (geo.constructor != _db.Geo.Point(0, 0).constructor) {
       console.error("geo类型非法")
-    } else if (tag.constructor != String) {
+    } else if (tag.constructor != Array) {
       console.error('tag类型非法')
     } else {
       return _db.collection('point').add({
