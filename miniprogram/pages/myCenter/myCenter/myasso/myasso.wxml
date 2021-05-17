@@ -1,0 +1,9 @@
+<view class="userass"><navigator url="../myasso/assoX/assoX?title=社团id传参&id=123456"><text>用户社团测试用</text></navigator></view>
+
+
+<!--
+ <view wx:for="{{userasso}}" wx:for-item="a"> 
+
+  <navigator url="./assoX/assoX?title='{{a}}'" class="navigator_button"><text>{{a}}</text></navigator>
+  </view>
+

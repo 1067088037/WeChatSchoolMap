@@ -1,0 +1,23 @@
+<!--  
+<text>pages/myCenter/joinasso/joinasso.wxml</text>
+<input type='text' confirm-type='search' bindinput='input1' bindconfirm='confirm3' style='border:1px solid #f00' placeholder
+="请输入社团或组织名称"/>
+
+<view wx:for="{{hosList}}" wx:for-item="h">
+<text>{{h.name}}</text>
+<text wx:if="{{h.show}}">{{h.name}}</text>
+
+</view>
+<view bindtap="modalinput"><text>测试用组织</text></view>
+<modal hidden="{{hiddenmodalput}}" title="社团名称还没绑，搜索环节出了点问题" confirm-text="申请加入" cancel-text="退出" bindcancel="cancel" bindconfirm="confirm">
+  <view><text>组织自定义的社团简介</text></view>
+  <view>组织成员数目：4</view>
+  <view>社长：</view>
+  <view>欢迎加入！</view>
+</modal>
+<modal hidden="{{hiddenmodalput2}}" title="申请表名" confirm-text="提交申请" cancel-text="取消提交" bindcancel="cancel2" bindconfirm="confirm2">
+  <view>输入信息一：<input type='text'placeholder="请输入内容" auto-focus/></view>
+  <view>输入信息二:<input type='text'placeholder="请输入内容" auto-focus/></view>
+  <view>输入信息三:<input type='text'placeholder="请输入内容" auto-focus/></view>
+</modal>
+
