@@ -135,8 +135,9 @@
 .uploader {
   color: rgb(151, 151, 151);
   margin-top: 5rpx;
-  border: 0;
+  border-top: 0.5rpx solid rgb(187, 186, 186);
   padding-left: 32rpx;
+   
 }
 
 .markerInfoPage button {
@@ -166,7 +167,22 @@
 }
 
 .description-area {
-  padding-left: 32rpx;
+  margin-left: 75rpx;
+  width:600rpx;
+}
+.labelView{
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  padding: 1rpx 10rpx;
+  width: 140rpx;
+  height: 50rpx;
+  
+  font-size: 26rpx;
+  border-radius: 12rpx;
+  
+  margin-right: 5rpx;
+  margin-top: 15rpx;
 }
 
 .Navigation {
@@ -179,5 +195,6 @@
 .introduce {
   width: 500rpx;
   height: 400rpx;
-  border: 1rpx solid black;
+  color:black;
+  /* border: 1rpx solid black; */
 }

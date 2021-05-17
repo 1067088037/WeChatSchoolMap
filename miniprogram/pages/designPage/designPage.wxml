@@ -4,47 +4,50 @@
 <view class="DesignPageContainer">
   <input class="search" type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx"
     confirm-type="search"
-    wx:if="{{showUploadPostArea == false && showEditStrategy == false && showCreateLifeStrategy == false}}"></input>
+    wx:if="{{showUploadPostArea == false && showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false}}"></input>
   <!-- 设计内容区 -->
   <view class="markContainer" style="margin-top:20rpx"
-    wx:if="{{showUploadPostArea == false && showEditStrategy == false && showCreateLifeStrategy == false}}">
+    wx:if="{{showUploadPostArea == false && showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false}}">
     <view class="uploadPoster" bindtap="nevigaToUpLoadPoster" hover-class="_hover_list">
       <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
       <text>上传海报</text>
     </view>
   </view>
   <view class="markContainer" style="margin-top:20rpx"
-    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false}}">
+    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false}}">
     <view class="uploadPoster" bindtap="navigaToEditStrategy" hover-class="_hover_list">
       <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
       <text>草稿箱</text>
     </view>
   </view>
   <view class="markContainer" style="margin-top:20rpx"
-    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false}}">
+    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false}}">
     <view class="createLifeStrategy" hover-class="_hover_list" bindtap="navigaToCreateLifeStrategy">
       <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
       <text>添加生活攻略</text>
+    </view>
+  </view>
+  <view class="markContainer" style="margin-top:20rpx"
+    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false}}">
+    <view class="createLifeStrategy" hover-class="_hover_list" bindtap="navigaToPostedPoint">
+      <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
+      <text>发布的标点</text>
     </view>
   </view>
   <!-- 上传海报界面 -->
   <view class="uploadPosterArea" wx:if="{{showUploadPostArea}}">
     <button size="mini" class="post" type="primary" bindtap="sendPhoto">发表</button>
     <mp-cells>
-
       <mp-cell title="活动名称">
         <input type="text" placeholder="请输入活动名称" bindinput="getTitleInput"></input>
       </mp-cell>
-
       <mp-cell>
         <mp-uploader delete="{{true}}" title="海报上传" max-count="9" files="{{file}}" select="{{selectFile}}"
           upload="{{uplaodFile}}" bindfail="uplaodError" bindsuccess="uploadSuccess"> </mp-uploader>
       </mp-cell>
-
       <mp-cell title="活动介绍">
         <input type="text" placeholder="请输入活动介绍" bindinput="getContentInput"></input>
       </mp-cell>
-
       <button bindtap="backToHomePage">取消</button>
       <!--sendPhoto函数要写成sendPost函数-->
       <button size="mini" class="post" type="primary" bindtap="sendPhoto">发表</button>
@@ -115,7 +118,7 @@
       </view>
     </view>
   </view>
-
+  <!-- 发布生活攻略 -->
   <view class="createLifeStrategy" wx:if="{{showCreateLifeStrategy}}">
     <view class="inputLifeStrategyTitle">
       <input type="text" name="" id="" placeholder="好的简介更引人入胜噢~" bindinput="inputStrategyBriefIntro" value="{{}}">
@@ -138,6 +141,123 @@
         </mp-uploader>
       </view>
 
+    </view>
+  </view>
+  <!-- 编辑发布标点 -->
+  <view class="EditPublishedPoint" wx:if="{{showEditPoint}}">
+    <view class="PublishedPointList" wx:if="{{showEditPointPage==false}}">
+      <view class="PublishedPoints" wx:if="{{publishedPoint != []}}" wx:for="{{publishedPoint}}" wx:key="item">
+        <view class="markContainer" style="margin-top:20rpx">
+          <view class="createLifeStrategy" hover-class="_hover_list" bindtap="toEditPointPage" id="{{item._id}}">
+            <image mode="heightFix" src="{{item.desc.icon}}">图标</image>
+            <text>{{item.desc.name}}</text>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{publishedPoint == []}}">
+        <text>你尚未发布任何标点噢~</text>
+      </view>
+    </view>
+    <view class="EditPointPage" wx:if="{{showEditPointPage}}">
+      <mp-cells title="标记点信息">
+        <!-- 输入标点的名称 -->
+        <mp-cell prop="markerPointName" title="标记点名称">
+          <input class="markerName" type="text" placeholder="请输入活动名称" placeholder-class="markerName" confirm-type="done"
+            bindinput="inputMarkerName" bindconfirm="inputMarkerName" value="{{selectedPoint.desc.name}}">
+          </input>
+        </mp-cell>
+        <!-- 标点开始日期 -->
+        <mp-cell prop="beginDate" title="开始日期">
+          <picker date-field="date" mode="date" value="{{bgdate}}" start="2021-05-03" end="2021-12-31"
+            bindchange="bindBeginDateChange">
+            <view class="begin-date">
+              {{bgdate}}
+            </view>
+          </picker>
+        </mp-cell>
+        <!-- 标点开始时间 -->
+        <mp-cell prop="beginTime" title="开始时间">
+          <picker date-field="time" mode="time" value="{{bgtime}}" start="12:00" end="22:00"
+            bindchange="bindBeginTimeChange">
+            <view class="begintime" style="text-align:center;">
+              {{bgtime}}
+            </view>
+          </picker>
+        </mp-cell>
+        <!-- 标点结束日期 -->
+        <mp-cell prop="endDate" title="结束日期">
+          <picker date-field="date" mode="date" value="{{endate}}" start="2021-05-03" end="2021-12-31"
+            bindchange="bindEndDateChange">
+            <view class="end-date">
+              {{endate}}
+            </view>
+          </picker>
+        </mp-cell>
+        <!-- 标点结束时间 -->
+        <mp-cell prop="endTime" title="结束时间">
+          <picker date-field="time" mode="time" value="{{edtime}}" start="08:00" end="23:00"
+            bindchange="bindEndTimeChange">
+            <view class="begin-date">
+              {{edtime}}
+            </view>
+          </picker>
+        </mp-cell>
+        <mp-cell prop="markerType" title="标记类型">
+          <picker data-field="" mode="selector" range="{{markerTypes}}" value="{{0}}" bindchange="markerTypeChange">
+            <view class="departPick">{{selectedPoint.type}}</view>
+          </picker>
+        </mp-cell>
+        <!-- 标点可见性 -->
+        <mp-cell prop="visible" title="标记可见性">
+          <view wx:for="{{(selectedPoint.belong == [null])?['全校']:selectedPoint.belong}}" wx:key="item" id="{{index}}">
+            <picker data-field="" mode="selector" range="{{departmentsItem}}" value="{{0}}" bindchange="visibleChange"
+              id="{{index}}">
+              <view class="departPick">{{(selectedPoint.belong[index] == null)?"全校":selectedPoint.belong[index]}}</view>
+            </picker>
+          </view>
+        </mp-cell>
+        <!-- 增加可见性选择 -->
+        <button class="morePicker"
+          style="width: 200rpx; text-align:center;padding:0;margin-left: 0rpx; margin-top:0rpx; display:inline-block"
+          bindtap="addPicker">+</button>
+        <button class="morePicker"
+          style="width: 200rpx; text-align:center;padding:0;margin-left: 330rpx; margin-top:0rpx;display:inline-block"
+          bindtap="deletePicker">-</button>
+      </mp-cells>
+      <!-- 输入标记简介 -->
+      <view class="marker_desc">标记简介</view>
+      <view class="description-cell" style="background:white">
+        <textarea class="description-area" name="markerDesc" placeholder="请输入标记简介" confirm-type="done"
+          bindinput="inputMarkerDesc" bindconfirm="inputMarkerDesc" maxlength="300"
+          placeholder-class="textAreaPlaceHolder" value="{{selectedPoint.desc.text}}"></textarea>
+        <view class="AddLabelArea">
+          <text>标签：</text>
+          <block wx:for="{{labelArray}}" wx:key="item">
+            <view class='labelView {{item.selected ? "active" : ""}}' data-value="{{item.name}}" bindtap='AddLabel'
+              checked="{{item.selected}}" data-index="{{index}}" bindtap="selectedLabel" id="{{index}}"
+              style=" border: 1rpx solid {{(item.selected)?'#ff0033':'#726B6B' }}; color: {{(item.selected)?'#ff0033':'#726B6B' }};">
+              {{item.name}}
+            </view>
+          </block>
+        </view>
+      </view>
+      <!-- 输入标记图示 -->
+      <view class="markerIcon">标记图示</view>
+      <view class="markerIcon-cell">
+        <mp-uploader ext-class="uploader" title="标记图示上传" bindfail="uploadIconError" bindsuccess="uploadIconSuccess"
+          select="{{selectFile}}" upload="{{uplaodFile}}" files="{{files}}" max-count="1">
+        </mp-uploader>
+
+      </view>
+      <view class="buttonSet" style="margin-top:30rpx">
+        <button type="" style="display:inline-block; margin-left:40rpx; margin-right:40rpx; width:250rpx;"
+          bindtap="stopEdit">返回</button>
+        <button type="primary" style="display:inline-block; margin-left:80rpx; margin-right:20rpx; width:250rpx;"
+          bindtap="confirmEditTap">确定</button>
+      </view>
+      <mp-dialog show="{{isSaveEditPoint}}" buttons="{{savePointButtons}}" bindbuttontap="saveEditPointBtnTap">
+        <view>是否需要保存</view>
+      </mp-dialog>
     </view>
   </view>
 </view>

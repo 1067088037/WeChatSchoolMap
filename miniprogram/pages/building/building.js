@@ -11,6 +11,8 @@ import {
   LogTime
 } from '../../util/util';
 const util = require('../../util/util')
+const CloudPathFront = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/";
+
 Page({
 
   /**
@@ -184,7 +186,7 @@ Page({
    */
   likeClick(e) {
     console.log(e)
-    let id =  e.currentTarget.id ;
+    let id = e.currentTarget.id;
     console.log("点赞攻略的id是：", id)
     let newStrategy = new Object
     let idx = 0;
@@ -224,22 +226,21 @@ Page({
     // }, 1000)
 
   },
-  strategyLike(e){
+  strategyLike(e) {
     let newObject = this.data.selectedStrategy;
-    db.like.isLike(newObject.id).then(res=>{
-      if(!res){
+    db.like.isLike(newObject.id).then(res => {
+      if (!res) {
         db.like.giveALike(newObject.id)
         newObject.likeNum++;
         newObject.isLike = true;
-      }
-      else{
+      } else {
         db.like.cancelLike(newObject.id)
         newObject.likeNum--;
         newObject.isLike = false;
       }
-    }).then(()=>{
+    }).then(() => {
       this.setData({
-        selectedStrategy:newObject
+        selectedStrategy: newObject
       })
     })
   },
@@ -334,7 +335,7 @@ Page({
    */
   updatePhotoesToCloud() {
     let images = []
-    
+
     this.data.userUploadPhotoes.forEach((e, i) => {
       const filepath = e;
       let name = util.randomId()
@@ -553,7 +554,7 @@ Page({
           commentNum: commentNum,
           showStrategiesArea: false,
           showBuilidngBanner: false,
-        }) 
+        })
         wx.hideLoading();
       }
     })
@@ -615,8 +616,17 @@ Page({
       })
     }
     if (app.globalData.buildingSelected != null) {
+
+      let building = app.globalData.buildingSelected
+      let images = []
+      building.images.forEach(e => {
+        e = CloudPathFront + e
+        images.push(e)
+      })
+      building.images = images
+      console.log(building)
       this.setData({
-        building: app.globalData.buildingSelected
+        building: building
       })
     }
     this.setData({

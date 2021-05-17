@@ -9,7 +9,6 @@ const app = getApp() // 小程序全局
 const tempTest = require('./tempTest')
 
 
-
 const shopPoint = [{
 
     title: "世博超市",
@@ -130,13 +129,52 @@ Page({
     ], // belong 属于那个部门
     departmentsIndex: [0], // 
     pickerNum: [1],
-    markerTypes: ['实时消息', '活动','失物招领','诈骗防范','地点'], //type
+    markerTypes: ['实时消息', '活动', '失物招领', '诈骗防范', '地点'], //type
     markerType: 1,
     newMarkerTitle: "",
     newMarkerDesc: "",
+    newMarkerTag: [],
     buildingSelected: null,
     files: [],
-    userUploadIcons: ""
+    userUploadIcons: "",
+    userUploadPhotoes:[],
+    labelArray: [{
+      name: '讲座票',
+      selected: false,
+    }, {
+      name: '德育分',
+      selected: false
+    }, {
+      name: '创新分',
+      selected: false
+    }, {
+      name: '活动票',
+      selected: false
+    }, {
+      name: '文体分',
+      selected: false
+    }],
+    
+  },
+  selectedLabel(e) {
+    let id = parseInt(e.currentTarget.id)
+    let labelArray = this.data.labelArray
+    let selectedPoint = this.data.selectedPoint
+    if (labelArray[id].selected) {
+      labelArray[id].selected = false;
+    } else {
+      labelArray[id].selected = true;
+    }
+    let newMarkerTag = this.data.newMarkerTag
+    if (labelArray[id].selected) {
+      newMarkerTag.push(labelArray[id].name)
+    } else {
+      newMarkerTag.splice(id, 1)
+    }
+    this.setData({
+      labelArray,
+      newMarkerTag
+    })
   },
   /**
    * addPicker()
@@ -147,11 +185,16 @@ Page({
   addPicker() {
     this.data.pickerNum.push(1)
     this.data.departmentsIndex.push(0)
-    var pickerNum = this.data.pickerNum
-    var departmentsIndex = this.data.departmentsIndex
+    let pickerNum = this.data.pickerNum
+    let departmentsIndex = this.data.departmentsIndex
+    let departmentsItem = this.data.departmentsItem
+    if (departmentsItem[0] == '(全校)' || departmentsItem[0] == '全校') {
+      departmentsItem.splice(0, 1);
+    }
     this.setData({
       pickerNum,
-      departmentsIndex
+      departmentsIndex,
+      departmentsItem
     })
   },
   /**
@@ -161,14 +204,23 @@ Page({
    * 
    */
   deletePicker() {
-    if (this.data.pickerNum.length > 1) {
+    if (this.data.pickerNum.length > 2) {
       this.data.pickerNum.pop()
       var pickerNum = this.data.pickerNum
       this.setData({
         pickerNum
       })
-    } else
-      return
+    } else if (this.data.pickerNum.length == 2) {
+      this.data.pickerNum.pop()
+      var pickerNum = this.data.pickerNum
+      let departmentsItem = this.data.departmentsItem
+      departmentsItem.splice(0, 1, '全校')
+      this.setData({
+        pickerNum,
+        departmentsItem
+      })
+    }
+    return
   },
   /**
    * inputMarkerName(e)
@@ -275,13 +327,13 @@ Page({
         longitude: longitude_,
         latitude: latitude_,
       }]
-      console.log(latitude_) 
+      console.log(latitude_)
       this.setData({
         markers: userPoint,
         showMarkerDialog: true
       });
-    } else if(isAdd == false)
-    {  return 0;
+    } else if (isAdd == false) {
+      return 0;
     }
   },
   /**
@@ -295,7 +347,8 @@ Page({
     this.setData({
       markers: [],
       isAddedMarker: false,
-      showMarkerDialog: false
+      showMarkerDialog: false,
+      newMarkerTag: []
     });
   },
   /**
@@ -368,16 +421,42 @@ Page({
       userUploadIcons: (e.detail.urls[0])
     })
   },
+  uploadPhotoesSuccess(e){
+    
+    console.log('upload success', e)
+    this.setData({
+      userUploadPhotoes: this.data.userUploadPhotoes.concat (e.detail.urls[0])
+    })
+  },
   selectFile(files) {
     console.log('files', files)
   },
-  uploadIcontoCloud(){
-    
+  updatePhotoesToCloud() {
+    let images = []
+    let type = this.data.markerTypes[this.data.markerType]
+    this.data.userUploadPhotoes.forEach((e, i) => {
+      const filepath = e;
+      let name = util.randomId()
+      const cloudpath = "School/4144010561/images/Point/"+type + name + filepath.match(/\.[^.]+?$/)[0]
+      images.push(cloudpath)
+      console.log(cloudpath)
+      wx.cloud.uploadFile({
+        cloudPath: cloudpath,
+        filePath: filepath,
+        success: res => {
+          console.log(res.fileId)
+        },
+        fail: console.error
+      })
+    })
+    return images
+  },
+  uploadIcontoCloud() {
     let name = util.randomId()
     let fileName = this.data.userUploadIcons;
     let type = this.data.markerTypes[this.data.markerType]
     console.log(cloudPath)
-    let cloudPath  = "School/4144010561/images/Point/"+type +name + fileName.match(/\.[^.]+?$/)[0]
+    let cloudPath = "School/4144010561/images/Point/" + type + name + fileName.match(/\.[^.]+?$/)[0]
     console.log(cloudPath)
     wx.cloud.uploadFile({
       cloudPath: cloudPath,
@@ -410,9 +489,9 @@ Page({
     let type;
     if (this.data.markerTypes[this.data.markerType] == '实时消息') {
       type = "current"
-    } else if(this.data.markerTypes[this.data.markerType] == '活动')  {
+    } else if (this.data.markerTypes[this.data.markerType] == '活动') {
       type = "activity"
-    } else{
+    } else {
       type = this.data.markerTypes[this.data.markerType];
     }
     let show = new Date(this.data.bgdate + " 00:00")
@@ -423,9 +502,10 @@ Page({
     let name = this.data.newMarkerTitle
     let text = this.data.newMarkerDesc
     let icon = this.uploadIcontoCloud()
-    let desc = db.point.generateDescObj(name, text, icon, [])
-    
-    db.point.addPoint(campusId, belongs, type, time, desc, db.Geo.Point(newPoint.longitude, newPoint.latitude))
+    let images = this.updatePhotoesToCloud()
+    let desc = db.point.generateDescObj(name, text, icon, images)
+
+    db.point.addPoint(campusId, belongs, type, time, desc, db.Geo.Point(newPoint.longitude, newPoint.latitude), this.data.newMarkerTag)
     this.setData({
       isAddedMarker: false,
       showMarkerDialog: false
@@ -563,11 +643,17 @@ Page({
   },
 
 
-  
+
 
   getMarkerInfo(id) {
     let obj = new Object
     archArray.forEach(e => {
+      if (e.id == id) {
+        obj = e;
+        return obj;
+      }
+    })
+    activitiesPoint.forEach(e => {
       if (e.id == id) {
         obj = e;
         return obj;
@@ -616,6 +702,7 @@ Page({
   // 进入具体建筑的简介弹窗
   markerstap(e) {
     // console.log(e.detail.markerId)
+    console.log("用户选择的建筑对象的Id：", e.detail.markerId)
     app.globalData.buildingSelected = this.getMarkerInfo(e.detail.markerId)
     console.log("用户选择的建筑对象：" + app.globalData.buildingSelected)
     this.setData({
@@ -801,8 +888,9 @@ Page({
     })
     // 从数据库中获取标点对象
     db.point.getPointArray(app.globalData.campus._id).then(res => {
-      console.log(res)
+      //console.log(res)
       res.forEach((value, index) => {
+        //console.log("point:",value)
         if (value.type == 'activity')
           activitiesPoint.push({
             _id: value._id,
@@ -813,7 +901,9 @@ Page({
             width: 60,
             height: 70,
             type: value.type,
-            iconPath: (value.desc.icon=="")?value.desc.icon:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/"+value.desc.icon
+            iconPath: (value.desc.icon == "") ? value.desc.icon : "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/" + value.desc.icon,
+            text: value.desc.text,
+            images:value.desc.images
           })
         else {
           realTimeInfoArray.push({
@@ -847,6 +937,12 @@ Page({
   onShow: function () {
     tempTest.launchTest() //用于临时测试
     tempTest.dbExample() //数据库函数调用示例
+    db.section.getSectionArray(app.globalData.school._id).then(res => {
+      console.log(res, res.data[0].name)
+      this.setData({
+        departmentsItem: this.data.departmentsItem.concat(res.data[0].name)
+      })
+    })
 
     // dormPoint.forEach(e => {
     //   // let e = dormPoint[0]

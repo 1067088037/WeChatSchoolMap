@@ -97,10 +97,10 @@
           <input style="width: 500rpx;" class="StrategyAreaInputComment" bindinput="getComment" placeholder="随便说点什么"
             bindconfirm="sendComment" confirm-type="send" value="{{commentValue}}"></input>
           <view class="StrategyLlikeBtn" style="margin-right:0rpx">
-            <image class="like" src="/images/building/like.png" mode="widthFix" wx:if="{{selectedStrategy.isLike==false}}"
-              bindtap="strategyLike" id="{{selectedStrategy.id}}" />
-            <image class="no-like" src="/images/building/like_selected.png" wx:if="{{selectedStrategy.isLike}}" id="{{selectedStrategy.id}}"
-              bindtap="strategyLike" />
+            <image class="like" src="/images/building/like.png" mode="widthFix"
+              wx:if="{{selectedStrategy.isLike==false}}" bindtap="strategyLike" id="{{selectedStrategy.id}}" />
+            <image class="no-like" src="/images/building/like_selected.png" wx:if="{{selectedStrategy.isLike}}"
+              id="{{selectedStrategy.id}}" bindtap="strategyLike" />
             <text>{{selectedStrategy.likeNum}}</text>
           </view>
         </view>
@@ -136,8 +136,19 @@
     </view>
   </view>
 
-  <view wx:if="{{building.type == 'college'}}">
-
-
+  <view wx:if="{{building.type == 'activity'}}">
+    <!-- 活动图片 -->
+    <view class="Images" style="margin: 10rpx auto;width: 750rpx;height: 480rpx;" wx:if="{{showBuilidngBanner}}">
+      <swiper class="imageBanner" indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff" style="margin: 10rpx auto;width: 750rpx;height: 480rpx;"
+        circular="{{true}}" autoplay="{{true}}" interval="3000">
+        <swiper-item wx:for="{{building.images}}" wx:key="index">
+          <image src="{{item}}" style="width: 750rpx;height: 480rpx;" mode="scaleToFill"></image>
+        </swiper-item>
+      </swiper>
+    </view>
+    <!-- 活动简介 -->
+    <view class="Introduction" >
+      {{building.text}}
+    </view>
   </view>
 </view>

@@ -8,7 +8,47 @@
   margin-left: 15rpx;
   height: 60rpx;
 }
+.markerName {
+  text-align: center;
+}
 
+.begin-date {
+  text-align: center;
+}
+.uploader {
+  color: rgb(151, 151, 151);
+  margin-top: 5rpx;
+  border: 0.5rpx solid rgb(187, 186, 186);
+  padding-left: 32rpx;
+  
+}
+
+.labelView{
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  padding: 1rpx 10rpx;
+  width: 140rpx;
+  height: 50rpx;
+  
+  font-size: 26rpx;
+  border-radius: 12rpx;
+  
+  margin-right: 5rpx;
+  margin-top: 15rpx;
+}
+
+.description-area {
+  border: 0.5rpx solid rgb(187, 186, 186);
+  margin-left: 25rpx;
+  width:700rpx;
+}
+.departPick{
+  text-align: center;
+}
+.end-date {
+  text-align: center;
+}
 .uploadPoster {
   border-radius: 10rpx;
   border: 1rpx black;

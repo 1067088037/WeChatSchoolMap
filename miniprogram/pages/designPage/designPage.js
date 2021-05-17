@@ -1,11 +1,17 @@
 const {
+  Campus
+} = require("../../util/database/campus");
+const {
   db
 } = require("../../util/database/database");
+const util = require("../../util/util")
 const app = getApp()
+const CloudStrategyPath = "School/4144010561/images/Strategies/Strategy"
+const CloudPointIconPath = "School/4144010561/images/Point/Point"
 const CloudPathFront = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/";
-var touchDotBegin;
-var interval;
-var time;
+let touchDotBegin;
+let interval;
+let time;
 // pages/designPage/designPage.js
 Page({
 
@@ -21,26 +27,67 @@ Page({
     file: [], // 海报文件数组
     userUploadPosters: [], // 用户上传的海报
     userUploadPhotoes: [], // 用户上传的照片
+    userUploadIcon: [], // 用户上传标点的图示
     stateArch: false, // 建筑里的攻略草稿的状态 -- 是否显示下拉
     firstClickArch: false, // 第一次点击建筑攻略草稿 
     isExitEditStrategy: false, // 显示退出编辑攻略的页面
     strategyTitle: "", // 用户发布的攻略标题
     strategyContent: "", // 用户发布的攻略内容
     strategyBriefIntro: "", // 用户发布的内容简介
-    postTitleInput:"",//上传海报时填写的活动名称
-    postContentInput:"",//上传海报时填写的活动内容（简介）
-    postTime:"",//上传海报时的时间
-    postSenderAvator:[],//海报作者头像
-    postSenderNickname:[],//海报作者昵称
-
+    postTitleInput: "", //上传海报时填写的活动名称
+    postContentInput: "", //上传海报时填写的活动内容（简介）
+    postTime: "", //上传海报时的时间
+    postSenderAvator: [], //海报作者头像
+    postSenderNickname: [], //海报作者昵称
+    publishedPoint: [], // 保存用户发布的活动标点
     dialogButtons: [{
       text: "不保存"
     }, {
       text: "保存"
     }], // 对话框按钮集,
-    showCreateLifeStrategy:false,
-    isShowDeleteDraft:false
+    showCreateLifeStrategy: false,
+    isShowDeleteDraft: false,
+    showEditPoint: false,
+    showEditPointPage: false,
+    selectedPoint: null,
+    bgdate: "", // 活动开始日期 暂存
+    bgtime: "",
+    edtime: "",
+    endate: "", // 活动结束日期 
+    MarkerTitle: "",
+    MarkerDesc: "",
+    markerTypes: ['实时消息', '活动', '失物招领', '诈骗防范', '地点'],
+    markerType: 1,
+    departmentsItemOne: [
+      "(全校)", "软件学院", "百步梯", "校学生会"
+    ],
+    departmentsItemMore:["软件学院", "百步梯", "校学生会"],
+    departmentsIndex: [0],
+    pickerNum: [1],
+    labelArray: [{
+      name: '讲座票',
+      selected: false,
+    }, {
+      name: '德育分',
+      selected: false
+    }, {
+      name: '创新分',
+      selected: false
+    }, {
+      name: '活动票',
+      selected: false
+    }, {
+      name: '文体分',
+      selected: false
+    }],
+    isSaveEditPoint: false,
+    savePointButtons: [{
+      text: "不保存"
+    }, {
+      text: "保存"
+    }]
   },
+
   toggleArch() {
     var list_state = this.data.stateArch,
       first_state = this.data.firstClickArch;
@@ -152,8 +199,17 @@ Page({
   uploadSuccess(e) {
     console.log('upload success', e.detail)
     this.setData({
-      userUploadPosters: this.data.userUploadPosters.concat(e.detail.urls[0])
+      userUploadPosters: this.data.userUploadPosters.concat(e.detail.urls[0]),
     })
+  },
+  uploadIconSuccess(e) {
+    console.log('upload success', e.detail)
+    this.setData({
+      userUploadIcon: (e.detail.urls[0])
+    })
+  },
+  uploadIconError(e) {
+    console.log('upload error', e.detail)
   },
   uploadPhotoesSuccess(e) {
     console.log('upload success', e.detail)
@@ -181,12 +237,12 @@ Page({
       isExitEditStrategy: true
     })
   },
-  updatePhotoesToCloud() {
+  updatePhotoesToCloud(path) {
     let images = []
     this.data.userUploadPhotoes.forEach((e, i) => {
       const filepath = e;
-      const name = Math.round(Math.random * 10000).toString()
-      const cloudpath = "School/4144010561/images/Strategies/Strategy" + name + filepath.match(/\.[^.]+?$/)[0]
+      const name = util.randomId()
+      const cloudpath = path + name + filepath.match(/\.[^.]+?$/)[0]
       images.push(cloudpath)
       console.log(cloudpath)
       wx.cloud.uploadFile({
@@ -200,6 +256,23 @@ Page({
     })
     return images
   },
+  uploadIcontoCloud() {
+    let name = util.randomId()
+    let fileName = this.data.userUploadIcon;
+    let type = this.data.selectedPoint.type
+    console.log(cloudPath)
+    let cloudPath = "School/4144010561/images/Point/" + type + name + fileName.match(/\.[^.]+?$/)[0]
+    console.log(cloudPath)
+    wx.cloud.uploadFile({
+      cloudPath: cloudPath,
+      filePath: fileName,
+      success: res => {
+        console.log(res.fileId)
+      },
+      fail: console.error
+    })
+    return cloudPath
+  },
   isSaveEdit(e) {
     if (e.detail.item.text == '不保存') {
       this.setData({
@@ -212,7 +285,7 @@ Page({
       })
     } else if (e.detail.item.text == '保存') {
       let content = [];
-      let image = this.updatePhotoesToCloud();
+      let image = this.updatePhotoesToCloud(CloudStrategyPath);
       let contentObj = {
         desc: this.data.strategyContent,
         name: this.data.strategyTitle,
@@ -243,7 +316,7 @@ Page({
   },
   publishDraft(e) {
     let content = [];
-    let image = this.updatePhotoesToCloud();
+    let image = this.updatePhotoesToCloud(CloudStrategyPath);
     let contentObj = {
       desc: this.data.strategyContent,
       name: this.data.strategyTitle,
@@ -290,7 +363,7 @@ Page({
           draft['id'] = res._id;
           draftStrategies.push(draft)
         }
-      }).then(()=>{
+      }).then(() => {
         this.setData({
           showEditStrategy: true,
           draftStrategies
@@ -328,71 +401,248 @@ Page({
       files
     })
   },
-  showDeleteDraft(e){
+  showDeleteDraft(e) {
     wx.showModal({
-      title:"确定删除草稿吗？",
-      cancelText:"取消",
+      title: "确定删除草稿吗？",
+      cancelText: "取消",
       cancelColor: "#000000",
-      confirmText:"删除",
-      confirmColor:"#ff00000",
-      success:(res)=>{
-        if(res.confirm){
+      confirmText: "删除",
+      confirmColor: "#ff00000",
+      success: (res) => {
+        if (res.confirm) {
           db.strategy.removeStrategy(this.data.draftStrategySelected.id)
-          this.data.draftStrategies.forEach((item,index)=>{
-            if(item.id == this.data.draftStrategySelected.id){
-              this.data.draftStrategySelected.splice(index,1);
+          this.data.draftStrategies.forEach((item, index) => {
+            if (item.id == this.data.draftStrategySelected.id) {
+              this.data.draftStrategySelected.splice(index, 1);
             }
           })
           let draftStrategies = this.data.draftStrategies
           this.setData({
-              strategyTitle: "",
-              strategyContent: "",
-              strategyBriefIntro: "",
-              userUploadPhotoes: [],
-              isExitEditStrategy: false,
-              draftStrategySelected: null,
-              draftStrategies
-            })
-        }else if(res.cancel){
+            strategyTitle: "",
+            strategyContent: "",
+            strategyBriefIntro: "",
+            userUploadPhotoes: [],
+            isExitEditStrategy: false,
+            draftStrategySelected: null,
+            draftStrategies
+          })
+        } else if (res.cancel) {
           console.log(res)
         }
       }
     })
   },
-  navigaToCreateLifeStrategy(e){
+  navigaToCreateLifeStrategy(e) {
     this.setData({
-      showCreateLifeStrategy:true
+      showCreateLifeStrategy: true
     })
   },
-  touchStart(e){
+  navigaToPostedPoint(e) {
+    this.setData({
+      showEditPoint: true
+    })
+  },
+  toEditPointPage(e) {
+    let id = e.currentTarget.id
+    this.data.publishedPoint.forEach(point => {
+      if (point._id == id) {
+        let end = new Date(point.time.end)
+        let start = new Date(point.time.start)
+        let bgdate = "" + start.getFullYear().toString() + "-" + (start.getMonth() + 1).toString() + "-" + start.getDate().toString()
+        let endate = "" + end.getFullYear().toString() + "-" + (end.getMonth() + 1).toString() + "-" + end.getDate().toString()
+        let bgtime = "" + start.getHours() + ":" + start.getMinutes()
+        let edtime = "" + end.getHours() + ":" + end.getMinutes()
+        console.log(bgdate, endate, bgtime)
+        let userUploadIcon = point.desc.icon
+        this.setData({
+          selectedPoint: point,
+          endate,
+          bgdate,
+          bgtime,
+          edtime,
+          files: [{
+            url: userUploadIcon
+          }],
+          userUploadIcon: userUploadIcon
+
+        })
+      }
+    })
+    this.setData({
+      showEditPointPage: true
+    })
+  },
+  inputMarkerName(e) {
+    let selectedPoint = this.data.selectedPoint;
+    selectedPoint.desc.name = e.detail.value
+    this.setData({
+      selectedPoint
+    })
+  },
+  inputMarkerDesc(e) {
+    let selectedPoint = this.data.selectedPoint;
+    selectedPoint.desc.text = e.detail.value
+    this.setData({
+      MarkerDesc: e.detail.value
+    })
+  },
+  bindBeginDateChange(e) {
+    this.setData({
+      bgdate: e.detail.value,
+    })
+  },
+  bindBeginTimeChange(e) {
+    this.setData({
+      bgtime: e.detail.value
+    })
+  },
+  bindEndDateChange(e) {
+    this.setData({
+      endate: e.detail.value,
+    })
+  },
+  bindEndTimeChange(e) {
+    this.setData({
+      edtime: e.detail.value,
+    })
+  },
+  markerTypeChange(e) {
+    let index = e.detail.value;
+    let selectedPoint = this.data.selectedPoint
+    selectedPoint.type = this.data.markerTypes[index]
+    this.setData({
+      markerType: e.detail.value,
+      selectedPoint
+    })
+  },
+  visibleChange(e) {
+    console.log(e)
+    var id = parseInt(e.currentTarget.id)
+    var departmentsIndex = this.data.departmentsIndex
+    departmentsIndex[id] = e.detail.value
+    let selectedPoint = this.data.selectedPoint;
+    selectedPoint.belong[id] = (this.data.departmentsItemOne[departmentsIndex[id]])
+    this.setData({
+      departmentsIndex,
+      selectedPoint
+    })
+  },
+  addPicker(e) {
+    let selectedPoint = this.data.selectedPoint
+    selectedPoint.belong.push(this.data.departmentsItemOne[0])
+    this.data.departmentsIndex.push(0)
+    var pickerNum = this.data.pickerNum
+    var departmentsIndex = this.data.departmentsIndex
+    this.setData({
+      pickerNum,
+      departmentsIndex,
+      selectedPoint
+    })
+  },
+  deletePicker(e) {
+    let selectedPoint = this.data.selectedPoint
+    if (selectedPoint.belong.length > 1) {
+      selectedPoint.belong.pop()
+
+      this.setData({
+        selectedPoint
+      })
+    } else
+      return
+  },
+  selectedLabel(e) {
+    console.log(e)
+    let id = parseInt(e.currentTarget.id)
+    let labelArray = this.data.labelArray
+    let selectedPoint = this.data.selectedPoint
+    if (labelArray[id].selected) {
+      labelArray[id].selected = false;
+    } else {
+      labelArray[id].selected = true;
+    }
+    if (selectedPoint['tag'] == undefined) {
+      selectedPoint['tag'] = new Array
+
+    }
+    if (labelArray[id].selected == true) {
+      selectedPoint['tag'] = selectedPoint['tag'].concat(labelArray[id].name)
+    } else {
+      selectedPoint['tag'].splice(id,1)
+    }
+    this.setData({
+      labelArray,
+      selectedPoint
+    })
+  },
+  confirmEditTap() {
+    let show = new Date(this.data.bgdate + " 00:00")
+    let start = new Date(this.data.bgdate + " " + this.data.bgtime)
+    let end = new Date(this.data.endate + " " + this.data.edtime)
+    let hide = new Date(this.data.endate + " 23:59")
+    let time = db.point.generateTimeObj(show, start, end, hide)
+    let name = this.data.selectedPoint.desc.name
+    let text = this.data.selectedPoint.desc.text
+    let icon = this.uploadIcontoCloud()
+    let desc = db.point.generateDescObj(name, text, icon, [])
+    let tag = this.data.selectedPoint.tag
+    let belong = this.data.selectedPoint.belong
+    db.point.updatePointById(this.data.selectedPoint._id, {
+      time: time,
+      desc: desc,
+      belong: belong,
+      tag: tag
+    }).then(() => {
+      this.setData({
+        showEditPointPage: false
+      })
+      this.onReady()
+    })
+  },
+  stopEdit(e) {
+    this.setData({
+      isSaveEditPoint: true
+    })
+  },
+  saveEditPointBtnTap(e) {
+    if (e.detail.item.text == '不保存') {
+      this.setData({
+        showEditPointPage: false
+      })
+    } else if (e.detail.item.text == '保存') {
+      this.confirmEditTap();
+    }
+    this.setData({
+      isSaveEditPoint: false
+    })
+  },
+  touchStart(e) {
     console.log(e)
     touchDotBegin = e.touches[0].pageX;
-    if(touchDotBegin < 20)
-    {
+    if (touchDotBegin < 20) {
       interval = setInterval(function () {
         time++;
       }, 100);
     }
   },
-  touchMove(e){
-    
+  touchMove(e) {
+
     var touchMove = e.touches[0].pageX;
     console.log("touchMove:" + touchMove + " touchDot:" + touchDotBegin + " diff:" + (touchMove - touchDotBegin));
     if (touchMove - touchDotBegin <= -40 && time < 10) {
       this.setData({
-        showEditStrategy : false
+        showEditStrategy: false
       })
       console.log(213)
     }
     if (touchMove - touchDotBegin >= 40 && time < 10) {
       console.log('向右滑动');
-       this.setData({
-        showEditStrategy:false
+      this.setData({
+        showEditStrategy: false
       })
       console.log(54645)
     }
   },
-  touchEnd(e){
+  touchEnd(e) {
     clearInterval(interval); // 清除setInterval 
     time = 0;
   },
@@ -423,6 +673,9 @@ Page({
    */
   onReady: function () {
     let draftStrategiesId = this.data.draftStrategiesId
+    let publishedPoint = []
+    let openId = app.globalData.openid
+    //console.log(app.globalData.campus._id)
     db.strategy.getBriefStrategyArrayByOpenid(this.data.userOpenId).then(res => {
       //console.log(res)
       let draftStrategiesId = this.data.draftStrategiesId
@@ -433,7 +686,19 @@ Page({
         draftStrategiesId
       })
     })
-
+    db.point.getPointArray(app.globalData.campus._id).then(res => {
+      res.forEach(e => {
+        // console.log(e._openid,openId)
+        if (e._openid == openId) {
+          e.desc.icon = CloudPathFront + e.desc.icon
+          publishedPoint.push(e);
+          //console.log(publishedPoint)
+        }
+      })
+      this.setData({
+        publishedPoint: publishedPoint
+      })
+    })
 
   },
 
@@ -441,7 +706,12 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    console.log(app.globalData.school._id)
+    db.section.getSectionArray(app.globalData.school._id).then(res=>{
+      this.setData({
+        departmentsItemOne:this.data.departmentsItemOne.concat(res.data.name)
+      })
+    })
   },
 
   /**

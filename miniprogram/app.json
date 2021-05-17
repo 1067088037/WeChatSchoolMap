@@ -18,8 +18,8 @@
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#F6F6F6",
     "navigationBarTitleText": "校园地图",
-    "navigationBarTextStyle": "black",
-    "enablePullDownRefresh":true
+    "navigationBarTextStyle": "black"
+    
   },
   "tabBar": {
     "color": "#000000",

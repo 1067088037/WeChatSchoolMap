@@ -2,7 +2,7 @@
 <input type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx" confirm-type="search"></input>
 
 <view class="MessageContainer" wx:if="{{hasMessage}}">
-  <view class="MessageBoxs" wx:for="{{messageData}}">
+  <view class="MessageBoxs" wx:for="{{messageData}}" wx:key="item">
     <view class="MessageBox">
       <image src="{{item.src}}" mode="widthFix" class="MessageImage"></image>
       <mp-badget wx:if="{{item.msgNum > 99}}" content="99+"

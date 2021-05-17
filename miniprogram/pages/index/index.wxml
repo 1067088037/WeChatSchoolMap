@@ -65,7 +65,7 @@
       <!-- 筛选界面  -->
       <cover-view wx:if="{{func=='筛选'}}">
         <checkbox-group bindchange="selectArchFunc">
-          <cover-view class="checkboxView" wx:for="{{archItems}}" wx:key="value"
+          <cover-view class="checkboxView" wx:for="{{archItems}}" wx:key="index"
             style="margin-top:10rpx;border-bottom:1rpx solid  gray">
             <cover-view style="display:inline-block">
               <checkbox value="{{item.value}}" checked="{{item.checked}}">
@@ -81,6 +81,7 @@
       <mp-dialog title="{{buildingSelected.title}}" show="{{showBuildingDialog}}" bindbuttontap="toDetailPage"
         buttons="{{buildingBtns}}">
         <cover-view class="introduce">
+          {{buildingSelected.text}}
         </cover-view>
         <cover-view class="Navigation">
           <button class="navigation-btn" style="width:100%;height:100%;position:absolute;opacity:0;"
@@ -104,11 +105,18 @@
 </view>
 <!-- 输入添加的标点的内容 -->
 <view class="markerInfoPage" wx:if="{{isAddedMarker}}">
+  <view class="markerIcon" wx:if="{{markerTypes[markerType] == '活动'}}">活动图片</view>
+  <view class="markerIcon-cell">
+    <mp-uploader ext-class="uploader" title="活动上传" bindfail="uploadError" bindsuccess="uploadPhotoesSuccess"
+      select="{{selectFile}}" upload="{{uploadFile}}" files="{{files}}" max-count="9">
+    </mp-uploader>
+  </view>
   <mp-cells title="标记点信息">
     <!-- 输入标点的名称 -->
     <mp-cell prop="markerPointName" title="标记点名称">
-      <input class="markerName" type="text" placeholder="请输入活动名称" placeholder-class="markerName" confirm-type="done" bindinput="inputMarkerName"
-        bindconfirm="inputMarkerName"></input>
+      <input class="markerName" type="text" placeholder="请输入活动名称" placeholder-class="markerName" confirm-type="done"
+        bindinput="inputMarkerName" bindconfirm="inputMarkerName">
+      </input>
     </mp-cell>
     <!-- 标点开始日期 -->
     <mp-cell prop="beginDate" title="开始日期">
@@ -172,8 +180,19 @@
   <!-- 输入标记简介 -->
   <view class="marker_desc">标记简介</view>
   <view class="description-cell">
-    <textarea class="description-area" name="markerDesc" placeholder="请输入标记简介" confirm-type="done" bindinput="inputMarkerDesc"
-      bindconfirm="inputMarkerDesc" maxlength="200" placeholder-class="textAreaPlaceHolder"></textarea>
+    <textarea class="description-area" name="markerDesc" placeholder="请输入标记简介" confirm-type="done"
+      bindinput="inputMarkerDesc" bindconfirm="inputMarkerDesc" maxlength="200"
+      placeholder-class="textAreaPlaceHolder"></textarea>
+    <view class="AddLabelArea">
+      <text>标签：</text>
+      <block wx:for="{{labelArray}}" wx:key="item">
+        <view class='labelView {{item.selected ? "active" : ""}}' data-value="{{item.name}}" bindtap='AddLabel'
+          checked="{{item.selected}}" data-index="{{index}}" bindtap="selectedLabel" id="{{index}}"
+          style=" border: 1rpx solid {{(item.selected)?'#ff0033':'#726B6B' }}; color: {{(item.selected)?'#ff0033':'#726B6B' }};">
+          {{item.name}}
+        </view>
+      </block>
+    </view>
   </view>
   <!-- 输入标记图示 -->
   <view class="markerIcon">标记图示</view>
@@ -182,6 +201,9 @@
       select="{{selectFile}}" upload="{{uploadFile}}" files="{{files}}" max-count="1">
     </mp-uploader>
   </view>
+
+
+
   <button type="primary" bindtap="confirmTap">确定</button>
   <button type="" bindtap="returnMarker">返回</button>
 </view>
