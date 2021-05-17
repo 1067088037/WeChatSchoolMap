@@ -10,9 +10,10 @@ export class Section {
     return await wx.cloud.callFunction({
       name: 'getAllBySuperId',
       data: {
+        collection: 'section',
         superId: schoolId
       }
-    }).catch(err => [])
+    }).then(res => res.result).catch(err => [])
   }
 
   /**

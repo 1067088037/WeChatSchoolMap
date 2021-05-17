@@ -8,6 +8,8 @@ export class Permission {
     this.refreshPermissionList()
   }
 
+  
+
   /**
    * 权限等级到名称的转换
    * @param {number} level 
