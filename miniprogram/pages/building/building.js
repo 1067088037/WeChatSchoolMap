@@ -617,12 +617,15 @@ Page({
     }
     if (app.globalData.buildingSelected != null) {
 
+
       let building = app.globalData.buildingSelected
       let images = []
-      building.images.forEach(e => {
-        e = CloudPathFront + e
-        images.push(e)
-      })
+      if (building.images != undefined) {
+        building.images.forEach(e => {
+          e = CloudPathFront + e
+          images.push(e)
+        })
+      }
       building.images = images
       console.log(building)
       this.setData({
@@ -680,7 +683,8 @@ Page({
       })
     }).then(() => {
       db.like.getIsAndCountLike(strategiesId).then(res => {
-        console.log(res)
+        console.log("res", res)
+        console.log("testStrategies", testStrategies)
         testStrategies.forEach(s => {
           let isAndlike = res.result.find((item, index) => {
             return item.superId == s.id

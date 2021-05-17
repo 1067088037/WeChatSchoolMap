@@ -4,27 +4,28 @@
   <map id="myMap" style="width:{{mapWidth}}rpx;height:{{mapHeight}}rpx;" latitude="{{latitude}}"
     longitude="{{longitude}}" scale="17" rotate="240" skew="35" markers="{{markers}}" bindcallouttap="markerstap"
     enable-poi="{{true}}" max-scale="20" min-scale="15" bindtap="mapTap">
-    <!-- 以下按钮用于获取屏幕中心的经纬度，主要是测试开发用，实际上线可以删去 -->
-    <cover-view class="centerLocation" style="padding:50 0; width:80rpx; height:80rpx; position:relative">
+  </map>
+<!-- 以下按钮用于获取屏幕中心的经纬度，主要是测试开发用，实际上线可以删去 -->
+<view class="centerLocation" style="padding:50 0; width:80rpx; height:80rpx; position:fixed;top:1rpx">
       <button class="btn-getLoc" bindtap="getCenterLocation_"
         style="width:100%;height:100%;position:absolute;opacity:0;">
       </button>
-      <cover-image src="/images/index/centerLocation.png" mode="scaleToFill">
-      </cover-image>
-    </cover-view>
+      <image src="/images/index/centerLocation.png"  style="width:80rpx; height:80rpx;" mode="scaleToFill">
+      </image>
+    </view>
     <!-- 选择功能页面的实现 -->
-    <cover-view>
-      <cover-view wx:if="{{isMoreTrue}}">
-        <cover-view class="funcMask{{isMoreTrue?'isMoreShow':'isMoreHide'}}">
-          <cover-view class='funcMaskContent'>
-            <cover-view class='funcMaskText' wx:for='{{functions}}' wx:for-index='index' wx:key="index">
-              <cover-view class="index">{{index+1}}</cover-view>
+    <view style="position:fixed; bottom:30rpx; width:750rpx">
+      <view wx:if="{{isMoreTrue}}">
+        <view class="funcMask{{isMoreTrue?'isMoreShow':'isMoreHide'}}">
+          <view class='funcMaskContent'>
+            <view class='funcMaskText' wx:for='{{functions}}' wx:for-index='index' wx:key="index">
+              <view class="index">{{index+1}}</view>
               <button class="item" bindtap="popup" data-item="{{item}}">{{item}}</button>
-            </cover-view>
-          </cover-view>
-        </cover-view>
-      </cover-view>
-    </cover-view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
     <!-- 实现点击功能弹出相应的页面 -->
     <page-container show="{{showPage}}" overlay="{{overlay}}" close-on-slide-down duration="{{pageDuration}}"
       position="{{pagePosition}}" bindbeforeenter="onBeforeEnter" bindenter="onEnter" bindafterenter="onAfterEnter"
@@ -58,46 +59,44 @@
         </swiper>
       </view>
       <!-- 搜索框 -->
-      <cover-view wx:if="{{func=='搜索'}}">
+      <view wx:if="{{func=='搜索'}}">
         <input class="search" type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx"
           confirm-type="search" bindconfirm="search"></input>
-      </cover-view>
+      </view>
       <!-- 筛选界面  -->
-      <cover-view wx:if="{{func=='筛选'}}">
+      <view wx:if="{{func=='筛选'}}">
         <checkbox-group bindchange="selectArchFunc">
-          <cover-view class="checkboxView" wx:for="{{archItems}}" wx:key="index"
+          <view class="checkboxView" wx:for="{{archItems}}" wx:key="index"
             style="margin-top:10rpx;border-bottom:1rpx solid  gray">
-            <cover-view style="display:inline-block">
+            <view style="display:inline-block">
               <checkbox value="{{item.value}}" checked="{{item.checked}}">
               </checkbox>
-            </cover-view>
-            <cover-view style="display:inline-block;">{{item.name}}</cover-view>
-          </cover-view>
+            </view>
+            <view style="display:inline-block;">{{item.name}}</view>
+          </view>
         </checkbox-group>
-      </cover-view>
+      </view>
     </page-container>
     <!-- 建筑的简介对话框 -->
-    <cover-view>
+    <view>
       <mp-dialog title="{{buildingSelected.title}}" show="{{showBuildingDialog}}" bindbuttontap="toDetailPage"
         buttons="{{buildingBtns}}">
-        <cover-view class="introduce">
+        <view class="introduce">
           {{buildingSelected.text}}
-        </cover-view>
-        <cover-view class="Navigation">
+        </view>
+        <view class="Navigation">
           <button class="navigation-btn" style="width:100%;height:100%;position:absolute;opacity:0;"
             bindtap="navigation"></button>
-          <cover-image src="/images/global/navigation.png" mode="scaleToFill" style="width:100%;height:100%">
-          </cover-image>
-        </cover-view>
+          <image src="/images/global/navigation.png" mode="scaleToFill" style="width:100%;height:100%">
+          </image>
+        </view>
       </mp-dialog>
-    </cover-view>
+    </view>
     <!-- 是否添加标点的按钮组 -->
-    <cover-view class="markerPosBtn" wx:if="{{showMarkerDialog}}">
+    <view class="markerPosBtn" wx:if="{{showMarkerDialog}}">
       <button bindtap="cancelMarker">取消</button>
       <button bindtap="confirmMarker">确定</button>
-    </cover-view>
-  </map>
-
+    </view>
   <!-- 添加图标的实现 -->
   <view class="moreFunctionIcon">
     <image class="more" bindtap="showFunction" src="/images/global/add.png"></image>
