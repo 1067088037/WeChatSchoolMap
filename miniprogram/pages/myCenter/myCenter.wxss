@@ -20,13 +20,19 @@
 }
 
 .userinfo-avatar {
+  position:relative;
+  right:19rpx;
+  bottom:19rpx;
   overflow: hidden;
-  width: 128rpx;
-  height: 128rpx;
+  width: 150rpx;
+  height: 150rpx;
   margin: 20rpx;
   border-radius: 50%;
 }
-
+.nameuse{
+  position:relative;
+  left: 150rpx;
+}
 .usermotto {
   margin-top: 200px;
 }
@@ -34,4 +40,49 @@
   color:rgb(78, 78, 78);
   background-color:rgb(226, 225, 225);
   margin-top: 20rpx;
+}
+.head{
+  height:300rpx;
+  background:rgb(112,74,96);
+  margin-top: 30rpx;
+  margin-left:30rpx;
+  margin-right:30rpx;
+  padding:40rpx;
+  border-radius: 20rpx;
+  border:10rpx solid gray;
+}
+.head2{
+  border-radius: 75rpx;
+  height:150rpx;
+  width:150rpx;
+  background:white;
+  border:5rpx solid  rgb(202, 174, 178);
+}
+
+.word1{
+  position: relative;
+  left:200rpx;
+  bottom:150rpx;
+  color:rgb(219, 211, 211);
+
+}
+.word2{
+  position:relative;
+  left:200rpx;
+  bottom:140rpx;
+}
+.word3{
+  position:relative;
+  bottom:60rpx;
+}
+.srcOut{
+  position:relative;
+  left:200rpx;
+  display:flex; flex-wrap: nowrap;height:200rpx;
+}
+.sonhead{
+  margin:20rpx;
+  background:white;
+  border-radius: 30rpx;
+  height:200rpx;
 }

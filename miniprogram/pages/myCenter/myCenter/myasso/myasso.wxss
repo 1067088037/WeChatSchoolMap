@@ -1,0 +1,7 @@
+/* pages/myCenter/myasso/myasso.wxss */
+.userass{
+  margin:20rpx;
+  height: 300rpx;
+  background:rgb(75, 133, 151);
+  border-radius: 20rpx;
+}

@@ -1,0 +1,40 @@
+/* pages/myCenter/myasso/assoY/assoY.wxss */
+.textall{
+  background:rgb(211, 189, 189);
+  border-width: 20rpx;
+  border-radius: 30rpx;
+  height:220rpx;
+}
+.login-button { 
+  position: relative;
+  left:105rpx;
+  display:flex;/* 按钮美化 */
+	width: 135rpx; /* 宽度 */
+	height: 70rpx; /* 高度 */
+	border-width: 10rpx; /* 边框宽度 */
+	border-radius: 3rpx; /* 边框半径 */
+	background: #6f92b6; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 8rpx; /* 字体大小 */
+}
+.login-button2 { 
+  position: relative;
+  left:85rpx;
+  display:flex;/* 按钮美化 */
+	width: 135rpx; /* 宽度 */
+	height: 70rpx; /* 高度 */
+	border-width: 10rpx; /* 边框宽度 */
+	border-radius: 3rpx; /* 边框半径 */
+	background: #b7b9bb; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: rgb(63, 148, 218); /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+}
+.login-button-hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #5599FF;
+}

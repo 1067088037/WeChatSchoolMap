@@ -1,0 +1,16 @@
+
+<view ><input type="text" bindconfirm="setsection" placeholder="请输入社团或部门名"/></view>
+<view ><input type="text" bindconfirm="setsection" placeholder="请输入社团介绍"></input></view>
+<mp-cell>
+  <mp-cells>
+<mp-uploader bindfail="uploadError" bindsuccess="uploadSuccess" select="{{selectFile}}" upload="{{uplaodFile}}"
+          files="{{files}}" max-count="1" title=""></mp-uploader>
+      </mp-cells>
+    </mp-cell>
+    <view>
+    <button style="color:white;" bindtap="sendsectionform">申请创建</button>
+    </view>  
+    <view>
+    <button style="width:100%" bindtap="returnsectionform">取消</button>
+    </view>
+      

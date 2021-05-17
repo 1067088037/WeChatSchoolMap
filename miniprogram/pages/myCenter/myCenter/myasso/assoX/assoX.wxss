@@ -1,0 +1,6 @@
+.link:before{content: "/";margin:0 24rpx;color: grey;}   
+.link:first-child:before{display:none;}  
+.header_right{
+  display:flex;
+  background:rgb(248, 216, 31);
+}

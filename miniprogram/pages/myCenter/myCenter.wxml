@@ -1,7 +1,7 @@
-<!--pages/myCenter/myCenter.wxml-->
-<view class="myCenter-container">
+<view class="head">
+<view class="head2">
   <view class="getUserInfo">
-    <block wx:if="{{canIUseOpenData}}" calss="userinfo-opendata">
+    <block wx:if="{{canIUseOpenData}}" class="userinfo-opendata">
       <view class="userinfo-avatar" bindtap="bindViewTap">
         <open-data type="userAvatarUrl"></open-data>
       </view>
@@ -14,35 +14,64 @@
     </block>
     <block wx:else>
       <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+      
     </block>
   </view>
-
-  <view class="UserFunction">
-    <view class="UserProfile">
-      <button>
-      资料
-      </button>
-    </view>
-    <view class="Collection">
-      <button>
-      收藏
-      </button>
-    </view>
-    <view class="Authority">
-      <button>
-      权限
-      </button>
-    </view>
-    <view class="FeedBack">
-      <button>
-      反馈
-      </button>
-    </view>
-    <view class="About">
-      <button>
-      关于
-      </button>
-    </view>
+</view>
+<view class="word1">
+  <text class="word">昵称{{userInfo.nickName}}</text>
+</view>
+<view class="word2">
+  <text>
+    学校：
+  </text>
+</view>
+<view class="word3">
+  身份认证：
+</view>
+<!--  -
+<scroll-view  scroll-x="true">
+  <view class="srcOut">
+  <view class="srcBox"><image src="../../images/identity2.png" mode="heightFix" ></image></view>
+  <view class="srcBox"><image src="../../images/identity2.png" mode="heightFix" ></image></view>
+  <view class="srcBox"><image src="../../images/identity2.png" mode="heightFix"></image></view>
+  <view class="srcBox"><image src="../../images/identity2.png"mode="heightFix" ></image></view>
+  <view class="srcBox"><image src="../../images/identity2.png" mode="
+    heightFix"></image></view>
   </view>
+<!-- </scroll-view> -->
+</view>
+<view class="sonhead">
+  <navigator url="../myCenter/myCenter/creatasso/creatasso">
+  <text>
+    创建新组织
+  </text>
+</navigator>
+</view>
+<view class="sonhead">
+  <navigator url="../myCenter/myCenter/myasso/myasso">
+  <text>
+    我的组织
+  </text>
+</navigator>
+</view><view class="sonhead">
+  <navigator url="./myCenter/join/join">
+  <text>
+    申请加入组织
+  </text>
+</navigator>
+</view>
+<view class="sonhead">
+  <navigator url="../myCenter/focus/focus">
+  <text>
+    关注中活动
+  </text>
+</navigator>
+</view>
+<view class="sonhead">
+  <navigator url="../myCenter/myset/myset">
+  <text>
+    设置
+  </text>
+</navigator>
 </view>

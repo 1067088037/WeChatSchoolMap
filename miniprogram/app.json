@@ -6,7 +6,12 @@
     "pages/designPage/designPage",
     "pages/message/message",
     "pages/building/building",
-    "pages/posterArea/posterArea"
+    "pages/posterArea/posterArea",
+    "pages/myCenter/myCenter/myasso/myasso",
+    "pages/myCenter/myCenter/join/join",
+    "pages/myCenter/myCenter/creatasso/creatasso",
+    "pages/myCenter/myCenter/myasso/assoX/assoX",
+    "pages/myCenter/myCenter/myasso/assoY/assoY"
   ],
   "permission": {
     "scope.userLocation": {

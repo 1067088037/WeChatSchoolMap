@@ -1,0 +1,21 @@
+.inputname{
+  position:relative;
+  left:1500rpx;
+  width:500rpx;
+  background:grey;
+  border:20rpx;
+  border-color: rgb(162, 184, 204);
+}
+.inputinf{
+  position:relative;
+  left:1500rpx;
+  width:500rpx;
+  height:400rpx;
+  background:rgb(151, 184, 206);
+  border:20rpx;
+  border-color: rgb(162, 184, 204);
+}
+.inputall{
+  position:relative;
+  bottom: 30rpx;
+}

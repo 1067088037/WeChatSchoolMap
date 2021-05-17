@@ -1,0 +1,46 @@
+<view>{{title}}   当前身份：</view>
+<view class="header_right">   
+    <navigator url="../../myasso/myasso" class="link">成员列表</navigator>  
+    <navigator url="../assoY/assoY" class="link">申请表</navigator>  
+  </view>  
+  <view bindtap="resetrank_modal" data-id='ojr_35MDvhNSwJfxk0dSXHkaAorw'
+  >社员一（测试用）</view>
+  <!--  
+  <view wx:for="{{memberin}}" wx:for-item="m">
+<view class="membershow" bindtap="modal1"><text>成员名称：{{m.name}}</text>
+<text>{{m.rank}}</text>
+</view>
+
+
+<view class="mask" bindtap='modelCancel' catchtouchmove="preventTouchMove" wx:if="{{showModalDlg}}"></view>
+<view class="modalDlg" wx:if="{{showModalDlg}}">
+    <text>社团成员</text>
+    <text>成员名称</text>
+    <text>成员头像</text>
+    <text>成员职称及其可操控动作</text>
+    <view>
+    <button bindtap="sendmessage">发送工作消息</button>
+    <button bindtap="resetrank">任命为管理员</button>
+    <button bindtap="outasso">请离社团</button>
+    </view>
+</view>
+<view class="mask" bindtap='modelCancel' catchtouchmove="preventTouchMove" wx:if="{{showModalDlg}}"></view>
+<view class="modalDlg" wx:if="{{showModalDlg}}">
+    <text>社团成员</text>
+    <text>成员名称</text>
+    <text>成员头像</text>
+    <text>成员职称及其可操控动作</text>
+    <view>
+    <button bindtap="sendmessage">发送工作消息</button>
+    <button bindtap="outasso">退出</button>
+    </view>
+</view>
+<modal hidden="{{resetflasehd}}" title="修改失败" confirm-text="确定" cancel-text="重试" bindcancel="tryaga" bindconfirm="accessfail">
+  <view>修改失败，您的权限不足</view>
+</modal>
+
+<modal hidden="{{resetsuccesshd}}" title="修改成功" confirm-text="确定" cancel-text="重新修改" bindcancel="tryagasu" bindconfirm="accesssu">
+  <view>修改成功，您已经成功改变该同学的权限</view>
+</modal>
+
+

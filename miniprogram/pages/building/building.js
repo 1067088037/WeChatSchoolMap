@@ -417,7 +417,7 @@ Page({
         db.like.countLike(res._id).then(likenums => {
           likeNum = likenums;
         }).then(() => {
-          let strategy = {
+          let strategy  = {
             src: srcs,
             id: res._id,
             likeNum: likeNum,
