@@ -597,6 +597,12 @@ Page({
     })
     console.log("是否添加标点： " + isAdd);
   },
+  //跳转到海报区
+  navigatorToPosterArea(){
+    wx.navigateTo({
+      url: '../../pages/posterArea/posterArea',
+    });
+  },
   /**
    * selectArchFunc
    * @todo 筛选显示在地图上标点

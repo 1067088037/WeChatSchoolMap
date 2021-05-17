@@ -20,7 +20,10 @@
           <view class='funcMaskContent'>
             <view class='funcMaskText' wx:for='{{functions}}' wx:for-index='index' wx:key="index">
               <view class="index">{{index+1}}</view>
-              <button class="item" bindtap="popup" data-item="{{item}}">{{item}}</button>
+              <view>
+              <button class="item" bindtap="popup" data-item="{{item}}" wx:if="{{item!='海报'}}">{{item}}</button>
+              <button class="item" bindtap="navigatorToPosterArea"data-item="{{item}}" wx:if="{{item=='海报'}}">{{item}}</button>
+              </view>
             </view>
           </view>
         </view>
@@ -31,33 +34,6 @@
       position="{{pagePosition}}" bindbeforeenter="onBeforeEnter" bindenter="onEnter" bindafterenter="onAfterEnter"
       bindbeforeleave="onBeforeLeave" bindleave="onLeave" bindafterleave="onAfterLeave"
       bindclickoverlay="onClickOverlay">
-      <!-- 海报界面 -->
-      <view wx:if="{{func=='海报'}}" class="PosterArea">
-        <swiper indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff" circular="{{true}}"
-          autoplay="{{true}}" interval="3000">
-          <view>
-            <swiper-item>
-              <image
-                src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
-              </image>
-            </swiper-item>
-          </view>
-          <view>
-            <swiper-item>
-              <image
-                src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
-              </image>
-            </swiper-item>
-          </view>
-          <view>
-            <swiper-item>
-              <image
-                src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
-              </image>
-            </swiper-item>
-          </view>
-        </swiper>
-      </view>
       <!-- 搜索框 -->
       <view wx:if="{{func=='搜索'}}">
         <input class="search" type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx"
