@@ -77,4 +77,15 @@ export function dbExample() {
   //   tag: db.cmd.addToSet('233'), //在数组中没有该元素的情况下插入
   //   tag: db.cmd.pull('233'), //移除数组中指定元素
   // })
+
+  // db.poster.addPoster('1ace8ef16090a631008f950170cb8165', {
+  //   sender: getApp().globalData.openid,
+  //   name: '哈哈哈新海报',
+  //   desc: '快来玩呀',
+  //   images: []
+  // })
+
+  // db.poster.getPosterBySchoolId('1ace8ef16090a631008f950170cb8165').then(res => {
+  //   console.log(res)
+  // })
 }
