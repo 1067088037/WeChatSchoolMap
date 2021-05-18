@@ -69,6 +69,9 @@ export function launchTest() {
   // db.user.getUserUnderControl().then(res => {
   //   console.log(res)
   // })
+
+  // db.attention.addTag('ojr_35JJZSWh0xHtk_0k9GRJ4TqQ', ['123','345'])
+  // db.attention.getAttention('ojr_35JJZSWh0xHtk_0k9GRJ4TqQ')
 }
 
 export function dbExample() {

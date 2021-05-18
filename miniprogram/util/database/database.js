@@ -13,6 +13,7 @@ import { Strategy } from './strategy'
 import { Global } from './global'
 import { Application } from './application'
 import { Poster } from './poster'
+import { Attention } from './attention'
 
 export class DataBase {
   _db = _db //数据库实例
@@ -32,6 +33,7 @@ export class DataBase {
   strategy = new Strategy()
   application = new Application()
   poster = new Poster()
+  attention = new Attention()
 }
 
 export const db = new DataBase()
