@@ -1,4 +1,5 @@
 // pages/myCenter/joinasso/joinasso.js
+const app = getApp();
 import{db}from'../../../../util/database/database'
 Page({
 
@@ -6,6 +7,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    sectionArray:[],
+    schoolid:{},
     sectiontext: "", //搜索框的值
     noneview: false, //显示未找到提示
     sectionlist: true, //显示列表
@@ -197,7 +200,17 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    var openid=app.globalData.openid;
+    let value;
+    db.user.getUser(openid).then((res)=>{
+      this.setData({
+        schoolid:res.info.school
+      })
+    })
+    console.log(this.data.schoolid);
+    db.section.getSectionArray(this.data.schoolid).then((res)=>{this.setData({
+      sectionArray:res
+    })})
 
 }
   ,
