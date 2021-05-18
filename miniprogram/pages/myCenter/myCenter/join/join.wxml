@@ -1,11 +1,12 @@
 
 <text>pages/myCenter/joinasso/joinasso.wxml</text>
-<input type='text' confirm-type='search' bindinput='input1' bindconfirm='confirm3' style='border:1px solid #f00' placeholder
+<input value="{{sectiontext}}" type='text' confirm-type='search'       bindinput='input1' style='border:1px solid #f00' placeholder
 ="请输入社团或组织名称"/>
-
-<view wx:for="{{hosList}}" wx:for-item="h">
-<text>{{h.name}}</text>
-<text wx:if="{{h.show}}">{{h.name}}</text>
+<view  wx:if="{{noneview}}">
+  <text>抱歉，没有相关社团</text>
+</view>
+<view wx:for="{{sectionArray}}" wx:for-item="s">
+<text wx:if="{{s.status}}">{{s.title}}</text>
 
 </view>
 <view bindtap="modalinput"><text>测试用组织</text></view>

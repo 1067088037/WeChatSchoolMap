@@ -6,7 +6,15 @@ Page({
    * 页面的初始数据
    */
   data: {
-    hostList:[], 
+    sectiontext: "", //搜索框的值
+    noneview: false, //显示未找到提示
+    sectionlist: true, //显示列表
+    sectionArray: [{ //社团信息
+      id: 0,
+      images: "/miniprogram/images/index/centerLocation.png",
+      title: "学生会",
+      status: 1
+    }],
     userInfo: null,  
     hidden:false,
     hiddenmodalput: true,
@@ -130,39 +138,57 @@ Page({
     }
   },
 
-  input1:function(e){
-    this.search(e.detail.value);
+  input1: function(e) {
+    //当删除input的值为空时
+    if (e.detail.value == "") {
+      this.setData({
+        sectionlist: true //呈现所有列表
+      });
+      //所有社团列表的状态改为1
+      for (var index in this.data.sectionarray) {
+        let temp = 'sectionarray[' + index + '].status';
+        this.setData({
+          [temp]: 1,
+        })
+      }
+    }
+    this.setData({
+      sectiontext: e.detail.value
+    })
+   this.search();
   },
-  search:function(key){
-    var This=this;
-    var hostList=wx.getStorage({
-      key:'hosList',
-    success:function(res){
-if(key==""){
-  This.setData({
-    hostList:res.data
-  })
-  return;
-}
-var arr=[];
-for(let i in res.data){
-  res.data[i].show=false;
-  if(res.data[i].search.indexOf(key)>=0){
-    res.data[i].show=true;
-    arr.push(res.data[i]);
-  }
-}
-if(arr.length==0){
-  This.setData({
-    hostList:[{show:true,name:'无关数据'}]
-  })
-}else
-{
-  This.setData({
-    hostList:arr
-  })
-}
-    },})
+  search: function() {
+    var searchtext = this.data.sectiontext; //搜索框的值
+    console.log(searchtext);
+    var sss = true;
+    if (searchtext != "") {
+      //模糊查询 循环查询数组中的title字段
+      for (var index in this.data.sectionArray) {
+        console.log("循环开始");
+        var num = this.data.sectionArray[index].title.indexOf(searchtext);
+        let temp = 'sectionArray[' + index + '].status';
+        if (num != -1) { //不匹配的不显示
+          this.setData({
+            [temp]: 1,
+          })
+          sss = false //隐藏未找到提示
+        }
+        else{
+          this.setData({
+            [temp]: 0,
+          })
+        }
+      }
+      this.setData({
+        noneview: sss, //隐藏未找到提示
+        sectionlist: true, //显示社团列表
+      })
+    } else {
+      this.setData({
+        noneview: false, //显示未找到提示
+        sectionlist: true, //展示所有社团
+      })
+    }
   },
 
   
@@ -171,19 +197,8 @@ if(arr.length==0){
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-var hostList=[{
-  id:101,name:"学生会",show:true,search:"101学生会"
-},{
-  id:102,name:"测试数据之后再绑后台",show:true,search:"102测试数据之后再绑后台"
-}
-] //之后会替换为后台获得的数据
-wx.setStorage({
-  key:'hostList',
-  data:hostList,
-})
-this.setData({
-  hostList:hostList
-})
+
+
 }
   ,
 
