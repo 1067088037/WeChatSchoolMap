@@ -69,6 +69,9 @@ export function launchTest() {
   // db.user.getUserUnderControl().then(res => {
   //   console.log(res)
   // })
+
+  // db.attention.addTag('ojr_35JJZSWh0xHtk_0k9GRJ4TqQ', ['123','345'])
+  // db.attention.getAttention('ojr_35JJZSWh0xHtk_0k9GRJ4TqQ')
 }
 
 export function dbExample() {
@@ -76,5 +79,16 @@ export function dbExample() {
   //   tag: db.cmd.push('233'), //无条件插入数组
   //   tag: db.cmd.addToSet('233'), //在数组中没有该元素的情况下插入
   //   tag: db.cmd.pull('233'), //移除数组中指定元素
+  // })
+
+  // db.poster.addPoster('1ace8ef16090a631008f950170cb8165', {
+  //   sender: getApp().globalData.openid,
+  //   name: '哈哈哈新海报',
+  //   desc: '快来玩呀',
+  //   images: []
+  // })
+
+  // db.poster.getPosterBySchoolId('1ace8ef16090a631008f950170cb8165').then(res => {
+  //   console.log(res)
   // })
 }
