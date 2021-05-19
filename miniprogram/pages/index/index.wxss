@@ -204,11 +204,11 @@ view.weui-dialog__wrp.FollowDialog > view > view.weui-dialog__ft{
   width: 65rpx;
   height: 65rpx;
   position: relative;
-  padding-left: 400rpx;
+  padding-left: 40rpx;
 }
 
 .introduce {
-  width: 500rpx;
+  /* width: 100rpx; */
   height: 400rpx;
   color:black;
   /* border: 1rpx solid black; */

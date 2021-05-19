@@ -23,8 +23,8 @@ Page({
     let index = parseInt(e.currentTarget.id)
     let message = this.data.messageData
     app.globalData.buildingSelected = message[index].activity
-    wx.redirectTo({
-      url: '../building/building',
+    wx.switchTab({
+      url:'../index/index'
     })
     this.setData({
       messageData: message

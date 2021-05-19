@@ -198,7 +198,7 @@ Page({
       followActivitiesTag
     })
   },
-  
+
   followActivityTap(e) {
     let openid = app.globalData.openid;
     let day = this.data.weekIndex
@@ -207,16 +207,16 @@ Page({
     // TODO  上传至数据库
 
     db.attention.addTag(openid, followActivitiesTag)
-    db.attention.addTime(openid,[ {
+    db.attention.addTime(openid, [{
       month: month,
       week: day
-    }]).then(()=>{
+    }]).then(() => {
       this.setData({
-        func:''
+        func: ''
       })
       wx.showToast({
         title: '关注成功',
-        duration:1000
+        duration: 1000
       })
     })
   },
@@ -815,7 +815,7 @@ Page({
     if (e.detail.item.text == "退出") {
       app.globalData.buildingSelected = null;
     } else if (e.detail.item.text == "了解更多") {
-      wx.redirectTo({
+      wx.navigateTo({
         url: '../building/building',
         success: (res) => {
           console.log(666)
@@ -930,19 +930,21 @@ Page({
             height: 40,
             iconPath: "/images/building/canteen.png"
           })
-          this.setData({
-            markers: this.data.markers.concat({
-              _id: value._id,
-              id: value.markId,
-              latitude: value.geo.coordinates[1],
-              longitude: value.geo.coordinates[0],
-              type: value.type,
-              title: value.name,
-              width: 50,
-              height: 40,
-              iconPath: "/images/building/canteen.png"
+          if (app.globalData.buildingSelected == null) {
+            this.setData({
+              markers: this.data.markers.concat({
+                _id: value._id,
+                id: value.markId,
+                latitude: value.geo.coordinates[1],
+                longitude: value.geo.coordinates[0],
+                type: value.type,
+                title: value.name,
+                width: 50,
+                height: 40,
+                iconPath: "/images/building/canteen.png"
+              })
             })
-          })
+          }
         } else {
           archArray.push({
             _id: value._id,
@@ -986,12 +988,13 @@ Page({
             width: 30,
             height: 40,
             type: value.type,
-            iconPath: "/images/index/realtimeInfo.png"
+            iconPath: "/images/index/realtimeInfo.png",
+            
           })
         }
       })
     })
-
+    
     // 默认显示实时信息标点。
     const that = this
     visibleArchArray = realTimeInfoArray
@@ -1014,6 +1017,27 @@ Page({
         departmentsItem: this.data.departmentsItem.concat(res.data[0].name)
       })
     })
+    console.log("app",app.globalData.buildingSelected)
+    if(app.globalData.buildingSelected != null){
+      let activitySelected = {
+        _id : app.globalData.buildingSelected._id,
+        id :app.globalData.buildingSelected.markId,
+        width:50,
+        height:60,
+        longitude: app.globalData.buildingSelected.geo.coordinates[0],
+        latitude: app.globalData.buildingSelected.geo.coordinates[1],
+        title:app.globalData.buildingSelected.desc.name,
+        type:app.globalData.buildingSelected.type,
+        iconPath:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/"+app.globalData.buildingSelected.desc.icon,
+        text:app.globalData.buildingSelected.desc.text
+      }
+      
+      this.setData({
+        markers:[activitySelected],
+        buildingSelected:activitySelected,
+        showBuildingDialog:true
+      })
+    }
 
     // dormPoint.forEach(e => {
     //   // let e = dormPoint[0]
