@@ -70,7 +70,8 @@ Page({
       "海报",
       "添加",
       "搜索",
-      "筛选"
+      "筛选",
+      "关注"
     ],
     markers: [],
     func: '', // 功能名称
@@ -98,31 +99,35 @@ Page({
     archItems: [{
       value: "dorm",
       name: "宿舍",
-      checked: false
+      selected: false,
     }, {
       value: "classRoom",
-      name: "教室"
+      name: "教室",
+      selected: false,
     }, {
       value: "college",
-      name: '学院'
+      name: '学院',
+      selected: false,
     }, {
       value: "canteen",
-      name: "饭堂"
+      name: "饭堂",
+      selected: true,
     }, {
       value: "shop",
-      name: "商店"
+      name: "商店",
+      selected: false,
     }, {
       value: "canteen",
-      name: "饭堂"
+      name: "饭堂",
+      selected: false,
     }, {
       value: "vouchCenter",
-      name: "充值点"
+      name: "充值点",
+      selected: false,
     }, {
       value: "activity",
-      name: "活动"
-    }, {
-      value: "deliveryPickUp",
-      name: "快递外卖提取点"
+      name: "活动",
+      selected: false,
     }], // 筛选建筑的选项
     departmentsItem: [
       "(全校)", "软件学院", "百步梯", "校学生会"
@@ -137,7 +142,7 @@ Page({
     buildingSelected: null,
     files: [],
     userUploadIcons: "",
-    userUploadPhotoes:[],
+    userUploadPhotoes: [],
     labelArray: [{
       name: '讲座票',
       selected: false,
@@ -153,13 +158,72 @@ Page({
     }, {
       name: '文体分',
       selected: false
+    }, {
+      name: '电影展播',
+      selected: false
     }],
-    
+    Month: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+    WeekDays: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日', ],
+    monthIndex: 0,
+    weekIndex: 0,
+    followActivitiesTag: []
+  },
+  bindfollowMonthChange(e) {
+    this.setData({
+      monthIndex: (e.detail.value)
+    })
+  },
+  bindfollowWeekDayChange(e) {
+    this.setData({
+      weekIndex: e.detail.value
+    })
+  },
+  selectedFollowLabel(e) {
+    let id = parseInt(e.currentTarget.id)
+    let labelArray = this.data.labelArray
+
+    if (labelArray[id].selected) {
+      labelArray[id].selected = false;
+    } else {
+      labelArray[id].selected = true;
+    }
+    let followActivitiesTag = this.data.followActivitiesTag
+    if (labelArray[id].selected) {
+      followActivitiesTag.push(labelArray[id].name)
+    } else {
+      followActivitiesTag.splice(id, 1)
+    }
+    this.setData({
+      labelArray,
+      followActivitiesTag
+    })
+  },
+  
+  followActivityTap(e) {
+    let openid = app.globalData.openid;
+    let day = this.data.weekIndex
+    let month = this.data.monthIndex
+    let followActivitiesTag = this.data.followActivitiesTag
+    // TODO  上传至数据库
+
+    db.attention.addTag(openid, followActivitiesTag)
+    db.attention.addTime(openid,[ {
+      month: month,
+      week: day
+    }]).then(()=>{
+      this.setData({
+        func:''
+      })
+      wx.showToast({
+        title: '关注成功',
+        duration:1000
+      })
+    })
   },
   selectedLabel(e) {
     let id = parseInt(e.currentTarget.id)
     let labelArray = this.data.labelArray
-    let selectedPoint = this.data.selectedPoint
+
     if (labelArray[id].selected) {
       labelArray[id].selected = false;
     } else {
@@ -312,7 +376,8 @@ Page({
   mapTap(e) {
     if (this.data.showPage) {
       this.setData({
-        showPage: false
+        showPage: false,
+        func: ""
       })
     }
     // console.log(e.detail);
@@ -421,11 +486,11 @@ Page({
       userUploadIcons: (e.detail.urls[0])
     })
   },
-  uploadPhotoesSuccess(e){
-    
+  uploadPhotoesSuccess(e) {
+
     console.log('upload success', e)
     this.setData({
-      userUploadPhotoes: this.data.userUploadPhotoes.concat (e.detail.urls[0])
+      userUploadPhotoes: this.data.userUploadPhotoes.concat(e.detail.urls[0])
     })
   },
   selectFile(files) {
@@ -437,7 +502,7 @@ Page({
     this.data.userUploadPhotoes.forEach((e, i) => {
       const filepath = e;
       let name = util.randomId()
-      const cloudpath = "School/4144010561/images/Point/"+type + name + filepath.match(/\.[^.]+?$/)[0]
+      const cloudpath = "School/4144010561/images/Point/" + type + name + filepath.match(/\.[^.]+?$/)[0]
       images.push(cloudpath)
       console.log(cloudpath)
       wx.cloud.uploadFile({
@@ -582,6 +647,13 @@ Page({
         })
         break;
       }
+      case "关注": {
+        this.setData({
+          pagePosition: "top",
+          isMoreTrue: false
+        })
+        break;
+      }
       default: {
         this.setData({
           pagePosition: "center",
@@ -598,7 +670,7 @@ Page({
     console.log("是否添加标点： " + isAdd);
   },
   //跳转到海报区
-  navigatorToPosterArea(){
+  navigatorToPosterArea() {
     wx.navigateTo({
       url: '../../pages/posterArea/posterArea',
     });
@@ -609,28 +681,22 @@ Page({
    * @param {*} e  checkbox对象
    */
   selectArchFunc(e) {
-    //   如果selectArchType中含有不在e.detail.value中的type 则删除
-    if (selectedArchType.length > 0) {
-      selectedArchType.forEach((value, index) => {
-        console.log(e.detail.value.indexOf(value))
-        if (e.detail.value.indexOf(value) == -1)
-          selectedArchType.splice(index, 1)
-      })
+    selectedArchType = [];
+    console.log(e)
+    let id = parseInt(e.currentTarget.id)
+    let archItems = this.data.archItems;
+    if (archItems[id].selected) {
+      archItems[id].selected = false;
+    } else {
+      archItems[id].selected = true;
     }
-    // 选择arrchArray中有e.detail.value的type 且selectedArchType中没有的type
-    // push进selectArchType
-    archArray.forEach((value, index) => {
-      if (e.detail.value.indexOf(value.type) != -1 && selectedArchType.indexOf(value.type) == -1) {
-        selectedArchType.push(value.type)
+    archItems.forEach(e => {
+      if (e.selected) {
+        selectedArchType.push(e.value)
       }
     })
-    activitiesPoint.forEach((value, index) => {
-      if (e.detail.value.indexOf(value.type) != -1 && selectedArchType.indexOf(value.type) == -1) {
-        selectedArchType.push(value.type)
-      }
-    })
+
     visibleArchArray = [].concat(realTimeInfoArray)
-    // 更新可视建筑
     archArray.forEach((value, index) => {
       if (selectedArchType.indexOf(value.type) != -1) {
         visibleArchArray.push(value)
@@ -641,9 +707,8 @@ Page({
         visibleArchArray.push(value)
       }
     })
-    //console.log(selectedArchType)
-    //visibleArchArray = visibleArchArray.concat(activitiesPoint)
     this.setData({
+      archItems,
       markers: visibleArchArray
     })
   },
@@ -909,7 +974,7 @@ Page({
             type: value.type,
             iconPath: (value.desc.icon == "") ? value.desc.icon : "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/" + value.desc.icon,
             text: value.desc.text,
-            images:value.desc.images
+            images: value.desc.images
           })
         else {
           realTimeInfoArray.push({

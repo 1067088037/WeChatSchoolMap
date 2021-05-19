@@ -61,7 +61,7 @@ Page({
     departmentsItemOne: [
       "(全校)", "软件学院", "百步梯", "校学生会"
     ],
-    departmentsItemMore:["软件学院", "百步梯", "校学生会"],
+    departmentsItemMore: ["软件学院", "百步梯", "校学生会"],
     departmentsIndex: [0],
     pickerNum: [1],
     labelArray: [{
@@ -140,7 +140,7 @@ Page({
   sendPhoto() {
     this.data.userUploadPosters.forEach((e, i) => {
       const filepath = e;
-      const name = Math.round(Math.random * 10000).toString()
+      const name = util.randomId()
       const cloudpath = "School/4144010561/images/Design/design" + name + filepath.match(/\.[^.]+?$/)[0]
       console.log(cloudpath)
       wx.cloud.uploadFile({
@@ -316,6 +316,7 @@ Page({
   },
   publishDraft(e) {
     let content = [];
+
     let image = this.updatePhotoesToCloud(CloudStrategyPath);
     let contentObj = {
       desc: this.data.strategyContent,
@@ -567,12 +568,26 @@ Page({
     if (labelArray[id].selected == true) {
       selectedPoint['tag'] = selectedPoint['tag'].concat(labelArray[id].name)
     } else {
-      selectedPoint['tag'].splice(id,1)
+      selectedPoint['tag'].splice(id, 1)
     }
     this.setData({
       labelArray,
       selectedPoint
     })
+  },
+  deleteSelectedIcon(e){
+    let selectedPoint =  this.data.selectedPoint
+    
+    wx.cloud.deleteFile({
+      fileList:[ selectedPoint.desc.icon],
+      success:res=>{
+        console.log("删除成功",res)
+      },
+      fail:res=>{
+        console.log("删除失败",res)
+      }
+    })
+    selectedPoint.desc.icon = ""
   },
   confirmEditTap() {
     let show = new Date(this.data.bgdate + " 00:00")
@@ -582,7 +597,13 @@ Page({
     let time = db.point.generateTimeObj(show, start, end, hide)
     let name = this.data.selectedPoint.desc.name
     let text = this.data.selectedPoint.desc.text
-    let icon = this.uploadIcontoCloud()
+    let icon ;
+    if (this.data.selectedPoint.desc.icon == "") {
+      icon = this.uploadIcontoCloud()
+    }
+    else{
+      icon = this.data.selectedPoint.desc.icon
+    }
     let desc = db.point.generateDescObj(name, text, icon, [])
     let tag = this.data.selectedPoint.tag
     let belong = this.data.selectedPoint.belong
@@ -707,9 +728,9 @@ Page({
    */
   onShow: function () {
     console.log(app.globalData.school._id)
-    db.section.getSectionArray(app.globalData.school._id).then(res=>{
+    db.section.getSectionArray(app.globalData.school._id).then(res => {
       this.setData({
-        departmentsItemOne:this.data.departmentsItemOne.concat(res.data.name)
+        departmentsItemOne: this.data.departmentsItemOne.concat(res.data.name)
       })
     })
   },

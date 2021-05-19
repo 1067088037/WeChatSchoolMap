@@ -1,15 +1,18 @@
 <!--pages/message/message.wxml-->
-<input type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx" confirm-type="search"></input>
+<input type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx" confirm-type="search" wx:if="{{messageData.length>0}}"></input>
 
-<view class="MessageContainer" wx:if="{{hasMessage}}">
-  <view class="MessageBoxs" wx:for="{{messageData}}" wx:key="item">
-    <view class="MessageBox">
+<view class="MessageContainer" wx:if="{{messageData.length>0}}">
+  <view class="MessageBoxs" wx:for="{{messageData}}" wx:key="item"  id="{{index}}" bindtap="enterMessage" >
+    <mp-slideview ext-class="MessageBox" buttons="{{slideButtons}}">
       <image src="{{item.src}}" mode="widthFix" class="MessageImage"></image>
       <mp-badget wx:if="{{item.msgNum > 99}}" content="99+"
         style="position:absolute;margin-left: 15px;margin-right: 5px" ext-class="blue" />
       <mp-badget wx:if="{{item.msgNum>0&&item.msgNum<=99}}" content="{{item.msgNum}}"
         style="position:absolute;margin-left: 15px;margin-right: 5px" ext-class="blue" />
       <text>{{item.msg}}</text>
-    </view>
+    </mp-slideview>
   </view>
+</view>
+<view wx:if="{{messageData.length == 0}}" >
+ <text>暂无您关注的活动消息</text>
 </view>

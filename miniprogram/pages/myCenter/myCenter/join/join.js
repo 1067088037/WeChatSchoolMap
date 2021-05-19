@@ -203,14 +203,18 @@ Page({
     var openid=app.globalData.openid;
     let value;
     db.user.getUser(openid).then((res)=>{
+      console.log(res)
       this.setData({
         schoolid:res.info.school
       })
+    }).then(()=>{
+      console.log(this.data.schoolid);
+      db.section.getSectionArray(this.data.schoolid).then((res)=>{this.setData({
+        sectionArray:res
+      })})
     })
-    console.log(this.data.schoolid);
-    db.section.getSectionArray(this.data.schoolid).then((res)=>{this.setData({
-      sectionArray:res
-    })})
+    
+    
 
 }
   ,

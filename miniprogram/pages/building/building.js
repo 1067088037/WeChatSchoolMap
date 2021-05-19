@@ -616,21 +616,36 @@ Page({
       })
     }
     if (app.globalData.buildingSelected != null) {
-
-
       let building = app.globalData.buildingSelected
       let images = []
-      if (building.images != undefined) {
-        building.images.forEach(e => {
+      if (building.desc == undefined) {
+        if (building.images != undefined) {
+          building.images.forEach(e => {
+            e = CloudPathFront + e
+            images.push(e)
+          })
+          console.log(building)
+          building.images = images
+          this.setData({
+            building: building
+          })
+        }
+      }
+      else if(building.desc != undefined) {
+      if (building.desc.images.length > 0) {
+        building.desc.images.forEach(e => {
           e = CloudPathFront + e
           images.push(e)
         })
-      }
-      building.images = images
-      console.log(building)
-      this.setData({
-        building: building
-      })
+        building.images = images
+        building.text = building.desc.text
+        this.setData({
+          building: building
+        })
+      }}
+      
+     
+      
     }
     this.setData({
       selectFile: this.selectFile.bind(this),
