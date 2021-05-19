@@ -124,7 +124,7 @@ Page({
       });
     }
   },
-  // 导航之上传海报界面
+  // 导航至上传海报界面
   nevigaToUpLoadPoster() {
     this.setData({
       showUploadPostArea: true
@@ -153,6 +153,20 @@ Page({
       })
     })
   },
+  //发送海报到数据库
+  sendPost(){
+    //console.log(this.data.userUploadPosters);
+      db.poster.addPoster('1ace8ef160901b1b008f69ae08b0ee8a',{
+        sender:getApp().globalData.openid,
+        name:this.data.postTitleInput,
+        desc:this.data.postContentInput,
+        images:this.data.userUploadPosters,
+      })
+      wx.navigateTo({
+      url: '../../pages/posterArea/posterArea',
+    });
+  },
+  
   //下列一系列函数是图片上传相关函数
   /**
    * chooseImage(e)

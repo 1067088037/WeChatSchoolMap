@@ -26,18 +26,20 @@
   </swiper>
   <view class="PostArea">
 <!--加一个while循环，显示多个活动-->
+
+<view class="posters" wx:for="{{postArray}}" wx:for-index="index" wx:key="key" wx:for-item="item">
     <view class="post-container">
       <view class="senderInfo">
         <image class="avatar"
-          src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png">
+          src="{{avatarUrl[index]}}">
         </image>
-        <text class="time">2021 5 16</text>
+        <text class="time">{{item.sendTime}}</text>
       </view>
-      <text class="postTitle">绿植领养活动</text>
-      <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png"
+      <text class="postTitle">{{item.name}}</text>
+      <image src="{{item.images[0]}}"
         mode="widthFix"></image>
       <text>
-        绿植领养啦啦啦
+        {{item.desc}}
       </text>
       <view class="collectOrLike">
         <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/collect.png"></image>
@@ -47,6 +49,6 @@
 
     </view>
 
-
+  </view>
   </view>
 </view>
