@@ -70,8 +70,8 @@
       <view class="showStrategySchool" bindtap="toggleSchool"> ▼生活攻略草稿箱</view>
       <view id="strategyForSchoolBox" class="{{firstClickSchool?'show':'hide'}} {{stateSchool?'open':'close'}}">
         <scroll-view class="strategySchoolList" scroll-y="true">
-          <view class="strategyForSchool" wx:for="{{[1,2,3]}}" wx:key="item">
-            null
+          <view class="strategyForSchool" wx:for="{{draftLifeStrategies}}" wx:key="item">
+            {{item.name}}
           </view>
         </scroll-view>
       </view>
@@ -119,29 +119,41 @@
     </view>
   </view>
   <!-- 发布生活攻略 -->
-  <view class="createLifeStrategy" wx:if="{{showCreateLifeStrategy}}">
+  <view class="createLifeStrategy" wx:if="{{showCreateLifeStrategy && needToMark == false}}" >
     <view class="inputLifeStrategyTitle">
-      <input type="text" name="" id="" placeholder="好的简介更引人入胜噢~" bindinput="inputStrategyBriefIntro" value="{{}}">
+      <input type="text" name="" id="" placeholder="这里输入标题" bindinput="inputLifeStrategyTitle" value="{{lifeStrategyTitle}}" >
       </input>
     </view>
     <view class="inputLifeStrategyBriefDesc">
-      <input type="text" name="" id="" placeholder="好的简介更引人入胜噢~" bindinput="inputStrategyBriefIntro" value="{{}}">
+      <input type="text" name="" id="" placeholder="好的简介更引人入胜噢~" bindinput="inputLifeStrategyBriefIntro" value="{{lifeStrategyIntro}}">
       </input>
     </view>
     <view class="inputLifeStrategyMainBody">
-      <button></button>
-      <view wx:for="{{strategyStep}}" wx:key="{{item}}">
-        <view class="inputLifeStrategyStep">
-          <textarea name="" id="" cols="30" rows="10">
-
+      <view>
+        <button style="display:inline-block; width:300rpx" bindtap="AddStrategySteps">添加步奏</button>
+        <button style="display:inline-block; margin-left:50rpx width:300rpx" bindtap="ReduceStrategySteps">减少步奏</button>
+      </view>
+      <view wx:for="{{strategyStep}}" wx:key="item">
+        <view class="inputLifeStrategyStep" id="{{index}}">
+          <input id="{{index}}" class="inputLifeStrategyStepTitle" placeholder="第{{index+1}}步的标题" bindinput="inputLifeStrategyStepTitle" value="{{lifeStrategyStepNames[index]}}"></input>
+          <textarea name="" cols="50" rows="500" placeholder="这里输入主要内容" id="{{index}}" bindinput="inputLifeStrategyDescription" value="{{lifeStrategyDescriptions[index]}}" >
           </textarea>
         </view>
-        <mp-uploader class="inputLifeStrategyPhoto">
-
+        <mp-uploader class="inputLifeStrategyPhoto" bindfail="uploadError" bindsuccess="uploadLifePhotoesSuccess" select="{{selectFile}}"
+          upload="{{uplaodFile}}" files="{{files[index]}}" max-count="9" title="" binddelete="deletePhotoes"  id="{{index}}">
         </mp-uploader>
+        <view>
+          <text>添加标点</text>
+          <image id="{{index}}" bindtap="needMark" style="height:50rpx;width:50rpx" src="../../images/global/navigation.png"></image>
+        </view>
       </view>
-
     </view>
+    <view>
+      <button style="display:inline-block; width:300rpx; margin-left:30rpx;border:1rpx solid red" bindtap="cancelCreateLifeStrategy">取消</button>
+      <button style="display:inline-block; width:300rpx;margin-left:50rpx" type="primary" bindtap="releaseLifeStrategy">发布</button>
+    </view>
+    <mp-dialog show="{{showIsSaveLifeStrategy}}" buttons="{{savePointButtons}}" title="是否保存" bindbuttontap="isSaveLifeStrategy" >
+    </mp-dialog>
   </view>
   <!-- 编辑发布标点 -->
   <view class="EditPublishedPoint" wx:if="{{showEditPoint}}">
@@ -244,10 +256,10 @@
       <!-- 输入标记图示 -->
       <view class="markerIcon">标记图示</view>
       <view class="markerIcon-cell">
-        <mp-uploader ext-class="uploader" title="标记图示上传" bindfail="uploadIconError" bindsuccess="uploadIconSuccess" binddelete="deleteSelectedIcon"
-          select="{{selectFile}}" upload="{{uplaodFile}}" files="{{files}}" max-count="1">
+        <mp-uploader ext-class="uploader" title="标记图示上传" bindfail="uploadIconError" bindsuccess="uploadIconSuccess"
+          binddelete="deleteSelectedIcon" select="{{selectFile}}" upload="{{uplaodFile}}" files="{{files}}"
+          max-count="1">
         </mp-uploader>
-
       </view>
       <view class="buttonSet" style="margin-top:30rpx">
         <button type="" style="display:inline-block; margin-left:40rpx; margin-right:40rpx; width:250rpx;"
@@ -259,5 +271,15 @@
         <view>是否需要保存</view>
       </mp-dialog>
     </view>
+  </view>
+</view>
+<view wx:if="{{needToMark}}">
+  <map id="newMap" style="width:{{mapWidth}}rpx;height:{{mapHeight}}rpx;" latitude="{{latitude}}"
+    longitude="{{longitude}}" scale="17" rotate="240" skew="35" markers="{{markers}}" bindcallouttap="markerstap"
+    enable-poi="{{true}}" max-scale="20" min-scale="15" bindtap="newMapTap">
+  </map>
+  <view class="markerPosBtn" wx:if="{{needToMark}}">
+    <button style="margin-left:30rpx; width:300rpx" bindtap="cancelMarker">取消</button>
+    <button style="margin-left:60rpx; width:300rpx" bindtap="confirmMarker">确定</button>
   </view>
 </view>

@@ -204,12 +204,29 @@ image {
 }
 
 .createLifeStrategy {
+  margin-top: 20rpx;
   border-radius: 10rpx;
   border: 1rpx black;
   box-shadow: darkgray 5rpx 5rpx 10rpx;
   margin-left: 15rpx;
   margin-right: 15rpx;
   position: relative;
+}
+.markerPosBtn {
+  padding-left: 20rpx;
+  position: fixed;
+  bottom: 0rpx;
+  width: 750rpx;
+  background: white;
+  height: 100rpx;
+
+}
+.markerPosBtn button {
+
+  display: inline-block;
+  text-align: center;
+  height: 75rpx;
+  width: 20rpx;
 }
 
 @keyframes slidedown {
