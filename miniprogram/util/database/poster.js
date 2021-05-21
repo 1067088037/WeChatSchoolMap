@@ -25,9 +25,7 @@ export class Poster {
    */
   async getPosterByOpenid(openid) {
     return await _db.collection('poster').where({
-      data: {
-        sender: openid
-      }
+      sender: openid
     }).get().then(res => res.data)
   }
 

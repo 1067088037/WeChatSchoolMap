@@ -95,4 +95,8 @@ export function dbExample() {
   // db.poster.getPosterBySchoolId('1ace8ef16090a631008f950170cb8165').then(res => {
   //   console.log(res)
   // })
+
+  // db.section.getSectionArray('1ace8ef16090a631008f950170cb8165').then(res => console.log(res))
+
+  // db.poster.getPosterByOpenid('ojr_35JzCl7EX1aJezpxwEgbjW_k').then(res => console.log(res))
 }
