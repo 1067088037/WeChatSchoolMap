@@ -6,6 +6,13 @@
 import { db } from "../../util/database/database";
 
 export function launchTest() {
+  // db.application.addApplication("cbddf0af609feb0a08bea6c82b6c3522", {
+  //   applicant: "233",
+  //   title: "2333",
+  //   inform: "233333",
+  //   state: "23333"
+  // })
+
   // db.section.addSection('1ace8ef16090a631008f950170cb8165', {
   //   name: "测试社团",
   //   desc: "这个社团很好玩的",
