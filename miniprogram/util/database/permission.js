@@ -10,51 +10,12 @@ export class Permission {
   }
 
   /**
-   * 绑定新的权限配置
-   * @param {string} superId 
-   * @param {string} superType 
-   */
-  async bindNewPermission(superId, superType) {
-    return await _db.collection('permission').add({
-      super: {
-        _id: superId,
-        type: superType
-      },
-      owner: []
-    })
-  }
-
-  /**
-   * 删除权限配置
-   * @param {string} permissionId 
-   */
-  async removePermission(permissionId) {
-    return await _db.collection('permission').doc(permissionId).remove()
-  }
-
-  /**
-   * 新增权限
-   * @param {string} permissionId 
+   * 获取全局权限，仅限管理员和全局管理员，不包含学校校区和部门管理员
+   * 该函数没有对应的设置函数，因为全局权限仅能从后台设置
    * @param {string} openid 
-   * @param {string} permission 
    */
-  async addPermission(permissionId, openid, permission) {
-    return await _db.collection('permission').doc(permissionId).update({
-      owner: cmd.push({
-        _openid: openid,
-        permission: permission
-      })
-    })
-  }
-
-  /**
-   * 获取权限配置
-   * @param {string} superId 
-   */
-  async getPermission(superId) {
-    return await _db.collection('permission').where({
-      'super._id': superId
-    }).get().then(res => res.data)
+  async getGlobalPermission(openid) {
+    return await _db.collection('user').doc(openid).get().then(res => res.data.info.permission)
   }
 
   /**

@@ -12,6 +12,8 @@ const CloudPathFront = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d1
 let touchDotBegin;
 let interval;
 let time;
+let SCREEN_WIDTH = 750; // 屏幕宽度
+let RATE = wx.getSystemInfoSync().screenHeight / wx.getSystemInfoSync().screenWidth
 // pages/designPage/designPage.js
 Page({
 
@@ -19,12 +21,16 @@ Page({
    * 页面的初始数据
    */
   data: {
+    mapWidth: SCREEN_WIDTH,
+    mapHeight: SCREEN_WIDTH * RATE,
     showUploadPostArea: false, // 显示上传海报界面
     showEditStrategy: false, // 显示编辑攻略界面
     draftStrategiesId: [], // 草稿攻略的id合集
     draftStrategies: [], // 草稿攻略合集
+    draftLifeStrategies:[],// 全局草稿攻略
     draftStrategySelected: null, // 选择的攻略
     file: [], // 海报文件数组
+    files: [],
     userUploadPosters: [], // 用户上传的海报
     userUploadPhotoes: [], // 用户上传的照片
     userUploadIcon: [], // 用户上传标点的图示
@@ -85,9 +91,243 @@ Page({
       text: "不保存"
     }, {
       text: "保存"
-    }]
+    }],
+    strategyStep: [1], // 生活攻略的步骤
+    newMapCtx: null, // 标点地图context
+    needToMark: false, // 是否需要标点
+    lifeStrategyTitle: "", // 生活攻略标题
+    lifeStrategyIntro: "", // 生活攻略简介
+    lifeStrategyStepNames: [], // 生活攻略步骤名字
+    lifeStrategyImages: [], // 每个步骤的照片
+    lifeStrategyDescriptions: [], // 每个步骤的描述
+    lifeStrategyCoordinates: [{
+      longitude: null,
+      latitude: null
+    }], // 标点的坐标
+    needMarkers: [], //是否需要添加标点的数组
+    showIsSaveLifeStrategy: false
   },
 
+  inputLifeStrategyTitle(e) {
+    this.setData({
+      lifeStrategyTitle: e.detail.value
+    })
+  },
+  inputLifeStrategyBriefIntro(e) {
+    this.setData({
+      lifeStrategyIntro: e.detail.value
+    })
+  },
+  inputLifeStrategyStepTitle(e) {
+    // console.log(e)
+    let index = parseInt(e.currentTarget.id)
+    let lifeStrategyStepNames = this.data.lifeStrategyStepNames
+    lifeStrategyStepNames[index] = e.detail.value
+    this.setData({
+      lifeStrategyStepNames
+    })
+  },
+  inputLifeStrategyDescription(e) {
+    let index = parseInt(e.currentTarget.id)
+    let lifeStrategyDescriptions = this.data.lifeStrategyDescriptions;
+    lifeStrategyDescriptions[index] = e.detail.value
+    this.setData({
+      lifeStrategyDescriptions
+    })
+  },
+  uploadLifePhotoesSuccess(e) {
+    console.log(e)
+    let index = parseInt(e.currentTarget.id)
+    let userUploadPhotoes = this.data.userUploadPhotoes
+    if (userUploadPhotoes[index] == null || userUploadPhotoes[index] == undefined) {
+      userUploadPhotoes[index] = [].concat(e.detail.urls)
+    } else {
+      userUploadPhotoes[index] = userUploadPhotoes[index].concat(e.detail.urls)
+    }
+    let files = this.data.files
+    if (files[index] == undefined || userUploadPhotoes[index] == undefined) {
+      files[index] = [].concat({
+        url: userUploadPhotoes[index]
+      })
+    } else {
+      files[index] = files[index].concat({
+        url: userUploadPhotoes[index]
+      })
+    }
+    this.setData({
+      userUploadPhotoes,
+      files
+    })
+  },
+  needMark(e) {
+    try {
+      let index = parseInt(e.currentTarget.id)
+      console.log(index, this.data.lifeStrategyStepNames[index])
+
+      let needMarkers = this.data.needMarkers
+      needMarkers[index] = true
+      this.setData({
+        needToMark: true,
+        contentIndex: index,
+        needMarkers
+      })
+    } catch {
+      wx.showToast({
+        title: '提示必须先填写内容',
+        icon: 'error',
+      })
+    }
+
+  },
+  newMapTap(e) {
+    console.log(e)
+    let latitude_ = e.detail.latitude;
+    let longitude_ = e.detail.longitude;
+    let id = util.randomNumberId();
+    let userPoint = [{
+      id: id,
+      width: 40,
+      height: 50,
+      longitude: longitude_,
+      latitude: latitude_,
+    }]
+    this.setData({
+      markers: userPoint,
+    })
+  },
+
+  confirmMarker(e) {
+    let lifeStrategyCoordinates = this.data.lifeStrategyCoordinates
+    lifeStrategyCoordinates[this.data.contentIndex] = {
+      longitude: this.data.markers[0].longitude,
+      latitude: this.data.markers[0].latitude
+    }
+    this.setData({
+      needToMark: false,
+
+      lifeStrategyCoordinates
+    })
+  },
+  cancelMarker(e) {
+    let lifeStrategyCoordinates = this.data.lifeStrategyCoordinates
+    lifeStrategyCoordinates[contentIndex] = {
+      longitude: null,
+      latitude: null
+    }
+    this.setData({
+      needToMark: false,
+
+      lifeStrategyCoordinates
+    })
+  },
+  getCreatingLifeStrategy() {
+    let strategy = {
+      name: this.data.lifeStrategyTitle,
+      desc: this.data.lifeStrategyIntro,
+      content: []
+    }
+    return strategy
+  },
+  releaseLifeStrategy(e) {
+    let superid = app.globalData.campus._id
+    let superType = "campus"
+    let loopTime = this.data.strategyStep.length;
+    let strategy = this.getCreatingLifeStrategy()
+    strategy['type'] = "publish"
+    for (var index = 0; index < loopTime; index++) {
+      let contentObj = {
+        name: this.data.lifeStrategyStepNames[index],
+        coordinates: this.data.lifeStrategyCoordinates[index],
+        desc: this.data.lifeStrategyDescriptions[index],
+        images: this.updatePhotoesToCloud(CloudStrategyPath, index)
+      }
+      console.log(contentObj)
+      strategy.content.push(contentObj)
+    }
+    console.log(strategy)
+    db.strategy.addStrategy(superid, superType, strategy).then(() => {
+      this.setData({
+        showCreateLifeStrategy: false,
+        lifeStrategyStepNames: [],
+        lifeStrategyImages: [],
+        lifeStrategyDescriptions: [],
+        lifeStrategyCoordinates: [],
+        needMarkers: [],
+        strategyStep: [],
+        userUploadPhotoes: []
+      })
+    })
+  },
+  isSaveLifeStrategy(e) {
+    let loopTime = this.data.strategyStep.length;
+    if (e.detail.item.text == '不保存') {
+      this.setData({
+        showCreateLifeStrategy: false,
+        lifeStrategyStepNames: [],
+        lifeStrategyImages: [],
+        lifeStrategyDescriptions: [],
+        lifeStrategyCoordinates: [],
+        needMarkers: [],
+        strategyStep: [],
+        userUploadPhotoes: [],
+        showIsSaveLifeStrategy: false
+      })
+    } else if (e.detail.item.text == '保存') {
+      let superid = app.globalData.campus._id
+      let superType = "campus"
+      let strategy = this.getCreatingLifeStrategy();
+      strategy['type'] = "draft"
+      for (var index = 0; index < loopTime; index++) {
+        let contentObj = {
+          name: this.data.lifeStrategyStepNames[index],
+          coordinates: this.data.lifeStrategyCoordinates[index],
+          desc: this.data.lifeStrategyDescriptions[index],
+          images: this.updatePhotoesToCloud(CloudStrategyPath, index)
+        }
+        console.log(contentObj)
+        strategy.content.push(contentObj)
+      }
+      console.log(strategy)
+      db.strategy.addStrategy(superid, superType, strategy).then(() => {
+        this.setData({
+          showCreateLifeStrategy: false,
+          lifeStrategyStepNames: [],
+          lifeStrategyImages: [],
+          lifeStrategyDescriptions: [],
+          lifeStrategyCoordinates: [],
+          needMarkers: [],
+          strategyStep: [],
+          userUploadPhotoes: [],
+          showIsSaveLifeStrategy: false
+        })
+      })
+    }
+  },
+  AddStrategySteps() {
+    this.setData({
+      strategyStep: this.data.strategyStep.concat([1]),
+      needMarkers: this.data.needMarkers.concat([false]),
+      lifeStrategyCoordinates: this.data.lifeStrategyCoordinates.concat([{
+        longitude: null,
+        latitude: null
+      }])
+    })
+  },
+  ReduceStrategySteps() {
+    if (this.data.strategyStep.length > 1) {
+      this.data.strategyStep.pop()
+      this.data.lifeStrategyCoordinates.pop()
+    }
+    this.setData({
+      strategyStep: this.data.strategyStep,
+      lifeStrategyCoordinates: this.data.lifeStrategyCoordinates
+    })
+  },
+  cancelCreateLifeStrategy(e) {
+    this.setData({
+      showIsSaveLifeStrategy: true
+    })
+  },
   toggleArch() {
     var list_state = this.data.stateArch,
       first_state = this.data.firstClickArch;
@@ -251,23 +491,41 @@ Page({
       isExitEditStrategy: true
     })
   },
-  updatePhotoesToCloud(path) {
+  updatePhotoesToCloud(path, index = 0) {
     let images = []
-    this.data.userUploadPhotoes.forEach((e, i) => {
-      const filepath = e;
-      const name = util.randomId()
-      const cloudpath = path + name + filepath.match(/\.[^.]+?$/)[0]
-      images.push(cloudpath)
-      console.log(cloudpath)
-      wx.cloud.uploadFile({
-        cloudPath: cloudpath,
-        filePath: filepath,
-        success: res => {
-          console.log(res.fileId)
-        },
-        fail: console.error
+    if (this.data.userUploadPhotoes[index] != null && this.data.userUploadPhotoes[index].constructor != Array) {
+      this.data.userUploadPhotoes.forEach((e, i) => {
+        const filepath = e;
+        const name = util.randomId()
+        const cloudpath = path + name + filepath.match(/\.[^.]+?$/)[0]
+        images.push(cloudpath)
+        console.log(cloudpath)
+        wx.cloud.uploadFile({
+          cloudPath: cloudpath,
+          filePath: filepath,
+          success: res => {
+            console.log(res.fileId)
+          },
+          fail: console.error
+        })
       })
-    })
+    } else if (this.data.userUploadPhotoes[index] != null) {
+      this.data.userUploadPhotoes[index].forEach((e, i) => {
+        const filepath = e;
+        const name = util.randomId()
+        const cloudpath = path + name + filepath.match(/\.[^.]+?$/)[0]
+        images.push(cloudpath)
+        console.log(cloudpath)
+        wx.cloud.uploadFile({
+          cloudPath: cloudpath,
+          filePath: filepath,
+          success: res => {
+            console.log(res.fileId)
+          },
+          fail: console.error
+        })
+      })
+    }
     return images
   },
   uploadIcontoCloud() {
@@ -371,17 +629,24 @@ Page({
       title: 'loading....',
     })
     let draftStrategies = this.data.draftStrategies
+    let draftLifeStrategies = this.data.draftLifeStrategies
     this.data.draftStrategiesId.forEach(id => {
       db.strategy.getStrategy(id).then(res => {
-        if (res.type == "draft") {
+        if (res.type == "draft" && res.super.type == "arch") {
           let draft = res.draft;
           draft['id'] = res._id;
           draftStrategies.push(draft)
         }
+        else if(res.type == 'draft' && res.super.type == 'campus'){
+          let draft = res.draft;
+          draft['id'] = res._id;
+          draftLifeStrategies.push(draft)
+        }
       }).then(() => {
         this.setData({
           showEditStrategy: true,
-          draftStrategies
+          draftStrategies,
+          draftLifeStrategies
         })
         wx.hideLoading()
       })
@@ -589,16 +854,16 @@ Page({
       selectedPoint
     })
   },
-  deleteSelectedIcon(e){
-    let selectedPoint =  this.data.selectedPoint
-    
+  deleteSelectedIcon(e) {
+    let selectedPoint = this.data.selectedPoint
+
     wx.cloud.deleteFile({
-      fileList:[ selectedPoint.desc.icon],
-      success:res=>{
-        console.log("删除成功",res)
+      fileList: [selectedPoint.desc.icon],
+      success: res => {
+        console.log("删除成功", res)
       },
-      fail:res=>{
-        console.log("删除失败",res)
+      fail: res => {
+        console.log("删除失败", res)
       }
     })
     selectedPoint.desc.icon = ""
@@ -611,11 +876,10 @@ Page({
     let time = db.point.generateTimeObj(show, start, end, hide)
     let name = this.data.selectedPoint.desc.name
     let text = this.data.selectedPoint.desc.text
-    let icon ;
+    let icon;
     if (this.data.selectedPoint.desc.icon == "") {
       icon = this.uploadIcontoCloud()
-    }
-    else{
+    } else {
       icon = this.data.selectedPoint.desc.icon
     }
     let desc = db.point.generateDescObj(name, text, icon, [])
@@ -695,11 +959,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let mCampus = getApp().globalData.campus
     this.setData({
       selectFile: this.selectFile.bind(this),
       uplaodFile: this.uplaodFile.bind(this),
-      userOpenId: app.globalData.openid
+      userOpenId: app.globalData.openid,
+      longitude: mCampus.geo.center.longitude,
+      latitude: mCampus.geo.center.latitude
     })
+
 
   },
 
@@ -742,9 +1010,11 @@ Page({
    */
   onShow: function () {
     console.log(app.globalData.school._id)
+
     db.section.getSectionArray(app.globalData.school._id).then(res => {
       this.setData({
-        departmentsItemOne: this.data.departmentsItemOne.concat(res.data.name)
+        departmentsItemOne: this.data.departmentsItemOne.concat(res.data.name),
+        newMapCtx: wx.createMapContext('newMap', this)
       })
     })
   },
