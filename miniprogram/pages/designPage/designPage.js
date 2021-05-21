@@ -28,7 +28,7 @@ Page({
     showMyPost:false,
     draftStrategiesId: [], // 草稿攻略的id合集
     draftStrategies: [], // 草稿攻略合集
-    draftLifeStrategies:[],// 全局草稿攻略
+    draftLifeStrategies: [], // 全局草稿攻略
     draftStrategySelected: null, // 选择的攻略
     file: [], // 海报文件数组
     files: [],
@@ -54,6 +54,11 @@ Page({
     }, {
       text: "保存"
     }], // 对话框按钮集,
+    dialogDeleteButtons: [{
+      text: '取消'
+    }, {
+      text: '删除'
+    }],
     showCreateLifeStrategy: false,
     isShowDeleteDraft: false,
     showEditPoint: false,
@@ -100,43 +105,80 @@ Page({
     needToMark: false, // 是否需要标点
     lifeStrategyTitle: "", // 生活攻略标题
     lifeStrategyIntro: "", // 生活攻略简介
-    lifeStrategyStepNames: [], // 生活攻略步骤名字
-    lifeStrategyImages: [], // 每个步骤的照片
-    lifeStrategyDescriptions: [], // 每个步骤的描述
+    lifeStrategyStepNames: [""], // 生活攻略步骤名字
+    lifeStrategyDescriptions: [""], // 每个步骤的描述
     lifeStrategyCoordinates: [{
       longitude: null,
       latitude: null
     }], // 标点的坐标
-    needMarkers: [], //是否需要添加标点的数组
-    showIsSaveLifeStrategy: false
+    needMarkers: [false], //是否需要添加标点的数组
+    showIsSaveLifeStrategy: false,
+    showIsSaveLifeStrategyEdit: false,
+    isEditLifeStrategy: false
   },
 
   inputLifeStrategyTitle(e) {
-    this.setData({
-      lifeStrategyTitle: e.detail.value
-    })
+    if (this.data.isEditLifeStrategy) {
+      let draftLifeStrategySelected = this.data.draftLifeStrategySelected
+      draftLifeStrategySelected.name = e.detail.value
+      this.setData({
+        lifeStrategyTitle: e.detail.value,
+        draftLifeStrategySelected
+      })
+    } else {
+      this.setData({
+        lifeStrategyTitle: e.detail.value
+      })
+    }
   },
   inputLifeStrategyBriefIntro(e) {
-    this.setData({
-      lifeStrategyIntro: e.detail.value
-    })
+    if (this.data.isEditLifeStrategy) {
+      let draftLifeStrategySelected = this.data.draftLifeStrategySelected
+      draftLifeStrategySelected.desc = e.detail.value
+      this.setData({
+        lifeStrategyIntro: e.detail.value,
+        draftLifeStrategySelected
+      })
+    } else {
+      this.setData({
+        lifeStrategyIntro: e.detail.value
+      })
+    }
   },
   inputLifeStrategyStepTitle(e) {
     // console.log(e)
     let index = parseInt(e.currentTarget.id)
     let lifeStrategyStepNames = this.data.lifeStrategyStepNames
     lifeStrategyStepNames[index] = e.detail.value
-    this.setData({
-      lifeStrategyStepNames
-    })
+    if (this.data.isEditLifeStrategy) {
+      let draftLifeStrategySelected = this.data.draftLifeStrategySelected
+      draftLifeStrategySelected.content[index].name = lifeStrategyStepNames[index]
+      this.setData({
+        lifeStrategyStepNames,
+        draftLifeStrategySelected
+      })
+    } else {
+      this.setData({
+        lifeStrategyStepNames
+      })
+    }
   },
   inputLifeStrategyDescription(e) {
     let index = parseInt(e.currentTarget.id)
     let lifeStrategyDescriptions = this.data.lifeStrategyDescriptions;
     lifeStrategyDescriptions[index] = e.detail.value
-    this.setData({
-      lifeStrategyDescriptions
-    })
+    if (this.data.isEditLifeStrategy) {
+      let draftLifeStrategySelected = this.data.draftLifeStrategySelected
+      draftLifeStrategySelected.content[index].desc = lifeStrategyDescriptions[index]
+      this.setData({
+        lifeStrategyDescriptions,
+        draftLifeStrategySelected
+      })
+    } else {
+      this.setData({
+        lifeStrategyDescriptions
+      })
+    }
   },
   uploadLifePhotoesSuccess(e) {
     console.log(e)
@@ -163,23 +205,36 @@ Page({
     })
   },
   needMark(e) {
-    try {
-      let index = parseInt(e.currentTarget.id)
-      console.log(index, this.data.lifeStrategyStepNames[index])
+    // try {
+    let index = parseInt(e.currentTarget.id)
+    console.log(index, this.data.lifeStrategyStepNames[index])
 
-      let needMarkers = this.data.needMarkers
-      needMarkers[index] = true
+    let needMarkers = this.data.needMarkers
+    needMarkers[index] = true
+    this.setData({
+      needToMark: true,
+      contentIndex: index,
+      needMarkers
+    })
+    if (this.data.isEditLifeStrategy && this.data.lifeStrategyCoordinates[index]) {
+      let marker = {
+        id: util.randomNumberId,
+        width: 40,
+        height: 50,
+        longitude: this.data.lifeStrategyCoordinates[index].longitude,
+        latitude: this.data.lifeStrategyCoordinates[index].latitude,
+      }
       this.setData({
-        needToMark: true,
-        contentIndex: index,
-        needMarkers
-      })
-    } catch {
-      wx.showToast({
-        title: '提示必须先填写内容',
-        icon: 'error',
+        markers: [marker],
+        contentIndex: index
       })
     }
+    // } catch {
+    //   wx.showToast({
+    //     title: '提示必须先填写内容',
+    //     icon: 'error',
+    //   })
+    // }
 
   },
   newMapTap(e) {
@@ -201,27 +256,46 @@ Page({
 
   confirmMarker(e) {
     let lifeStrategyCoordinates = this.data.lifeStrategyCoordinates
-    lifeStrategyCoordinates[this.data.contentIndex] = {
-      longitude: this.data.markers[0].longitude,
-      latitude: this.data.markers[0].latitude
+    if (this.data.isEditLifeStrategy) {
+      let draftLifeStrategySelected = this.data.draftLifeStrategySelected
+      if (draftLifeStrategySelected.content[this.data.contentIndex]) {
+        draftLifeStrategySelected.content[this.data.contentIndex].coordinates = {
+          longitude: this.data.markers[0].longitude,
+          latitude: this.data.markers[0].latitude
+        }
+      } else {
+        draftLifeStrategySelected.content[this.data.contentIndex]['coordinates'] = {
+          longitude: this.data.markers[0].longitude,
+          latitude: this.data.markers[0].latitude
+        }
+      }
+      this.setData({
+        needToMark: false,
+      })
+    } else {
+      lifeStrategyCoordinates[this.data.contentIndex] = {
+        longitude: this.data.markers[0].longitude,
+        latitude: this.data.markers[0].latitude
+      }
     }
-    this.setData({
-      needToMark: false,
 
-      lifeStrategyCoordinates
-    })
   },
   cancelMarker(e) {
-    let lifeStrategyCoordinates = this.data.lifeStrategyCoordinates
-    lifeStrategyCoordinates[contentIndex] = {
-      longitude: null,
-      latitude: null
+    if (this.data.isEditLifeStrategy) {
+      this.setData({
+        needToMark: false,
+      })
+    } else {
+      let lifeStrategyCoordinates = this.data.lifeStrategyCoordinates
+      lifeStrategyCoordinates[contentIndex] = {
+        longitude: null,
+        latitude: null
+      }
+      this.setData({
+        needToMark: false,
+        lifeStrategyCoordinates
+      })
     }
-    this.setData({
-      needToMark: false,
-
-      lifeStrategyCoordinates
-    })
   },
   getCreatingLifeStrategy() {
     let strategy = {
@@ -232,34 +306,72 @@ Page({
     return strategy
   },
   releaseLifeStrategy(e) {
-    let superid = app.globalData.campus._id
-    let superType = "campus"
-    let loopTime = this.data.strategyStep.length;
-    let strategy = this.getCreatingLifeStrategy()
-    strategy['type'] = "publish"
-    for (var index = 0; index < loopTime; index++) {
-      let contentObj = {
-        name: this.data.lifeStrategyStepNames[index],
-        coordinates: this.data.lifeStrategyCoordinates[index],
-        desc: this.data.lifeStrategyDescriptions[index],
-        images: this.updatePhotoesToCloud(CloudStrategyPath, index)
+    if (!(this.data.isEditLifeStrategy)) {
+      let superid = app.globalData.campus._id
+      let superType = "campus"
+      let loopTime = this.data.strategyStep.length;
+      let strategy = this.getCreatingLifeStrategy()
+      strategy['type'] = "publish"
+      for (var index = 0; index < loopTime; index++) {
+        let contentObj = {
+          name: this.data.lifeStrategyStepNames[index],
+          coordinates: this.data.lifeStrategyCoordinates[index],
+          desc: this.data.lifeStrategyDescriptions[index],
+          images: this.updatePhotoesToCloud(CloudStrategyPath, index)
+        }
+        console.log(contentObj)
+        strategy.content.push(contentObj)
       }
-      console.log(contentObj)
-      strategy.content.push(contentObj)
-    }
-    console.log(strategy)
-    db.strategy.addStrategy(superid, superType, strategy).then(() => {
-      this.setData({
-        showCreateLifeStrategy: false,
-        lifeStrategyStepNames: [],
-        lifeStrategyImages: [],
-        lifeStrategyDescriptions: [],
-        lifeStrategyCoordinates: [],
-        needMarkers: [],
-        strategyStep: [],
-        userUploadPhotoes: []
+      console.log(strategy)
+      db.strategy.addStrategy(superid, superType, strategy).then(() => {
+        this.setData({
+          showCreateLifeStrategy: false,
+          lifeStrategyStepNames: [],
+          lifeStrategyImages: [],
+          lifeStrategyDescriptions: [],
+          lifeStrategyCoordinates: [],
+          needMarkers: [],
+          strategyStep: [],
+          lifeStrategyIntro: "",
+          lifeStrategyTitle: "",
+          userUploadPhotoes: []
+        })
       })
-    })
+    }else{
+      let draft = {
+        name: this.data.draftLifeStrategySelected.name,
+        desc: this.data.draftLifeStrategySelected.desc,
+        content: this.data.draftLifeStrategySelected.content
+      }
+      this.data.userUploadPhotoes.forEach((e, index) => {
+        let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
+        console.log("Images: ", )
+        draft.content[index].images.push(images)
+      })
+      console.log('draft: ', draft)
+      db.strategy.publishFromDraft(this.data.draftLifeStrategySelected.id,draft).then(()=>{
+        this.setData({
+          draftLifeStrategySelected: null,
+          showEditStrategy: true,
+          isEditLifeStrategy: false,
+          showCreateLifeStrategy: false,
+          lifeStrategyStepNames: [],
+          lifeStrategyImages: [],
+          lifeStrategyDescriptions: [],
+          lifeStrategyCoordinates: [],
+          needMarkers: [false],
+          strategyStep: [1],
+          userUploadPhotoes: [],
+          lifeStrategyIntro: "",
+          lifeStrategyTitle: "",
+          showIsSaveLifeStrategyEdit: false,
+          files: [],
+          draftLifeStrategies: [],
+          draftLifeStrategySelected: {},
+        })
+        this.navigaToEditStrategy()
+      })
+    }
   },
   isSaveLifeStrategy(e) {
     let loopTime = this.data.strategyStep.length;
@@ -270,10 +382,13 @@ Page({
         lifeStrategyImages: [],
         lifeStrategyDescriptions: [],
         lifeStrategyCoordinates: [],
-        needMarkers: [],
-        strategyStep: [],
+        needMarkers: [false],
+        strategyStep: [1],
         userUploadPhotoes: [],
-        showIsSaveLifeStrategy: false
+        lifeStrategyIntro: "",
+        lifeStrategyTitle: "",
+        showIsSaveLifeStrategy: false,
+        draftLifeStrategies: [],
       })
     } else if (e.detail.item.text == '保存') {
       let superid = app.globalData.campus._id
@@ -298,38 +413,143 @@ Page({
           lifeStrategyImages: [],
           lifeStrategyDescriptions: [],
           lifeStrategyCoordinates: [],
-          needMarkers: [],
-          strategyStep: [],
+          needMarkers: [false],
+          strategyStep: [1],
           userUploadPhotoes: [],
-          showIsSaveLifeStrategy: false
+          lifeStrategyIntro: "",
+          lifeStrategyTitle: "",
+          showIsSaveLifeStrategy: false,
+          draftLifeStrategies: [],
         })
       })
     }
+    this.onReady()
+  },
+  isSaveLifeStrategyEdit(e) {
+    if (e.detail.item.text == '不保存') {
+      this.setData({
+        draftLifeStrategySelected: null,
+        showEditStrategy: true,
+        isEditLifeStrategy: false,
+        showCreateLifeStrategy: false,
+        lifeStrategyStepNames: [],
+        lifeStrategyImages: [],
+        lifeStrategyDescriptions: [],
+        lifeStrategyCoordinates: [],
+        needMarkers: [false],
+        strategyStep: [1],
+        userUploadPhotoes: [],
+        lifeStrategyIntro: "",
+        lifeStrategyTitle: "",
+        files: [],
+        draftLifeStrategies: [],
+        draftLifeStrategySelected: {},
+        showIsSaveLifeStrategyEdit: false
+      })
+    } else if (e.detail.item.text == '保存') {
+      let draft = {
+        name: this.data.draftLifeStrategySelected.name,
+        desc: this.data.draftLifeStrategySelected.desc,
+        content: this.data.draftLifeStrategySelected.content
+      }
+      this.data.userUploadPhotoes.forEach((e, index) => {
+        let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
+        console.log("Images: ", )
+        draft.content[index].images.push(images)
+      })
+      console.log('draft: ', draft)
+      db.strategy.updateDraftStrategy(this.data.draftLifeStrategySelected.id, draft).then(() => {
+        this.setData({
+          draftLifeStrategySelected: null,
+          showEditStrategy: true,
+          isEditLifeStrategy: false,
+          showCreateLifeStrategy: false,
+          lifeStrategyStepNames: [],
+          lifeStrategyImages: [],
+          lifeStrategyDescriptions: [],
+          lifeStrategyCoordinates: [],
+          needMarkers: [false],
+          strategyStep: [1],
+          userUploadPhotoes: [],
+          lifeStrategyIntro: "",
+          lifeStrategyTitle: "",
+          showIsSaveLifeStrategyEdit: false,
+          files: [],
+          draftLifeStrategies: [],
+          draftLifeStrategySelected: {},
+
+        })
+        this.navigaToEditStrategy()
+      })
+      
+    }
   },
   AddStrategySteps() {
-    this.setData({
-      strategyStep: this.data.strategyStep.concat([1]),
-      needMarkers: this.data.needMarkers.concat([false]),
-      lifeStrategyCoordinates: this.data.lifeStrategyCoordinates.concat([{
-        longitude: null,
-        latitude: null
-      }])
-    })
+    if (this.data.isEditLifeStrategy) {
+      let content = {
+        desc: "",
+        name: "",
+        coordinates: {},
+        images: [],
+      }
+      this.data.draftLifeStrategySelected.content.push(content)
+      this.setData({
+        strategyStep: this.data.strategyStep.concat([1]),
+        needMarkers: this.data.needMarkers.concat([false]),
+        draftLifeStrategySelected: this.data.draftLifeStrategySelected
+      })
+    } else {
+      this.setData({
+        strategyStep: this.data.strategyStep.concat([1]),
+        needMarkers: this.data.needMarkers.concat([false]),
+        lifeStrategyStepNames: this.data.lifeStrategyStepNames.concat([""]),
+        lifeStrategyDescriptions: this.data.lifeStrategyDescriptions.concat([""]),
+        lifeStrategyCoordinates: this.data.lifeStrategyCoordinates.concat([{
+          longitude: null,
+          latitude: null
+        }])
+      })
+    }
   },
   ReduceStrategySteps() {
-    if (this.data.strategyStep.length > 1) {
-      this.data.strategyStep.pop()
-      this.data.lifeStrategyCoordinates.pop()
+    if (!(this.data.isEditLifeStrategy)) {
+      if (this.data.strategyStep.length > 1) {
+        this.data.strategyStep.pop()
+        this.data.lifeStrategyCoordinates.pop(),
+          this.data.lifeStrategyStepNames.pop(),
+          this.data.needMarkers.pop(),
+          this.data.lifeStrategyDescriptions.pop()
+      }
+      this.setData({
+        strategyStep: this.data.strategyStep,
+        needMarkers: this.data.needMarkers,
+        lifeStrategyCoordinates: this.data.lifeStrategyCoordinates,
+        lifeStrategyStepNames: this.data.lifeStrategyStepNames,
+        lifeStrategyDescriptions: this.data.lifeStrategyDescriptions,
+      })
+    } else {
+      if (this.data.strategyStep.length > 1) {
+        this.data.strategyStep.pop()
+        this.data.needMarkers.pop(),
+          this.data.draftLifeStrategySelected.content.pop()
+      }
+      this.setData({
+        strategyStep: this.data.strategyStep,
+        needMarkers: this.data.needMarkers,
+        draftLifeStrategySelected: this.data.draftLifeStrategySelected
+      })
     }
-    this.setData({
-      strategyStep: this.data.strategyStep,
-      lifeStrategyCoordinates: this.data.lifeStrategyCoordinates
-    })
   },
   cancelCreateLifeStrategy(e) {
-    this.setData({
-      showIsSaveLifeStrategy: true
-    })
+    if (this.data.isEditLifeStrategy == false) {
+      this.setData({
+        showIsSaveLifeStrategy: true
+      })
+    } else {
+      this.setData({
+        showIsSaveLifeStrategyEdit: true
+      })
+    }
   },
   toggleArch() {
     var list_state = this.data.stateArch,
@@ -531,6 +751,7 @@ navigaToMyPost() {
         const name = util.randomId()
         const cloudpath = path + name + filepath.match(/\.[^.]+?$/)[0]
         images.push(cloudpath)
+        console.log(images)
         console.log(cloudpath)
         wx.cloud.uploadFile({
           cloudPath: cloudpath,
@@ -602,6 +823,25 @@ navigaToMyPost() {
       })
     }
   },
+  isDeleteEdit(e) {
+    if (e.detail.item.text == '返回') {
+      this.setData({
+        isShowDeleteDraft: false
+      })
+    } else if (e.detail.item.text == '删除') {
+      db.strategy.removeStrategy(this.data.draftStrategySelected.id).then(() => {
+        this.setData({
+          strategyTitle: "",
+          strategyContent: "",
+          strategyBriefIntro: "",
+          userUploadPhotoes: [],
+          isExitEditStrategy: false,
+          draftStrategySelected: null,
+          isShowDeleteDraft: false
+        })
+      })
+    }
+  },
   publishDraft(e) {
     let content = [];
 
@@ -651,9 +891,8 @@ navigaToMyPost() {
         if (res.type == "draft" && res.super.type == "arch") {
           let draft = res.draft;
           draft['id'] = res._id;
-          draftStrategies.push(draft)
-        }
-        else if(res.type == 'draft' && res.super.type == 'campus'){
+          draftStrategies.push([draft])
+        } else if (res.type == 'draft' && res.super.type == 'campus') {
           let draft = res.draft;
           draft['id'] = res._id;
           draftLifeStrategies.push(draft)
@@ -667,6 +906,14 @@ navigaToMyPost() {
         wx.hideLoading()
       })
     })
+  },
+  returnFromDraftPage(e) {
+    this.setData({
+      showEditStrategy: false,
+      draftStrategies: [],
+      draftLifeStrategies: []
+    })
+
   },
   EditDraftTap(e) {
     let id = e.currentTarget.id
@@ -697,6 +944,59 @@ navigaToMyPost() {
       files
     })
   },
+  EditlifeDraftTap(e) {
+    let id = e.currentTarget.id
+    let draftLifeStrategySelected = new Object;
+    let files = []
+    let strategyStep = []
+    let lifeStrategyStepNames = []
+    let lifeStrategyDescriptions = []
+    let lifeStrategyCoordinates = []
+    this.data.draftLifeStrategies.forEach(Strategy => {
+      if (Strategy.id == id) {
+        console.log(id)
+        draftLifeStrategySelected = Strategy
+        Strategy.content.forEach((con, index) => {
+          let images = []
+          files[index] = new Array
+          if (con.images.length > 0) {
+            con.images.forEach(im => {
+              images.push(im)
+              im = CloudPathFront + im
+              let file = {
+                url: im
+              }
+              files[index].push(file)
+              console.log(files[index])
+            })
+          }
+          lifeStrategyDescriptions.push(con.desc)
+          lifeStrategyStepNames.push(con.name)
+          lifeStrategyCoordinates.push(con.coordinates)
+          strategyStep.push(1)
+          draftLifeStrategySelected.content[index].images = images
+        })
+        let lifeStrategyTitle = draftLifeStrategySelected.name;
+        let lifeStrategyIntro = draftLifeStrategySelected.desc;
+        this.setData({
+          lifeStrategyStepNames,
+          lifeStrategyDescriptions,
+          lifeStrategyCoordinates,
+          lifeStrategyTitle,
+          lifeStrategyIntro,
+          draftLifeStrategySelected,
+          files,
+          strategyStep,
+          showCreateLifeStrategy: true,
+          showEditStrategy: false,
+          isEditLifeStrategy: true
+        })
+
+
+
+      }
+    })
+  },
   showDeleteDraft(e) {
     wx.showModal({
       title: "确定删除草稿吗？",
@@ -709,7 +1009,7 @@ navigaToMyPost() {
           db.strategy.removeStrategy(this.data.draftStrategySelected.id)
           this.data.draftStrategies.forEach((item, index) => {
             if (item.id == this.data.draftStrategySelected.id) {
-              this.data.draftStrategySelected.splice(index, 1);
+              this.data.draftStrategies.splice(index, 1);
             }
           })
           let draftStrategies = this.data.draftStrategies
@@ -872,7 +1172,6 @@ navigaToMyPost() {
   },
   deleteSelectedIcon(e) {
     let selectedPoint = this.data.selectedPoint
-
     wx.cloud.deleteFile({
       fileList: [selectedPoint.desc.icon],
       success: res => {
@@ -883,6 +1182,32 @@ navigaToMyPost() {
       }
     })
     selectedPoint.desc.icon = ""
+  },
+  deletePhotoes(e) {
+    if (e.currentTarget.id == '2019') {
+
+    } else {
+      console.log(e)
+      let id = parseInt(e.currentTarget.id)
+      let filePath = this.data.draftLifeStrategySelected.content[id].images[e.detail.index]
+      wx.cloud.deleteFile({
+        fileList: [filePath],
+        success: res => {
+          console.log("删除成功", res)
+        },
+        fail: res => {
+          console.log("删除失败", res)
+        }
+      })
+      this.data.draftLifeStrategySelected.content[id].images.splice(e.detail.index, 1)
+      this.data.files[id].splice(e.detail.index, 1)
+      this.setData({
+        draftLifeStrategySelected: this.data.draftLifeStrategySelected
+      })
+    }
+  },
+  selectPhotoes(e) {
+    console.log(e)
   },
   confirmEditTap() {
     let show = new Date(this.data.bgdate + " 00:00")
@@ -911,7 +1236,7 @@ navigaToMyPost() {
       this.setData({
         showEditPointPage: false
       })
-      this.onReady()
+
     })
   },
   stopEdit(e) {
@@ -931,37 +1256,7 @@ navigaToMyPost() {
       isSaveEditPoint: false
     })
   },
-  touchStart(e) {
-    console.log(e)
-    touchDotBegin = e.touches[0].pageX;
-    if (touchDotBegin < 20) {
-      interval = setInterval(function () {
-        time++;
-      }, 100);
-    }
-  },
-  touchMove(e) {
 
-    var touchMove = e.touches[0].pageX;
-    console.log("touchMove:" + touchMove + " touchDot:" + touchDotBegin + " diff:" + (touchMove - touchDotBegin));
-    if (touchMove - touchDotBegin <= -40 && time < 10) {
-      this.setData({
-        showEditStrategy: false
-      })
-      console.log(213)
-    }
-    if (touchMove - touchDotBegin >= 40 && time < 10) {
-      console.log('向右滑动');
-      this.setData({
-        showEditStrategy: false
-      })
-      console.log(54645)
-    }
-  },
-  touchEnd(e) {
-    clearInterval(interval); // 清除setInterval 
-    time = 0;
-  },
   getPostTitle(e) {
     this.setData({
       postTitleInput: e.detail.value
@@ -992,13 +1287,13 @@ navigaToMyPost() {
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    let draftStrategiesId = this.data.draftStrategiesId
+    let draftStrategiesId = []
     let publishedPoint = []
     let openId = app.globalData.openid
     //console.log(app.globalData.campus._id)
     db.strategy.getBriefStrategyArrayByOpenid(this.data.userOpenId).then(res => {
       //console.log(res)
-      let draftStrategiesId = this.data.draftStrategiesId
+      // let draftStrategiesId = this.data.draftStrategiesId
       res.forEach(e => {
         draftStrategiesId.push(e._id)
       })

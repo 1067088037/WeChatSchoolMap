@@ -249,6 +249,7 @@ Page({
    * @todo 从攻略去返回到（主页面）
    */
   toHomePage() {
+    app.globalData.buildingSelected = null;
     wx.reLaunch({
       url: '../index/index',
     })
@@ -609,7 +610,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    //console.log(app.globalData.markerId)
+    console.log(app.globalData.buildingSelected)
     if (app.globalData.markerId) {
       this.setData({
         markerId: app.globalData.markerId
@@ -617,6 +618,7 @@ Page({
     }
     if (app.globalData.buildingSelected != null) {
       let building = app.globalData.buildingSelected
+      console.log("building:",building.desc)
       let images = []
       if (building.desc == undefined) {
         if (building.images != undefined) {
@@ -630,22 +632,25 @@ Page({
             building: building
           })
         }
+        else{
+          this.setData({
+            building:building
+          })
+          
+        }
+      } else if (building.desc != undefined) {
+        if (building.desc.images.length > 0) {
+          building.desc.images.forEach(e => {
+            e = CloudPathFront + e
+            images.push(e)
+          })
+          building.images = images
+          building.text = building.desc.text
+          this.setData({
+            building: building
+          })
+        }
       }
-      else if(building.desc != undefined) {
-      if (building.desc.images.length > 0) {
-        building.desc.images.forEach(e => {
-          e = CloudPathFront + e
-          images.push(e)
-        })
-        building.images = images
-        building.text = building.desc.text
-        this.setData({
-          building: building
-        })
-      }}
-      
-     
-      
     }
     this.setData({
       selectFile: this.selectFile.bind(this),

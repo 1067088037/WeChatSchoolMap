@@ -116,11 +116,7 @@ Page({
       value: "shop",
       name: "商店",
       selected: false,
-    }, {
-      value: "canteen",
-      name: "饭堂",
-      selected: false,
-    }, {
+    },  {
       value: "vouchCenter",
       name: "充值点",
       selected: false,
@@ -212,7 +208,11 @@ Page({
       week: day
     }]).then(() => {
       this.setData({
-        func: ''
+        func: '',
+        weekIndex:0,
+        monthIndex:0,
+        followActivitiesTag:[]
+
       })
       wx.showToast({
         title: '关注成功',
@@ -775,7 +775,7 @@ Page({
     // console.log(e.detail.markerId)
     console.log("用户选择的建筑对象的Id：", e.detail.markerId)
     app.globalData.buildingSelected = this.getMarkerInfo(e.detail.markerId)
-    console.log("用户选择的建筑对象：" + app.globalData.buildingSelected)
+    console.log("用户选择的建筑对象：" , app.globalData.buildingSelected)
     this.setData({
       showBuildingDialog: true,
       buildingSelected: app.globalData.buildingSelected
