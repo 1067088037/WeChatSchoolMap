@@ -1,6 +1,8 @@
 const _db = wx.cloud.database()
 const cmd = _db.command
 
+var hasInit = []
+
 export class Attention {
   /**
    * 添加关注的标签
@@ -11,7 +13,9 @@ export class Attention {
     await this.checkInit(openid)
     return await _db.collection('attention').doc(openid).update({
       data: {
-        tag: cmd.push(tag)
+        tag: cmd.addToSet({
+          each: tag
+        })
       }
     })
   }
@@ -72,16 +76,21 @@ export class Attention {
    * @param openid 
    */
   async checkInit(openid) {
-    return await _db.collection('attention').where({
-      _id: openid
-    }).count().then(async res => {
-      if (res.total == 0) await _db.collection('attention').add({
-        data: {
-          _id: openid,
-          tag: [],
-          time: []
-        }
+    if (hasInit.indexOf(openid) != -1) {
+      return true
+    } else {
+      hasInit.push(openid)
+      return await _db.collection('attention').where({
+        _id: openid
+      }).count().then(async res => {
+        if (res.total == 0) await _db.collection('attention').add({
+          data: {
+            _id: openid,
+            tag: [],
+            time: []
+          }
+        })
       })
-    })
+    }
   }
 }
