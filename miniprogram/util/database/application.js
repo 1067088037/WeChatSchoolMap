@@ -55,15 +55,17 @@ export class Application {
       console.error('状态不能为空')
     } else {
       return _db.collection('application').add({
-        super: {
-          _id: sectionId,
-          type: "section"
-        },
-        applicant: section.applicant,
-        title: section.title,
-        inform: section.inform,
-        state: section.state,
-        createTime: _db.serverDate()
+        data: {
+          super: {
+            _id: sectionId,
+            type: "section"
+          },
+          applicant: section.applicant,
+          title: section.title,
+          inform: section.inform,
+          state: section.state,
+          createTime: _db.serverDate()
+        }
       })
     }
   }
