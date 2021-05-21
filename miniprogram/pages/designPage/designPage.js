@@ -25,6 +25,7 @@ Page({
     mapHeight: SCREEN_WIDTH * RATE,
     showUploadPostArea: false, // 显示上传海报界面
     showEditStrategy: false, // 显示编辑攻略界面
+    showMyPost:false,
     draftStrategiesId: [], // 草稿攻略的id合集
     draftStrategies: [], // 草稿攻略合集
     draftLifeStrategies:[],// 全局草稿攻略
@@ -46,6 +47,8 @@ Page({
     postSenderAvator: [], //海报作者头像
     postSenderNickname: [], //海报作者昵称
     publishedPoint: [], // 保存用户发布的活动标点
+    myPost:[],//用户发布的海报
+    myPostNumber:0,//用户发布的海报数目
     dialogButtons: [{
       text: "不保存"
     }, {
@@ -394,19 +397,32 @@ Page({
     })
   },
   //发送海报到数据库
-  sendPost(){
+  sendPost() {
     //console.log(this.data.userUploadPosters);
-      db.poster.addPoster('1ace8ef160901b1b008f69ae08b0ee8a',{
-        sender:getApp().globalData.openid,
-        name:this.data.postTitleInput,
-        desc:this.data.postContentInput,
-        images:this.data.userUploadPosters,
-      })
-      wx.navigateTo({
+    db.poster.addPoster('1ace8ef160901b1b008f69ae08b0ee8a', {
+      sender: getApp().globalData.openid,
+      name: this.data.postTitleInput,
+      desc: this.data.postContentInput,
+      images: this.data.userUploadPosters,
+    })
+    wx.navigateTo({
       url: '../../pages/posterArea/posterArea',
     });
   },
-  
+//出现我的海报页面，从数据库中加载数据
+navigaToMyPost() {
+  this.setData({
+    showMyPost:true
+  })
+  db.poster.getPosterByOpenid(getApp().globalData.openid).then(res=>{
+    this.setData({
+      myPost:res,
+      myPostNumber:res.length
+    })
+    //console.log("嘿嘿嘿嘿我发布的海报")
+    //console.log(res)
+  })
+},
   //下列一系列函数是图片上传相关函数
   /**
    * chooseImage(e)
@@ -879,7 +895,8 @@ Page({
     let icon;
     if (this.data.selectedPoint.desc.icon == "") {
       icon = this.uploadIcontoCloud()
-    } else {
+    }
+    else {
       icon = this.data.selectedPoint.desc.icon
     }
     let desc = db.point.generateDescObj(name, text, icon, [])

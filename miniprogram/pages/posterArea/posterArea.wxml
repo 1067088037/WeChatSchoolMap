@@ -1,7 +1,7 @@
 <view class="PosterArea">
   <swiper indicator-dots="true" autoplay="true" interval="3000">
 
-<!--放前三个活动的图片轮播-->
+    <!--放前三个活动的图片轮播-->
     <swiper-item>
       <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png"
         mode="widthFix">
@@ -25,30 +25,31 @@
 
   </swiper>
   <view class="PostArea">
-<!--加一个while循环，显示多个活动-->
+    <!--加一个while循环，显示多个活动-->
 
-<view class="posters" wx:for="{{postArray}}" wx:for-index="index" wx:key="key" wx:for-item="item">
-    <view class="post-container">
-      <view class="senderInfo">
-        <image class="avatar"
-          src="{{avatarUrl[index]}}">
-        </image>
-        <text class="time">{{item.sendTime}}</text>
-      </view>
-      <text class="postTitle">{{item.name}}</text>
-      <image src="{{item.images[0]}}"
-        mode="widthFix"></image>
-      <text>
-        {{item.desc}}
-      </text>
-      <view class="collectOrLike">
-        <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/collect.png"></image>
-        <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/like.png"></image>
-        <text>0</text>
+    <view class="posters" wx:for="{{postArray}}" wx:for-index="index" wx:key="key" wx:for-item="item">
+      <view class="post-container">
+        <view class="senderInfo">
+          <image class="avatar" src="{{avatarUrl[index]}}">
+          </image>
+          <text class="time">{{item.sendTime}}</text>
+        </view>
+        <text class="postTitle">{{item.name}}</text>
+        <image src="{{item.images[0]}}" mode="widthFix"></image>
+        <text>
+          {{item.desc}}
+        </text>
+        <view class="collectOrLike">
+          <image
+            src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/collect.png">
+          </image>
+          <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/like.png">
+          </image>
+          <text>0</text>
+        </view>
+
       </view>
 
     </view>
-
-  </view>
   </view>
 </view>

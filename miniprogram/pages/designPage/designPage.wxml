@@ -4,34 +4,41 @@
 <view class="DesignPageContainer">
   <input class="search" type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx"
     confirm-type="search"
-    wx:if="{{showUploadPostArea == false && showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false}}"></input>
+    wx:if="{{showUploadPostArea == false && showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false  && showMyPost == false}}"></input>
   <!-- 设计内容区 -->
   <view class="markContainer" style="margin-top:20rpx"
-    wx:if="{{showUploadPostArea == false && showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false}}">
+    wx:if="{{showUploadPostArea == false && showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false  && showMyPost == false}}">
     <view class="uploadPoster" bindtap="nevigaToUpLoadPoster" hover-class="_hover_list">
       <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
       <text>上传海报</text>
     </view>
   </view>
   <view class="markContainer" style="margin-top:20rpx"
-    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false}}">
+    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false   && showMyPost == false}}">
     <view class="uploadPoster" bindtap="navigaToEditStrategy" hover-class="_hover_list">
       <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
       <text>草稿箱</text>
     </view>
   </view>
   <view class="markContainer" style="margin-top:20rpx"
-    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false}}">
+    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false   && showMyPost == false}}">
     <view class="createLifeStrategy" hover-class="_hover_list" bindtap="navigaToCreateLifeStrategy">
       <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
       <text>添加生活攻略</text>
     </view>
   </view>
   <view class="markContainer" style="margin-top:20rpx"
-    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false}}">
+    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false   && showMyPost == false}}">
     <view class="createLifeStrategy" hover-class="_hover_list" bindtap="navigaToPostedPoint">
       <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
       <text>发布的标点</text>
+    </view>
+  </view>
+  <view class="markContainer" style="margin-top:20rpx"
+    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false   && showMyPost == false}}">
+    <view class="createLifeStrategy" hover-class="_hover_list" bindtap="navigaToMyPost">
+      <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
+      <text>我的海报</text>
     </view>
   </view>
   <!-- 上传海报界面 -->
@@ -51,6 +58,23 @@
       <!--sendPhoto函数要写成sendPost函数-->
       <button size="mini" class="post" type="primary" bindtap="sendPhoto" bindtap="sendPost">发表</button>
     </mp-cells>
+  </view>
+  <!--我的海报界面-->
+  <view class="PostArea" wx:if="{{showMyPost}}">
+    <view class="posters" wx:for="{{myPost}}" wx:for-index="index" wx:key="key" wx:for-item="item">
+      <view class="post-container">
+        <text class="postTitle">{{item.name}}</text>
+        <image src="{{item.images[0]}}" mode="widthFix"></image>
+        <text>
+          {{item.desc}}
+        </text>
+        <view class="changeOrDelete">
+          <view class="change"><text>修改</text></view>
+          <view class="delete"><text>删除</text></view>
+        </view>
+      </view>
+    </view>
+    <button bindtap="backToHomePage">返回</button>
   </view>
   <!-- 草稿箱界面 -->
   <view class="EditStrategyArea" style="width:750rpx; height:1334rpx"
@@ -118,13 +142,15 @@
     </view>
   </view>
   <!-- 发布生活攻略 -->
-  <view class="createLifeStrategy" wx:if="{{showCreateLifeStrategy && needToMark == false}}" >
+  <view class="createLifeStrategy" wx:if="{{showCreateLifeStrategy && needToMark == false}}">
     <view class="inputLifeStrategyTitle">
-      <input type="text" name="" id="" placeholder="这里输入标题" bindinput="inputLifeStrategyTitle" value="{{lifeStrategyTitle}}" >
+      <input type="text" name="" id="" placeholder="这里输入标题" bindinput="inputLifeStrategyTitle"
+        value="{{lifeStrategyTitle}}">
       </input>
     </view>
     <view class="inputLifeStrategyBriefDesc">
-      <input type="text" name="" id="" placeholder="好的简介更引人入胜噢~" bindinput="inputLifeStrategyBriefIntro" value="{{lifeStrategyIntro}}">
+      <input type="text" name="" id="" placeholder="好的简介更引人入胜噢~" bindinput="inputLifeStrategyBriefIntro"
+        value="{{lifeStrategyIntro}}">
       </input>
     </view>
     <view class="inputLifeStrategyMainBody">
@@ -134,24 +160,31 @@
       </view>
       <view wx:for="{{strategyStep}}" wx:key="item">
         <view class="inputLifeStrategyStep" id="{{index}}">
-          <input id="{{index}}" class="inputLifeStrategyStepTitle" placeholder="第{{index+1}}步的标题" bindinput="inputLifeStrategyStepTitle" value="{{lifeStrategyStepNames[index]}}"></input>
-          <textarea name="" cols="50" rows="500" placeholder="这里输入主要内容" id="{{index}}" bindinput="inputLifeStrategyDescription" value="{{lifeStrategyDescriptions[index]}}" >
+          <input id="{{index}}" class="inputLifeStrategyStepTitle" placeholder="第{{index+1}}步的标题"
+            bindinput="inputLifeStrategyStepTitle" value="{{lifeStrategyStepNames[index]}}"></input>
+          <textarea name="" cols="50" rows="500" placeholder="这里输入主要内容" id="{{index}}"
+            bindinput="inputLifeStrategyDescription" value="{{lifeStrategyDescriptions[index]}}">
           </textarea>
         </view>
-        <mp-uploader class="inputLifeStrategyPhoto" bindfail="uploadError" bindsuccess="uploadLifePhotoesSuccess" select="{{selectFile}}"
-          upload="{{uplaodFile}}" files="{{files[index]}}" max-count="9" title="" binddelete="deletePhotoes"  id="{{index}}">
+        <mp-uploader class="inputLifeStrategyPhoto" bindfail="uploadError" bindsuccess="uploadLifePhotoesSuccess"
+          select="{{selectFile}}" upload="{{uplaodFile}}" files="{{files[index]}}" max-count="9" title=""
+          binddelete="deletePhotoes" id="{{index}}">
         </mp-uploader>
         <view>
           <text>添加标点</text>
-          <image id="{{index}}" bindtap="needMark" style="height:50rpx;width:50rpx" src="../../images/global/navigation.png"></image>
+          <image id="{{index}}" bindtap="needMark" style="height:50rpx;width:50rpx"
+            src="../../images/global/navigation.png"></image>
         </view>
       </view>
     </view>
     <view>
-      <button style="display:inline-block; width:300rpx; margin-left:30rpx;border:1rpx solid red" bindtap="cancelCreateLifeStrategy">取消</button>
-      <button style="display:inline-block; width:300rpx;margin-left:50rpx" type="primary" bindtap="releaseLifeStrategy">发布</button>
+      <button style="display:inline-block; width:300rpx; margin-left:30rpx;border:1rpx solid red"
+        bindtap="cancelCreateLifeStrategy">取消</button>
+      <button style="display:inline-block; width:300rpx;margin-left:50rpx" type="primary"
+        bindtap="releaseLifeStrategy">发布</button>
     </view>
-    <mp-dialog show="{{showIsSaveLifeStrategy}}" buttons="{{savePointButtons}}" title="是否保存" bindbuttontap="isSaveLifeStrategy" >
+    <mp-dialog show="{{showIsSaveLifeStrategy}}" buttons="{{savePointButtons}}" title="是否保存"
+      bindbuttontap="isSaveLifeStrategy">
     </mp-dialog>
   </view>
   <!-- 编辑发布标点 -->

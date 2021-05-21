@@ -8,6 +8,7 @@
   margin-left: 15rpx;
   height: 60rpx;
 }
+
 .markerName {
   text-align: center;
 }
@@ -15,25 +16,26 @@
 .begin-date {
   text-align: center;
 }
+
 .uploader {
   color: rgb(151, 151, 151);
   margin-top: 5rpx;
   border: 0.5rpx solid rgb(187, 186, 186);
   padding-left: 32rpx;
-  
+
 }
 
-.labelView{
+.labelView {
   display: inline-block;
   justify-content: center;
   align-items: center;
   padding: 1rpx 10rpx;
   width: 140rpx;
   height: 50rpx;
-  
+
   font-size: 26rpx;
   border-radius: 12rpx;
-  
+
   margin-right: 5rpx;
   margin-top: 15rpx;
 }
@@ -41,14 +43,17 @@
 .description-area {
   border: 0.5rpx solid rgb(187, 186, 186);
   margin-left: 25rpx;
-  width:700rpx;
+  width: 700rpx;
 }
-.departPick{
+
+.departPick {
   text-align: center;
 }
+
 .end-date {
   text-align: center;
 }
+
 .uploadPoster {
   border-radius: 10rpx;
   border: 1rpx black;
@@ -212,6 +217,7 @@ image {
   margin-right: 15rpx;
   position: relative;
 }
+
 .markerPosBtn {
   padding-left: 20rpx;
   position: fixed;
@@ -221,6 +227,7 @@ image {
   height: 100rpx;
 
 }
+
 .markerPosBtn button {
 
   display: inline-block;
@@ -263,4 +270,38 @@ image {
 
 .show {
   display: block;
+}
+
+.post-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20rpx;
+  margin-left: 55rpx;
+  margin-right: 56rpx;
+  border-top: 1px solid white;
+  border-bottom: 1px;
+  background-color: #fff;
+  padding-bottom: 5px;
+}
+
+.postTitle {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
+.changeOrDelete {
+  display: flex;
+}
+
+.changeOrDelete .change {
+  width: 50%;
+  text-align: left;
+}
+
+.changeOrDelete .delete {
+  width: 50%;
+  text-align: right;
 }
