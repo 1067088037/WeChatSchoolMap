@@ -31,6 +31,78 @@ export class Section {
   }
 
   /**
+   * 获取该校区的所有管理员
+   * @param {string} sectionId 
+   */
+  async getAdmin(sectionId) {
+    return await _db.collection('section').doc(sectionId).get().then(res => {
+      res.data.admin
+    })
+  }
+
+  /**
+   * 添加管理员
+   * @param {string} sectionId 
+   * @param {string} openid 
+   */
+  async addAdmin(sectionId, openid) {
+    return await _db.collection('section').doc(sectionId).update({
+      data: {
+        admin: cmd.addToSet(openid)
+      }
+    })
+  }
+
+  /**
+   * 移除管理员
+   * @param {string} sectionId 
+   * @param {string} openid 
+   */
+  async removeAdmin(sectionId, openid) {
+    return await _db.collection('section').doc(sectionId).update({
+      data: {
+        admin: cmd.pull(openid)
+      }
+    })
+  }
+
+  /**
+   * 获取该校区的所有编辑
+   * @param {string} sectionId 
+   */
+  async getEditor(sectionId) {
+    return await _db.collection('section').doc(sectionId).get().then(res => {
+      res.data.editor
+    })
+  }
+
+  /**
+   * 添加编辑
+   * @param {string} sectionId 
+   * @param {string} openid 
+   */
+  async addEditor(sectionId, openid) {
+    return await _db.collection('section').doc(sectionId).update({
+      data: {
+        editor: cmd.addToSet(openid)
+      }
+    })
+  }
+
+  /**
+   * 移除编辑
+   * @param {string} sectionId 
+   * @param {string} openid 
+   */
+  async removeAdmin(sectionId, openid) {
+    return await _db.collection('section').doc(sectionId).update({
+      data: {
+        editor: cmd.pull(openid)
+      }
+    })
+  }
+
+  /**
    * 加入社团
    * @param {string} sectionId 要加入的社团
    * @param {string} permission 权限 只能传入 32 48 64
@@ -74,7 +146,9 @@ export class Section {
         name: section.name,
         desc: section.desc,
         images: section.images,
-        geo: section.geo
+        geo: section.geo,
+        admin: [],
+        editor: []
       }
     })
   }

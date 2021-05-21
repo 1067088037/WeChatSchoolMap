@@ -72,6 +72,10 @@ export function launchTest() {
 
   // db.attention.addTag('ojr_35JJZSWh0xHtk_0k9GRJ4TqQ', ['123','345'])
   // db.attention.getAttention('ojr_35JJZSWh0xHtk_0k9GRJ4TqQ')
+
+  // db.campus.isAdmin('1ace8ef160901b1b008f69ae08b0ee8a', 'ojr_35JJZSWh0xHtk_0k9GRJ4TqQ').then(res => console.log(res))
+
+  // db.section.addAdmin('cbddf0af609feb0a08bea6c82b6c3522', 'ojr_35JJZSWh0xHtk_0k9GRJ4TqQ')
 }
 
 export function dbExample() {
