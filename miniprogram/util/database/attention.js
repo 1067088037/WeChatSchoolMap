@@ -43,7 +43,9 @@ export class Attention {
     await this.checkInit(openid)
     return await _db.collection('attention').doc(openid).update({
       data: {
-        time: cmd.push(time)
+        time: cmd.addToSet({
+          each: time
+        })
       }
     })
   }
