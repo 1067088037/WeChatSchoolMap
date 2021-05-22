@@ -4,38 +4,45 @@
 <view class="DesignPageContainer">
   <input class="search" type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx"
     confirm-type="search"
-    wx:if="{{showUploadPostArea == false && showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false  && showMyPost == false}}"></input>
+    wx:if="{{showUploadPostArea == false && showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false  && showMyPost == false && showEditPublishedStrategy == false && toEditPublishedArchStartegy == false && toEditPublishedArchStartegy == false}}"></input>
   <!-- 设计内容区 -->
   <view class="markContainer" style="margin-top:20rpx"
-    wx:if="{{showUploadPostArea == false && showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false  && showMyPost == false}}">
+    wx:if="{{showUploadPostArea == false && showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false  && showMyPost == false && showEditPublishedStrategy == false && toEditPublishedArchStartegy == false && toEditPublishedArchStartegy == false}}">
     <view class="uploadPoster" bindtap="nevigaToUpLoadPoster" hover-class="_hover_list">
       <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
       <text>上传海报</text>
     </view>
   </view>
   <view class="markContainer" style="margin-top:20rpx"
-    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false   && showMyPost == false}}">
+    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false   && showMyPost == false && showEditPublishedStrategy == false && toEditPublishedArchStartegy == false && toEditPublishedArchStartegy == false }}">
     <view class="uploadPoster" bindtap="navigaToEditStrategy" hover-class="_hover_list">
       <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
       <text>草稿箱</text>
     </view>
   </view>
   <view class="markContainer" style="margin-top:20rpx"
-    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false   && showMyPost == false}}">
+    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false   && showMyPost == false && showEditPublishedStrategy == false && toEditPublishedArchStartegy == false && toEditPublishedArchStartegy == false}}">
     <view class="createLifeStrategy" hover-class="_hover_list" bindtap="navigaToCreateLifeStrategy">
       <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
       <text>添加生活攻略</text>
     </view>
   </view>
   <view class="markContainer" style="margin-top:20rpx"
-    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false   && showMyPost == false}}">
+    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false   && showMyPost == false && showEditPublishedStrategy == false && toEditPublishedArchStartegy == false && toEditPublishedArchStartegy == false}}">
+    <view class="createLifeStrategy" hover-class="_hover_list" bindtap="navigaToEditPublishedStrategy">
+      <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
+      <text>发布的攻略</text>
+    </view>
+  </view>
+  <view class="markContainer" style="margin-top:20rpx"
+    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false   && showMyPost == false && showEditPublishedStrategy == false && toEditPublishedArchStartegy == false && toEditPublishedArchStartegy == false}}">
     <view class="createLifeStrategy" hover-class="_hover_list" bindtap="navigaToPostedPoint">
       <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
       <text>发布的标点</text>
     </view>
   </view>
   <view class="markContainer" style="margin-top:20rpx"
-    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false   && showMyPost == false}}">
+    wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false   && showMyPost == false && showEditPublishedStrategy == false && toEditPublishedArchStartegy == false && toEditPublishedArchStartegy == false}}">
     <view class="createLifeStrategy" hover-class="_hover_list" bindtap="navigaToMyPost">
       <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
       <text>我的海报</text>
@@ -100,9 +107,8 @@
         </scroll-view>
       </view>
     </view>
-
   </view>
-  <!-- 编辑攻略界面 -->
+  <!-- 编辑草稿建筑攻略界面 -->
   <view wx:if="{{draftStrategySelected!= null}}">
     <view class="newStrategies">
       <view class="uploadPicture">
@@ -144,9 +150,8 @@
       </view>
     </view>
   </view>
-  <!-- 发布生活攻略 -->
+  <!-- 发布或编辑生活攻略 -->
   <view class="createLifeStrategy" wx:if="{{showCreateLifeStrategy && needToMark == false}}">
-
     <view class="inputLifeStrategyTitle">
       <input type="text" name="" id="" placeholder="这里输入标题" bindinput="inputLifeStrategyTitle"
         value="{{lifeStrategyTitle}}">
@@ -182,7 +187,8 @@
       </view>
 
     </view>
-    <view class="deleteStrategy" style="padding:30rpx 18rpx; height:60rpx;width:55rpx;position:relative" wx:if="{{isEditLifeStrategy}}" >
+    <view class="deleteStrategy" style="padding:30rpx 18rpx; height:60rpx;width:55rpx;position:relative"
+      wx:if="{{isEditLifeStrategy}}">
       <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/delete.png"
         mode="scaleToFill" style="width:100%;height:100%" bindtap="showDeleteDraftLifeStrategy"></image>
     </view>
@@ -317,7 +323,40 @@
       </mp-dialog>
     </view>
   </view>
+  <!-- 发布的攻略界面 -->
+  <view class="EditPublishedStrategy" wx:if="{{showEditPublishedStrategy}}">
+    <button style="width:200rpx;margin-left:0rpx; padding:0;" bindtap="returnToHomeFromEPS"> ⬅返回 </button>
+    <view style="height:16rpx;text-align:center">----</view>
+    <view wx:if="{{publishedArchStrategies.length>0}}">
+      <view class="publishedArchStrategies" wx:for="{{publishedArchStrategies}}" wx:key="index">
+        <mp-slideview class="archStrategy" style="width: 750rpx; height: auto;"
+          bindbuttontap="deletePublishedStrategy" id="{{item.id}}" buttons="{{slideViewButtons}}">
+          <image mode="heightFix" src="{{item.content[0].image[0]}}" style="width: 110rpx;height: 110rpx;"></image>
+          <text style="display: inline;margin-left: 20rpx;text-align:center;">{{item.name}}</text>
+        </mp-slideview>
+      </view>
+    </view>
+    <view wx:if="{{publishedArchStrategies.length==0}}">暂无发布的建筑攻略</view>
+    <view style="height:16rpx;text-align:center">----</view>
+    <view wx:if="{{publishedLifeStrategies.length > 0 }}">
+      <mp-slideview bindbuttontap="deletePublishedStrategy" buttons="{{slideViewButtons}}" id="{{item.id}}"  class="publishedLifeStrategies" wx:for="{{publishedLifeStrategies}}" wx:key="index">
+        <view  
+          bindbuttontap="deletePublishedLifeStrategy" buttons="{{slideViewButtons}}" id="{{item.id}}" >
+          <view>
+            <image mode="heightFix" src="{{item.content[0].images[0]}}" style="width: 110rpx;height: 110rpx;"></image>
+            <text style="display: inline;margin-left: 20rpx;text-align:center;">{{item.name}}</text>
+          </view>
+        </view>
+      </mp-slideview>
+    </view>
+    <view wx:if="{{publishedLifeStrategies.length == 0}}">暂无发布的生活攻略</view>
+    
+  </view>
+ 
 </view>
+
+
+<!-- 地图用来标点 -->
 <view wx:if="{{needToMark}}">
   <map id="newMap" style="width:{{mapWidth}}rpx;height:{{mapHeight}}rpx;" latitude="{{latitude}}"
     longitude="{{longitude}}" scale="17" rotate="240" skew="35" markers="{{markers}}" bindcallouttap="markerstap"

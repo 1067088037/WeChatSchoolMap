@@ -69,7 +69,26 @@ image {
   height: 110rpx;
 
 }
-
+.publishedArchStrategies{
+  display: inline-block;
+  width: 750rpx;
+  height: auto;
+  background: white;
+  margin-left: 20rpx;
+  border-radius: 20rpx;
+  margin-top: 20rpx;
+  align-items: center;
+}
+.publishedLifeStrategies{
+  display: inline-block;
+  width: 750rpx;
+  height: auto;
+  background: white;
+  margin-left: 20rpx;
+  border-radius: 20rpx;
+  margin-top: 20rpx;
+  align-items: center;
+}
 ._hover_list {
   opacity: 0.9;
   background: #eeeeee;

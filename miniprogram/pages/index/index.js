@@ -207,11 +207,16 @@ Page({
       month: month,
       week: day
     }]).then(() => {
+      this.data.labelArray.forEach((e,index)=>{
+        e.selected = false
+        this.data.labelArray[index] = e
+      })
       this.setData({
         func: '',
         weekIndex:0,
         monthIndex:0,
-        followActivitiesTag:[]
+        followActivitiesTag:[],
+        labelArray: this.data.labelArray
 
       })
       wx.showToast({

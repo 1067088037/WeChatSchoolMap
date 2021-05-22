@@ -25,7 +25,7 @@ Page({
     mapHeight: SCREEN_WIDTH * RATE,
     showUploadPostArea: false, // 显示上传海报界面
     showEditStrategy: false, // 显示编辑攻略界面
-    showMyPost:false,
+    showMyPost: false,
     draftStrategiesId: [], // 草稿攻略的id合集
     draftStrategies: [], // 草稿攻略合集
     draftLifeStrategies: [], // 全局草稿攻略
@@ -47,8 +47,8 @@ Page({
     postSenderAvator: [], //海报作者头像
     postSenderNickname: [], //海报作者昵称
     publishedPoint: [], // 保存用户发布的活动标点
-    myPost:[],//用户发布的海报
-    myPostNumber:0,//用户发布的海报数目
+    myPost: [], //用户发布的海报
+    myPostNumber: 0, //用户发布的海报数目
     dialogButtons: [{
       text: "不保存"
     }, {
@@ -112,11 +112,23 @@ Page({
       latitude: null
     }], // 标点的坐标
     needMarkers: [false], //是否需要添加标点的数组
-    showIsSaveLifeStrategy: false,
-    showIsSaveLifeStrategyEdit: false,
-    isEditLifeStrategy: false
-  },
+    showIsSaveLifeStrategy: false, // 是否保存生活攻略
+    showIsSaveLifeStrategyEdit: false, // 是否保存生活攻略在草稿箱界面
+    isEditLifeStrategy: false, // 是否编辑生活攻略 --- 出现编辑界面 
+    showEditPublishedStrategy: false, // 是否编辑已发布的攻略
+    publishedArchStrategies: [], // 发布的建筑攻略数组
+    publishedLifeStrategies: [], // 发布的生活攻略数组
+    toEditPublishedLifeStartegy: false, // 是否编辑发布的生活攻略 -- 出现编辑界面
+    toEditPublishedArchStartegy: false, // 是否编辑发布的建筑攻略 -- 出现编辑界面
+    selectedPublishedArchStrategy: {},
+    selectedPublishedLifeStrategy: {},
 
+    slideViewButtons: [{
+      text: "删除",
+      type: "warn"
+    }]
+  },
+// 输入生活攻略的标题
   inputLifeStrategyTitle(e) {
     if (this.data.isEditLifeStrategy) {
       let draftLifeStrategySelected = this.data.draftLifeStrategySelected
@@ -131,6 +143,7 @@ Page({
       })
     }
   },
+  // 输入生活攻略的简介
   inputLifeStrategyBriefIntro(e) {
     if (this.data.isEditLifeStrategy) {
       let draftLifeStrategySelected = this.data.draftLifeStrategySelected
@@ -145,6 +158,7 @@ Page({
       })
     }
   },
+  // 输入生活攻略每一步的标题
   inputLifeStrategyStepTitle(e) {
     // console.log(e)
     let index = parseInt(e.currentTarget.id)
@@ -163,6 +177,7 @@ Page({
       })
     }
   },
+  // 输入生活攻略的描述（每一步骤）
   inputLifeStrategyDescription(e) {
     let index = parseInt(e.currentTarget.id)
     let lifeStrategyDescriptions = this.data.lifeStrategyDescriptions;
@@ -180,6 +195,7 @@ Page({
       })
     }
   },
+  // 成功上传照片时的函数
   uploadLifePhotoesSuccess(e) {
     console.log(e)
     let index = parseInt(e.currentTarget.id)
@@ -190,7 +206,7 @@ Page({
       userUploadPhotoes[index] = userUploadPhotoes[index].concat(e.detail.urls)
     }
     let files = this.data.files
-    console.log('index',index)
+    console.log('index', index)
     if (files[index] == undefined || userUploadPhotoes[index] == undefined) {
       files[index] = [].concat({
         url: e.detail.urls[0]
@@ -205,6 +221,7 @@ Page({
       files
     })
   },
+  // 是否需要显示地图标点
   needMark(e) {
     // try {
     let index = parseInt(e.currentTarget.id)
@@ -238,6 +255,7 @@ Page({
     // }
 
   },
+  // 点击地图的反馈函数--即会出现标点
   newMapTap(e) {
     console.log(e)
     let latitude_ = e.detail.latitude;
@@ -254,7 +272,7 @@ Page({
       markers: userPoint,
     })
   },
-
+// 确定在地图上的标注
   confirmMarker(e) {
     let lifeStrategyCoordinates = this.data.lifeStrategyCoordinates
     if (this.data.isEditLifeStrategy) {
@@ -285,6 +303,7 @@ Page({
     }
 
   },
+  // 取消在地图上标注
   cancelMarker(e) {
     if (this.data.isEditLifeStrategy) {
       this.setData({
@@ -302,6 +321,7 @@ Page({
       })
     }
   },
+  // 获取正在添加的生活攻略主体对象（属性在发布时完整）
   getCreatingLifeStrategy() {
     let strategy = {
       name: this.data.lifeStrategyTitle,
@@ -310,6 +330,7 @@ Page({
     }
     return strategy
   },
+  // 发布生活攻略 -- 第一次添加时
   releaseLifeStrategy(e) {
     if (!(this.data.isEditLifeStrategy)) {
       let superid = app.globalData.campus._id
@@ -342,7 +363,7 @@ Page({
           userUploadPhotoes: []
         })
       })
-    }else{
+    } else {
       let draft = {
         name: this.data.draftLifeStrategySelected.name,
         desc: this.data.draftLifeStrategySelected.desc,
@@ -354,7 +375,7 @@ Page({
         draft.content[index].images.push(images)
       })
       console.log('draft: ', draft)
-      db.strategy.publishFromDraft(this.data.draftLifeStrategySelected.id,draft).then(()=>{
+      db.strategy.publishFromDraft(this.data.draftLifeStrategySelected.id, draft).then(() => {
         this.setData({
           draftLifeStrategySelected: null,
           showEditStrategy: true,
@@ -374,10 +395,12 @@ Page({
           draftLifeStrategies: [],
           draftLifeStrategySelected: {},
         })
+        this.onReady()
         this.navigaToEditStrategy()
       })
     }
   },
+   // 是否保存生活攻略在第一次添加时的编辑
   isSaveLifeStrategy(e) {
     let loopTime = this.data.strategyStep.length;
     if (e.detail.item.text == '不保存') {
@@ -392,6 +415,7 @@ Page({
         userUploadPhotoes: [],
         lifeStrategyIntro: "",
         lifeStrategyTitle: "",
+        files: [],
         showIsSaveLifeStrategy: false,
         draftLifeStrategies: [],
       })
@@ -423,13 +447,16 @@ Page({
           userUploadPhotoes: [],
           lifeStrategyIntro: "",
           lifeStrategyTitle: "",
+          files: [],
           showIsSaveLifeStrategy: false,
           draftLifeStrategies: [],
         })
+        this.onReady()
       })
     }
-    this.onReady()
+
   },
+  // 是否保存生活攻略在草稿箱中的编辑
   isSaveLifeStrategyEdit(e) {
     if (e.detail.item.text == '不保存') {
       this.setData({
@@ -486,9 +513,10 @@ Page({
         })
         this.navigaToEditStrategy()
       })
-      
+
     }
   },
+  // 增加生活攻略步骤
   AddStrategySteps() {
     if (this.data.isEditLifeStrategy) {
       let content = {
@@ -516,6 +544,7 @@ Page({
       })
     }
   },
+  // 减少生活攻略步骤
   ReduceStrategySteps() {
     if (!(this.data.isEditLifeStrategy)) {
       if (this.data.strategyStep.length > 1) {
@@ -545,6 +574,7 @@ Page({
       })
     }
   },
+  // 从创建生活攻略界面返回
   cancelCreateLifeStrategy(e) {
     if (this.data.isEditLifeStrategy == false) {
       this.setData({
@@ -556,6 +586,7 @@ Page({
       })
     }
   },
+    // 草稿箱界面显示建筑攻略的函数
   toggleArch() {
     var list_state = this.data.stateArch,
       first_state = this.data.firstClickArch;
@@ -574,6 +605,7 @@ Page({
       });
     }
   },
+  // 草稿箱界面显示生活攻略的函数
   toggleSchool() {
     var list_state = this.data.stateSchool,
       first_state = this.data.firstClickSchool;
@@ -634,20 +666,20 @@ Page({
       url: '../../pages/posterArea/posterArea',
     });
   },
-//出现我的海报页面，从数据库中加载数据
-navigaToMyPost() {
-  this.setData({
-    showMyPost:true
-  })
-  db.poster.getPosterByOpenid(getApp().globalData.openid).then(res=>{
+  //出现我的海报页面，从数据库中加载数据
+  navigaToMyPost() {
     this.setData({
-      myPost:res,
-      myPostNumber:res.length
+      showMyPost: true
     })
-    //console.log("嘿嘿嘿嘿我发布的海报")
-    //console.log(res)
-  })
-},
+    db.poster.getPosterByOpenid(getApp().globalData.openid).then(res => {
+      this.setData({
+        myPost: res,
+        myPostNumber: res.length
+      })
+      //console.log("嘿嘿嘿嘿我发布的海报")
+      //console.log(res)
+    })
+  },
   //下列一系列函数是图片上传相关函数
   /**
    * chooseImage(e)
@@ -732,6 +764,7 @@ navigaToMyPost() {
       isExitEditStrategy: true
     })
   },
+  // 上传照片
   updatePhotoesToCloud(path, index = 0) {
     let images = []
     if (this.data.userUploadPhotoes[index] != null && this.data.userUploadPhotoes[index].constructor != Array) {
@@ -770,6 +803,7 @@ navigaToMyPost() {
     }
     return images
   },
+  // 上传图示
   uploadIcontoCloud() {
     let name = util.randomId()
     let fileName = this.data.userUploadIcon;
@@ -828,25 +862,26 @@ navigaToMyPost() {
       })
     }
   },
-  isDeleteEdit(e) {
-    if (e.detail.item.text == '返回') {
-      this.setData({
-        isShowDeleteDraft: false
-      })
-    } else if (e.detail.item.text == '删除') {
-      db.strategy.removeStrategy(this.data.draftStrategySelected.id).then(() => {
-        this.setData({
-          strategyTitle: "",
-          strategyContent: "",
-          strategyBriefIntro: "",
-          userUploadPhotoes: [],
-          isExitEditStrategy: false,
-          draftStrategySelected: null,
-          isShowDeleteDraft: false
-        })
-      })
-    }
-  },
+  // isDeleteEdit(e) {
+  //   if (e.detail.item.text == '返回') {
+  //     this.setData({
+  //       isShowDeleteDraft: false
+  //     })
+  //   } else if (e.detail.item.text == '删除') {
+  //     db.strategy.removeStrategy(this.data.draftStrategySelected.id).then(() => {
+  //       this.setData({
+  //         strategyTitle: "",
+  //         strategyContent: "",
+  //         strategyBriefIntro: "",
+  //         userUploadPhotoes: [],
+  //         isExitEditStrategy: false,
+  //         draftStrategySelected: null,
+  //         isShowDeleteDraft: false
+  //       })
+  //     })
+  //   }
+  // },
+  // 发布草稿（建筑攻略）
   publishDraft(e) {
     let content = [];
 
@@ -885,6 +920,7 @@ navigaToMyPost() {
     console.log('files', files)
     // 返回false可以阻止某次文件上传
   },
+  // 进入草稿箱界面
   navigaToEditStrategy(e) {
     wx.showLoading({
       title: 'loading....',
@@ -912,14 +948,49 @@ navigaToMyPost() {
       })
     })
   },
+  // 进入已发布的攻略界面
+  navigaToEditPublishedStrategy(e) {
+    let publishedArchStrategies = this.data.publishedArchStrategies;
+    let publishedLifeStrategies = this.data.publishedLifeStrategies;
+    this.data.draftStrategiesId.forEach(id => {
+      db.strategy.getStrategy(id).then(res => {
+        if (res.super.type == 'arch') {
+          res.draft.content[0].image.forEach((e, idx) => {
+            e = CloudPathFront + e
+            res.draft.content[0].image[idx] = e
+          })
+          let draft = res.draft
+          draft['id'] = res._id
+          publishedArchStrategies.push(draft)
+        } else {
+          res.draft.content.forEach(con => {
+            con.images.forEach((im, index) => {
+              im = CloudPathFront + im;
+              con.images[index] = im
+            })
+          })
+          let draft = res.draft
+          draft['id'] = res._id
+          publishedLifeStrategies.push(draft)
+        }
+      }).then(() => {
+        this.setData({
+          showEditPublishedStrategy: true,
+          publishedArchStrategies,
+          publishedLifeStrategies
+        })
+      })
+    })
+  },
+  // 从建筑草稿编辑界面返回
   returnFromDraftPage(e) {
     this.setData({
       showEditStrategy: false,
       draftStrategies: [],
       draftLifeStrategies: []
     })
-
   },
+  // 进入某个选中的建筑攻略草稿编辑界面
   EditDraftTap(e) {
     let id = e.currentTarget.id
     let draftStrategySelected = new Object;
@@ -949,6 +1020,7 @@ navigaToMyPost() {
       files
     })
   },
+  // 进入选中的生活攻略编辑界面
   EditlifeDraftTap(e) {
     let id = e.currentTarget.id
     let draftLifeStrategySelected = new Object;
@@ -999,6 +1071,7 @@ navigaToMyPost() {
       }
     })
   },
+  // 是否删除建筑攻略界面
   showDeleteDraft(e) {
     wx.showModal({
       title: "确定删除草稿吗？",
@@ -1030,45 +1103,49 @@ navigaToMyPost() {
       }
     })
   },
-  showDeleteDraftLifeStrategy(e){
+  // 是否删除生活草稿函数
+  showDeleteDraftLifeStrategy(e) {
     wx.showModal({
       title: "确定删除草稿吗？",
       cancelText: "取消",
       cancelColor: "#000000",
       confirmText: "删除",
       confirmColor: "#ff00000",
-      success:(res)=>{
-        if(res.confirm){
+      success: (res) => {
+        if (res.confirm) {
           db.strategy.removeStrategy(this.data.draftLifeStrategySelected.id)
-          this.data.draftLifeStrategies.forEach((item,index)=>{
-            if(item.id ==this.data.draftLifeStrategySelected.id ){
-              this.data.draftLifeStrategies.splice(index,1)
+          this.data.draftLifeStrategies.forEach((item, index) => {
+            if (item.id == this.data.draftLifeStrategySelected.id) {
+              this.data.draftLifeStrategies.splice(index, 1)
             }
           })
-          let draftLifeStrategies=this.data.draftLifeStrategies
+          let draftLifeStrategies = this.data.draftLifeStrategies
           this.setData({
-            isEditLifeStrategy:false,
+            isEditLifeStrategy: false,
             draftLifeStrategies,
-            draftLifeStrategySelected:null,
-            showCreateLifeStrategy:false,
-            showEditStrategy:true
+            draftLifeStrategySelected: null,
+            showCreateLifeStrategy: false,
+            showEditStrategy: true
           })
-        }else{
+        } else {
           console.log(res)
         }
       }
     })
   },
+  // 去创建生活攻略界面
   navigaToCreateLifeStrategy(e) {
     this.setData({
       showCreateLifeStrategy: true
     })
   },
+  // 是否显示上传标点
   navigaToPostedPoint(e) {
     this.setData({
       showEditPoint: true
     })
   },
+  // 进入某个选中的标点编辑界面
   toEditPointPage(e) {
     let id = e.currentTarget.id
     this.data.publishedPoint.forEach(point => {
@@ -1099,6 +1176,7 @@ navigaToMyPost() {
       showEditPointPage: true
     })
   },
+  // 输入标点的名字
   inputMarkerName(e) {
     let selectedPoint = this.data.selectedPoint;
     selectedPoint.desc.name = e.detail.value
@@ -1106,6 +1184,7 @@ navigaToMyPost() {
       selectedPoint
     })
   },
+  // 输入标点的描述
   inputMarkerDesc(e) {
     let selectedPoint = this.data.selectedPoint;
     selectedPoint.desc.text = e.detail.value
@@ -1113,26 +1192,31 @@ navigaToMyPost() {
       MarkerDesc: e.detail.value
     })
   },
+  // 开始日期改变
   bindBeginDateChange(e) {
     this.setData({
       bgdate: e.detail.value,
     })
   },
+  // 开始时间改变
   bindBeginTimeChange(e) {
     this.setData({
       bgtime: e.detail.value
     })
   },
+  // 结束日期改变
   bindEndDateChange(e) {
     this.setData({
       endate: e.detail.value,
     })
   },
+  // 结束时间改变
   bindEndTimeChange(e) {
     this.setData({
       edtime: e.detail.value,
     })
   },
+  // 标点类型改变
   markerTypeChange(e) {
     let index = e.detail.value;
     let selectedPoint = this.data.selectedPoint
@@ -1142,6 +1226,7 @@ navigaToMyPost() {
       selectedPoint
     })
   },
+  // 部门选择（可视性）改变函数
   visibleChange(e) {
     console.log(e)
     var id = parseInt(e.currentTarget.id)
@@ -1154,6 +1239,7 @@ navigaToMyPost() {
       selectedPoint
     })
   },
+  // 增加部门选择器的数目
   addPicker(e) {
     let selectedPoint = this.data.selectedPoint
     selectedPoint.belong.push(this.data.departmentsItemOne[0])
@@ -1166,6 +1252,7 @@ navigaToMyPost() {
       selectedPoint
     })
   },
+  // 删除部门选择器的数目
   deletePicker(e) {
     let selectedPoint = this.data.selectedPoint
     if (selectedPoint.belong.length > 1) {
@@ -1177,6 +1264,7 @@ navigaToMyPost() {
     } else
       return
   },
+  // 选择标点标签
   selectedLabel(e) {
     console.log(e)
     let id = parseInt(e.currentTarget.id)
@@ -1201,6 +1289,7 @@ navigaToMyPost() {
       selectedPoint
     })
   },
+  // 删除标点图示
   deleteSelectedIcon(e) {
     let selectedPoint = this.data.selectedPoint
     wx.cloud.deleteFile({
@@ -1214,9 +1303,28 @@ navigaToMyPost() {
     })
     selectedPoint.desc.icon = ""
   },
+  // 删除编辑时上传的照片
+  // 该函数用于编辑生活攻略草稿和建筑攻略草稿
   deletePhotoes(e) {
-    if (e.currentTarget.id == '2019') {
-      // 删除照片
+    if (e.currentTarget.id == '2021') {
+      if (draftStrategySelected.content[0].image > 0) {
+        let filePath = this.data.draftStrategySelected.content[0].image[e.detail.index]
+        wx.cloud.deleteFile({
+          fileList: [filePath],
+          success: res => {
+            console.log("删除成功")
+          },
+          fail: res => {
+            console.log("删除失败")
+          }
+        })
+        this.data.draftStrategySelected.content[0].image.splice(e.detail.index, 1)
+        this.data.files.splice(e.detail.index, 1)
+        this.setData({
+          userUploadPhotoes: this.data.userUploadPhotoes,
+          files: this.data.files
+        })
+      }
     } else {
       console.log(e)
       let id = parseInt(e.currentTarget.id)
@@ -1240,6 +1348,7 @@ navigaToMyPost() {
   selectPhotoes(e) {
     console.log(e)
   },
+  // 确定编辑发布的标记
   confirmEditTap() {
     let show = new Date(this.data.bgdate + " 00:00")
     let start = new Date(this.data.bgdate + " " + this.data.bgtime)
@@ -1251,8 +1360,7 @@ navigaToMyPost() {
     let icon;
     if (this.data.selectedPoint.desc.icon == "") {
       icon = this.uploadIcontoCloud()
-    }
-    else {
+    } else {
       icon = this.data.selectedPoint.desc.icon
     }
     let desc = db.point.generateDescObj(name, text, icon, [])
@@ -1270,11 +1378,13 @@ navigaToMyPost() {
 
     })
   },
+  // 编辑标点界面的返回键的响应函数，弹出对话框
   stopEdit(e) {
     this.setData({
       isSaveEditPoint: true
     })
   },
+  // 是否保存编辑标点的对话框按钮的响应函数
   saveEditPointBtnTap(e) {
     if (e.detail.item.text == '不保存') {
       this.setData({
@@ -1298,6 +1408,48 @@ navigaToMyPost() {
       postContentInput: e.detail.value
     })
   },
+
+  // 从发布的攻略界面返回主页面
+  returnToHomeFromEPS(e) {
+    this.setData({
+      showEditPublishedStrategy: false,
+      publishedArchStrategies: [],
+      publishedLifeStrategies: []
+    })
+  },
+  // 删除发布的攻略
+  deletePublishedStrategy(e) {
+    let id = e.currentTarget.id
+    wx.showModal({
+      title: '是否确定要删除？',
+      confirmText: "删除",
+      confirmColor: "#FF0000",
+      cancelText: "取消",
+      success: (res) => {
+        if (res.confirm) {
+          wx.showLoading({
+            title: 'waiting...',
+          })
+          db.strategy.removeStrategy(id).then(() => {
+            this.setData({
+              publishedArchStrategies: [],
+              publishedLifeStrategies: []
+            })
+            this.onReady()
+            this.navigaToEditPublishedStrategy()
+            wx.hideLoading({
+              success: (res) => {},
+            })
+            wx.showToast({
+              title: '攻略已删除',
+            })
+          })
+        }
+      }
+    })
+  },
+
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -1323,7 +1475,7 @@ navigaToMyPost() {
     let openId = app.globalData.openid
     //console.log(app.globalData.campus._id)
     db.strategy.getBriefStrategyArrayByOpenid(this.data.userOpenId).then(res => {
-      //console.log(res)
+      console.log(res)
       // let draftStrategiesId = this.data.draftStrategiesId
       res.forEach(e => {
         draftStrategiesId.push(e._id)
