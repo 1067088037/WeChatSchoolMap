@@ -68,7 +68,6 @@
   border-radius: 20rpx;
   margin-top: 20rpx;
   align-items: center;
-  
 }
 .StrategiesArea image{
   width: 350rpx;

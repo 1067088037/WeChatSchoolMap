@@ -190,13 +190,14 @@ Page({
       userUploadPhotoes[index] = userUploadPhotoes[index].concat(e.detail.urls)
     }
     let files = this.data.files
+    console.log('index',index)
     if (files[index] == undefined || userUploadPhotoes[index] == undefined) {
       files[index] = [].concat({
-        url: userUploadPhotoes[index]
+        url: e.detail.urls[0]
       })
     } else {
       files[index] = files[index].concat({
-        url: userUploadPhotoes[index]
+        url: e.detail.urls[0]
       })
     }
     this.setData({
@@ -277,6 +278,10 @@ Page({
         longitude: this.data.markers[0].longitude,
         latitude: this.data.markers[0].latitude
       }
+      this.setData({
+        needToMark: false,
+        lifeStrategyCoordinates
+      })
     }
 
   },
@@ -991,9 +996,6 @@ navigaToMyPost() {
           showEditStrategy: false,
           isEditLifeStrategy: true
         })
-
-
-
       }
     })
   },
@@ -1023,6 +1025,35 @@ navigaToMyPost() {
             draftStrategies
           })
         } else if (res.cancel) {
+          console.log(res)
+        }
+      }
+    })
+  },
+  showDeleteDraftLifeStrategy(e){
+    wx.showModal({
+      title: "确定删除草稿吗？",
+      cancelText: "取消",
+      cancelColor: "#000000",
+      confirmText: "删除",
+      confirmColor: "#ff00000",
+      success:(res)=>{
+        if(res.confirm){
+          db.strategy.removeStrategy(this.data.draftLifeStrategySelected.id)
+          this.data.draftLifeStrategies.forEach((item,index)=>{
+            if(item.id ==this.data.draftLifeStrategySelected.id ){
+              this.data.draftLifeStrategies.splice(index,1)
+            }
+          })
+          let draftLifeStrategies=this.data.draftLifeStrategies
+          this.setData({
+            isEditLifeStrategy:false,
+            draftLifeStrategies,
+            draftLifeStrategySelected:null,
+            showCreateLifeStrategy:false,
+            showEditStrategy:true
+          })
+        }else{
           console.log(res)
         }
       }
@@ -1185,7 +1216,7 @@ navigaToMyPost() {
   },
   deletePhotoes(e) {
     if (e.currentTarget.id == '2019') {
-
+      // 删除照片
     } else {
       console.log(e)
       let id = parseInt(e.currentTarget.id)

@@ -26,7 +26,71 @@ input {
   height: 110rpx;
 
 }
+.ActivityMessage {
+  border-radius: 10rpx;
+  border: 1rpx black;
+  box-shadow: darkgray 5rpx 5rpx 10rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  position: relative;
+}
+.ActivityMessage image {
+  position: relative;
+  widows: 110rpx;
+  height: 110rpx;
 
+}
+.LifeStrategyPage image{
+  position: relative;
+  widows: 110rpx;
+  height: 110rpx;
+}
+.LifeStrategyPage{
+  border-radius: 10rpx;
+  border: 1rpx black;
+  box-shadow: darkgray 5rpx 5rpx 10rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  position: relative;
+}
+.LifeStrategies image{
+  width: 350rpx;
+  height: 300rpx;
+}
+.LifeStrategies text{
+  display: inline;
+  margin-left: 20rpx;
+  text-align:center;
+  
+}
+.imageBanner{
+  width: 100%;
+  height: 600rpx;
+}
+.ContentImage{
+  width: 100%;
+  height: 600rpx;
+  
+  align-items: center;
+}
+.LifeStrategies{
+  display: inline-block;
+  width: 350rpx;
+  height: auto;
+  background: white;
+  margin-left: 20rpx;
+  border-radius: 20rpx;
+  margin-top: 20rpx;
+  align-items: center;
+}
+.lifeStrategy{
+  width: 350rpx;
+  height: auto;
+}
+._hover_list {
+  opacity: 0.9;
+  background: #eeeeee;
+}
 .MessageBox .span{
   position: absolute;
 
