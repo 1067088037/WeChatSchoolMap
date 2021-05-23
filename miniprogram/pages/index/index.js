@@ -116,7 +116,7 @@ Page({
       value: "shop",
       name: "商店",
       selected: false,
-    },  {
+    }, {
       value: "vouchCenter",
       name: "充值点",
       selected: false,
@@ -202,16 +202,16 @@ Page({
     let followActivitiesTag = this.data.followActivitiesTag
     // TODO  上传至数据库
     console.log(day)
-    db.attention.addAttention(openid, followActivitiesTag,month,day).then(() => {
-      this.data.labelArray.forEach((e,index)=>{
+    db.attention.addAttention(openid, followActivitiesTag, month, day).then(() => {
+      this.data.labelArray.forEach((e, index) => {
         e.selected = false
         this.data.labelArray[index] = e
       })
       this.setData({
         func: '',
-        weekIndex:0,
-        monthIndex:0,
-        followActivitiesTag:[],
+        weekIndex: 0,
+        monthIndex: 0,
+        followActivitiesTag: [],
         labelArray: this.data.labelArray
       })
       wx.showToast({
@@ -312,6 +312,7 @@ Page({
   bindBeginDateChange(e) {
     this.setData({
       bgdate: e.detail.value,
+      endate:e.detail.value
     })
   },
   /**
@@ -517,21 +518,24 @@ Page({
     return images
   },
   uploadIcontoCloud() {
-    let name = util.randomId()
-    let fileName = this.data.userUploadIcons;
-    let type = this.data.markerTypes[this.data.markerType]
-    console.log(cloudPath)
-    let cloudPath = "School/4144010561/images/Point/" + type + name + fileName.match(/\.[^.]+?$/)[0]
-    console.log(cloudPath)
-    wx.cloud.uploadFile({
-      cloudPath: cloudPath,
-      filePath: fileName,
-      success: res => {
-        console.log(res.fileId)
-      },
-      fail: console.error
-    })
-    return cloudPath
+    if (this.data.userUploadIcons.length > 0) {
+      let name = util.randomId()
+      let fileName = this.data.userUploadIcons;
+      let type = this.data.markerTypes[this.data.markerType]
+      console.log(cloudPath)
+      let cloudPath = "School/4144010561/images/Point/" + type + name + fileName.match(/\.[^.]+?$/)[0]
+      console.log(cloudPath)
+      wx.cloud.uploadFile({
+        cloudPath: cloudPath,
+        filePath: fileName,
+        success: res => {
+          console.log(res.fileId)
+        },
+        fail: console.error
+      })
+      return cloudPath
+    }
+    return ""
   },
   /**
    * confirmTap
@@ -775,7 +779,7 @@ Page({
     // console.log(e.detail.markerId)
     console.log("用户选择的建筑对象的Id：", e.detail.markerId)
     app.globalData.buildingSelected = this.getMarkerInfo(e.detail.markerId)
-    console.log("用户选择的建筑对象：" , app.globalData.buildingSelected)
+    console.log("用户选择的建筑对象：", app.globalData.buildingSelected)
     this.setData({
       showBuildingDialog: true,
       buildingSelected: app.globalData.buildingSelected
@@ -989,12 +993,12 @@ Page({
             height: 40,
             type: value.type,
             iconPath: "/images/index/realtimeInfo.png",
-            
+
           })
         }
       })
     })
-    
+
     // 默认显示实时信息标点。
     const that = this
     visibleArchArray = realTimeInfoArray
@@ -1017,25 +1021,25 @@ Page({
         departmentsItem: this.data.departmentsItem.concat(res.data[0].name)
       })
     })
-    console.log("app",app.globalData.buildingSelected)
-    if(app.globalData.buildingSelected != null){
+    console.log("app", app.globalData.buildingSelected)
+    if (app.globalData.buildingSelected != null) {
       let activitySelected = {
-        _id : app.globalData.buildingSelected._id,
-        id :app.globalData.buildingSelected.markId,
-        width:50,
-        height:60,
+        _id: app.globalData.buildingSelected._id,
+        id: app.globalData.buildingSelected.markId,
+        width: 50,
+        height: 60,
         longitude: app.globalData.buildingSelected.geo.coordinates[0],
         latitude: app.globalData.buildingSelected.geo.coordinates[1],
-        title:app.globalData.buildingSelected.desc.name,
-        type:app.globalData.buildingSelected.type,
-        iconPath:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/"+app.globalData.buildingSelected.desc.icon,
-        text:app.globalData.buildingSelected.desc.text
+        title: app.globalData.buildingSelected.desc.name,
+        type: app.globalData.buildingSelected.type,
+        iconPath: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/" + app.globalData.buildingSelected.desc.icon,
+        text: app.globalData.buildingSelected.desc.text
       }
-      
+
       this.setData({
-        markers:[activitySelected],
-        buildingSelected:activitySelected,
-        showBuildingDialog:true
+        markers: [activitySelected],
+        buildingSelected: activitySelected,
+        showBuildingDialog: true
       })
     }
 
