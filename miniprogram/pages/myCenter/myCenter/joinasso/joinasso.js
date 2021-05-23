@@ -1,4 +1,4 @@
-// pages/myCenter/joinasso/joinasso.js
+
 import{db}from'../../../../util/database/database'
 Page({
 

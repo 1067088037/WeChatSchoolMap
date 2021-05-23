@@ -31,7 +31,9 @@ Page({
     showMap:false
   },
   navigaToAttentionPage(e){
-
+    this.setData({
+      showAttentionPage:true
+    })
   },
   navigaToLifeStrategiesPage(e){
     let publishStrategies = []
@@ -140,7 +142,16 @@ Page({
       mapCtx:wx.createMapContext('newMap', this)
     })
   },
-
+  getSame(arr1,arr2){
+    for(let i = 0; i = arr1.length;i++){
+      for(let j = 0; j = arr2.length; j++){
+        if(arr1[i] == arr2[j]){
+          return true;
+        }
+      }
+    }
+    return false
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -150,41 +161,44 @@ Page({
     let userFollowTagSet;
     let userFollowTime;
     let message = [];
+    let attentions = [];
+    let activitiesPoint = [];
     let publishStrategyIds = [];
     db.attention.getAttention(app.globalData.openid).then(res => {
-      userFollowTagSet = new Set(res.tag)
-      userFollowTime = res.time
-      console.log("取得关注标点的信息", res)
+     attentions = res.attention
     }).then(() => {
-      db.point.getPointArray(app.globalData.campus._id).then(res => {
-        res.forEach(point => {
+      db.point.getPointArray(app.globalData.campus._id).then(r => {
+        r.forEach(point => {
           if (point.type == 'activity') {
-            let pointTagSet = new Set(point.tag);
-            console.log("取得关注标点的信息", pointTagSet)
-            let start = new Date(point.time.start)
-            start = {
-              month: start.getMonth()
-            }
-            for (let item of pointTagSet) {
-              let hasTime=userFollowTime.find((itm, index) => {              
-                return(itm.month == start.month)
-                // && hasTime!=undefined
-              })
-              
-              if (userFollowTagSet.has(item)  ) {
-                let msgObj = {
-                  src: CloudPathFront + point.desc.icon,
-                  msg: point.desc.name,
-                  activity: point
-                }
-                message.push(msgObj);
-                this.setData({
-                  messageData:this.data.messageData.concat(msgObj)
-                })
-                break;
-              }
-            }
+            activitiesPoint.push(point)
           }
+        })
+      }).then(()=>{
+        attentions.forEach(e=>{
+          let tag = e.value;
+          let month = e.month;
+          let week = e.week;
+          activitiesPoint.forEach(p=>{
+            let pMonth =new Date( p.time.start);
+            pMonth = pMonth.getMonth();
+            let pWeek = new Date( p.time.start );
+            pWeek = pWeek.getDay();
+            // && (week == pWeek) && (month == pMonth)
+            if(this.getSame(tag,p.tag)  ){
+              let msgObj = {
+                src : CloudPathFront + p.desc.icon,
+                msg:p.desc.name,
+                activity:p,
+                tag,
+                month,
+                week,
+              }
+              message.push(msgObj)
+              this.setData({
+                messageData:this.data.messageData.concat(msgObj)
+              })
+            }
+          })
         })
       })
     })

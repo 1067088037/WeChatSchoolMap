@@ -23,17 +23,19 @@
   z-index: 2;
   top: 0;
   left: 0;
+  align-items: center;
 }
 
 .funcMaskContent {
   padding: 20rpx 0;
   width: 70%;
-  background: #e1d2b1;
+  background: #E6E6E6;
   margin: 40% auto;
   border-radius: 20rpx;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  
   align-items: center;
   position: relative;
 }
@@ -45,6 +47,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  
   margin: 25rpx 0 25rpx 0;
 }
 

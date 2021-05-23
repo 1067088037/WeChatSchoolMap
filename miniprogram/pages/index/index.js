@@ -166,12 +166,12 @@ Page({
   },
   bindfollowMonthChange(e) {
     this.setData({
-      monthIndex: (e.detail.value)
+      monthIndex: parseInt(e.detail.value)
     })
   },
   bindfollowWeekDayChange(e) {
     this.setData({
-      weekIndex: e.detail.value
+      weekIndex: parseInt(e.detail.value)
     })
   },
   selectedFollowLabel(e) {
@@ -201,12 +201,8 @@ Page({
     let month = this.data.monthIndex
     let followActivitiesTag = this.data.followActivitiesTag
     // TODO  上传至数据库
-
-    db.attention.addTag(openid, followActivitiesTag)
-    db.attention.addTime(openid, [{
-      month: month,
-      week: day
-    }]).then(() => {
+    console.log(day)
+    db.attention.addAttention(openid, followActivitiesTag,month,day).then(() => {
       this.data.labelArray.forEach((e,index)=>{
         e.selected = false
         this.data.labelArray[index] = e

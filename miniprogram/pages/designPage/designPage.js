@@ -332,6 +332,9 @@ Page({
   },
   // 发布生活攻略 -- 第一次添加时
   releaseLifeStrategy(e) {
+    wx.showLoading({
+      title: 'wating....',
+    })
     if (!(this.data.isEditLifeStrategy)) {
       let superid = app.globalData.campus._id
       let superType = "campus"
@@ -362,6 +365,10 @@ Page({
           lifeStrategyTitle: "",
           userUploadPhotoes: []
         })
+        wx.hideLoading()
+        wx.showToast({
+          title: '发布成功',
+        })
       })
     } else {
       let draft = {
@@ -371,7 +378,7 @@ Page({
       }
       this.data.userUploadPhotoes.forEach((e, index) => {
         let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
-        console.log("Images: ",)
+        console.log("Images: ", )
         draft.content[index].images.push(images)
       })
       console.log('draft: ', draft)
@@ -395,10 +402,15 @@ Page({
           draftLifeStrategies: [],
           draftLifeStrategySelected: {},
         })
-        this.onReady()
+        wx.hideLoading()
+        wx.showToast({
+          title: '发布成功',
+        })
         this.navigaToEditStrategy()
       })
     }
+    this.onReady()
+
   },
   // 是否保存生活攻略在第一次添加时的编辑
   isSaveLifeStrategy(e) {
@@ -437,6 +449,8 @@ Page({
       console.log(strategy)
       db.strategy.addStrategy(superid, superType, strategy).then(() => {
         this.setData({
+          showIsSaveLifeStrategy: false,
+          draftLifeStrategies: [],
           showCreateLifeStrategy: false,
           lifeStrategyStepNames: [],
           lifeStrategyImages: [],
@@ -474,7 +488,6 @@ Page({
         lifeStrategyIntro: "",
         lifeStrategyTitle: "",
         files: [],
-        draftLifeStrategies: [],
         draftLifeStrategySelected: {},
         showIsSaveLifeStrategyEdit: false
       })
@@ -486,7 +499,7 @@ Page({
       }
       this.data.userUploadPhotoes.forEach((e, index) => {
         let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
-        console.log("Images: ",)
+        console.log("Images: ", )
         draft.content[index].images.push(images)
       })
       console.log('draft: ', draft)
@@ -933,20 +946,24 @@ Page({
           if (res.type == "draft" && res.super.type == "arch") {
             let draft = res.draft;
             draft['id'] = res._id;
-            draftStrategies.push([draft])
+            draftStrategies.push(draft)
           } else if (res.type == 'draft' && res.super.type == 'campus') {
             let draft = res.draft;
             draft['id'] = res._id;
             draftLifeStrategies.push(draft)
           }
+        }).then(() => {
+          this.setData({
+            draftStrategies,
+            draftLifeStrategies
+          })
         })
       })
       resolve()
     }).then(() => {
       this.setData({
         showEditStrategy: true,
-        draftStrategies,
-        draftLifeStrategies
+
       })
       // console.log("关闭Loading")
       wx.hideLoading()
@@ -1002,10 +1019,12 @@ Page({
     this.data.draftStrategies.forEach(item => {
       if (item.id == id) {
         draftStrategySelected = item;
-        item.content[0].image.forEach(e => {
-          e = CloudPathFront + e;
-          image.push(e)
-        })
+        if (item.content.length > 0){
+          item.content[0].image.forEach(e => {
+            e = CloudPathFront + e;
+            image.push(e)
+          })
+        }
         draftStrategySelected.content[0].image = image
       }
     })
@@ -1442,7 +1461,7 @@ Page({
             this.onReady()
             this.navigaToEditPublishedStrategy()
             wx.hideLoading({
-              success: (res) => { },
+              success: (res) => {},
             })
             wx.showToast({
               title: '攻略已删除',

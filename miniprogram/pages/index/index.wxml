@@ -18,9 +18,9 @@
       <view class="funcMask{{isMoreTrue?'isMoreShow':'isMoreHide'}}">
         <view class='funcMaskContent'>
           <view class='funcMaskText' wx:for='{{functions}}' wx:for-index='index' wx:key="index">
-            <view class="index">{{index+1}}</view>
-            <view>
-              <button class="item" bindtap="popup" data-item="{{item}}" wx:if="{{item!='海报'}}">{{item}}</button>
+            <!-- <view class="index">{{index+1}}</view> -->
+            <view style="margin-left: 26rpx ; border:1rpx solid #006699">
+              <button   class="item" bindtap="popup" data-item="{{item}}" wx:if="{{item!='海报'}}">{{item}}</button>
               <button class="item" bindtap="navigatorToPosterArea" data-item="{{item}}"
                 wx:if="{{item=='海报'}}">{{item}}</button>
             </view>
