@@ -128,7 +128,7 @@ Page({
       type: "warn"
     }]
   },
-// 输入生活攻略的标题
+  // 输入生活攻略的标题
   inputLifeStrategyTitle(e) {
     if (this.data.isEditLifeStrategy) {
       let draftLifeStrategySelected = this.data.draftLifeStrategySelected
@@ -272,7 +272,7 @@ Page({
       markers: userPoint,
     })
   },
-// 确定在地图上的标注
+  // 确定在地图上的标注
   confirmMarker(e) {
     let lifeStrategyCoordinates = this.data.lifeStrategyCoordinates
     if (this.data.isEditLifeStrategy) {
@@ -371,7 +371,7 @@ Page({
       }
       this.data.userUploadPhotoes.forEach((e, index) => {
         let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
-        console.log("Images: ", )
+        console.log("Images: ",)
         draft.content[index].images.push(images)
       })
       console.log('draft: ', draft)
@@ -400,7 +400,7 @@ Page({
       })
     }
   },
-   // 是否保存生活攻略在第一次添加时的编辑
+  // 是否保存生活攻略在第一次添加时的编辑
   isSaveLifeStrategy(e) {
     let loopTime = this.data.strategyStep.length;
     if (e.detail.item.text == '不保存') {
@@ -486,7 +486,7 @@ Page({
       }
       this.data.userUploadPhotoes.forEach((e, index) => {
         let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
-        console.log("Images: ", )
+        console.log("Images: ",)
         draft.content[index].images.push(images)
       })
       console.log('draft: ', draft)
@@ -586,7 +586,7 @@ Page({
       })
     }
   },
-    // 草稿箱界面显示建筑攻略的函数
+  // 草稿箱界面显示建筑攻略的函数
   toggleArch() {
     var list_state = this.data.stateArch,
       first_state = this.data.firstClickArch;
@@ -927,25 +927,29 @@ Page({
     })
     let draftStrategies = this.data.draftStrategies
     let draftLifeStrategies = this.data.draftLifeStrategies
-    this.data.draftStrategiesId.forEach(id => {
-      db.strategy.getStrategy(id).then(res => {
-        if (res.type == "draft" && res.super.type == "arch") {
-          let draft = res.draft;
-          draft['id'] = res._id;
-          draftStrategies.push([draft])
-        } else if (res.type == 'draft' && res.super.type == 'campus') {
-          let draft = res.draft;
-          draft['id'] = res._id;
-          draftLifeStrategies.push(draft)
-        }
-      }).then(() => {
-        this.setData({
-          showEditStrategy: true,
-          draftStrategies,
-          draftLifeStrategies
+    new Promise((resolve, reject) => {
+      this.data.draftStrategiesId.forEach(id => {
+        db.strategy.getStrategy(id).then(res => {
+          if (res.type == "draft" && res.super.type == "arch") {
+            let draft = res.draft;
+            draft['id'] = res._id;
+            draftStrategies.push([draft])
+          } else if (res.type == 'draft' && res.super.type == 'campus') {
+            let draft = res.draft;
+            draft['id'] = res._id;
+            draftLifeStrategies.push(draft)
+          }
         })
-        wx.hideLoading()
       })
+      resolve()
+    }).then(() => {
+      this.setData({
+        showEditStrategy: true,
+        draftStrategies,
+        draftLifeStrategies
+      })
+      // console.log("关闭Loading")
+      wx.hideLoading()
     })
   },
   // 进入已发布的攻略界面
@@ -1438,7 +1442,7 @@ Page({
             this.onReady()
             this.navigaToEditPublishedStrategy()
             wx.hideLoading({
-              success: (res) => {},
+              success: (res) => { },
             })
             wx.showToast({
               title: '攻略已删除',
