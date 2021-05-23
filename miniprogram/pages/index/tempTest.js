@@ -6,6 +6,14 @@
 import { db } from "../../util/database/database";
 
 export function launchTest() {
+  // db.attention.addAttention('ojr_35JJZSWh0xHtk_0k9GRJ4TqQ', ['11', '22', '33'], 4, 3)
+
+  // db.attention.removeAttention('ojr_35JJZSWh0xHtk_0k9GRJ4TqQ', {
+  //   value: ['11', '22', '33'],
+  //   month: 4,
+  //   week: 3
+  // })
+
   // db.application.addApplication("cbddf0af609feb0a08bea6c82b6c3522", {
   //   applicant: "233",
   //   title: "2333",
