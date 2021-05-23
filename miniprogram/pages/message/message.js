@@ -22,27 +22,27 @@ Page({
       type: 'warn',
       //src: '/page/weui/cell/icon_love.svg', // icon的路径
     }],
-    showAttentionPage:false,
-    showLifeStrategiesPage:false,
-    publishStrategyIds:[],
-    publishStrategies:[],
-    showLifeStrategyDetail:false,
-    selectedLifeStrategy:null,
-    showMap:false
+    showAttentionPage: false,
+    showLifeStrategiesPage: false,
+    publishStrategyIds: [],
+    publishStrategies: [],
+    showLifeStrategyDetail: false,
+    selectedLifeStrategy: null,
+    showMap: false
   },
-  navigaToAttentionPage(e){
+  navigaToAttentionPage(e) {
     this.setData({
-      showAttentionPage:true
+      showAttentionPage: true
     })
   },
-  navigaToLifeStrategiesPage(e){
+  navigaToLifeStrategiesPage(e) {
     let publishStrategies = []
-    this.data.publishStrategyIds.forEach(id=>{
-      db.strategy.getStrategy(id).then(res=>{
-        if(res.type == 'publish'){
-          res.publish.content.forEach(con=>{
-            con.images.forEach((im,index)=>{
-              im = CloudPathFront+im;
+    this.data.publishStrategyIds.forEach(id => {
+      db.strategy.getStrategy(id).then(res => {
+        if (res.type == 'publish') {
+          res.publish.content.forEach(con => {
+            con.images.forEach((im, index) => {
+              im = CloudPathFront + im;
               con.images[index] = im;
             })
           })
@@ -50,76 +50,82 @@ Page({
           strategy.id = res._id;
           publishStrategies.push(strategy)
         }
-      }).then(()=>{
+      }).then(() => {
         this.setData({
           publishStrategies,
-          showLifeStrategiesPage:true
+          showLifeStrategiesPage: true
         })
       })
     })
   },
-  intoLifeStrategy(e){
+  intoLifeStrategy(e) {
     let id = e.currentTarget.id
-    this.data.publishStrategies.forEach(strategy=>{
-      if(strategy.id == id){
+    this.data.publishStrategies.forEach(strategy => {
+      if (strategy.id == id) {
         this.setData({
-          selectedLifeStrategy:strategy,
-          showLifeStrategiesPage:false,
-          showLifeStrategyDetail:true
+          selectedLifeStrategy: strategy,
+          showLifeStrategiesPage: false,
+          showLifeStrategyDetail: true
         })
       }
     })
   },
-  navigatoMark(e){
+  navigatoMark(e) {
     let markers = []
     let mCampus = getApp().globalData.campus
-    this.data.selectedLifeStrategy.content.forEach(con=>{
+    this.data.selectedLifeStrategy.content.forEach(con => {
       let marker = {
-        id : util.randomNumberId(),
-        longitude:con.coordinates.longitude,
-        latitude:con.coordinates.latitude,
-        width:40,
-        height:55,
-        label:{content:con.name,bgColor:"#F0F8FF",anchorY:-60, fontSize:16, borderRadius:6}
+        id: util.randomNumberId(),
+        longitude: con.coordinates.longitude,
+        latitude: con.coordinates.latitude,
+        width: 40,
+        height: 55,
+        label: {
+          content: con.name,
+          bgColor: "#F0F8FF",
+          anchorY: -60,
+          fontSize: 16,
+          borderRadius: 6
+        }
       }
       markers.push(marker)
     })
     this.setData({
       markers,
-      showMap:true,
-      showLifeStrategyDetail:false,
+      showMap: true,
+      showLifeStrategyDetail: false,
       longitude: mCampus.geo.center.longitude,
       latitude: mCampus.geo.center.latitude
     })
   },
-  returnToLifeStrategyDetail(e){
+  returnToLifeStrategyDetail(e) {
     this.setData({
-      showMap:false,
-      showLifeStrategiesPage:true,
-      markers:[]
+      showMap: false,
+      showLifeStrategiesPage: true,
+      markers: []
     })
   },
-  returnToLifeStrategiesPage(e){
+  returnToLifeStrategiesPage(e) {
     this.setData({
-      selectedLifeStrategy:{},
-      showLifeStrategyDetail:false,
-      showLifeStrategiesPage:true
+      selectedLifeStrategy: {},
+      showLifeStrategyDetail: false,
+      showLifeStrategiesPage: true
     })
   },
-  returnToHomePageFromSP(e){
+  returnToHomePageFromSP(e) {
     this.setData({
-      publishStrategies:[],
-      showLifeStrategiesPage:false
+      publishStrategies: [],
+      showLifeStrategiesPage: false
     })
   },
-  navigaToAttentionPage(e){
+  navigaToAttentionPage(e) {
     this.setData({
-      showAttentionPage:true
+      showAttentionPage: true
     })
   },
-  returnToHomePageFromAP(e){
+  returnToHomePageFromAP(e) {
     this.setData({
-      showAttentionPage:false
+      showAttentionPage: false
     })
   },
   enterMessage(e) {
@@ -127,7 +133,7 @@ Page({
     let message = this.data.messageData
     app.globalData.buildingSelected = message[index].activity
     wx.switchTab({
-      url:'../index/index'
+      url: '../index/index'
     })
     this.setData({
       messageData: message
@@ -139,13 +145,13 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      mapCtx:wx.createMapContext('newMap', this)
+      mapCtx: wx.createMapContext('newMap', this)
     })
   },
-  getSame(arr1,arr2){
-    for(let i = 0; i = arr1.length;i++){
-      for(let j = 0; j = arr2.length; j++){
-        if(arr1[i] == arr2[j]){
+  getSame(arr1, arr2) {
+    for (let i = 0; i = arr1.length; i++) {
+      for (let j = 0; j = arr2.length; j++) {
+        if (arr1[i] == arr2[j]) {
           return true;
         }
       }
@@ -165,45 +171,46 @@ Page({
     let activitiesPoint = [];
     let publishStrategyIds = [];
     db.attention.getAttention(app.globalData.openid).then(res => {
-     attentions = res.attention
+      attentions = res.attention
     }).then(() => {
-      db.point.getPointArray(app.globalData.campus._id).then(r => {
-        r.forEach(point => {
-          if (point.type == 'activity') {
-            activitiesPoint.push(point)
+      db.point.getPointArray(app.globalData.campus._id).then(res => {
+        res.forEach(r => {
+          if (r.type == "activity") {
+            activitiesPoint.push(r);
           }
         })
-      }).then(()=>{
-        attentions.forEach(e=>{
-          let tag = e.value;
-          let month = e.month;
-          let week = e.week;
+        attentions.forEach(atten=>{
+          let month = atten.month;
+          let week = atten.week;
+          let tag = atten.value;
+          //console.log(atten)
           activitiesPoint.forEach(p=>{
-            let pMonth =new Date( p.time.start);
-            pMonth = pMonth.getMonth();
-            let pWeek = new Date( p.time.start );
-            pWeek = pWeek.getDay();
-            // && (week == pWeek) && (month == pMonth)
-            if(this.getSame(tag,p.tag)  ){
+            let start = new Date(p.time.start);
+            let pMonth = start.getMonth();
+            let pWeek  = start.getDay();
+            console.log(p.tag,tag,month,pMonth,week,pWeek)
+            console.log(this.getSame(p.tag,tag),month,pMonth,week,pWeek)
+            // console.log()
+            if(this.getSame(p.tag,tag) && (month == pMonth)&&(week == pWeek))
+            {
               let msgObj = {
                 src : CloudPathFront + p.desc.icon,
                 msg:p.desc.name,
                 activity:p,
-                tag,
-                month,
-                week,
+                tag:tag,
+                
               }
               message.push(msgObj)
-              this.setData({
-                messageData:this.data.messageData.concat(msgObj)
-              })
             }
+          })
+          this.setData({
+            messageData:message
           })
         })
       })
     })
-    db.strategy.getBriefStrategyArray(superid).then(res=>{
-      res.forEach(item=>{
+    db.strategy.getBriefStrategyArray(superid).then(res => {
+      res.forEach(item => {
         publishStrategyIds.push(item._id)
       })
       this.setData({

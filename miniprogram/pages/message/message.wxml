@@ -17,7 +17,7 @@
 </view>
 <!-- 生活攻略简图界面 -->
 <view wx:if="{{showLifeStrategiesPage}}">
-  <view  style="display:block; width:300rpx;align-item:flex-start">
+  <view style="display:block; width:300rpx;align-item:flex-start">
     <button style="padding:0; text-align:left" bindtap="returnToHomePageFromSP">⬅返回</button>
   </view>
   <view class="LifeStrategies" wx:for="{{publishStrategies}}" wx:key="index">
@@ -29,7 +29,7 @@
 </view>
 <!-- 选中具体攻略界面 -->
 <view wx:if="{{showLifeStrategyDetail && showMap ==false}}">
-  <view  style="display:block; width:300rpx;align-item:flex-start">
+  <view style="display:block; width:300rpx;align-item:flex-start">
     <button style="padding:0; text-align:left" bindtap="returnToLifeStrategiesPage">⬅返回</button>
   </view>
   <view class="LifeStrategyDetail">
@@ -60,27 +60,31 @@
 </view>
 <!-- 关注的活动消息页面 -->
 <view wx:if="{{showAttentionPage}}">
-  <view  style="display:block; width:300rpx;align-item:flex-start">
+  <view style="display:block; width:300rpx;align-item:flex-start">
     <button style="padding:0; text-align:left" bindtap="returnToHomePageFromAP">⬅返回</button>
   </view>
   <view class="MessageContainer" wx:if="{{messageData.length>0}}">
-    <input type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx" confirm-type="search"
-      wx:if="{{messageData.length>0}}"></input>
+
+
     <view class="MessageBoxs" wx:for="{{messageData}}" wx:key="item" id="{{index}}" bindtap="enterMessage">
-      <mp-slideview ext-class="MessageBox" buttons="{{slideButtons}}">
+      <!-- buttons="{{slideButtons}}" -->
+      <view class="MessageBox">
         <image src="{{item.src}}" mode="widthFix" class="MessageImage"></image>
         <mp-badget wx:if="{{item.msgNum > 99}}" content="99+"
           style="position:absolute;margin-left: 15px;margin-right: 5px" ext-class="blue" />
         <mp-badget wx:if="{{item.msgNum>0&&item.msgNum<=99}}" content="{{item.msgNum}}"
           style="position:absolute;margin-left: 15px;margin-right: 5px" ext-class="blue" />
         <text>{{item.msg}}</text>
-      </mp-slideview>
+        <view style="margin-left:16rpx; display:inline-block; " wx:for="{{item.tag}}" wx:key="index" wx:for-item="tag">
+          <text style="border:1rpx solid #A9D0F5;font-size:26rpx;font-style:oblique;background:white "> {{tag}}</text>
+        </view>
+      </view>
     </view>
-    
+
   </view>
   <view wx:if="{{messageData.length == 0}}">
-      <text>暂无您关注的活动消息</text>
-    </view>
+    <text>暂无您关注的活动消息</text>
+  </view>
 </view>
 <view wx:if="{{showMap}}">
 
