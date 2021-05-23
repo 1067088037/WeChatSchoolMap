@@ -15,7 +15,7 @@ input {
   border: 1rpx  black;
   background-color: lightgrey;
   /* box-shadow: darkgray 5rpx 5rpx 10rpx; */
-  margin-top: 40rpx;
+  margin-top: 20rpx;
   margin-left: 10rpx;
   margin-right: 10rpx;
   position: relative;

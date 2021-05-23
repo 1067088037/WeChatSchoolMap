@@ -159,7 +159,7 @@ Page({
       selected: false
     }],
     Month: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-    WeekDays: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日', ],
+    WeekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六', ],
     monthIndex: 0,
     weekIndex: 0,
     followActivitiesTag: []
@@ -213,7 +213,6 @@ Page({
         monthIndex:0,
         followActivitiesTag:[],
         labelArray: this.data.labelArray
-
       })
       wx.showToast({
         title: '关注成功',

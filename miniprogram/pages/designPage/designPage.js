@@ -835,6 +835,9 @@ Page({
     return cloudPath
   },
   isSaveEdit(e) {
+    wx.showLoading({
+      title: 'waiting...',
+    })
     if (e.detail.item.text == '不保存') {
       this.setData({
         strategyTitle: "",
@@ -842,8 +845,10 @@ Page({
         strategyBriefIntro: "",
         userUploadPhotoes: [],
         isExitEditStrategy: false,
+        draftStrategies:[],
         draftStrategySelected: null
       })
+      
     } else if (e.detail.item.text == '保存') {
       let content = [];
       let image = this.updatePhotoesToCloud(CloudStrategyPath);
@@ -871,9 +876,15 @@ Page({
         strategyBriefIntro: "",
         userUploadPhotoes: [],
         isExitEditStrategy: false,
-        draftStrategySelected: null
+        draftStrategySelected: null,
+        draftStrategies:[],
       })
     }
+    wx.hideLoading()
+    this.navigaToEditStrategy();
+    wx.showToast({
+      title: '成功',
+    })
   },
   // isDeleteEdit(e) {
   //   if (e.detail.item.text == '返回') {
