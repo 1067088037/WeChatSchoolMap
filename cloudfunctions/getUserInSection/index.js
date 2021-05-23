@@ -37,7 +37,6 @@ exports.main = async (event, context) => {
     result.push({
       _openid: element._openid,
       permission: element.info.permission,
-      isAdmin: element.info.section.admin == event.sectionId,
       nickName: element.userInfo.nickName,
       avatarUrl: element.userInfo.avatarUrl
     })

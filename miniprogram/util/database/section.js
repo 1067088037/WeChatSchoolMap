@@ -27,7 +27,16 @@ export class Section {
       data: {
         sectionId: sectionId
       }
-    }).then(res => res.result).catch(err => [])
+    }).then(res => {
+      let result = res.result
+      _db.collection('section').doc(sectionId).get().then(section => {
+        result.forEach(element => {
+          element.isAdmin = section.data.admin.indexOf(element._openid) != -1,
+          element.isEditor = section.data.editor.indexOf(element._openid) != -1
+        });
+      })
+      return result
+    }).catch(err => [])
   }
 
   /**
@@ -94,7 +103,7 @@ export class Section {
    * @param {string} sectionId 
    * @param {string} openid 
    */
-  async removeAdmin(sectionId, openid) {
+  async removeEditor(sectionId, openid) {
     return await _db.collection('section').doc(sectionId).update({
       data: {
         editor: cmd.pull(openid)
@@ -109,8 +118,8 @@ export class Section {
    * @param {string} openid 要加入的人 默认当前用户
    */
   async joinSection(sectionId, permission, openid = getApp().globalData.openid) {
-    //todo
-    console.error('该方法尚未完工')
+    if (permission == 48) await this.addEditor(sectionId, openid)
+    else if (permission == 64) await this.addAdmin(sectionId, openid)
     return _db.collection('user').doc(openid).update({
       data: {
         'info.section.join': cmd.addToSet(sectionId)

@@ -6,6 +6,11 @@
 import { db } from "../../util/database/database";
 
 export function launchTest() {
+  // db.section.joinSection('28ee4e3e60aa18271b9f99016c6416ca', 32)
+  // db.section.exitSection('28ee4e3e60aa18271b9f99016c6416ca', '"ojr_35JJZSWh0xHtk_0k9GRJ4TqQ"')
+  // db.section.addEditor('28ee4e3e60aa18271b9f99016c6416ca', 'ojr_35JJZSWh0xHtk_0k9GRJ4TqQ')
+  // db.section.getUserInSection('28ee4e3e60aa18271b9f99016c6416ca').then(res => console.log(res))
+
   // db.attention.addAttention('ojr_35JJZSWh0xHtk_0k9GRJ4TqQ', ['11', '22', '33'], 4, 3)
 
   // db.attention.removeAttention('ojr_35JJZSWh0xHtk_0k9GRJ4TqQ', {

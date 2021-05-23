@@ -30,6 +30,14 @@ export class Poster {
   }
 
   /**
+   * 通过海报ID获取海报
+   * @param {string} posterId 
+   */
+  async getPosterById(posterId) {
+    return await _db.collection('poster').doc(posterId).get().then(res => res.data)
+  }
+
+  /**
    * 新建海报
    * @param {string} schoolId 
    * @param {object} poster 包含sender，name，desc，images 不需要传入sendTime
