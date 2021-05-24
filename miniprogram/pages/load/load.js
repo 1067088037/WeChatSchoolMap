@@ -38,7 +38,9 @@ function loadSchoolAndCampus(that) {
           db.campus.getCampus(info.campus).then(campus => {
             // console.log(campus)
             getApp().globalData.campus = campus
+            console.log('校区',campus)
             that.next()
+            console.log('进入index')
           })
         })
       }

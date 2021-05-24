@@ -943,7 +943,7 @@ Page({
     activitiesPoint = []
     realTimeInfoArray =[]
     let mCampus = getApp().globalData.campus
-    // console.log(mCampus.geo.center.latitude)
+    console.log('初始显示的位置:', mCampus.geo.center)
     this.setData({
       longitude: mCampus.geo.center.longitude,
       latitude: mCampus.geo.center.latitude
