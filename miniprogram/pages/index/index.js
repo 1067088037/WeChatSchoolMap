@@ -425,9 +425,8 @@ Page({
   cancelMarker() {
     this.data.markers.pop()
     this.setData({
-      markers: [],
+      markers: visibleArchArray,
       showMarkerDialog: false,
-
     })
     isAdd = false
   },
@@ -632,7 +631,7 @@ Page({
         let lon;
         this.data.mapCtx.getCenterLocation({
           success:res=>{
-            console.log(res)
+            // console.log(res)
             la = res.latitude;
             lon = res.longitude
             var markers_ = [{
