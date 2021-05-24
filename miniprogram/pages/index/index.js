@@ -628,19 +628,30 @@ Page({
         break;
       }
       case "添加": {
-        var markers_ = [{
-          id: util.randomNumberId(),
-          latitude: 23.04866925793428,
-          longitude: 113.40268387434162,
-          width: 40,
-          height: 50
-        }];
-        this.setData({
-          pagePosition: "center",
-          isMoreTrue: false,
-          markers: markers_,
-          showMarkerDialog: true
+        let la;
+        let lon;
+        this.data.mapCtx.getCenterLocation({
+          success:res=>{
+            console.log(res)
+            la = res.latitude;
+            lon = res.longitude
+            var markers_ = [{
+              id: util.randomNumberId(),
+              latitude: la,
+              longitude: lon,
+              width: 40,
+              height: 50
+            }];
+            this.setData({
+              pagePosition: "center",
+              isMoreTrue: false,
+              markers: markers_,
+              showMarkerDialog: true
+            })
+          }
         })
+        
+        
         isAdd = true;
         break;
       }
