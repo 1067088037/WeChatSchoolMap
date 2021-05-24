@@ -86,7 +86,8 @@ export class Attention {
         if (res.total == 0) await _db.collection('attention').add({
           data: {
             _id: openid,
-            attention: []
+            attention: [],
+            poster: []
           }
         })
       })
