@@ -21,7 +21,7 @@
     </view>
     <!-- 建筑的简介 -->
     <view class="Introduction" wx:if="{{selectedStrategy ==null && isCreateNewStrategy == false}}">
-      这里是简介
+      {{building.text}}
     </view>
     <view class="StrategiesArea" wx:if="{{selectedStrategy ==null && isCreateNewStrategy == false }}">
       <view class="Strategies" wx:for="{{strategies}}" wx:key="item">

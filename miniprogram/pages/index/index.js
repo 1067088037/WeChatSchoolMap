@@ -900,13 +900,13 @@ Page({
   onLoad: function (options) {
     
     // 加载后生成MapContext对象
-    console.log("On load")
+    // console.log("On load")
     wx.getLocation({
       type: "gcj02",
       success(res) {
         const latitude = res.latitude
         const longitude = res.longitude
-        console.log(latitude, longitude)
+        // console.log(latitude, longitude)
       }
     })
 
@@ -948,12 +948,12 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    console.log("On Ready")
+    // console.log("On Ready")
     archArray = []
     activitiesPoint = []
     realTimeInfoArray =[]
     let mCampus = getApp().globalData.campus
-    console.log('初始显示的位置:', mCampus.geo.center)
+    // console.log('初始显示的位置:', mCampus.geo.center)
     this.setData({
       longitude: mCampus.geo.center.longitude,
       latitude: mCampus.geo.center.latitude
@@ -970,9 +970,10 @@ Page({
 
     // 从数据库中获取建筑的标点对象
     db.arch.getArchArray(app.globalData.campus._id).then(res => {
-      console.log(res)
+      // 、、console.log(res)
       res.forEach((value, index) => {
         if (value.type == 'canteen') {
+          console.log(value)
           archArray.push({
             _id: value._id,
             id: value.markId,
@@ -982,7 +983,8 @@ Page({
             title: value.name,
             width: 50,
             height: 40,
-            iconPath: "/images/building/canteen.png"
+            iconPath: "/images/building/canteen.png",
+            text:value.text
           })
         } else {
           archArray.push({
@@ -999,7 +1001,7 @@ Page({
       })
     }).then(() => {
       visibleArchArray = []
-      console.log("vvv",visibleArchArray)
+      // 、console.log("vvv",visibleArchArray)
       archArray.forEach((value, index) => {
         if (selectedArchType.indexOf(value.type) != -1) {
           //console.log(archArray.length)
@@ -1069,13 +1071,13 @@ Page({
     tempTest.launchTest() //用于临时测试
     tempTest.dbExample() //数据库函数调用示例
     db.section.getSectionArray(app.globalData.school._id).then(res => {
-      console.log(res, res.data[0].name)
+      // console.log(res, res.data[0].name)
       this.setData({
         departmentsItem: this.data.departmentsItem.concat(res.data[0].name)
       })
     })
     console.log("app", app.globalData.buildingSelected)
-    if (app.globalData.buildingSelected != null) {
+    if ( app.globalData.buildingSelected != null &&app.globalData.buildingSelected.type == "activity" ) {
       let activitySelected = {
         _id: app.globalData.buildingSelected._id,
         id: app.globalData.buildingSelected.markId,

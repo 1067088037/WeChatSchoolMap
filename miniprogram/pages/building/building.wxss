@@ -11,7 +11,7 @@
   margin-top: 20rpx;
   margin-left: 15rpx;
   height: 240rpx;
-  border: 1rpx solid lightgray;
+  /* border: 1rpx solid lightgray; */
 }
 .StrategiesAreaButton{
   margin-top:20rpx;
