@@ -427,6 +427,7 @@ Page({
     this.setData({
       markers: visibleArchArray,
       showMarkerDialog: false,
+      func: ''
     })
     isAdd = false
   },

@@ -6,19 +6,19 @@
     enable-poi="{{true}}" max-scale="20" min-scale="15" bindtap="mapTap">
   </map>
 
-  
+
   <!-- 选择功能页面的实现 -->
-  <view style="position:fixed; bottom:30rpx; width:750rpx">
+  <view style="position:fixed; bottom:30rpx; width:750rpx;">
     <view wx:if="{{isMoreTrue}}">
       <view class="funcMask{{isMoreTrue?'isMoreShow':'isMoreHide'}}">
         <view class='funcMaskContent'>
           <view class='funcMaskText' wx:for='{{functions}}' wx:for-index='index' wx:key="index">
             <!-- <view class="index">{{index+1}}</view> -->
-            <view style="margin-left: 26rpx ; border:1rpx solid #006699">
-              <button   class="item" bindtap="popup" data-item="{{item}}" wx:if="{{item!='海报'}}">{{item}}</button>
-              <button class="item" bindtap="navigatorToPosterArea" data-item="{{item}}"
-                wx:if="{{item=='海报'}}">{{item}}</button>
-            </view>
+            <!-- <view style="margin-left: 26rpx ; border:1rpx solid #006699"> -->
+            <button class="item" bindtap="popup" data-item="{{item}}" wx:if="{{item!='海报'}}">{{item}}</button>
+            <button class="item" bindtap="navigatorToPosterArea" data-item="{{item}}"
+              wx:if="{{item=='海报'}}">{{item}}</button>
+            <!-- </view> -->
           </view>
         </view>
       </view>
@@ -33,20 +33,20 @@
       <input class="search" type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx"
         confirm-type="search" bindconfirm="search"></input>
     </view>
-    
+
 
   </page-container>
   <!-- 筛选界面  -->
   <view wx:if="{{func=='筛选'}}" class="selectShowPoint">
-      <block wx:for="{{archItems}}" wx:key="item" style="margin-bottom:20rpx;border-bottom:0.5rpx solid #eeeeee">
-        <view class='labelView {{item.selected ? "active" : ""}}' data-value="{{item.name}}" 
-          checked="{{item.selected}}" data-index="{{index}}" bindtap="selectArchFunc" id="{{index}}"
-          style="margin-left:14rpx; margin-right:14rpx width:148rpx; border: 1rpx solid {{(item.selected)?'#ff0033':'#006699' }}; color: {{(item.selected)?'#ff0033':'#006699' }};">
-          {{item.name}}
-        </view>
-      </block>
-    </view>
-    <!-- 关注弹窗 -->
+    <block wx:for="{{archItems}}" wx:key="item" style="margin-bottom:20rpx;border-bottom:0.5rpx solid #eeeeee">
+      <view class='labelView {{item.selected ? "active" : ""}}' data-value="{{item.name}}" checked="{{item.selected}}"
+        data-index="{{index}}" bindtap="selectArchFunc" id="{{index}}"
+        style="margin-left:10rpx; margin-right:10rpx width:148rpx; border: 3rpx solid {{(item.selected)?'#ff0033':'#006699' }}; color: {{(item.selected)?'#ff0033':'#006699' }};">
+        {{item.name}}
+      </view>
+    </block>
+  </view>
+  <!-- 关注弹窗 -->
   <view class="FollowDialog" wx:if="{{func=='关注'}}">
     <view class="Follow">
       <text style="display:block;margin-left:26rpx;margin-top:36rpx;">添加关注活动的标签:</text>
@@ -60,16 +60,14 @@
       <block class="selectActivityTimeBlock">
         <mp-cells>
           <mp-cell prop="beginTime" title="期望活动开始月份">
-            <picker  mode="selector" value="{{monthIndex}}" range="{{Month}}" 
-              bindchange="bindfollowMonthChange">
+            <picker mode="selector" value="{{monthIndex}}" range="{{Month}}" bindchange="bindfollowMonthChange">
               <view class="begintime" style="text-align:center;">
                 {{Month[monthIndex]}}
               </view>
             </picker>
           </mp-cell>
           <mp-cell prop="endTime" title="期望活动结束星期">
-            <picker  mode="selector" value="{{weekIndex}}" range="{{WeekDays}}"
-              bindchange="bindfollowWeekDayChange">
+            <picker mode="selector" value="{{weekIndex}}" range="{{WeekDays}}" bindchange="bindfollowWeekDayChange">
               <view class="begin-date">
                 {{WeekDays[weekIndex]}}
               </view>
@@ -79,7 +77,8 @@
       </block>
       <block>
         <button type=""
-          style="text-align:center;line-height:6rpx padding:0rpx; font-size:28rpx; margin-top:14rpx ;right:10rpx;margin-right:4rpx;width:186rpx; border-radius:50rpx;border:1rpx solid #006699;color:#006699 " bindtap="followActivityTap">+关注</button>
+          style="text-align:center;line-height:6rpx padding:0rpx; font-size:28rpx; margin-top:14rpx ;right:10rpx;margin-right:4rpx;width:186rpx; border-radius:50rpx;border:1rpx solid #006699;color:#006699 "
+          bindtap="followActivityTap">+关注</button>
       </block>
     </view>
   </view>
@@ -104,8 +103,9 @@
     <button bindtap="confirmMarker">确定</button>
   </view>
   <!-- 添加图标的实现 -->
-  <view class="moreFunctionIcon">
-    <image class="more" bindtap="showFunction" src="/images/global/add.png"></image>
+  <view class="moreFunctionIcon" wx:if="{{func==''}}">
+    <image class="more" bindtap="showFunction"
+      src="{{!isMoreTrue? '/images/global/add.png' : '/images/global/close.png'}}"></image>
   </view>
 </view>
 <!-- 输入添加的标点的内容 -->
@@ -191,8 +191,8 @@
     <view class="AddLabelArea">
       <text>标签：</text>
       <block wx:for="{{labelArray}}" wx:key="item">
-        <view class='labelView {{item.selected ? "active" : ""}}' data-value="{{item.name}}" 
-          checked="{{item.selected}}" data-index="{{index}}" bindtap="selectedLabel" id="{{index}}"
+        <view class='labelView {{item.selected ? "active" : ""}}' data-value="{{item.name}}" checked="{{item.selected}}"
+          data-index="{{index}}" bindtap="selectedLabel" id="{{index}}"
           style=" border: 1rpx solid {{(item.selected)?'#ff0033':'#726B6B' }}; color: {{(item.selected)?'#ff0033':'#726B6B' }};">
           {{item.name}}
         </view>
@@ -206,6 +206,6 @@
       select="{{selectFile}}" upload="{{uploadFile}}" files="{{files}}" max-count="1">
     </mp-uploader>
   </view>
-  <button type="primary"  bindtap="confirmTap">确定</button>
+  <button type="primary" bindtap="confirmTap">确定</button>
   <button type="" bindtap="returnMarker">返回</button>
 </view>
