@@ -312,7 +312,7 @@ Page({
   bindBeginDateChange(e) {
     this.setData({
       bgdate: e.detail.value,
-      endate:e.detail.value
+      endate: e.detail.value
     })
   },
   /**
@@ -686,6 +686,7 @@ Page({
    */
   selectArchFunc(e) {
     selectedArchType = [];
+    visibleArchArray = [];
     console.log(e)
     let id = parseInt(e.currentTarget.id)
     let archItems = this.data.archItems;
@@ -711,6 +712,7 @@ Page({
         visibleArchArray.push(value)
       }
     })
+    app.globalData.archItem = this.data.archItems
     this.setData({
       archItems,
       markers: visibleArchArray
@@ -886,7 +888,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    
     // 加载后生成MapContext对象
+    console.log("On load")
     wx.getLocation({
       type: "gcj02",
       success(res) {
@@ -895,17 +899,49 @@ Page({
         console.log(latitude, longitude)
       }
     })
+
     // 绑定this才能上传
-    this.setData({
-      selectFile: this.selectFile.bind(this),
-      uploadFile: this.uploadFile.bind(this)
-    })
+    if (app.globalData.archItem.length > 0) {
+      this.setData({
+        selectFile: this.selectFile.bind(this),
+        uploadFile: this.uploadFile.bind(this),
+        archItems: app.globalData.archItem
+      })
+      selectedArchType = []
+      //console.log("SSS",selectedArchType)
+      app.globalData.archItem.forEach(e => {
+        if (e.selected) {
+          selectedArchType.push(e.value)
+        }
+      })
+      //console.log("SSS",selectedArchType)
+    } else {
+      this.setData({
+        selectFile: this.selectFile.bind(this),
+        uploadFile: this.uploadFile.bind(this),
+      })
+      this.data.archItems.forEach(e => {
+        if (e.selected) {
+          if(selectedArchType.indexOf(e.value) != -1){
+            //console.log(selectedArchType)
+          }else{
+            selectedArchType.push(e.value)
+          }
+        }
+      })
+    }
+    //console.log("sss",selectedArchType)
+
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+    console.log("On Ready")
+    archArray = []
+    activitiesPoint = []
+    realTimeInfoArray =[]
     let mCampus = getApp().globalData.campus
     // console.log(mCampus.geo.center.latitude)
     this.setData({
@@ -934,21 +970,6 @@ Page({
             height: 40,
             iconPath: "/images/building/canteen.png"
           })
-          if (app.globalData.buildingSelected == null) {
-            this.setData({
-              markers: this.data.markers.concat({
-                _id: value._id,
-                id: value.markId,
-                latitude: value.geo.coordinates[1],
-                longitude: value.geo.coordinates[0],
-                type: value.type,
-                title: value.name,
-                width: 50,
-                height: 40,
-                iconPath: "/images/building/canteen.png"
-              })
-            })
-          }
         } else {
           archArray.push({
             _id: value._id,
@@ -962,7 +983,18 @@ Page({
           })
         }
       })
+    }).then(() => {
+      visibleArchArray = []
+      console.log("vvv",visibleArchArray)
+      archArray.forEach((value, index) => {
+        if (selectedArchType.indexOf(value.type) != -1) {
+          //console.log(archArray.length)
+          visibleArchArray.push(value)
+        }
+      })
+      //console.log("vvv",visibleArchArray)
     })
+
     // 从数据库中获取标点对象
     db.point.getPointArray(app.globalData.campus._id).then(res => {
       //console.log(res)
@@ -993,26 +1025,33 @@ Page({
             height: 40,
             type: value.type,
             iconPath: "/images/index/realtimeInfo.png",
-
           })
         }
       })
+    }).then(() => {
+      activitiesPoint.forEach((value, index) => {
+        if (selectedArchType.indexOf(value.type) != -1) {
+          visibleArchArray.push(value)
+        }
+      })
+
+      visibleArchArray = visibleArchArray.concat(realTimeInfoArray)
+      
+      this.setData({
+          markers: visibleArchArray
+        })
+     
     })
 
     // 默认显示实时信息标点。
-    const that = this
-    visibleArchArray = realTimeInfoArray
-    setTimeout(() => {
-      that.setData({
-        markers: this.data.markers.concat(visibleArchArray)
-      })
-    }, 2000)
+
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+
     tempTest.launchTest() //用于临时测试
     tempTest.dbExample() //数据库函数调用示例
     db.section.getSectionArray(app.globalData.school._id).then(res => {
@@ -1043,84 +1082,6 @@ Page({
       })
     }
 
-    // dormPoint.forEach(e => {
-    //   // let e = dormPoint[0]
-    //   let arch = {
-    //     name: e.title,
-    //     logo: null,
-    //     type: "dorm",
-    //     geo: db.Geo.Point(e.longitude, e.latitude)
-    //   }
-    //   db.arch.addArch(app.globalData.campus._id, arch)
-    //   console.log(e)
-    // })
-
-    // db.arch.getArchArray('1ace8ef160901b1b008f69ae08b0ee8a').then(arr => {
-    //   arr.forEach(e => {
-    //     db.arch.removeArchById(e._id)
-    //     console.log(e)
-    //   })
-    // })
-
-    // db.point.addPoint(app.globalData.campus._id, [], 'current',
-    //   db.point.generateTimeObj(Date('2020-1-1'),Date('2020-1-2'),Date('2020-1-3'),Date('2020-1-4')),
-    //   db.point.generateDescObj('标点','哈哈哈哈哈哈', 'cloud:/',[]), db.Geo.Point(1,1))
-
-    // db.point.getPointArray(app.globalData.campus._id).then(res => {
-    //   console.log(res)
-    // })
-
-    // db.point.updatePointById('79550af2609276ce1475f6ef13718594', {
-    //   belong: db.cmd.push('123456')
-    // })
-
-    // db.point.removePointById('79550af2609276ce1475f6ef13718594')
-
-    // db.point.removePointByMarkId(2733118894648745)
-
-    // db.like.giveALike('123456')
-
-    // for (let i = 0; i < 5; i++) {
-    // db.comment.addComment('123', 'arch', {
-    //   reply: null,
-    //   text: 'qwq',
-    //   images: []
-    // })
-    // }
-
-    // db.comment.removeComment('e810o28g1ekfvswpx7ul7qmlfbq6g3ii')
-    // db.comment.removeAllComment('123')
-
-    // db.like.giveALike('bcnefaoh58nbpfecpu2b3xewag4ahmqq')
-    // db.like.countLike('bcnefaoh58nbpfecpu2b3xewag4ahmqq').then(res => {
-    //   console.log(res)
-    // })
-
-    // db.like.cancelLike('bcnefaoh58nbpfecpu2b3xewag4ahmqq')
-    // db.like.countLike('bcnefaoh58nbpfecpu2b3xewag4ahmqq').then(res => console.log(res))
-
-    // db.section.addSection('1ace8ef16090a631008f950170cb8165', {
-    //   name: '学生会',
-    //   desc: '就这里啊',
-    //   images: ['123'],
-    //   geo: db.Geo.Point(1,1)
-    // })
-
-    // console.log(new Date('2020-1-1').constructor)
-    // console.log(Date('2020-1-1').constructor)
-
-    // db.section.removeSection('79550af26093a82914b5da045773f1ce')
-
-    // db.comment.addComment('28ee4e3e6093a074165cb26a0b7cae41', 'arch', {
-    //   reply: null,
-    //   text: '6666',
-    //   images: []
-    // })
-
-    // console.log(getApp().globalData.openid)
-    // console.log(db.like.countLike('ytff4it7v1afo3o63p2oqbnrykd1bk7a'))
-
-    // db.like.giveALike('ytff4it7v1afo3o63p2oqbnrykd1bk7a')
   },
 
   /**

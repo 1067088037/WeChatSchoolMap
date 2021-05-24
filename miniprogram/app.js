@@ -8,7 +8,8 @@ App({
     qqMap: null,       //腾讯位置服务实例
     school: null,      //校园信息
     campus: null,      //校区信息
-    buildingSelected:null // 选中建筑对象
+    buildingSelected:null, // 选中建筑对象
+    archItem:[]
   },
   onLaunch: function () {
     if (!wx.cloud) {

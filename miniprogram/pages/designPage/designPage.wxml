@@ -164,8 +164,8 @@
     </view>
     <view class="inputLifeStrategyMainBody">
       <view>
-        <button style="display:inline-block; width:300rpx" bindtap="AddStrategySteps">添加步奏</button>
-        <button style="display:inline-block; margin-left:50rpx width:300rpx" bindtap="ReduceStrategySteps">减少步奏</button>
+        <button style="display:inline-block; width:300rpx" bindtap="AddStrategySteps">添加步骤</button>
+        <button style="display:inline-block; margin-left:50rpx width:300rpx" bindtap="ReduceStrategySteps">减少步骤</button>
       </view>
       <view wx:for="{{strategyStep}}" wx:key="item">
         <view class="inputLifeStrategyStep" id="{{index}}">
