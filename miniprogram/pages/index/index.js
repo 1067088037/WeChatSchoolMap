@@ -958,9 +958,13 @@ Page({
       longitude: mCampus.geo.center.longitude,
       latitude: mCampus.geo.center.latitude
     })
+    let mapContect = wx.createMapContext('myMap', this)
     this.setData({
-      mapCtx: wx.createMapContext('myMap', this),
-      // longitude: getApp().globalData.campus.longitude,
+      mapCtx: mapContect
+    })
+    mapContect.moveToLocation({
+      longitude: mCampus.geo.center.longitude,
+      latitude: mCampus.geo.center.latitude
     })
     let campusId = app.globalData.campus._id
 
