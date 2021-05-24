@@ -7,7 +7,6 @@ export class Arch {
   /**
    * 获取全部建筑物信息
    * @param {string} campusId 校区ID
-   * @returns {Array} 建筑物数组 
    */
   async getArchArray(campusId) {
     let serverTime = new Date(getApp().globalData.campus.archLastUpdateTime).getTime()
@@ -72,6 +71,7 @@ export class Arch {
           logo: arch.logo,
           type: arch.type,
           geo: arch.geo,
+          text: arch.text,
           markId: util.randomNumberId()
         }
       })
