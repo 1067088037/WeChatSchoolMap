@@ -6,6 +6,42 @@ const util = require('../util')
 
 export class Poster {
   /**
+   * 添加海报的关注
+   * @param {String} openid 
+   * @param {String} posterId 
+   */
+  async addAttention(openid, posterId) {
+    await db.attention.checkInit(openid)
+    return await _db.collection('attention').doc(openid).update({
+      data: {
+        poster: cmd.addToSet(posterId)
+      }
+    })
+  }
+
+  /**
+   * 删除海报的关注
+   * @param {string} openid 
+   * @param {string} posterId 
+   */
+  async removeAttention(openid, posterId) {
+    await db.attention.checkInit(openid)
+    return await _db.collection('attention').doc(openid).update({
+      data: {
+        poster: cmd.pull(posterId)
+      }
+    })
+  }
+
+  /**
+   * 获取关注的海报
+   * @param {string} openid 
+   */
+  async getAttention(openid) {
+    return await _db.collection('attention').doc(openid).get().then(res => res.data.poster)
+  }
+
+  /**
    * 获取全校的海报
    * @param {string} schoolId 
    */

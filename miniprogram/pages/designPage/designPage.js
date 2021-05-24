@@ -25,7 +25,8 @@ Page({
     mapHeight: SCREEN_WIDTH * RATE,
     showUploadPostArea: false, // 显示上传海报界面
     showEditStrategy: false, // 显示编辑攻略界面
-    showMyPost: false,
+    showMyPost: false,//显示我的海报界面
+    showChangeMyPost: false,//显示修改海报界面
     draftStrategiesId: [], // 草稿攻略的id合集
     draftStrategies: [], // 草稿攻略合集
     draftLifeStrategies: [], // 全局草稿攻略
@@ -49,6 +50,8 @@ Page({
     publishedPoint: [], // 保存用户发布的活动标点
     myPost: [], //用户发布的海报
     myPostNumber: 0, //用户发布的海报数目
+    postNeedChange: "",
+    postNeedChangeid: "",
     dialogButtons: [{
       text: "不保存"
     }, {
@@ -378,7 +381,7 @@ Page({
       }
       this.data.userUploadPhotoes.forEach((e, index) => {
         let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
-        console.log("Images: ", )
+        console.log("Images: ",)
         draft.content[index].images.push(images)
       })
       console.log('draft: ', draft)
@@ -499,7 +502,7 @@ Page({
       }
       this.data.userUploadPhotoes.forEach((e, index) => {
         let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
-        console.log("Images: ", )
+        console.log("Images: ",)
         draft.content[index].images.push(images)
       })
       console.log('draft: ', draft)
@@ -650,6 +653,11 @@ Page({
       userUploadPosters: []
     })
   },
+  backToHomePageFromMyPost() {
+    this.setData({
+      showMyPost: false
+    })
+  },
   sendPhoto() {
     this.data.userUploadPosters.forEach((e, i) => {
       const filepath = e;
@@ -678,6 +686,9 @@ Page({
     wx.navigateTo({
       url: '../../pages/posterArea/posterArea',
     });
+    this.setData({
+      showUploadPostArea: false
+    })
   },
   //出现我的海报页面，从数据库中加载数据
   navigaToMyPost() {
@@ -691,6 +702,68 @@ Page({
       })
       //console.log("嘿嘿嘿嘿我发布的海报")
       //console.log(res)
+    })
+  },
+  ChangeThisPost(e) {
+    this.setData({
+      postNeedChangeid: e.currentTarget.id,
+      showChangeMyPost: true,
+      showMyPost: false
+    })
+    db.poster.getPosterById(e.currentTarget.id).then(res => {
+      console.log(res)
+      this.setData({
+        postNeedChange: res
+      })
+    })
+  },
+  DeleteThisPost(e) {
+    db.poster.removePoster(e.currentTarget.id).then(res => {
+    }),
+      db.poster.getPosterByOpenid(getApp().globalData.openid).then(res => {
+        this.setData({
+          myPost: res,
+          myPostNumber: res.length,
+          showMyPost:false
+        })
+      })
+  },
+  postNoChange() {
+    this.setData({
+      showChangeMyPost: false
+    })
+  },
+  ChangeThisPostNow() {
+    //console.log(this.data.userUploadPosters);
+    //postNeedChange
+    if(this.data.postTitleInput != "")
+    this.setData({
+      postNeedChange: ({
+        name: this.data.postTitleInput,
+      })
+    })
+    if(this.data.postContentInput != "")
+    this.setData({
+      postNeedChange: ({
+        desc: this.data.postContentInput,
+      })
+    })
+    
+    this.setData({
+      postNeedChange: ({
+        images: this.data.userUploadPosters
+      })
+    })
+
+    db.poster.updatePoster(this.data.postNeedChangeid, this.data.postNeedChange).then(res => {
+      //console.log(res),
+      //console.log("改了改了看这里")
+    })
+    wx.navigateTo({
+      url: '../../pages/posterArea/posterArea',
+    });
+    this.setData({
+      showChangeMyPost: false
     })
   },
   //下列一系列函数是图片上传相关函数
@@ -1030,7 +1103,7 @@ Page({
     this.data.draftStrategies.forEach(item => {
       if (item.id == id) {
         draftStrategySelected = item;
-        if (item.content.length > 0){
+        if (item.content.length > 0) {
           item.content[0].image.forEach(e => {
             e = CloudPathFront + e;
             image.push(e)
@@ -1472,7 +1545,7 @@ Page({
             this.onReady()
             this.navigaToEditPublishedStrategy()
             wx.hideLoading({
-              success: (res) => {},
+              success: (res) => { },
             })
             wx.showToast({
               title: '攻略已删除',

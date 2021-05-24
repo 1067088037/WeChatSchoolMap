@@ -6,6 +6,10 @@
 import { db } from "../../util/database/database";
 
 export function launchTest() {
+  // db.poster.addAttention('ojr_35JJZSWh0xHtk_0k9GRJ4TqQ', '123456')
+  // db.poster.removeAttention('ojr_35JJZSWh0xHtk_0k9GRJ4TqQ', '123456')
+  // db.poster.getAttention('ojr_35JJZSWh0xHtk_0k9GRJ4TqQ').then(res => console.log(res))
+
   // db.section.joinSection('b00064a760aa24991a15885a5d6d5ae8', 48)
   // db.section.exitSection('b00064a760aa24991a15885a5d6d5ae8', 'ojr_35JJZSWh0xHtk_0k9GRJ4TqQ')
   // db.section.addAdmin('b00064a760aa24991a15885a5d6d5ae8', 'ojr_35JJZSWh0xHtk_0k9GRJ4TqQ')
