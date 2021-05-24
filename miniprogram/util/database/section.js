@@ -106,7 +106,7 @@ export class Section {
   /**
    * 加入社团
    * @param {string} sectionId 要加入的社团
-   * @param {string} permission 权限 只能传入 32 48 64
+   * @param {Number} permission 权限 只能传入 32 48 64
    * @param {string} openid 要加入的人 默认当前用户
    */
   async joinSection(sectionId, permission, openid = getApp().globalData.openid) {
@@ -195,5 +195,13 @@ export class Section {
     return _db.collection('section').doc(sectionId).update({
       data: section
     })
+  }
+
+  /**
+   * 通过社团ID获取社团
+   * @param {string} sectionId 
+   */
+  async getSectionById(sectionId) {
+    return await _db.collection('section').doc(sectionId).get().then(res => res.data)
   }
 }
