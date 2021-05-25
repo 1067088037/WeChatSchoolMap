@@ -69,7 +69,8 @@ image {
   height: 110rpx;
 
 }
-.publishedArchStrategies{
+
+.publishedArchStrategies {
   display: inline-block;
   width: 750rpx;
   height: auto;
@@ -79,7 +80,8 @@ image {
   margin-top: 20rpx;
   align-items: center;
 }
-.publishedLifeStrategies{
+
+.publishedLifeStrategies {
   display: inline-block;
   width: 750rpx;
   height: auto;
@@ -89,6 +91,7 @@ image {
   margin-top: 20rpx;
   align-items: center;
 }
+
 ._hover_list {
   opacity: 0.9;
   background: #eeeeee;
@@ -96,7 +99,22 @@ image {
 
 .post {
   margin-top: 20rpx;
-  margin-left: 620rpx;
+  margin-left: 200rpx;
+}
+
+.postView {
+  width: 50%;
+}
+.cancleOrPost{
+  display:flex;
+}
+.cancle {
+  margin-top: 20rpx;
+  margin-left: 50rpx;
+}
+
+.cancleView {
+  width: 50%;
 }
 
 .showStrategyForArch {

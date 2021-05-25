@@ -49,6 +49,7 @@ Page({
     postSenderNickname: [], //海报作者昵称
     publishedPoint: [], // 保存用户发布的活动标点
     myPost: [], //用户发布的海报
+    myPostImagesUrl: [],//因为uploader里面的file中的属性不是string而是url，所以我再创建这个数组交
     myPostNumber: 0, //用户发布的海报数目
     postNeedChange: "",
     postNeedChangeid: "",
@@ -659,6 +660,7 @@ Page({
     })
   },
   sendPhoto() {
+
     this.data.userUploadPosters.forEach((e, i) => {
       const filepath = e;
       const name = util.randomId()
@@ -704,17 +706,31 @@ Page({
       //console.log(res)
     })
   },
+  //点击了修改，转到修改界面，并且加载原来的数据
   ChangeThisPost(e) {
-    this.setData({
+    var that = this;
+    that.setData({
       postNeedChangeid: e.currentTarget.id,
       showChangeMyPost: true,
       showMyPost: false
     })
     db.poster.getPosterById(e.currentTarget.id).then(res => {
       console.log(res)
-      this.setData({
+      that.setData({
         postNeedChange: res
       })
+      let postNeedChangeImagesArray = Array.from(res.images);
+      var imagesUrl = that.data.myPostImagesUrl;
+      postNeedChangeImagesArray.forEach(function (imageString, index) {
+        let im = {
+          url: imageString
+        }
+        imagesUrl[index] = im;
+        that.setData({
+          myPostImagesUrl: imagesUrl
+        })
+      })
+      //myPostImagesUrl
     })
   },
   DeleteThisPost(e) {
@@ -724,7 +740,7 @@ Page({
         this.setData({
           myPost: res,
           myPostNumber: res.length,
-          showMyPost:false
+          showMyPost: false
         })
       })
   },
@@ -736,35 +752,42 @@ Page({
   ChangeThisPostNow() {
     //console.log(this.data.userUploadPosters);
     //postNeedChange
-    if(this.data.postTitleInput != "")
-    this.setData({
-      postNeedChange: ({
-        name: this.data.postTitleInput,
-      })
-    })
-    if(this.data.postContentInput != "")
-    this.setData({
-      postNeedChange: ({
-        desc: this.data.postContentInput,
-      })
-    })
-    
-    this.setData({
-      postNeedChange: ({
-        images: this.data.userUploadPosters
-      })
-    })
+    var that = this;
+    if (this.data.postTitleInput != "")
+      this.data.postNeedChange.name = this.data.postTitleInput;
+    if (this.data.postContentInput != "")
+      this.data.postNeedChange.desc = this.data.postContentInput;
 
+    // let myPostUrlArray = Array.from(this.data.myPostImagesUrl)
+    // var myPostImgaesString = [];
+    // myPostUrlArray.forEach(function (postUrl, index) {
+    //   //console.log("这里看看")
+    //   //console.log(postUrl.url.url)
+    //   myPostImgaesString[index] = postUrl.url.url//得到string类型
+    //   that.data.postNeedChange.images = myPostImgaesString
+    // })
+
+    this.setData({
+      postNeedChange: this.data.postNeedChange
+    })
+    //console.log(this.data.postNeedChange)
     db.poster.updatePoster(this.data.postNeedChangeid, this.data.postNeedChange).then(res => {
       //console.log(res),
-      //console.log("改了改了看这里")
+      console.log("改了改了看这里")
+    })
+    db.poster.getPosterByOpenid(getApp().globalData.openid).then(res => {
+      this.setData({
+        myPost: res,
+        myPostNumber: res.length,
+        showMyPost: false
+      })
+    })
+    this.setData({
+      showChangeMyPost: false
     })
     wx.navigateTo({
       url: '../../pages/posterArea/posterArea',
     });
-    this.setData({
-      showChangeMyPost: false
-    })
   },
   //下列一系列函数是图片上传相关函数
   /**
@@ -918,10 +941,10 @@ Page({
         strategyBriefIntro: "",
         userUploadPhotoes: [],
         isExitEditStrategy: false,
-        draftStrategies:[],
+        draftStrategies: [],
         draftStrategySelected: null
       })
-      
+
     } else if (e.detail.item.text == '保存') {
       let content = [];
       let image = this.updatePhotoesToCloud(CloudStrategyPath);
@@ -950,7 +973,7 @@ Page({
         userUploadPhotoes: [],
         isExitEditStrategy: false,
         draftStrategySelected: null,
-        draftStrategies:[],
+        draftStrategies: [],
       })
     }
     wx.hideLoading()

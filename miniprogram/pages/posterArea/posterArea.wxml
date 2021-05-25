@@ -35,17 +35,17 @@
           <text class="time">{{item.sendTime}}</text>
         </view>
         <text class="postTitle">{{item.name}}</text>
-        <image src="{{item.images[0]}}" mode="widthFix"></image>
+
+        <image wx:if="{{item.images != []}}" src="{{item.images[0]}}" mode="widthFix"></image>
+
         <text>
           {{item.desc}}
         </text>
         <view class="collectOrLike">
-          <image
-            src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/collect.png">
-          </image>
-          <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/like.png">
-          </image>
-          <text>0</text>
+          <view id="{{item._id}}" bindtap="attentionOrCancelAttention">
+            <image src="{{imagesAttention[index]}}">
+            </image>
+          </view>
         </view>
 
       </view>
