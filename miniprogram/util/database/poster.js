@@ -38,6 +38,7 @@ export class Poster {
    * @param {string} openid 
    */
   async getAttention(openid) {
+    await db.attention.checkInit(openid)
     return await _db.collection('attention').doc(openid).get().then(res => res.data.poster)
   }
 
