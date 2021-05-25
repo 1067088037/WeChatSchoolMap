@@ -129,6 +129,7 @@ export class Poster {
     if (poster.constructor != Object) {
       console.error('poster类型非法')
     } else {
+      poster._id = undefined
       return await _db.collection('poster').doc(posterId).update({
         data: poster
       })
