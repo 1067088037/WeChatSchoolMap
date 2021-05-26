@@ -28,14 +28,7 @@ export class Section {
         sectionId: sectionId
       }
     }).then(res => {
-      let result = res.result
-      _db.collection('section').doc(sectionId).get().then(section => {
-        result.forEach(element => {
-          element.isAdmin = section.data.admin.indexOf(element._openid) != -1,
-            element.isEditor = section.data.editor.indexOf(element._openid) != -1
-        });
-      })
-      return result
+      return res.result
     }).catch(err => [])
   }
 

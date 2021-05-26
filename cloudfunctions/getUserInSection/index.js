@@ -32,15 +32,20 @@ exports.main = async (event, context) => {
     }
   })
 
-  let result = []
-  res.data.forEach(element => {
-    result.push({
-      _openid: element._openid,
-      permission: element.info.permission,
-      nickName: element.userInfo.nickName,
-      avatarUrl: element.userInfo.avatarUrl
+  return await db.collection('section').doc(event.sectionId).get().then(section => {
+    // console.log(section)
+    let result = []
+    res.data.forEach(element => {
+      result.push({
+        _openid: element._openid,
+        permission: element.info.permission,
+        nickName: element.userInfo.nickName,
+        avatarUrl: element.userInfo.avatarUrl,
+        isAdmin: section.data.admin.indexOf(element._openid) != -1,
+        isEditor: section.data.editor.indexOf(element._openid) != -1
+      })
     })
+    // console.log(result)
+    return result
   })
-
-  return result
 }
