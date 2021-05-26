@@ -33,6 +33,22 @@ export class Section {
   }
 
   /**
+   * 获取单个用户的权限
+   * @param {string} sectionId 
+   * @param {string} openid 
+   */
+  async getUserPermission(sectionId, openid) {
+    return await _db.collection('section').doc(sectionId).get().then(res => {
+      let data = res.data
+      return {
+        openid: openid,
+        isAdmin: data.admin.indexOf(openid) != -1,
+        isEditor: data.editor.indexOf(openid) != -1
+      }
+    })
+  }
+
+  /**
    * 获取该校区的所有管理员
    * @param {string} sectionId 
    */
