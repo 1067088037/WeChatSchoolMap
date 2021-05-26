@@ -1026,7 +1026,7 @@ Page({
             width: 60,
             height: 70,
             type: value.type,
-            iconPath: (value.desc.icon == "") ? value.desc.icon : "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/" + value.desc.icon,
+            iconPath: (value.desc.icon == "") ? value.desc.icon :  value.desc.icon,
             text: value.desc.text,
             images: value.desc.images
           })
