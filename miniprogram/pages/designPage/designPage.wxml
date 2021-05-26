@@ -172,7 +172,10 @@
     wx:if="{{showEditStrategy && draftStrategySelected == null}}">
     <button style="width:200rpx;margin-left:0rpx; padding:0;" bindtap="returnFromDraftPage"> ⬅返回 </button>
     <view class="unFinishStrategy">
-      <view class="showStrategyForArch" bindtap="toggleArch" decode> ▼点评攻略草稿箱</view>
+      <view class="showStrategyForArch" bindtap="toggleArch" decode wx:if="{{!stateArch}}">
+        <text style="margin-left:0rpx">▶点评攻略草稿箱</text></view>
+      <view class="showStrategyForArch" bindtap="toggleArch" decode wx:if="{{stateArch}}">
+        <text style="margin-left:0rpx">▼点评攻略草稿箱</text> </view>
       <view id="strategyForArchBox" class="{{firstClickArch?'show':'hide'}} {{stateArch?'open':'close'}}">
         <scroll-view class="strategyForArchList" scroll-y="true">
           <view class="strategyForArch" wx:for="{{draftStrategies}}" wx:key="item" id="{{item.id}}"
@@ -181,7 +184,12 @@
           </view>
         </scroll-view>
       </view>
-      <view class="showStrategySchool" bindtap="toggleSchool"> ▼生活攻略草稿箱</view>
+      <view class="showStrategySchool" bindtap="toggleSchool" wx:if="{{!stateSchool}}">
+         
+          ▶生活攻略草稿箱
+        </view>
+      <view class="showStrategySchool" bindtap="toggleSchool" wx:if="{{stateSchool}}">
+          ▼生活攻略草稿箱</view>
       <view id="strategyForSchoolBox" class="{{firstClickSchool?'show':'hide'}} {{stateSchool?'open':'close'}}">
         <scroll-view class="strategySchoolList" scroll-y="true">
           <view class="strategyForSchool" wx:for="{{draftLifeStrategies}}" wx:key="item" id="{{item.id}}"
@@ -293,10 +301,11 @@
 
   <!-- 编辑发布标点 -->
   <view class="EditPublishedPoint" wx:if="{{showEditPoint}}">
-  
-      <button style="width:200rpx;margin-left:0rpx; padding:0; display:inline-block" bindtap="returnFromEditPoint"> ⬅返回 </button>
-      
-    
+
+    <button style="width:200rpx;margin-left:0rpx; padding:0; display:inline-block" bindtap="returnFromEditPoint"> ⬅返回
+    </button>
+
+
     <view class="PublishedPointList" wx:if="{{showEditPointPage==false}}">
       <view class="PublishedPoints" wx:if="{{publishedPoint != []}}" wx:for="{{publishedPoint}}" wx:key="item">
         <view class="markContainer" style="margin-top:20rpx">
@@ -311,9 +320,10 @@
       </view>
     </view>
     <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/delete.png"
-        mode="scaleToFill" style="width:50rpx;height:50rpx; margin-left:450rpx" bindtap="showDeletePointDraft" wx:if="{{showEditPointPage}}"></image>
+      mode="scaleToFill" style="width:50rpx;height:50rpx; margin-left:450rpx" bindtap="showDeletePointDraft"
+      wx:if="{{showEditPointPage}}"></image>
     <view class="EditPointPage" wx:if="{{showEditPointPage}}">
-      
+
       <mp-cells title="标记点信息">
         <!-- 输入标点的名称 -->
         <mp-cell prop="markerPointName" title="标记点名称">
