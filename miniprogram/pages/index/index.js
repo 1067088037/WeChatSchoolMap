@@ -7,7 +7,7 @@ let SCREEN_WIDTH = 750; // 屏幕宽度
 let RATE = wx.getSystemInfoSync().screenHeight / wx.getSystemInfoSync().screenWidth // 比率
 const app = getApp() // 小程序全局
 const tempTest = require('./tempTest')
-
+const CloudPathFront = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/";
 
 const shopPoint = [{
 
@@ -506,7 +506,7 @@ Page({
       const filepath = e;
       let name = util.randomId()
       const cloudpath = "School/4144010561/images/Point/" + type + name + filepath.match(/\.[^.]+?$/)[0]
-      images.push(cloudpath)
+      images.push(CloudPathFront+cloudpath)
       console.log(cloudpath)
       wx.cloud.uploadFile({
         cloudPath: cloudpath,
@@ -535,7 +535,7 @@ Page({
         },
         fail: console.error
       })
-      return cloudPath
+      return CloudPathFront+cloudPath
     }
     return ""
   },
@@ -577,10 +577,12 @@ Page({
     let desc = db.point.generateDescObj(name, text, icon, images)
 
     db.point.addPoint(campusId, belongs, type, time, desc, db.Geo.Point(newPoint.longitude, newPoint.latitude), this.data.newMarkerTag)
+    
     this.setData({
       isAddedMarker: false,
       showMarkerDialog: false,
-      func: ''
+      func: '',
+      markers: []
     })
     this.onReady()
   },
@@ -1081,7 +1083,8 @@ Page({
       })
     })
     console.log("app", app.globalData.buildingSelected)
-    if (app.globalData.buildingSelected != null && app.globalData.buildingSelected.type == "activity") {
+    if ( app.globalData.buildingSelected != null &&app.globalData.buildingSelected.type == "activity" && app.globalData.buildingSelected['geo'] != undefined ) {
+      // console.log("appSelected:",app.globalData.buildingSelected)
       let activitySelected = {
         _id: app.globalData.buildingSelected._id,
         id: app.globalData.buildingSelected.markId,
@@ -1091,7 +1094,7 @@ Page({
         latitude: app.globalData.buildingSelected.geo.coordinates[1],
         title: app.globalData.buildingSelected.desc.name,
         type: app.globalData.buildingSelected.type,
-        iconPath: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/" + app.globalData.buildingSelected.desc.icon,
+        iconPath:  app.globalData.buildingSelected.desc.icon,
         text: app.globalData.buildingSelected.desc.text
       }
 
