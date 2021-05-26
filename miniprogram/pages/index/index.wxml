@@ -206,6 +206,7 @@
       select="{{selectFile}}" upload="{{uploadFile}}" files="{{files}}" max-count="1">
     </mp-uploader>
   </view>
-  <button type="primary" bindtap="confirmTap">确定</button>
-  <button type="" bindtap="returnMarker">返回</button>
+  <button type="primary" bindtap="confirmTap" style="box-shadow: 0rpx 6rpx 12rpx 4rpx rgba(128, 128, 128, 0.2);">确定</button>
+  <button type="default" bindtap="returnMarker" style="box-shadow: 0rpx 6rpx 12rpx 4rpx rgba(128, 128, 128, 0.2);">返回</button>
+  <view style="height:40rpx"></view>
 </view>

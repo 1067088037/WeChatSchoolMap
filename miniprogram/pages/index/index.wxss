@@ -207,10 +207,10 @@
   bottom: 300rpx;
   left: 35rpx;
   height: 644rpx;
-  border-radius: 40rpx;
-  background: rgba(255, 255, 255, 0.6);
+  border-radius: 30rpx;
+  background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(4rpx);
-  box-shadow: 10rpx 0rpx 50rpx 10rpx rgba(200, 200, 200, 0.5);
+  box-shadow: 10rpx 0rpx 50rpx 12rpx rgba(200, 200, 200, 0.5);
 }
 
 view.weui-dialog__wrp.FollowDialog>view>view.weui-dialog__ft {

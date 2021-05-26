@@ -52,18 +52,18 @@
   <view class="uploadPosterArea" wx:if="{{showUploadPostArea}}">
     <mp-cells>
       <mp-cell title="活动名称">
-        <input type="text" placeholder="请输入活动名称" bindinput="getPostTitle"></input>
+        <input type="text" placeholder="请输入活动名称" bindinput="getPostTitle" style="margin-left:12rpx"></input>
       </mp-cell>
       <mp-cell>
         <mp-uploader delete="{{true}}" title="海报上传" max-count="9" files="{{file}}" select="{{selectFile}}"
           upload="{{uplaodFile}}" bindfail="uplaodError" bindsuccess="uploadSuccess"> </mp-uploader>
       </mp-cell>
       <mp-cell title="活动介绍">
-        <input type="text" placeholder="请输入活动介绍" bindinput="getPostContent"></input>
+        <input type="text" placeholder="请输入活动介绍" bindinput="getPostContent" style="margin-left:12rpx"></input>
       </mp-cell>
       <view class="cancleOrPost">
         <view class="cancleView">
-          <button size="mini" class="cancle" type="primary" bindtap="backToHomePage">取消</button>
+          <button size="mini" class="cancle" type="default" bindtap="backToHomePage">取消</button>
         </view>
         <view class="postView">
           <button size="mini" class="post" type="primary" bindtap="sendPhoto" bindtap="sendPost">发表</button>
@@ -210,9 +210,9 @@
           select="{{selectFile}}" upload="{{uplaodFile}}" files="{{files[index]}}" max-count="9" title=""
           binddelete="deletePhotoes" id="{{index}}" bindselect="selectPhotoes">
         </mp-uploader>
-        <view>
+        <view style="margin-left:20rpx; margin-top:20rpx">
           <text>添加标点</text>
-          <image id="{{index}}" bindtap="needMark" style="height:50rpx;width:50rpx"
+          <image style="margin-left:20rpx" id="{{index}}" bindtap="needMark" style="height:50rpx;width:50rpx"
             src="../../images/global/navigation.png"></image>
         </view>
       </view>
@@ -223,11 +223,13 @@
       <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/delete.png"
         mode="scaleToFill" style="width:100%;height:100%" bindtap="showDeleteDraftLifeStrategy"></image>
     </view>
-    <view>
-      <button style="display:inline-block; width:300rpx; margin-left:30rpx;border:1rpx solid red"
-        bindtap="cancelCreateLifeStrategy">取消</button>
+    <view style="margin-top:30rpx">
+      <button
+        style="display:inline-block; width:300rpx; margin-left:30rpx; box-shadow: 0rpx 0rpx 8rpx 2rpx rgba(128, 128, 128, 0.2);"
+        type="default" bindtap="cancelCreateLifeStrategy">取消</button>
       <button style="display:inline-block; width:300rpx;margin-left:50rpx" type="primary"
         bindtap="releaseLifeStrategy">发布</button>
+      <view style="height:20rpx"></view>
     </view>
     <mp-dialog show="{{showIsSaveLifeStrategy}}" buttons="{{savePointButtons}}" title="是否保存"
       bindbuttontap="isSaveLifeStrategy">
