@@ -194,11 +194,10 @@ Page({
             if(this.getSame(p.tag,tag) && (month == pMonth)&&(week == pWeek))
             {
               let msgObj = {
-                src : CloudPathFront + p.desc.icon,
+                src :  p.desc.icon,
                 msg:p.desc.name,
                 activity:p,
                 tag:tag,
-                
               }
               message.push(msgObj)
             }

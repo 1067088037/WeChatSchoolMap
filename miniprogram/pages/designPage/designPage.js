@@ -25,8 +25,8 @@ Page({
     mapHeight: SCREEN_WIDTH * RATE,
     showUploadPostArea: false, // 显示上传海报界面
     showEditStrategy: false, // 显示编辑攻略界面
-    showMyPost: false,//显示我的海报界面
-    showChangeMyPost: false,//显示修改海报界面
+    showMyPost: false, //显示我的海报界面
+    showChangeMyPost: false, //显示修改海报界面
     draftStrategiesId: [], // 草稿攻略的id合集
     draftStrategies: [], // 草稿攻略合集
     draftLifeStrategies: [], // 全局草稿攻略
@@ -49,7 +49,7 @@ Page({
     postSenderNickname: [], //海报作者昵称
     publishedPoint: [], // 保存用户发布的活动标点
     myPost: [], //用户发布的海报
-    myPostImagesUrl: [],//因为uploader里面的file中的属性不是string而是url，所以我再创建这个数组交
+    myPostImagesUrl: [], //因为uploader里面的file中的属性不是string而是url，所以我再创建这个数组交
     myPostNumber: 0, //用户发布的海报数目
     postNeedChange: "",
     postNeedChangeid: "",
@@ -526,7 +526,7 @@ Page({
       }
       this.data.userUploadPhotoes.forEach((e, index) => {
         let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
-        console.log("Images: ",)
+        console.log("Images: ", )
         draft.content[index].images.push(images)
       })
       console.log('draft: ', draft)
@@ -647,7 +647,7 @@ Page({
       }
       this.data.userUploadPhotoes.forEach((e, index) => {
         let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
-        console.log("Images: ",)
+        console.log("Images: ", )
         draft.content[index].images.push(images)
       })
       console.log('draft: ', draft)
@@ -878,8 +878,7 @@ Page({
     })
   },
   DeleteThisPost(e) {
-    db.poster.removePoster(e.currentTarget.id).then(res => {
-    }),
+    db.poster.removePoster(e.currentTarget.id).then(res => {}),
       db.poster.getPosterByOpenid(getApp().globalData.openid).then(res => {
         this.setData({
           myPost: res,
@@ -1074,26 +1073,27 @@ Page({
     })
     return CloudPathFront + cloudPath;
   },
-  uploadPointPhotoToCloud(){
+  uploadPointPhotoToCloud() {
     let images = []
     let name = util.randomId();
-    this.data.userUploadPhotoes = this.data.selectedPoint.desc.images.concat(this.data.userUploadPhotoes);
-    let files = this.data.userUploadPhotoes;
-    console.log(files)
-    let type = this.data.selectedPoint.type
-    files.forEach(image=>{
-      let cloudPath = "School/4144010561/images/Point/" + type + name + image.match(/\.[^.]+?$/)[0];
-      console.log(cloudPath)
-      wx.cloud.uploadFile({
-        cloudPath: cloudPath,
-        filePath: image,
-        success: res => {
-          console.log(res.fileId)
-        },
-        fail: console.error
+    if (this.data.userUploadPhotoes.length > 0) {
+      let files = this.data.userUploadPhotoes;
+      console.log(files)
+      let type = this.data.selectedPoint.type
+      files.forEach(image => {
+        let cloudPath = "School/4144010561/images/Point/" + type + name + image.match(/\.[^.]+?$/)[0];
+        console.log(cloudPath)
+        wx.cloud.uploadFile({
+          cloudPath: cloudPath,
+          filePath: image,
+          success: res => {
+            console.log(res.fileId)
+          },
+          fail: console.error
+        })
+        images.push(CloudPathFront + cloudPath);
       })
-      images.push(CloudPathFront+cloudPath);
-    })
+    }
     return images;
   },
   isSaveEdit(e) {
@@ -1486,9 +1486,11 @@ Page({
         console.log(bgdate, endate, bgtime)
         let userUploadIcon = point.desc.icon
         let Pointfiles = [];
-        if(point.desc.images.length > 0){
-          point.desc.images.forEach(im=>{
-            Pointfiles.push({url:im});
+        if (point.desc.images.length > 0) {
+          point.desc.images.forEach(im => {
+            Pointfiles.push({
+              url: im
+            });
           })
         }
         this.setData({
@@ -1637,28 +1639,30 @@ Page({
     })
     selectedPoint.desc.icon = ""
   },
-  deleteSelectedPointPhotoes(e){
+  deleteSelectedPointPhotoes(e) {
     let index = e.detail.index
     console.log(e)
     let selectedPoint = this.data.selectedPoint
-    if(this.data.Pointfiles.length > 0)
-    {
+    if (this.data.Pointfiles.length > 0) {
       let selectedImage = this.data.Pointfiles[index]
-      this.data.Pointfiles.splice(index,1)
+      this.data.Pointfiles.splice(index, 1)
       console.log(selectedImage)
-      selectedPoint.desc.images.forEach((im,idx)=>{
-        if( im == selectedImage.url)
-        {
-          selectedPoint.desc.images.splice(idx,1);
-          wx.cloud.deleteFile({
-            fileList: [selectedImage.url],
-            success: res => {
-              console.log("删除成功", res)
-            },
-            fail: res => {
-              console.log("删除失败", res)
-            }
-          })
+      selectedPoint.desc.images.forEach((im, idx) => {
+        if (im == selectedImage.url) {
+          selectedPoint.desc.images.splice(idx, 1);
+          try {
+            wx.cloud.deleteFile({
+              fileList: [selectedImage.url],
+              success: res => {
+                console.log("删除成功", res)
+              },
+              fail: res => {
+                console.log("删除失败", res)
+              }
+            })
+          } catch {
+            console.log("Fail to delete")
+          }
           this.setData({
             selectedPoint
           })
@@ -1722,13 +1726,13 @@ Page({
     let name = this.data.selectedPoint.desc.name
     let text = this.data.selectedPoint.desc.text
     let icon;
-    let images=[];
-    if(this.data.selectedPoint.desc.images.length>0){
-      images  =this.data.selectedPoint.desc.images.concat( this.uploadPointPhotoToCloud())
-    }else{
-      images=this.uploadPointPhotoToCloud()
+    let images = [];
+    if (this.data.selectedPoint.desc.images.length > 0) {
+      images = this.data.selectedPoint.desc.images.concat(this.uploadPointPhotoToCloud())
+    } else {
+      images = this.uploadPointPhotoToCloud()
     }
-    
+
     if (this.data.selectedPoint.desc.icon == "") {
       icon = this.uploadIcontoCloud()
     } else {
@@ -1746,7 +1750,7 @@ Page({
       this.setData({
         showEditPointPage: false
       })
-
+      this.onReady()
     })
   },
   // 编辑标点界面的返回键的响应函数，弹出对话框
@@ -1809,7 +1813,7 @@ Page({
             this.onReady()
             this.navigaToEditPublishedStrategy()
             wx.hideLoading({
-              success: (res) => { },
+              success: (res) => {},
             })
             wx.showToast({
               title: '攻略已删除',
@@ -1819,9 +1823,9 @@ Page({
       }
     })
   },
-  returnFromEditPoint(e){
+  returnFromEditPoint(e) {
     this.setData({
-      showEditPoint:false
+      showEditPoint: false
     })
   },
 

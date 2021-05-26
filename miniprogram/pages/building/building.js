@@ -622,12 +622,12 @@ Page({
       let images = []
       if (building.desc == undefined) {
         if (building.images != undefined) {
-          building.images.forEach(e => {
-            e = CloudPathFront + e
-            images.push(e)
-          })
-          console.log(building)
-          building.images = images
+          // building.images.forEach(e => {
+          //   e = CloudPathFront + e
+          //   images.push(e)
+          // })
+          // console.log(building)
+          // building.images = images
           this.setData({
             building: building
           })
@@ -640,10 +640,7 @@ Page({
         }
       } else if (building.desc != undefined) {
         if (building.desc.images.length > 0) {
-          building.desc.images.forEach(e => {
-            e = CloudPathFront + e
-            images.push(e)
-          })
+          images = building.desc.images;
           building.images = images
           building.text = building.desc.text
           this.setData({
