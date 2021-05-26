@@ -11,41 +11,41 @@ const CloudPathFront = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d1
 
 const shopPoint = [{
 
-  title: "世博超市",
-  longitude: 113.40203129147403,
-  latitude: 23.048593578356705
-},
-{
+    title: "世博超市",
+    longitude: 113.40203129147403,
+    latitude: 23.048593578356705
+  },
+  {
 
-  title: "7-11便利店",
-  longitude: 113.40188492453046,
-  latitude: 23.051165789442734
-},
-{
-  title: "",
-  longitude: 113.40176343650955,
-  latitude: 23.05108920417096
-}
+    title: "7-11便利店",
+    longitude: 113.40188492453046,
+    latitude: 23.051165789442734
+  },
+  {
+    title: "",
+    longitude: 113.40176343650955,
+    latitude: 23.05108920417096
+  }
 ] // 商店点
 const deliverPickUpPoint = [] // 拿快递的点
 const vouchCenterPoint = [{
-  id: 1,
-  title: "学生卡和水卡充值点",
-  longitude: 113.40268387434162,
-  latitude: 23.04866925793428
-},
-{
-  id: 2,
-  title: "学生卡和水卡充值点",
-  longitude: 113.40333534303113,
-  latitude: 23.051645364973492
-}, {
-  title: "水卡充值点",
-  longitude: 113.40238690806586,
-  latitude: 23.04796789472804
-}, {
+    id: 1,
+    title: "学生卡和水卡充值点",
+    longitude: 113.40268387434162,
+    latitude: 23.04866925793428
+  },
+  {
+    id: 2,
+    title: "学生卡和水卡充值点",
+    longitude: 113.40333534303113,
+    latitude: 23.051645364973492
+  }, {
+    title: "水卡充值点",
+    longitude: 113.40238690806586,
+    latitude: 23.04796789472804
+  }, {
 
-}
+  }
 ] // 充值点
 var activitiesPoint = [] // 活动标记点 -- 暂存
 var isAdd = false; // 是否添加的标记
@@ -159,7 +159,7 @@ Page({
       selected: false
     }],
     Month: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-    WeekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六',],
+    WeekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六', ],
     monthIndex: 0,
     weekIndex: 0,
     followActivitiesTag: []
@@ -507,7 +507,7 @@ Page({
       const filepath = e;
       let name = util.randomId()
       const cloudpath = "School/4144010561/images/Point/" + type + name + filepath.match(/\.[^.]+?$/)[0]
-      images.push(CloudPathFront+cloudpath)
+      images.push(CloudPathFront + cloudpath)
       console.log(cloudpath)
       wx.cloud.uploadFile({
         cloudPath: cloudpath,
@@ -536,7 +536,7 @@ Page({
         },
         fail: console.error
       })
-      return CloudPathFront+cloudPath
+      return CloudPathFront + cloudPath
     }
     return ""
   },
@@ -576,17 +576,29 @@ Page({
     let icon = this.uploadIcontoCloud()
     let images = this.updatePhotoesToCloud()
     let desc = db.point.generateDescObj(name, text, icon, images)
+    if (name != "" && text != "") {
+      db.point.addPoint(campusId, belongs, type, time, desc, db.Geo.Point(newPoint.longitude, newPoint.latitude), this.data.newMarkerTag)
 
-    db.point.addPoint(campusId, belongs, type, time, desc, db.Geo.Point(newPoint.longitude, newPoint.latitude), this.data.newMarkerTag)
-    
-    this.setData({
-      isAddedMarker: false,
-      showMarkerDialog: false,
-      func: '',
-      markers: [],
-      // isMoreTrue:true
-    })
-    this.onReady()
+      this.setData({
+        isAddedMarker: false,
+        showMarkerDialog: false,
+        func: '',
+        markers: [],
+        // isMoreTrue:true
+      })
+
+      this.onReady()
+    } else {
+      wx.showModal({
+        title: '需填写标题以及简介',
+        icon: 'error',
+        duration: 2000
+      })
+      
+      this.setData({
+        showMarkerDialog: false,
+      })
+    }
   },
 
   // 获取屏幕中心经纬度
@@ -682,7 +694,7 @@ Page({
           isMoreTrue: false
         })
       }
-        break;
+      break;
     }
     if (isAdd == true)
       return;
@@ -1085,7 +1097,7 @@ Page({
       })
     })
     console.log("app", app.globalData.buildingSelected)
-    if ( app.globalData.buildingSelected != null &&app.globalData.buildingSelected.type == "activity" && app.globalData.buildingSelected['geo'] != undefined ) {
+    if (app.globalData.buildingSelected != null && app.globalData.buildingSelected.type == "activity" && app.globalData.buildingSelected['geo'] != undefined) {
       // console.log("appSelected:",app.globalData.buildingSelected)
       let activitySelected = {
         _id: app.globalData.buildingSelected._id,
@@ -1096,7 +1108,7 @@ Page({
         latitude: app.globalData.buildingSelected.geo.coordinates[1],
         title: app.globalData.buildingSelected.desc.name,
         type: app.globalData.buildingSelected.type,
-        iconPath:  app.globalData.buildingSelected.desc.icon,
+        iconPath: app.globalData.buildingSelected.desc.icon,
         text: app.globalData.buildingSelected.desc.text
       }
 
