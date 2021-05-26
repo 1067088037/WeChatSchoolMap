@@ -429,7 +429,8 @@ Page({
     this.setData({
       markers: visibleArchArray,
       showMarkerDialog: false,
-      func: ''
+      func: '',
+      // isMoreTrue:true
     })
     isAdd = false
   },
@@ -582,7 +583,8 @@ Page({
       isAddedMarker: false,
       showMarkerDialog: false,
       func: '',
-      markers: []
+      markers: [],
+      // isMoreTrue:true
     })
     this.onReady()
   },

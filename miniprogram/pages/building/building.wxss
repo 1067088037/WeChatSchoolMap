@@ -13,6 +13,18 @@
   height: 240rpx;
   /* border: 1rpx solid lightgray; */
 }
+.BuildingName{
+ margin:10rpx auto;
+ width: 400rpx;
+ align-items: center;
+ border-radius: 20rpx;
+ 
+ font-size: 42rpx;
+ /* border:1rpx solid #00BFFF; */
+ text-align:center;
+ background:transparent
+}
+
 .StrategiesAreaButton{
   margin-top:20rpx;
   display: inline-block;

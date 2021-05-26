@@ -8,7 +8,7 @@
   height: 85rpx;
   font-size: 30rpx;
   border-radius: 50rpx;
-  position: absolute;
+  position: fixed;
   right: 20rpx;
   top: 20rpx;
   box-shadow: 0rpx 0rpx 50rpx 25rpx rgba(128, 128, 128, 0.4);

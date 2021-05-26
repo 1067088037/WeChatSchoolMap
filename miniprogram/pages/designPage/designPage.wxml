@@ -138,15 +138,16 @@
         <input type="text" value="{{postNeedChange.name}}" bindinput="getPostTitle"></input>
       </mp-cell>
       <mp-cell>
-        <mp-uploader delete="{{true}}" title="海报" max-count="9" files="{{postNeedChange.images}}" select="{{selectFile}}"
-          upload="{{uplaodFile}}" bindfail="uplaodError" bindsuccess="uploadSuccess"> </mp-uploader>
+        <mp-uploader delete="{{true}}" title="海报" max-count="9" files="{{postNeedChange.images}}"
+          select="{{selectFile}}" upload="{{uplaodFile}}" bindfail="uplaodError" bindsuccess="uploadSuccess">
+        </mp-uploader>
       </mp-cell>
       <mp-cell title="活动介绍">
         <input type="text" value="{{postNeedChange.desc}}" bindinput="getPostContent"></input>
       </mp-cell>
       <button bindtap="postNoChange">取消</button>
       <!--sendPhoto函数要写成sendPost函数-->
-      <button size="mini" class="post" type="primary" bindtap="sendPhoto"bindtap="ChangeThisPostNow">修改</button>
+      <button size="mini" class="post" type="primary" bindtap="sendPhoto" bindtap="ChangeThisPostNow">修改</button>
     </mp-cells>
   </view>
   <!--我的海报界面-->
@@ -292,7 +293,10 @@
 
   <!-- 编辑发布标点 -->
   <view class="EditPublishedPoint" wx:if="{{showEditPoint}}">
-    <button style="width:200rpx;margin-left:0rpx; padding:0;" bindtap="returnFromEditPoint"> ⬅返回 </button>
+    <view>
+      <button style="width:200rpx;margin-left:0rpx; padding:0; display:inline-block" bindtap="returnFromEditPoint"> ⬅返回 </button>
+      
+    </view>
     <view class="PublishedPointList" wx:if="{{showEditPointPage==false}}">
       <view class="PublishedPoints" wx:if="{{publishedPoint != []}}" wx:for="{{publishedPoint}}" wx:key="item">
         <view class="markContainer" style="margin-top:20rpx">
@@ -307,6 +311,8 @@
       </view>
     </view>
     <view class="EditPointPage" wx:if="{{showEditPointPage}}">
+      <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/delete.png"
+        mode="scaleToFill" style="width:50rpx;height:50rpx; margin-left:20rpx" bindtap="showDeletePointDraft"></image>
       <mp-cells title="标记点信息">
         <!-- 输入标点的名称 -->
         <mp-cell prop="markerPointName" title="标记点名称">
@@ -397,7 +403,7 @@
           max-count="1">
         </mp-uploader>
       </view>
-      <view class="markerIcon" >标点相关照片</view>
+      <view class="markerIcon">标点相关照片</view>
       <view class="markerIcon-cell">
         <mp-uploader ext-class="uploader" title="标点相关照片" bindfail="uploadIconError" bindsuccess="uploadPhotoesSuccess"
           binddelete="deleteSelectedPointPhotoes" select="{{selectFile}}" upload="{{uplaodFile}}" files="{{Pointfiles}}"

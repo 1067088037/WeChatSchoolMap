@@ -1772,7 +1772,28 @@ Page({
       isSaveEditPoint: false
     })
   },
-
+  showDeletePointDraft(e){
+    wx.showModal({
+      title: '是否确定要删除？',
+      confirmText: "删除",
+      confirmColor: "#FF0000",
+      cancelText: "取消",
+      success :(res)=>{
+        if(res.confirm){
+         db.point.removePointById(this.data.selectedPoint._id).then(()=>{
+           wx.showToast({
+             title: '删除成功',
+           })
+           this.setData({
+            // showEditPoint:false,
+            showEditPointPage:false
+           })
+           this.onReady()
+         })
+        }
+      }
+    })
+  },
   getPostTitle(e) {
     this.setData({
       postTitleInput: e.detail.value

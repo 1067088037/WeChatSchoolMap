@@ -1,21 +1,14 @@
 <!--pages/building/building.wxml-->
 <view class="buildingContainer">
   <view class="Canteen" wx:if="{{building.type == 'canteen'}}">
+    <view class="BuildingName">
+      {{building.title}}
+    </view>
     <!-- 建筑的图片 -->
     <view class="Images" wx:if="{{showBuilidngBanner}}">
       <swiper class="imageBanner" indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff"
-        circular="{{true}}" autoplay="{{true}}" interval="3000">
-        <swiper-item>
-          <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png"
-            mode="widthFix"></image>
-        </swiper-item>
-        <swiper-item>
-          <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png"
-            mode="widthFix"></image>
-        </swiper-item>
-        <swiper-item>
-          <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png"
-            mode="widthFix"></image>
+        circular="{{true}}" autoplay="{{true}}" interval="3000" wx:if="{{building['images']!=undefine}}">
+        <swiper-item wx:for="{{building.images}}" >
         </swiper-item>
       </swiper>
     </view>
