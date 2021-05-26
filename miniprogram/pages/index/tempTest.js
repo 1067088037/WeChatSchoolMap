@@ -13,7 +13,7 @@ export function launchTest() {
   // db.section.joinSection('b00064a760aa24991a15885a5d6d5ae8', 48)
   // db.section.exitSection('b00064a760aa24991a15885a5d6d5ae8', 'ojr_35JJZSWh0xHtk_0k9GRJ4TqQ')
   // db.section.addAdmin('b00064a760aa24991a15885a5d6d5ae8', 'ojr_35JJZSWh0xHtk_0k9GRJ4TqQ')
-  // db.section.getUserInSection('b00064a760aa24991a15885a5d6d5ae8').then(res => console.log(res))
+  // db.section.getUserInSection('cbddf0af60abc3610b41616471154d01').then(res => console.log(res))
   // db.section.removeSection('28ee4e3e60aa241d1ba4596634b91d9f')
 
   // db.attention.addAttention('ojr_35JJZSWh0xHtk_0k9GRJ4TqQ', ['11', '22', '33'], 4, 3)
