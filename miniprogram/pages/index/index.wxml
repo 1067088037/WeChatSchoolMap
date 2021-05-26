@@ -1,11 +1,10 @@
 <!--pages/schoolMap/schoolMap.wxml-->
-<view class="Container" wx:if="{{isAddedMarker == false}}">
+<view class="Container" wx:if="{{!isAddedMarker}}">
 
   <map id="myMap" style="width:{{mapWidth}}rpx;height:{{mapHeight}}rpx;" latitude="{{latitude}}"
     longitude="{{longitude}}" scale="17" rotate="240" skew="35" markers="{{markers}}" bindmarkertap="markerstap"
     enable-poi="{{true}}" max-scale="20" min-scale="15" bindtap="mapTap">
   </map>
-
 
   <!-- 选择功能页面的实现 -->
   <view style="position:fixed; bottom:30rpx; width:750rpx;">
@@ -102,7 +101,7 @@
     <button bindtap="confirmMarker">确定</button>
   </view>
   <!-- 添加图标的实现 -->
-  <view class="moreFunctionIcon" wx:if="{{func==''}}">
+  <view class="moreFunctionIcon" wx:if="{{func == ''}}">
     <image class="more" bindtap="showFunction"
       src="{{!isMoreTrue? '/images/global/add.png' : '/images/global/close.png'}}"></image>
   </view>
@@ -205,7 +204,9 @@
       select="{{selectFile}}" upload="{{uploadFile}}" files="{{files}}" max-count="1">
     </mp-uploader>
   </view>
-  <button type="primary" bindtap="confirmTap" style="box-shadow: 0rpx 6rpx 12rpx 4rpx rgba(128, 128, 128, 0.2);">确定</button>
-  <button type="default" bindtap="returnMarker" style="box-shadow: 0rpx 6rpx 12rpx 4rpx rgba(128, 128, 128, 0.2);">返回</button>
+  <button type="primary" bindtap="confirmTap"
+    style="box-shadow: 0rpx 6rpx 12rpx 4rpx rgba(128, 128, 128, 0.2);">确定</button>
+  <button type="default" bindtap="returnMarker"
+    style="box-shadow: 0rpx 6rpx 12rpx 4rpx rgba(128, 128, 128, 0.2);">返回</button>
   <view style="height:40rpx"></view>
 </view>

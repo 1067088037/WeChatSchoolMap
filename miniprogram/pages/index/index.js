@@ -11,41 +11,41 @@ const tempTest = require('./tempTest')
 
 const shopPoint = [{
 
-    title: "世博超市",
-    longitude: 113.40203129147403,
-    latitude: 23.048593578356705
-  },
-  {
+  title: "世博超市",
+  longitude: 113.40203129147403,
+  latitude: 23.048593578356705
+},
+{
 
-    title: "7-11便利店",
-    longitude: 113.40188492453046,
-    latitude: 23.051165789442734
-  },
-  {
-    title: "",
-    longitude: 113.40176343650955,
-    latitude: 23.05108920417096
-  }
+  title: "7-11便利店",
+  longitude: 113.40188492453046,
+  latitude: 23.051165789442734
+},
+{
+  title: "",
+  longitude: 113.40176343650955,
+  latitude: 23.05108920417096
+}
 ] // 商店点
 const deliverPickUpPoint = [] // 拿快递的点
 const vouchCenterPoint = [{
-    id: 1,
-    title: "学生卡和水卡充值点",
-    longitude: 113.40268387434162,
-    latitude: 23.04866925793428
-  },
-  {
-    id: 2,
-    title: "学生卡和水卡充值点",
-    longitude: 113.40333534303113,
-    latitude: 23.051645364973492
-  }, {
-    title: "水卡充值点",
-    longitude: 113.40238690806586,
-    latitude: 23.04796789472804
-  }, {
+  id: 1,
+  title: "学生卡和水卡充值点",
+  longitude: 113.40268387434162,
+  latitude: 23.04866925793428
+},
+{
+  id: 2,
+  title: "学生卡和水卡充值点",
+  longitude: 113.40333534303113,
+  latitude: 23.051645364973492
+}, {
+  title: "水卡充值点",
+  longitude: 113.40238690806586,
+  latitude: 23.04796789472804
+}, {
 
-  }
+}
 ] // 充值点
 var activitiesPoint = [] // 活动标记点 -- 暂存
 var isAdd = false; // 是否添加的标记
@@ -159,7 +159,7 @@ Page({
       selected: false
     }],
     Month: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-    WeekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六', ],
+    WeekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六',],
     monthIndex: 0,
     weekIndex: 0,
     followActivitiesTag: []
@@ -378,6 +378,7 @@ Page({
     if (this.data.showPage) {
       this.setData({
         showPage: false,
+        isAddedMarker: false,
         func: ""
       })
     }
@@ -414,7 +415,8 @@ Page({
       markers: [],
       isAddedMarker: false,
       showMarkerDialog: false,
-      newMarkerTag: []
+      newMarkerTag: [],
+      func: ''
     });
   },
   /**
@@ -427,6 +429,7 @@ Page({
     this.setData({
       markers: visibleArchArray,
       showMarkerDialog: false,
+      func: ''
     })
     isAdd = false
   },
@@ -438,7 +441,8 @@ Page({
   confirmMarker() {
     this.setData({
       isAddedMarker: true,
-      showMarkerDialogfa: false
+      showMarkerDialogfa: false,
+      func: ''
     })
   },
   chooseImage: function (e) {
@@ -487,7 +491,6 @@ Page({
     })
   },
   uploadPhotoesSuccess(e) {
-
     console.log('upload success', e)
     this.setData({
       userUploadPhotoes: this.data.userUploadPhotoes.concat(e.detail.urls[0])
@@ -576,7 +579,8 @@ Page({
     db.point.addPoint(campusId, belongs, type, time, desc, db.Geo.Point(newPoint.longitude, newPoint.latitude), this.data.newMarkerTag)
     this.setData({
       isAddedMarker: false,
-      showMarkerDialog: false
+      showMarkerDialog: false,
+      func: ''
     })
     this.onReady()
   },
@@ -630,7 +634,7 @@ Page({
         let la;
         let lon;
         this.data.mapCtx.getCenterLocation({
-          success:res=>{
+          success: res => {
             // console.log(res)
             la = res.latitude;
             lon = res.longitude
@@ -649,8 +653,8 @@ Page({
             })
           }
         })
-        
-        
+
+
         isAdd = true;
         break;
       }
@@ -674,7 +678,7 @@ Page({
           isMoreTrue: false
         })
       }
-      break;
+        break;
     }
     if (isAdd == true)
       return;
@@ -898,7 +902,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    
+
     // 加载后生成MapContext对象
     // console.log("On load")
     wx.getLocation({
@@ -932,9 +936,9 @@ Page({
       })
       this.data.archItems.forEach(e => {
         if (e.selected) {
-          if(selectedArchType.indexOf(e.value) != -1){
+          if (selectedArchType.indexOf(e.value) != -1) {
             //console.log(selectedArchType)
-          }else{
+          } else {
             selectedArchType.push(e.value)
           }
         }
@@ -951,7 +955,7 @@ Page({
     // console.log("On Ready")
     archArray = []
     activitiesPoint = []
-    realTimeInfoArray =[]
+    realTimeInfoArray = []
     let mCampus = getApp().globalData.campus
     // console.log('初始显示的位置:', mCampus.geo.center)
     this.setData({
@@ -984,7 +988,7 @@ Page({
             width: 50,
             height: 40,
             iconPath: "/images/building/canteen.png",
-            text:value.text
+            text: value.text
           })
         } else {
           archArray.push({
@@ -1026,7 +1030,7 @@ Page({
             width: 60,
             height: 70,
             type: value.type,
-            iconPath: (value.desc.icon == "") ? value.desc.icon :  value.desc.icon,
+            iconPath: (value.desc.icon == "") ? value.desc.icon : value.desc.icon,
             text: value.desc.text,
             images: value.desc.images
           })
@@ -1052,13 +1056,13 @@ Page({
       })
 
       visibleArchArray = visibleArchArray.concat(realTimeInfoArray)
-      
+
       this.setData({
-          markers: visibleArchArray
-        })
-     
+        markers: visibleArchArray
+      })
+
     })
-    
+
     // 默认显示实时信息标点。
 
   },
@@ -1077,7 +1081,7 @@ Page({
       })
     })
     console.log("app", app.globalData.buildingSelected)
-    if ( app.globalData.buildingSelected != null &&app.globalData.buildingSelected.type == "activity" ) {
+    if (app.globalData.buildingSelected != null && app.globalData.buildingSelected.type == "activity") {
       let activitySelected = {
         _id: app.globalData.buildingSelected._id,
         id: app.globalData.buildingSelected.markId,
