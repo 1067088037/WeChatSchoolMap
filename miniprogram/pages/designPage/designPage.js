@@ -276,6 +276,150 @@ Page({
       markers: userPoint,
     })
   },
+  // 输入生活攻略的标题
+  inputLifeStrategyTitle(e) {
+    if (this.data.isEditLifeStrategy) {
+      let draftLifeStrategySelected = this.data.draftLifeStrategySelected
+      draftLifeStrategySelected.name = e.detail.value
+      this.setData({
+        lifeStrategyTitle: e.detail.value,
+        draftLifeStrategySelected
+      })
+    } else {
+      this.setData({
+        lifeStrategyTitle: e.detail.value
+      })
+    }
+  },
+  // 输入生活攻略的简介
+  inputLifeStrategyBriefIntro(e) {
+    if (this.data.isEditLifeStrategy) {
+      let draftLifeStrategySelected = this.data.draftLifeStrategySelected
+      draftLifeStrategySelected.desc = e.detail.value
+      this.setData({
+        lifeStrategyIntro: e.detail.value,
+        draftLifeStrategySelected
+      })
+    } else {
+      this.setData({
+        lifeStrategyIntro: e.detail.value
+      })
+    }
+  },
+  // 输入生活攻略每一步的标题
+  inputLifeStrategyStepTitle(e) {
+    // console.log(e)
+    let index = parseInt(e.currentTarget.id)
+    let lifeStrategyStepNames = this.data.lifeStrategyStepNames
+    lifeStrategyStepNames[index] = e.detail.value
+    if (this.data.isEditLifeStrategy) {
+      let draftLifeStrategySelected = this.data.draftLifeStrategySelected
+      draftLifeStrategySelected.content[index].name = lifeStrategyStepNames[index]
+      this.setData({
+        lifeStrategyStepNames,
+        draftLifeStrategySelected
+      })
+    } else {
+      this.setData({
+        lifeStrategyStepNames
+      })
+    }
+  },
+  // 输入生活攻略的描述（每一步骤）
+  inputLifeStrategyDescription(e) {
+    let index = parseInt(e.currentTarget.id)
+    let lifeStrategyDescriptions = this.data.lifeStrategyDescriptions;
+    lifeStrategyDescriptions[index] = e.detail.value
+    if (this.data.isEditLifeStrategy) {
+      let draftLifeStrategySelected = this.data.draftLifeStrategySelected
+      draftLifeStrategySelected.content[index].desc = lifeStrategyDescriptions[index]
+      this.setData({
+        lifeStrategyDescriptions,
+        draftLifeStrategySelected
+      })
+    } else {
+      this.setData({
+        lifeStrategyDescriptions
+      })
+    }
+  },
+  // 成功上传照片时的函数
+  uploadLifePhotoesSuccess(e) {
+    console.log(e)
+    let index = parseInt(e.currentTarget.id)
+    let userUploadPhotoes = this.data.userUploadPhotoes
+    if (userUploadPhotoes[index] == null || userUploadPhotoes[index] == undefined) {
+      userUploadPhotoes[index] = [].concat(e.detail.urls)
+    } else {
+      userUploadPhotoes[index] = userUploadPhotoes[index].concat(e.detail.urls)
+    }
+    let files = this.data.files
+    console.log('index', index)
+    if (files[index] == undefined || userUploadPhotoes[index] == undefined) {
+      files[index] = [].concat({
+        url: e.detail.urls[0]
+      })
+    } else {
+      files[index] = files[index].concat({
+        url: e.detail.urls[0]
+      })
+    }
+    this.setData({
+      userUploadPhotoes,
+      files
+    })
+  },
+  // 是否需要显示地图标点
+  needMark(e) {
+    // try {
+    let index = parseInt(e.currentTarget.id)
+    console.log(index, this.data.lifeStrategyStepNames[index])
+
+    let needMarkers = this.data.needMarkers
+    needMarkers[index] = true
+    this.setData({
+      needToMark: true,
+      contentIndex: index,
+      needMarkers
+    })
+    if (this.data.isEditLifeStrategy && this.data.lifeStrategyCoordinates[index]) {
+      let marker = {
+        id: util.randomNumberId,
+        width: 40,
+        height: 50,
+        longitude: this.data.lifeStrategyCoordinates[index].longitude,
+        latitude: this.data.lifeStrategyCoordinates[index].latitude,
+      }
+      this.setData({
+        markers: [marker],
+        contentIndex: index
+      })
+    }
+    // } catch {
+    //   wx.showToast({
+    //     title: '提示必须先填写内容',
+    //     icon: 'error',
+    //   })
+    // }
+
+  },
+  // 点击地图的反馈函数--即会出现标点
+  newMapTap(e) {
+    console.log(e)
+    let latitude_ = e.detail.latitude;
+    let longitude_ = e.detail.longitude;
+    let id = util.randomNumberId();
+    let userPoint = [{
+      id: id,
+      width: 40,
+      height: 50,
+      longitude: longitude_,
+      latitude: latitude_,
+    }]
+    this.setData({
+      markers: userPoint,
+    })
+  },
   // 确定在地图上的标注
   confirmMarker(e) {
     let lifeStrategyCoordinates = this.data.lifeStrategyCoordinates
@@ -928,7 +1072,29 @@ Page({
       },
       fail: console.error
     })
-    return cloudPath
+    return CloudPathFront + cloudPath;
+  },
+  uploadPointPhotoToCloud(){
+    let images = []
+    let name = util.randomId();
+    this.data.userUploadPhotoes = this.data.selectedPoint.desc.images.concat(this.data.userUploadPhotoes);
+    let files = this.data.userUploadPhotoes;
+    console.log(files)
+    let type = this.data.selectedPoint.type
+    files.forEach(image=>{
+      let cloudPath = "School/4144010561/images/Point/" + type + name + image.match(/\.[^.]+?$/)[0];
+      console.log(cloudPath)
+      wx.cloud.uploadFile({
+        cloudPath: cloudPath,
+        filePath: image,
+        success: res => {
+          console.log(res.fileId)
+        },
+        fail: console.error
+      })
+      images.push(CloudPathFront+cloudPath);
+    })
+    return images;
   },
   isSaveEdit(e) {
     wx.showLoading({
@@ -1070,7 +1236,6 @@ Page({
     }).then(() => {
       this.setData({
         showEditStrategy: true,
-
       })
       // console.log("关闭Loading")
       wx.hideLoading()
@@ -1108,6 +1273,38 @@ Page({
           publishedLifeStrategies
         })
       })
+      resolve()
+    }).then(() => {
+      this.setData({
+        showEditStrategy: true,
+
+      })
+      // console.log("关闭Loading")
+      wx.hideLoading()
+    })
+  },
+  // 从建筑草稿编辑界面返回
+  returnFromDraftPage(e) {
+    this.setData({
+      showEditStrategy: false,
+      draftStrategies: [],
+      draftLifeStrategies: []
+    })
+  },
+  // 从建筑草稿编辑界面返回
+  returnFromDraftPage(e) {
+    this.setData({
+      showEditStrategy: false,
+      draftStrategies: [],
+      draftLifeStrategies: []
+    })
+  },
+  // 从建筑草稿编辑界面返回
+  returnFromDraftPage(e) {
+    this.setData({
+      showEditStrategy: false,
+      draftStrategies: [],
+      draftLifeStrategies: []
     })
   },
   // 从建筑草稿编辑界面返回
@@ -1288,6 +1485,12 @@ Page({
         let edtime = "" + end.getHours() + ":" + end.getMinutes()
         console.log(bgdate, endate, bgtime)
         let userUploadIcon = point.desc.icon
+        let Pointfiles = [];
+        if(point.desc.images.length > 0){
+          point.desc.images.forEach(im=>{
+            Pointfiles.push({url:im});
+          })
+        }
         this.setData({
           selectedPoint: point,
           endate,
@@ -1297,6 +1500,7 @@ Page({
           files: [{
             url: userUploadIcon
           }],
+          Pointfiles,
           userUploadIcon: userUploadIcon
 
         })
@@ -1433,6 +1637,36 @@ Page({
     })
     selectedPoint.desc.icon = ""
   },
+  deleteSelectedPointPhotoes(e){
+    let index = e.detail.index
+    console.log(e)
+    let selectedPoint = this.data.selectedPoint
+    if(this.data.Pointfiles.length > 0)
+    {
+      let selectedImage = this.data.Pointfiles[index]
+      this.data.Pointfiles.splice(index,1)
+      console.log(selectedImage)
+      selectedPoint.desc.images.forEach((im,idx)=>{
+        if( im == selectedImage.url)
+        {
+          selectedPoint.desc.images.splice(idx,1);
+          wx.cloud.deleteFile({
+            fileList: [selectedImage.url],
+            success: res => {
+              console.log("删除成功", res)
+            },
+            fail: res => {
+              console.log("删除失败", res)
+            }
+          })
+          this.setData({
+            selectedPoint
+          })
+          return;
+        }
+      })
+    }
+  },
   // 删除编辑时上传的照片
   // 该函数用于编辑生活攻略草稿和建筑攻略草稿
   deletePhotoes(e) {
@@ -1488,12 +1722,19 @@ Page({
     let name = this.data.selectedPoint.desc.name
     let text = this.data.selectedPoint.desc.text
     let icon;
+    let images=[];
+    if(this.data.selectedPoint.desc.images.length>0){
+      images  =this.data.selectedPoint.desc.images.concat( this.uploadPointPhotoToCloud())
+    }else{
+      images=this.uploadPointPhotoToCloud()
+    }
+    
     if (this.data.selectedPoint.desc.icon == "") {
       icon = this.uploadIcontoCloud()
     } else {
       icon = this.data.selectedPoint.desc.icon
     }
-    let desc = db.point.generateDescObj(name, text, icon, [])
+    let desc = db.point.generateDescObj(name, text, icon, images)
     let tag = this.data.selectedPoint.tag
     let belong = this.data.selectedPoint.belong
     db.point.updatePointById(this.data.selectedPoint._id, {
@@ -1578,7 +1819,11 @@ Page({
       }
     })
   },
-
+  returnFromEditPoint(e){
+    this.setData({
+      showEditPoint:false
+    })
+  },
 
   /**
    * 生命周期函数--监听页面加载
@@ -1618,7 +1863,7 @@ Page({
       res.forEach(e => {
         // console.log(e._openid,openId)
         if (e._openid == openId) {
-          e.desc.icon = CloudPathFront + e.desc.icon
+          //e.desc.icon = CloudPathFront + e.desc.icon
           publishedPoint.push(e);
           //console.log(publishedPoint)
         }

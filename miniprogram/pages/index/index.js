@@ -427,7 +427,6 @@ Page({
     this.setData({
       markers: visibleArchArray,
       showMarkerDialog: false,
-      func: ''
     })
     isAdd = false
   },
@@ -1059,7 +1058,7 @@ Page({
         })
      
     })
-
+    
     // 默认显示实时信息标点。
 
   },

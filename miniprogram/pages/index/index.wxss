@@ -220,6 +220,12 @@ view.weui-dialog__wrp.FollowDialog>view>view.weui-dialog__ft {
   box-shadow: 10rpx 0rpx 50rpx 15rpx rgba(255, 255, 255, 0.1);
 }
 
+view.weui-dialog__wrp.FollowDialog>view>view.weui-dialog__ft {
+  height: 0;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(6rpx);
+  box-shadow: 10rpx 0rpx 50rpx 15rpx rgba(255, 255, 255, 0.1);
+}
 .Navigation {
   width: 65rpx;
   height: 65rpx;

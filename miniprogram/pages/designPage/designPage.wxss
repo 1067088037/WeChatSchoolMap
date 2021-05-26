@@ -91,7 +91,6 @@ image {
   margin-top: 20rpx;
   align-items: center;
 }
-
 ._hover_list {
   opacity: 0.9;
   background: #eeeeee;
@@ -253,6 +252,130 @@ image {
   margin-left: 15rpx;
   margin-right: 15rpx;
   position: relative;
+}
+.markerPosBtn {
+  padding-left: 20rpx;
+  position: fixed;
+  bottom: 0rpx;
+  width: 750rpx;
+  background: white;
+  height: 100rpx;
+
+}
+.markerPosBtn button {
+
+  display: inline-block;
+  text-align: center;
+  height: 75rpx;
+  width: 20rpx;
+}
+
+.markerPosBtn {
+  padding-left: 20rpx;
+  position: fixed;
+  bottom: 0rpx;
+  width: 750rpx;
+  background: white;
+  height: 100rpx;
+
+}
+
+.markerPosBtn button {
+
+  display: inline-block;
+  text-align: center;
+  height: 75rpx;
+  width: 20rpx;
+}
+
+.markerPosBtn {
+  padding-left: 20rpx;
+  position: fixed;
+  bottom: 0rpx;
+  width: 750rpx;
+  background: white;
+  height: 100rpx;
+
+}
+
+.markerPosBtn button {
+
+  display: inline-block;
+  text-align: center;
+  height: 75rpx;
+  width: 20rpx;
+}
+
+.markerPosBtn {
+  padding-left: 20rpx;
+  position: fixed;
+  bottom: 0rpx;
+  width: 750rpx;
+  background: white;
+  height: 100rpx;
+
+}
+
+.markerPosBtn button {
+
+  display: inline-block;
+  text-align: center;
+  height: 75rpx;
+  width: 20rpx;
+}
+
+.markerPosBtn {
+  padding-left: 20rpx;
+  position: fixed;
+  bottom: 0rpx;
+  width: 750rpx;
+  background: white;
+  height: 100rpx;
+
+}
+
+.markerPosBtn button {
+
+  display: inline-block;
+  text-align: center;
+  height: 75rpx;
+  width: 20rpx;
+}
+
+.markerPosBtn {
+  padding-left: 20rpx;
+  position: fixed;
+  bottom: 0rpx;
+  width: 750rpx;
+  background: white;
+  height: 100rpx;
+
+}
+
+.markerPosBtn button {
+
+  display: inline-block;
+  text-align: center;
+  height: 75rpx;
+  width: 20rpx;
+}
+
+.markerPosBtn {
+  padding-left: 20rpx;
+  position: fixed;
+  bottom: 0rpx;
+  width: 750rpx;
+  background: white;
+  height: 100rpx;
+
+}
+
+.markerPosBtn button {
+
+  display: inline-block;
+  text-align: center;
+  height: 75rpx;
+  width: 20rpx;
 }
 
 .markerPosBtn {

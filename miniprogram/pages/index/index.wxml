@@ -34,7 +34,6 @@
         confirm-type="search" bindconfirm="search"></input>
     </view>
 
-
   </page-container>
   <!-- 筛选界面  -->
   <view wx:if="{{func=='筛选'}}" class="selectShowPoint">

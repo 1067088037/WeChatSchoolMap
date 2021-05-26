@@ -114,6 +114,58 @@
       </view>
     </mp-cells>
   </view>
+  <!--我的海报界面-->
+  <view class="PostArea" wx:if="{{showMyPost}}">
+    <view class="posters" wx:for="{{myPost}}" wx:for-index="index" wx:key="key" wx:for-item="item">
+      <view class="post-container">
+        <text class="postTitle">{{item.name}}</text>
+        <image src="{{item.images[0]}}" mode="widthFix"></image>
+        <text>
+          {{item.desc}}
+        </text>
+        <view class="changeOrDelete">
+          <view class="change" id="{{item._id}}" bindtap="ChangeThisPost"><text>修改</text></view>
+          <view class="delete" id="{{item._id}}" bindtap="DeleteThisPost"><text>删除</text></view>
+        </view>
+      </view>
+    </view>
+    <button bindtap="backToHomePageFromMyPost">返回</button>
+  </view>
+  <!--修改我的海报页面-->
+  <view class="uploadPosterArea" wx:if="{{showChangeMyPost}}">
+    <mp-cells>
+      <mp-cell title="活动名称">
+        <input type="text" value="{{postNeedChange.name}}" bindinput="getPostTitle"></input>
+      </mp-cell>
+      <mp-cell>
+        <mp-uploader delete="{{true}}" title="海报" max-count="9" files="{{postNeedChange.images}}" select="{{selectFile}}"
+          upload="{{uplaodFile}}" bindfail="uplaodError" bindsuccess="uploadSuccess"> </mp-uploader>
+      </mp-cell>
+      <mp-cell title="活动介绍">
+        <input type="text" value="{{postNeedChange.desc}}" bindinput="getPostContent"></input>
+      </mp-cell>
+      <button bindtap="postNoChange">取消</button>
+      <!--sendPhoto函数要写成sendPost函数-->
+      <button size="mini" class="post" type="primary" bindtap="sendPhoto"bindtap="ChangeThisPostNow">修改</button>
+    </mp-cells>
+  </view>
+  <!--我的海报界面-->
+  <view class="PostArea" wx:if="{{showMyPost}}">
+    <view class="posters" wx:for="{{myPost}}" wx:for-index="index" wx:key="key" wx:for-item="item">
+      <view class="post-container">
+        <text class="postTitle">{{item.name}}</text>
+        <image src="{{item.images[0]}}" mode="widthFix"></image>
+        <text>
+          {{item.desc}}
+        </text>
+        <view class="changeOrDelete">
+          <view class="change"><text>修改</text></view>
+          <view class="delete"><text>删除</text></view>
+        </view>
+      </view>
+    </view>
+    <button bindtap="backToHomePage">返回</button>
+  </view>
   <!-- 草稿箱界面 -->
   <view class="EditStrategyArea" style="width:750rpx; height:1334rpx"
     wx:if="{{showEditStrategy && draftStrategySelected == null}}">
@@ -216,7 +268,6 @@
             src="../../images/global/navigation.png"></image>
         </view>
       </view>
-
     </view>
     <view class="deleteStrategy" style="padding:30rpx 18rpx; height:60rpx;width:55rpx;position:relative"
       wx:if="{{isEditLifeStrategy}}">
@@ -241,6 +292,7 @@
 
   <!-- 编辑发布标点 -->
   <view class="EditPublishedPoint" wx:if="{{showEditPoint}}">
+    <button style="width:200rpx;margin-left:0rpx; padding:0;" bindtap="returnFromEditPoint"> ⬅返回 </button>
     <view class="PublishedPointList" wx:if="{{showEditPointPage==false}}">
       <view class="PublishedPoints" wx:if="{{publishedPoint != []}}" wx:for="{{publishedPoint}}" wx:key="item">
         <view class="markContainer" style="margin-top:20rpx">
@@ -343,6 +395,13 @@
         <mp-uploader ext-class="uploader" title="标记图示上传" bindfail="uploadIconError" bindsuccess="uploadIconSuccess"
           binddelete="deleteSelectedIcon" select="{{selectFile}}" upload="{{uplaodFile}}" files="{{files}}"
           max-count="1">
+        </mp-uploader>
+      </view>
+      <view class="markerIcon" >标点相关照片</view>
+      <view class="markerIcon-cell">
+        <mp-uploader ext-class="uploader" title="标点相关照片" bindfail="uploadIconError" bindsuccess="uploadPhotoesSuccess"
+          binddelete="deleteSelectedPointPhotoes" select="{{selectFile}}" upload="{{uplaodFile}}" files="{{Pointfiles}}"
+          max-count="9">
         </mp-uploader>
       </view>
       <view class="buttonSet" style="margin-top:30rpx">
