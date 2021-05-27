@@ -9,6 +9,7 @@ exports.main = async (event, context) => {
   await db.collection('comment').where({
     'super._id': event.superId
   }).get().then(res => {
+    console.log(res.data)
     res.data.forEach(e => {
       wx.cloud.deleteFile({
         fileList: e.images

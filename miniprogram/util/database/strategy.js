@@ -90,22 +90,27 @@ export class Strategy {
    */
   async removeStrategy(strategyId) {
     await _db.collection('strategy').doc(strategyId).get().then(res => {
-      res.data.draft.forEach(element => {
+      console.log(res.data)
+      let draftContent = res.data.draft.content
+      let publishContent = res.data.publish.content
+      console.log(draftContent, publishContent)
+      draftContent.forEach(element => {
         wx.cloud.deleteFile({
           fileList: element.image
         })
       });
-      res.data.publish.forEach(element => {
+      publishContent.forEach(element => {
         wx.cloud.deleteFile({
           fileList: element.image
         })
       });
-    })
-    await _db.collection('strategy').doc(strategyId).remove()
+    }).then(() => {
+      _db.collection('strategy').doc(strategyId).remove()
+    }).catch(err => console.error(err))
     await _db.collection('like').where({
       'super._id': strategyId
-    }).remove()
-    return db.comment.removeAllComment(strategyId)
+    }).remove().catch(err => console.error(err))
+    return db.comment.removeAllComment(strategyId).catch(err => console.error(err))
   }
 
   /**

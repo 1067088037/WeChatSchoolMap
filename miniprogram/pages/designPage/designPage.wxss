@@ -447,8 +447,8 @@ image {
   display: flex;
   flex-direction: column;
   margin-top: 20rpx;
-  margin-left: 55rpx;
-  margin-right: 56rpx;
+  margin-left: 40rpx;
+  margin-right: 40rpx;
   border-top: 1px solid white;
   border-bottom: 1px;
   background-color: #fff;

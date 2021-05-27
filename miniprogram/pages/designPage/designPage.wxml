@@ -126,17 +126,19 @@
     <view class="posters" wx:for="{{myPost}}" wx:for-index="index" wx:key="key" wx:for-item="item">
       <view class="post-container">
         <text class="postTitle">{{item.name}}</text>
-        <image src="{{item.images[0]}}" mode="widthFix"></image>
+        <image style="width:90%" src="{{item.images[0]}}" mode="widthFix"></image>
         <text>
           {{item.desc}}
         </text>
         <view class="changeOrDelete">
-          <view class="change" id="{{item._id}}" bindtap="ChangeThisPost"><button size="mini" type="default">修改</button></view>
-          <view class="delete" id="{{item._id}}" bindtap="DeleteThisPost"><button size="mini" type="warn">删除</button></view>
+          <view class="change" id="{{item._id}}" bindtap="ChangeThisPost" style="margin:15rpx"><button size="mini"
+              type="default">修改</button></view>
+          <view class="delete" id="{{item._id}}" bindtap="DeleteThisPost" style="margin:15rpx"><button size="mini"
+              type="warn">删除</button></view>
         </view>
       </view>
     </view>
-    <button bindtap="backToHomePageFromMyPost">返回</button>
+    <button style="margin-top:20rpx" type="primary" bindtap="backToHomePageFromMyPost">返回</button>
   </view>
   <!--修改我的海报页面-->
   <view class="uploadPosterArea" wx:if="{{showChangeMyPost}}">
@@ -145,8 +147,8 @@
         <input type="text" value="{{postNeedChange.name}}" bindinput="getPostTitle"></input>
       </mp-cell>
       <mp-cell>
-        <mp-uploader delete="{{true}}" title="海报" max-count="9" files="{{myPostImagesUrl}}"
-          select="{{selectFile}}" upload="{{uplaodFile}}" bindfail="uplaodError" bindsuccess="uploadSuccess" binddelete = "deletePoster">
+        <mp-uploader delete="{{true}}" title="海报" max-count="9" files="{{myPostImagesUrl}}" select="{{selectFile}}"
+          upload="{{uplaodFile}}" bindfail="uplaodError" bindsuccess="uploadSuccess" binddelete="deletePoster">
         </mp-uploader>
       </mp-cell>
       <mp-cell title="活动介绍">
