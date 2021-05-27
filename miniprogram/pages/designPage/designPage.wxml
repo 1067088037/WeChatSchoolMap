@@ -129,7 +129,7 @@
     <view class="posters" wx:for="{{myPost}}" wx:for-index="index" wx:key="key" wx:for-item="item">
       <view class="post-container">
         <text class="postTitle">{{item.name}}</text>
-        <image style="width:90%" src="{{item.images[0]}}" mode="widthFix"></image>
+        <image style="width:90%" src="{{item.images[0]}}" mode="aspectFit "></image>
         <text>
           {{item.desc}}
         </text>
@@ -253,7 +253,7 @@
       </mp-dialog> -->
       <view class="deleteStrategy" style="padding:30rpx 18rpx; height:60rpx;width:55rpx;position:relative">
         <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/delete.png"
-          mode="scaleToFill" style="width:100%;height:100%" bindtap="showDeleteDraft"></image>
+          mode="aspectFit" style="width:100%;height:100%" bindtap="showDeleteDraft"></image>
       </view>
     </view>
   </view>
@@ -325,7 +325,7 @@
       <view class="PublishedPoints" wx:if="{{publishedPoint != []}}" wx:for="{{publishedPoint}}" wx:key="item">
         <view class="markContainer" style="margin-top:20rpx">
           <view class="createLifeStrategy" hover-class="_hover_list" bindtap="toEditPointPage" id="{{item._id}}">
-            <image mode="heightFix" src="{{item.desc.icon}}"></image>
+            <image mode="aspectFit" src="{{item.desc.icon}}"></image>
             <text>{{item.desc.name}}</text>
           </view>
         </view>
@@ -455,7 +455,7 @@
       <view class="publishedArchStrategies" wx:for="{{publishedArchStrategies}}" wx:key="index">
         <mp-slideview class="archStrategy" style="width: 750rpx; height: 100%;" bindbuttontap="deletePublishedStrategy"
           id="{{item.id}}" buttons="{{slideViewButtons}}">
-          <image mode="heightFix" src="{{item.content[0].image[0]}}" style="width: 180rpx;height: 180rpx;"
+          <image mode="aspectFit" src="{{item.content[0].image[0]}}" style="width: 200rpx;height: 200rpx; padding:6rpx"
             wx:if="{{item.content[0].image.length>0}}"></image>
           <view style="display:inline-block;position:relative; top:0rpx">
             <view style="display:inline-block">
@@ -472,21 +472,23 @@
     </view>
     <view wx:if="{{publishedArchStrategies.length==0}}">暂无发布的建筑攻略</view>
     <view style="height:16rpx;text-align:center">----</view>
-    <view class="publishedArchStrategies" wx:if="{{publishedLifeStrategies.length > 0 }}">
+    <view class="publishedArchStrategies" wx:if="{{publishedLifeStrategies.length > 0 }}" wx:for="{{publishedLifeStrategies}}">
       <mp-slideview bindbuttontap="deletePublishedStrategy" buttons="{{slideViewButtons}}" id="{{item.id}}"
-        class="archStrategy" style="width: 750rpx; height: 100%;" wx:for="{{publishedLifeStrategies}}" wx:key="index">
+        class="archStrategy" style="width: 750rpx; height: 360rpx;"  wx:key="index">
 
-        <view>
-          <image mode="heightFix" src="{{item.content[0].images[0]}}" style="width: 180rpx;height: 180rpx;"
-            wx:if="{{item.content[0].images.length > 0}}"></image>
-          <view style="display:inline-block">
-            <text style="display: inline;margin-left: 20rpx;text-align:center;font-size: large;">{{item.name}}</text>
+        <image mode="aspectFit" src="{{item.content[0].images[0]}}" style="width: 200rpx;height: 200rpx; padding:4rpx"
+          wx:if="{{item.content[0].images.length > 0}}"></image>
+        <view style="display:inline-block;position:relative; top:0rpx">
+          <view >
+            <text 
+              style="display: inline;margin-left: 20rpx;text-align:center;font-size: large;">{{item.name}}</text>
           </view>
           <view>
             <text space="nbsp"> 简介：</text>
             <text>{{item.desc}}</text>
           </view>
         </view>
+
 
       </mp-slideview>
     </view>
