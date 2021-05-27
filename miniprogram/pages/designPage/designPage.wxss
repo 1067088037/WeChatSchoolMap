@@ -87,13 +87,14 @@ image {
 
 .publishedArchStrategies {
   display: inline-block;
-  width: 750rpx;
-  height: 360rpx;
+  width: 710rpx;
+  height: auto;
   background: white;
   margin-left: 20rpx;
   border-radius: 20rpx;
   margin-top: 20rpx;
   align-items: center;
+  border:0.5rpx solid #2f98e4
 }
 
 .publishedLifeStrategies {
