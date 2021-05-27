@@ -145,8 +145,8 @@
         <input type="text" value="{{postNeedChange.name}}" bindinput="getPostTitle"></input>
       </mp-cell>
       <mp-cell>
-        <mp-uploader delete="{{true}}" title="海报" max-count="9" files="{{postNeedChange.images}}"
-          select="{{selectFile}}" upload="{{uplaodFile}}" bindfail="uplaodError" bindsuccess="uploadSuccess">
+        <mp-uploader delete="{{true}}" title="海报" max-count="9" files="{{myPostImagesUrl}}"
+          select="{{selectFile}}" upload="{{uplaodFile}}" bindfail="uplaodError" bindsuccess="uploadSuccess" binddelete = "deletePoster">
         </mp-uploader>
       </mp-cell>
       <mp-cell title="活动介绍">

@@ -879,30 +879,47 @@ Page({
       showChangeMyPost: false
     })
   },
-  sendPhotoAndChangeThisPostNow() {
-    this.data.userUploadPosters.forEach((e, i) => {
-      const filepath = e;
-      const name = util.randomId()
-      const cloudpath = "School/4144010561/images/Design/design" + name + filepath.match(/\.[^.]+?$/)[0]
-      console.log(cloudpath)
-      wx.cloud.uploadFile({
-        cloudPath: cloudpath,
-        filePath: filepath,
-        success: res => {
-          console.log(res.fileId)
+  deletePoster(e){
+    let index = e.detail.index;
+    if(this.data.postNeedChange.images.length > 0)
+    {
+      let deletePoster = this.data.postNeedChange.images[index]
+      wx.cloud.deleteFile({
+        fileList:[deletePoster],
+        success:res=>{
+          console.log("successfully delete: ",res)
         },
-        fail: console.error
+        fail:console.error()
       })
-    })
-
+      this.data.postNeedChange.images.splice(index,1);
+    }
+  },
+  sendPhotoAndChangeThisPostNow() {
+    // this.data.userUploadPosters.forEach((e, i) => {
+    //   const filepath = e;
+    //   const name = util.randomId()
+    //   const cloudpath = "School/4144010561/images/Design/design" + name + filepath.match(/\.[^.]+?$/)[0]
+    //   console.log(cloudpath)
+    //   wx.cloud.uploadFile({
+    //     cloudPath: cloudpath,
+    //     filePath: filepath,
+    //     success: res => {
+    //       console.log(res.fileId)
+    //     },
+    //     fail: console.error
+    //   })
+    // })
+    let images = this.data.postNeedChange.images.concat(this.uploadPostersToCloud())
     //console.log(this.data.userUploadPosters);
     //postNeedChange
+    
     var that = this;
     if (this.data.postTitleInput != "")
       this.data.postNeedChange.name = this.data.postTitleInput;
     if (this.data.postContentInput != "")
       this.data.postNeedChange.desc = this.data.postContentInput;
-    
+    if(images.length>0)
+      this.data.postNeedChange.images = images
     // let myPostUrlArray = Array.from(this.data.myPostImagesUrl)
     // var myPostImgaesString = [];
     // myPostUrlArray.forEach(function (postUrl, index) {
@@ -930,9 +947,10 @@ Page({
     this.setData({
       showChangeMyPost: false
     })
-    wx.navigateTo({
-      url: '../../pages/posterArea/posterArea',
-    });
+    wx.showToast({
+      title: '成功',
+      icon:'success'
+    })
   },
   //下列一系列函数是图片上传相关函数
   /**
