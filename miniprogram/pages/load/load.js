@@ -38,7 +38,7 @@ function loadSchoolAndCampus(that) {
           db.campus.getCampus(info.campus).then(campus => {
             // console.log(campus)
             getApp().globalData.campus = campus
-            console.log('校区',campus)
+            console.log('校区', campus)
             that.next()
             console.log('进入index')
           })
@@ -121,10 +121,16 @@ Page({
   },
   //如果成功获取用户信息则跳转到
   next: function () {
-    if (getApp().globalData.userInfo != undefined)
+    if (getApp().globalData.userInfo != undefined) {
+      db._db.collection('user').doc(getApp().globalData.userInfo._openid).update({
+        data: {
+          lastLoginTime: db.serverDate()
+        }
+      })
       wx.switchTab({
         url: '../index/index'
       })
+    }
   },
   // 获取用户信息的函数
   getUserProfile() {
