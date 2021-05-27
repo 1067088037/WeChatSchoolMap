@@ -126,11 +126,13 @@ Page({
     toEditPublishedArchStartegy: false, // 是否编辑发布的建筑攻略 -- 出现编辑界面
     selectedPublishedArchStrategy: {},
     selectedPublishedLifeStrategy: {},
-
     slideViewButtons: [{
       text: "删除",
       type: "warn"
-    }]
+    }],
+    strategyNum: -1, //发布的攻略数目
+    pointNum: -1, //发布的标点数目
+    posterNum: -1, //我的海报数目
   },
   // 输入生活攻略的标题
   inputLifeStrategyTitle(e) {
@@ -1960,6 +1962,12 @@ Page({
     let publishedPoint = []
     let openId = app.globalData.openid
     //console.log(app.globalData.campus._id)
+    db.poster.getPosterByOpenid(this.data.userOpenId).then(res => {
+      console.log(res)
+      this.setData({
+        posterNum: res.length
+      })
+    })
     db.strategy.getBriefStrategyArrayByOpenid(this.data.userOpenId).then(res => {
       console.log(res)
       // let draftStrategiesId = this.data.draftStrategiesId
@@ -1967,7 +1975,8 @@ Page({
         draftStrategiesId.push(e._id)
       })
       this.setData({
-        draftStrategiesId
+        draftStrategiesId,
+        strategyNum: res.length
       })
     })
     db.point.getPointArray(app.globalData.campus._id).then(res => {
@@ -1980,10 +1989,10 @@ Page({
         }
       })
       this.setData({
-        publishedPoint: publishedPoint
+        publishedPoint: publishedPoint,
+        pointNum: publishedPoint.length
       })
     })
-
   },
 
   /**

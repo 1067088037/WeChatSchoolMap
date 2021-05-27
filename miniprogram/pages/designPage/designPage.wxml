@@ -40,6 +40,7 @@
       <view class="titleBox">
         <text class="titleText">发布的攻略</text>
       </view>
+      <view class="detailText">{{strategyNum == -1 ? "" : strategyNum}}</view>
     </view>
   </view>
   <view class="markContainer" style="margin-top:20rpx"
@@ -49,6 +50,7 @@
       <view class="titleBox">
         <text class="titleText">发布的标点</text>
       </view>
+      <view class="detailText">{{pointNum == -1 ? "" : pointNum}}</view>
     </view>
   </view>
   <view class="markContainer" style="margin-top:20rpx"
@@ -58,6 +60,7 @@
       <view class="titleBox">
         <text class="titleText">我的海报</text>
       </view>
+      <view class="detailText">{{posterNum == -1 ? "" : posterNum}}</view>
     </view>
   </view>
   <!-- 上传海报界面 -->
@@ -460,7 +463,7 @@
                 style="display: inline;margin-left: 20rpx;text-align:center;font-size: large;">{{item.content[0].name}}</text>
             </view>
             <view>
-              <text space="nbsp">  简介：</text>
+              <text space="nbsp"> 简介：</text>
               <text>{{item.desc}}</text>
             </view>
           </view>
@@ -471,20 +474,20 @@
     <view style="height:16rpx;text-align:center">----</view>
     <view class="publishedArchStrategies" wx:if="{{publishedLifeStrategies.length > 0 }}">
       <mp-slideview bindbuttontap="deletePublishedStrategy" buttons="{{slideViewButtons}}" id="{{item.id}}"
-      class="archStrategy" style="width: 750rpx; height: 100%;"  wx:for="{{publishedLifeStrategies}}" wx:key="index">
-      
-          <view >
-            <image mode="heightFix" src="{{item.content[0].images[0]}}" style="width: 180rpx;height: 180rpx;"
-              wx:if="{{item.content[0].images.length > 0}}"></image>
-            <view style="display:inline-block">
-              <text style="display: inline;margin-left: 20rpx;text-align:center;font-size: large;">{{item.name}}</text>
-            </view>
-            <view > 
-              <text space="nbsp">  简介：</text>
-              <text>{{item.desc}}</text>
-            </view>
+        class="archStrategy" style="width: 750rpx; height: 100%;" wx:for="{{publishedLifeStrategies}}" wx:key="index">
+
+        <view>
+          <image mode="heightFix" src="{{item.content[0].images[0]}}" style="width: 180rpx;height: 180rpx;"
+            wx:if="{{item.content[0].images.length > 0}}"></image>
+          <view style="display:inline-block">
+            <text style="display: inline;margin-left: 20rpx;text-align:center;font-size: large;">{{item.name}}</text>
           </view>
-        
+          <view>
+            <text space="nbsp"> 简介：</text>
+            <text>{{item.desc}}</text>
+          </view>
+        </view>
+
       </mp-slideview>
     </view>
     <view wx:if="{{publishedLifeStrategies.length == 0}}">暂无发布的生活攻略</view>

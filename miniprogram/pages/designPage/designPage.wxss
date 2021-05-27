@@ -85,6 +85,14 @@ image {
   font-size: large;
 }
 
+.detailText {
+  right: 12rpx;
+  position: absolute;
+  display: flex;
+  align-self: center;
+  justify-items: center;
+}
+
 .publishedArchStrategies {
   display: inline-block;
   width: 750rpx;
