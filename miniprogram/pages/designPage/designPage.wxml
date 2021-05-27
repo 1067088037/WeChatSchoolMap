@@ -325,7 +325,7 @@
       <view class="PublishedPoints" wx:if="{{publishedPoint != []}}" wx:for="{{publishedPoint}}" wx:key="item">
         <view class="markContainer" style="margin-top:20rpx">
           <view class="createLifeStrategy" hover-class="_hover_list" bindtap="toEditPointPage" id="{{item._id}}">
-            <image mode="aspectFit" src="{{item.desc.icon}}"></image>
+            <image mode="heightFix" src="{{item.desc.icon}}"></image>
             <text>{{item.desc.name}}</text>
           </view>
         </view>
