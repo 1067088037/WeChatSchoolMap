@@ -322,7 +322,7 @@
       <view class="PublishedPoints" wx:if="{{publishedPoint != []}}" wx:for="{{publishedPoint}}" wx:key="item">
         <view class="markContainer" style="margin-top:20rpx">
           <view class="createLifeStrategy" hover-class="_hover_list" bindtap="toEditPointPage" id="{{item._id}}">
-            <image mode="heightFix" src="{{item.desc.icon}}">图标</image>
+            <image mode="heightFix" src="{{item.desc.icon}}"></image>
             <text>{{item.desc.name}}</text>
           </view>
         </view>
@@ -450,24 +450,41 @@
     <view style="height:16rpx;text-align:center">----</view>
     <view wx:if="{{publishedArchStrategies.length>0}}">
       <view class="publishedArchStrategies" wx:for="{{publishedArchStrategies}}" wx:key="index">
-        <mp-slideview class="archStrategy" style="width: 750rpx; height: auto;" bindbuttontap="deletePublishedStrategy"
+        <mp-slideview class="archStrategy" style="width: 750rpx; height: 100%;" bindbuttontap="deletePublishedStrategy"
           id="{{item.id}}" buttons="{{slideViewButtons}}">
-          <image mode="heightFix" src="{{item.content[0].image[0]}}" style="width: 110rpx;height: 110rpx;"></image>
-          <text style="display: inline;margin-left: 20rpx;text-align:center;">{{item.content[0].name}}</text>
+          <image mode="heightFix" src="{{item.content[0].image[0]}}" style="width: 180rpx;height: 180rpx;"
+            wx:if="{{item.content[0].image.length>0}}"></image>
+          <view style="display:inline-block;position:relative; top:0rpx">
+            <view style="display:inline-block">
+              <text class=""
+                style="display: inline;margin-left: 20rpx;text-align:center;font-size: large;">{{item.content[0].name}}</text>
+            </view>
+            <view>
+              <text space="nbsp">  简介：</text>
+              <text>{{item.desc}}</text>
+            </view>
+          </view>
         </mp-slideview>
       </view>
     </view>
     <view wx:if="{{publishedArchStrategies.length==0}}">暂无发布的建筑攻略</view>
     <view style="height:16rpx;text-align:center">----</view>
-    <view wx:if="{{publishedLifeStrategies.length > 0 }}">
+    <view class="publishedArchStrategies" wx:if="{{publishedLifeStrategies.length > 0 }}">
       <mp-slideview bindbuttontap="deletePublishedStrategy" buttons="{{slideViewButtons}}" id="{{item.id}}"
-        class="publishedLifeStrategies" wx:for="{{publishedLifeStrategies}}" wx:key="index">
-        <view bindbuttontap="deletePublishedLifeStrategy" buttons="{{slideViewButtons}}" id="{{item.id}}">
-          <view>
-            <image mode="heightFix" src="{{item.content[0].images[0]}}" style="width: 110rpx;height: 110rpx;"></image>
-            <text style="display: inline;margin-left: 20rpx;text-align:center;">{{item.name}}</text>
+      class="archStrategy" style="width: 750rpx; height: 100%;"  wx:for="{{publishedLifeStrategies}}" wx:key="index">
+      
+          <view >
+            <image mode="heightFix" src="{{item.content[0].images[0]}}" style="width: 180rpx;height: 180rpx;"
+              wx:if="{{item.content[0].images.length > 0}}"></image>
+            <view style="display:inline-block">
+              <text style="display: inline;margin-left: 20rpx;text-align:center;font-size: large;">{{item.name}}</text>
+            </view>
+            <view > 
+              <text space="nbsp">  简介：</text>
+              <text>{{item.desc}}</text>
+            </view>
           </view>
-        </view>
+        
       </mp-slideview>
     </view>
     <view wx:if="{{publishedLifeStrategies.length == 0}}">暂无发布的生活攻略</view>

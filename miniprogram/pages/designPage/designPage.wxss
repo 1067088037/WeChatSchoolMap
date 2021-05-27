@@ -88,7 +88,7 @@ image {
 .publishedArchStrategies {
   display: inline-block;
   width: 750rpx;
-  height: auto;
+  height: 360rpx;
   background: white;
   margin-left: 20rpx;
   border-radius: 20rpx;
@@ -99,7 +99,7 @@ image {
 .publishedLifeStrategies {
   display: inline-block;
   width: 750rpx;
-  height: auto;
+  height: 100%;
   background: white;
   margin-left: 20rpx;
   border-radius: 20rpx;
