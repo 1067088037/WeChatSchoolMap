@@ -69,6 +69,7 @@ export class Arch {
           },
           name: arch.name,
           logo: arch.logo,
+          images: arch.images,
           type: arch.type,
           geo: arch.geo,
           text: arch.text,

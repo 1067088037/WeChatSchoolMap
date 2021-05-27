@@ -8,44 +8,56 @@
   <!-- 设计内容区 -->
   <view class="markContainer" style="margin-top:20rpx"
     wx:if="{{showUploadPostArea == false && showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false  && showMyPost == false && showEditPublishedStrategy == false && toEditPublishedArchStartegy == false && toEditPublishedArchStartegy == false && showChangeMyPost==false}}">
-    <view class="uploadPoster" bindtap="nevigaToUpLoadPoster" hover-class="_hover_list">
-      <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
-      <text>上传海报</text>
+    <view class="outBoxView" bindtap="nevigaToUpLoadPoster" hover-class="_hover_list">
+      <image mode="heightFix" src="../../images/design/upload.png"></image>
+      <view class="titleBox">
+        <text class="titleText">上传海报</text>
+      </view>
     </view>
   </view>
   <view class="markContainer" style="margin-top:20rpx"
     wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false   && showMyPost == false && showEditPublishedStrategy == false && toEditPublishedArchStartegy == false && toEditPublishedArchStartegy == false && showChangeMyPost == false}}">
-    <view class="uploadPoster" bindtap="navigaToEditStrategy" hover-class="_hover_list">
-      <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
-      <text>草稿箱</text>
+    <view class="outBoxView" bindtap="navigaToEditStrategy" hover-class="_hover_list">
+      <image mode="heightFix" src="../../images/design/drafts.png"></image>
+      <view class="titleBox">
+        <text class="titleText">草稿箱</text>
+      </view>
     </view>
   </view>
   <view class="markContainer" style="margin-top:20rpx"
     wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false   && showMyPost == false && showEditPublishedStrategy == false && toEditPublishedArchStartegy == false && toEditPublishedArchStartegy == false && showChangeMyPost==false}}">
-    <view class="createLifeStrategy" hover-class="_hover_list" bindtap="navigaToCreateLifeStrategy">
-      <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
-      <text>添加生活攻略</text>
+    <view class="outBoxView" hover-class="_hover_list" bindtap="navigaToCreateLifeStrategy">
+      <image mode="heightFix" src="../../images/design/add_life_strategy.png"></image>
+      <view class="titleBox">
+        <text class="titleText">添加生活攻略</text>
+      </view>
     </view>
   </view>
   <view class="markContainer" style="margin-top:20rpx"
     wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false   && showMyPost == false && showEditPublishedStrategy == false && toEditPublishedArchStartegy == false && toEditPublishedArchStartegy == false && showChangeMyPost==false}}">
-    <view class="createLifeStrategy" hover-class="_hover_list" bindtap="navigaToEditPublishedStrategy">
-      <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
-      <text>发布的攻略</text>
+    <view class="outBoxView" hover-class="_hover_list" bindtap="navigaToEditPublishedStrategy">
+      <image mode="heightFix" src="../../images/design/published_strategy.png"></image>
+      <view class="titleBox">
+        <text class="titleText">发布的攻略</text>
+      </view>
     </view>
   </view>
   <view class="markContainer" style="margin-top:20rpx"
     wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false   && showMyPost == false && showEditPublishedStrategy == false && toEditPublishedArchStartegy == false && toEditPublishedArchStartegy == false && showChangeMyPost==false}}">
-    <view class="createLifeStrategy" hover-class="_hover_list" bindtap="navigaToPostedPoint">
-      <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
-      <text>发布的标点</text>
+    <view class="outBoxView" hover-class="_hover_list" bindtap="navigaToPostedPoint">
+      <image mode="heightFix" src="../../images/design/location_point.png"></image>
+      <view class="titleBox">
+        <text class="titleText">发布的标点</text>
+      </view>
     </view>
   </view>
   <view class="markContainer" style="margin-top:20rpx"
     wx:if="{{showUploadPostArea == false &&showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false   && showMyPost == false && showEditPublishedStrategy == false && toEditPublishedArchStartegy == false && toEditPublishedArchStartegy == false && showChangeMyPost==false}}">
-    <view class="createLifeStrategy" hover-class="_hover_list" bindtap="navigaToMyPost">
-      <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
-      <text>我的海报</text>
+    <view class="outBoxView" hover-class="_hover_list" bindtap="navigaToMyPost">
+      <image mode="heightFix" src="../../images/design/my_poster.png"></image>
+      <view class="titleBox">
+        <text class="titleText">我的海报</text>
+      </view>
     </view>
   </view>
   <!-- 上传海报界面 -->
@@ -173,9 +185,11 @@
     <button style="width:200rpx;margin-left:0rpx; padding:0;" bindtap="returnFromDraftPage"> ⬅返回 </button>
     <view class="unFinishStrategy">
       <view class="showStrategyForArch" bindtap="toggleArch" decode wx:if="{{!stateArch}}">
-        <text style="margin-left:0rpx">▶点评攻略草稿箱</text></view>
+        <text style="margin-left:0rpx">▶点评攻略草稿箱</text>
+      </view>
       <view class="showStrategyForArch" bindtap="toggleArch" decode wx:if="{{stateArch}}">
-        <text style="margin-left:0rpx">▼点评攻略草稿箱</text> </view>
+        <text style="margin-left:0rpx">▼点评攻略草稿箱</text>
+      </view>
       <view id="strategyForArchBox" class="{{firstClickArch?'show':'hide'}} {{stateArch?'open':'close'}}">
         <scroll-view class="strategyForArchList" scroll-y="true">
           <view class="strategyForArch" wx:for="{{draftStrategies}}" wx:key="item" id="{{item.id}}"
@@ -185,11 +199,11 @@
         </scroll-view>
       </view>
       <view class="showStrategySchool" bindtap="toggleSchool" wx:if="{{!stateSchool}}">
-         
-          ▶生活攻略草稿箱
-        </view>
+
+        ▶生活攻略草稿箱
+      </view>
       <view class="showStrategySchool" bindtap="toggleSchool" wx:if="{{stateSchool}}">
-          ▼生活攻略草稿箱</view>
+        ▼生活攻略草稿箱</view>
       <view id="strategyForSchoolBox" class="{{firstClickSchool?'show':'hide'}} {{stateSchool?'open':'close'}}">
         <scroll-view class="strategySchoolList" scroll-y="true">
           <view class="strategyForSchool" wx:for="{{draftLifeStrategies}}" wx:key="item" id="{{item.id}}"

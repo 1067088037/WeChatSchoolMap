@@ -3,15 +3,19 @@
 <view class="MessageSelectorPage"
   wx:if="{{showLifeStrategiesPage == false && showAttentionPage == false && showLifeStrategyDetail == false &&showMap == false}}">
   <view class="markContainer" style="margin-top:30rpx">
-    <view class="ActivityMessage" bindtap="navigaToAttentionPage" hover-class="_hover_list">
-      <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
-      <text>关注的活动消息</text>
+    <view class="outBoxView" bindtap="navigaToAttentionPage" hover-class="_hover_list">
+      <image mode="heightFix" src="../../images/message/attention.png"></image>
+      <view class="titleBox">
+        <text class="titleText">关注的活动消息</text>
+      </view>
     </view>
   </view>
   <view class="markContainer" style="margin-top:30rpx">
-    <view class="LifeStrategyPage" bindtap="navigaToLifeStrategiesPage" hover-class="_hover_list">
-      <image mode="heightFix" src="/images/tabBarIcon/design_selected.png">图标</image>
-      <text>生活攻略</text>
+    <view class="outBoxView" bindtap="navigaToLifeStrategiesPage" hover-class="_hover_list">
+      <image mode="heightFix" src="../../images/message/life_strategy.png"></image>
+      <view class="titleBox">
+        <text class="titleText">生活攻略</text>
+      </view>
     </view>
   </view>
 </view>
