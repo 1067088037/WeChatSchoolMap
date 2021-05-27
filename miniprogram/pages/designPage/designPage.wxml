@@ -129,7 +129,7 @@
     <view class="posters" wx:for="{{myPost}}" wx:for-index="index" wx:key="key" wx:for-item="item">
       <view class="post-container">
         <text class="postTitle">{{item.name}}</text>
-        <image style="width:90%" src="{{item.images[0]}}" mode="aspectFit "></image>
+        <image style="width:90%" src="{{item.images[0]}}" mode="widthFix"></image>
         <text>
           {{item.desc}}
         </text>
