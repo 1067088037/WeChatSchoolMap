@@ -1005,6 +1005,7 @@ Page({
             height: 40,
             iconPath: "/images/building/canteen.png",
             text: value.text
+            
           })
         } else {
           archArray.push({
@@ -1014,8 +1015,9 @@ Page({
             longitude: value.geo.coordinates[0],
             type: value.type,
             title: value.name,
-            width: 40,
-            height: 50
+            width: 50,
+            height: 60,
+            iconPath:(value['logo']!=undefined &&value['logo']!="" )?value['logo']:""
           })
         }
       })

@@ -808,6 +808,7 @@ Page({
     this.data.userUploadPosters.forEach((e, i) => {
       const filepath = e;
       const name = util.randomId()
+
       const cloudpath = "School/4144010561/images/Design/design" + name + filepath.match(/\.[^.]+?$/)[0]
       console.log(cloudpath)
       wx.cloud.uploadFile({
@@ -823,15 +824,19 @@ Page({
   //发送海报到数据库
   sendPost() {
     //console.log(this.data.userUploadPosters);
-    db.poster.addPoster('1ace8ef160901b1b008f69ae08b0ee8a', {
+    db.poster.addPoster(app.globalData.campus._id, {
       sender: getApp().globalData.openid,
       name: this.data.postTitleInput,
       desc: this.data.postContentInput,
-      images: this.data.userUploadPosters,
+      images: this.uploadPostersToCloud(),
     })
-    wx.navigateTo({
-      url: '../../pages/posterArea/posterArea',
-    });
+    // wx.navigateTo({
+    //   url: '../../pages/posterArea/posterArea',
+    // });
+    wx.showToast({
+      title: '发布成功',
+      icon:'success'
+    })
     this.setData({
       showUploadPostArea: false
     })
@@ -1055,7 +1060,7 @@ Page({
     }
     return images
   },
-  // 上传图示
+  // 上传标点图示
   uploadIcontoCloud() {
     let name = util.randomId()
     let fileName = this.data.userUploadIcon;
@@ -1073,6 +1078,7 @@ Page({
     })
     return CloudPathFront + cloudPath;
   },
+  // 上传标点照片
   uploadPointPhotoToCloud() {
     let images = []
     let name = util.randomId();
@@ -1094,6 +1100,25 @@ Page({
         images.push(CloudPathFront + cloudPath);
       })
     }
+    return images;
+  },
+  // 上传海报
+  uploadPostersToCloud(){
+    let images = []
+    this.data.userUploadPosters.forEach(poster=>{
+      let type = "Poster"
+      let name = util.randomId()
+      let cloudPath = "School/4144010561/images/Posters/" + type + name + poster.match(/\.[^.]+?$/)[0];
+      wx.cloud.uploadFile({
+        cloudPath: cloudPath,
+        filePath: poster,
+        success: res => {
+          console.log(res.fileId)
+        },
+        fail: console.error
+      })
+      images.push(CloudPathFront+cloudPath);
+    })
     return images;
   },
   isSaveEdit(e) {
