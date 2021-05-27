@@ -122,6 +122,11 @@ export class Point {
    * @param {string} pointId 数据库中ID
    */
   async removePointById(pointId) {
+    await _db.collection('point').doc(pointId).get().then(res => {
+      wx.cloud.deleteFile({
+        fileList: res.data.desc.images
+      })
+    })
     await _db.collection('point').doc(pointId).remove()
     return db.comment.removeAllComment([pointId])
   }
@@ -134,7 +139,12 @@ export class Point {
     return _db.collection('point').where({
       markId: markId
     }).get().then(res => {
-      res.data.forEach(e => {
+      res.data.forEach(async e => {
+        await _db.collection('point').doc(e._id).get().then(res => {
+          wx.cloud.deleteFile({
+            fileList: res.data.desc.images
+          })
+        })
         _db.collection('point').doc(e._id).remove()
         _db.comment.removeAllComment(e._id)
       })

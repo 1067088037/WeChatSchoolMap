@@ -89,6 +89,18 @@ export class Strategy {
    * @param {string} strategyId 
    */
   async removeStrategy(strategyId) {
+    await _db.collection('strategy').doc(strategyId).get().then(res => {
+      res.data.draft.forEach(element => {
+        wx.cloud.deleteFile({
+          fileList: element.image
+        })
+      });
+      res.data.publish.forEach(element => {
+        wx.cloud.deleteFile({
+          fileList: element.image
+        })
+      });
+    })
     await _db.collection('strategy').doc(strategyId).remove()
     await _db.collection('like').where({
       'super._id': strategyId

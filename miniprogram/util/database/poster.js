@@ -117,7 +117,13 @@ export class Poster {
       'super._id': posterId
     }).remove()
     await db.comment.removeAllComment(posterId)
-    return await _db.collection('poster').doc(posterId).remove()
+    await _db.collection('poster').doc(posterId).get().then(res => {
+      console.log("delete: ", res.data.images)
+      wx.cloud.deleteFile({
+        fileList: res.data.images
+      })
+    })
+    await _db.collection('poster').doc(posterId).remove()
   }
 
   /**

@@ -6,6 +6,8 @@
 import { db } from "../../util/database/database";
 
 export function launchTest() {
+  // db.poster.removePoster('hdn5vgnx2wi222ngqxlvqjmhjr843hsb')
+
   // db.poster.addAttention('ojr_35JJZSWh0xHtk_0k9GRJ4TqQ', '123456')
   // db.poster.removeAttention('ojr_35JJZSWh0xHtk_0k9GRJ4TqQ', '123456')
   // db.poster.getAttention('ojr_35JJZSWh0xHtk_0k9GRJ4TqQ').then(res => console.log(res))

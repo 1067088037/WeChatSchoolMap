@@ -65,6 +65,11 @@ export class Comment {
    * @param {string} commentId 
    */
   async removeComment(commentId) {
+    await _db.collection('comment').doc(commentId).get().then(res => {
+      wx.cloud.deleteFile({
+        fileList: res.data.images
+      })
+    })
     await _db.collection('comment').doc(commentId).remove()
     return _db.collection('like').where({
       'super._id': commentId

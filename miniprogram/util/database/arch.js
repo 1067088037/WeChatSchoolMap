@@ -126,6 +126,9 @@ export class Arch {
   async removeArchById(archId) {
     _db.collection('arch').doc(archId).get().then(res => {
       this.refreshArchLastUpdateTime(res.data.super._id)
+      wx.cloud.deleteFile({
+        fileList: res.data.images
+      })
     })
     await _db.collection('arch').doc(archId).remove()
     await _db.collection('strategy').where({ 'super._id': archId }).remove()
@@ -141,6 +144,9 @@ export class Arch {
       markId: markId
     }).get().then(res => {
       this.refreshArchLastUpdateTime(res.data.super._id)
+      wx.cloud.deleteFile({
+        fileList: res.data.images
+      })
     })
     return await _db.collection('arch').where({
       markId: markId

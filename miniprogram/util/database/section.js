@@ -192,6 +192,11 @@ export class Section {
         })
       })
     })
+    await _db.collection('section').doc(sectionId).get().then(res => {
+      wx.cloud.deleteFile({
+        fileList: res.data.images
+      })
+    })
     return _db.collection('section').doc(sectionId).remove()
   }
 
