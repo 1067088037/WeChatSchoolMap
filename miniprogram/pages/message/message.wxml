@@ -8,6 +8,7 @@
       <view class="titleBox">
         <text class="titleText">关注的活动消息</text>
       </view>
+      <view class="detailText">{{attentionActivityNum == -1 ? "" : attentionActivityNum}}</view>
     </view>
   </view>
   <view class="markContainer" style="margin-top:30rpx">
@@ -16,6 +17,7 @@
       <view class="titleBox">
         <text class="titleText">生活攻略</text>
       </view>
+      <view class="detailText">{{lifeStrategyNum == -1 ? "" : lifeStrategyNum}}</view>
     </view>
   </view>
 </view>
@@ -68,8 +70,6 @@
     <button style="padding:0; text-align:left" bindtap="returnToHomePageFromAP">⬅返回</button>
   </view>
   <view class="MessageContainer" wx:if="{{messageData.length>0}}">
-
-
     <view class="MessageBoxs" wx:for="{{messageData}}" wx:key="item" id="{{index}}" bindtap="enterMessage">
       <!-- buttons="{{slideButtons}}" -->
       <view class="MessageBox">

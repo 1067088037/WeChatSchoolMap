@@ -488,10 +488,9 @@ Page({
     }
     return true;
   },
-  lifeStrategyDescriptionsIsNotEmpty(){
-    for(let i = 0 ; i < this.data.strategyStep; i++)
-    {
-      if(this.data.lifeStrategyDescriptions[i] == "")
+  lifeStrategyDescriptionsIsNotEmpty() {
+    for (let i = 0; i < this.data.strategyStep; i++) {
+      if (this.data.lifeStrategyDescriptions[i] == "")
         return false;
     }
     return true;
@@ -546,7 +545,7 @@ Page({
         }
         this.data.userUploadPhotoes.forEach((e, index) => {
           let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
-          console.log("Images: ", )
+          console.log("Images: ",)
           draft.content[index].images.push(images)
         })
         console.log('draft: ', draft)
@@ -578,10 +577,10 @@ Page({
         })
       }
       // this.onReady()
-    }else{
+    } else {
       wx.showToast({
         title: '请完善内容',
-        icon:'error'
+        icon: 'error'
       })
     }
 
@@ -673,7 +672,7 @@ Page({
       }
       this.data.userUploadPhotoes.forEach((e, index) => {
         let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
-        console.log("Images: ", )
+        console.log("Images: ",)
         draft.content[index].images.push(images)
       })
       console.log('draft: ', draft)
@@ -763,7 +762,7 @@ Page({
   },
   // 从创建生活攻略界面返回
   cancelCreateLifeStrategy(e) {
-    if (this.data.lifeStrategyTitle != "" ) {
+    if (this.data.lifeStrategyTitle != "") {
       if (this.data.isEditLifeStrategy == false) {
         this.setData({
           showIsSaveLifeStrategy: true
@@ -771,14 +770,14 @@ Page({
       } else {
         this.setData({
           showIsSaveLifeStrategyEdit: true,
-          
+
         })
       }
     } else {
       this.setData({
         showCreateLifeStrategy: false,
-        lifeStrategyStepNames:[],
-        lifeStrategyDescriptions:[],
+        lifeStrategyStepNames: [],
+        lifeStrategyDescriptions: [],
       })
 
     }
@@ -850,7 +849,7 @@ Page({
         name: this.data.postTitleInput,
         desc: this.data.postContentInput,
         images: this.uploadPostersToCloud(),
-      })
+      }).then(() => this.refreshShowedDetailNumber())
       // wx.navigateTo({
       //   url: '../../pages/posterArea/posterArea',
       // });
@@ -910,7 +909,7 @@ Page({
     })
   },
   DeleteThisPost(e) {
-    db.poster.removePoster(e.currentTarget.id).then(res => {}),
+    db.poster.removePoster(e.currentTarget.id).then(() => {
       db.poster.getPosterByOpenid(getApp().globalData.openid).then(res => {
         this.setData({
           myPost: res,
@@ -918,6 +917,9 @@ Page({
           showMyPost: false
         })
       })
+    }).then(() => {
+      this.refreshShowedDetailNumber()
+    })
   },
   postNoChange() {
     this.setData({
@@ -1330,28 +1332,31 @@ Page({
     let publishedArchStrategies = this.data.publishedArchStrategies;
     let publishedLifeStrategies = this.data.publishedLifeStrategies;
     console.log(this.data.draftStrategiesId.length)
+    if (this.data.draftStrategiesId.length == 0) this.setData({ showEditPublishedStrategy: true, })
     this.data.draftStrategiesId.forEach(id => {
       db.strategy.getStrategy(id).then(res => {
-        if (res.super.type == 'arch') {
-          res.draft.content[0].image.forEach((e, idx) => {
-            e = CloudPathFront + e
-            res.draft.content[0].image[idx] = e
-          })
-          let draft = res.draft
-          draft['id'] = res._id
-          publishedArchStrategies.push(draft)
-        } else {
-          console.log("life",res)
-          res.draft.content.forEach(con => {
-            con.images.forEach((im, index) => {
-              im = CloudPathFront + im;
-              con.images[index] = im
+        if (res != null) {
+          if (res.super.type == 'arch') {
+            res.draft.content[0].image.forEach((e, idx) => {
+              e = CloudPathFront + e
+              res.draft.content[0].image[idx] = e
             })
-          })
-          if (res.type == 'publish') {
             let draft = res.draft
             draft['id'] = res._id
-            publishedLifeStrategies.push(draft)
+            publishedArchStrategies.push(draft)
+          } else {
+            console.log("life", res)
+            res.draft.content.forEach(con => {
+              con.images.forEach((im, index) => {
+                im = CloudPathFront + im;
+                con.images[index] = im
+              })
+            })
+            if (res.type == 'publish') {
+              let draft = res.draft
+              draft['id'] = res._id
+              publishedLifeStrategies.push(draft)
+            }
           }
         }
       }).then(() => {
@@ -1363,10 +1368,8 @@ Page({
       }).then(() => {
         this.setData({
           // showEditStrategy: true,
-
         })
         // console.log("关闭Loading")
-
       })
       // resolve()
     })
@@ -1922,7 +1925,7 @@ Page({
             this.onReady()
             this.navigaToEditPublishedStrategy()
             wx.hideLoading({
-              success: (res) => {},
+              success: (res) => { },
             })
             wx.showToast({
               title: '攻略已删除',
@@ -1935,6 +1938,16 @@ Page({
   returnFromEditPoint(e) {
     this.setData({
       showEditPoint: false
+    })
+  },
+  refreshShowedDetailNumber() {
+    // console.log('refreshShowedDetailNumber')
+    db.poster.getPosterByOpenid(this.data.userOpenId).then(res => this.setData({ posterNum: res.length }))
+    db.point.getPointByOpenid(this.data.userOpenId).then(res => this.setData({ pointNum: res.length }))
+    db.strategy.getBriefStrategyArrayByOpenid(this.data.userOpenId).then(res => {
+      let publishedStrategyNum = 0
+      res.forEach(e => { if (e.type == 'publish') publishedStrategyNum++ })
+      this.setData({ strategyNum: publishedStrategyNum })
     })
   },
 
@@ -1950,8 +1963,6 @@ Page({
       longitude: mCampus.geo.center.longitude,
       latitude: mCampus.geo.center.latitude
     })
-
-
   },
 
   /**
@@ -1962,35 +1973,20 @@ Page({
     let publishedPoint = []
     let openId = app.globalData.openid
     //console.log(app.globalData.campus._id)
-    db.poster.getPosterByOpenid(this.data.userOpenId).then(res => {
-      console.log(res)
-      this.setData({
-        posterNum: res.length
-      })
-    })
+    this.refreshShowedDetailNumber()
     db.strategy.getBriefStrategyArrayByOpenid(this.data.userOpenId).then(res => {
-      console.log(res)
       // let draftStrategiesId = this.data.draftStrategiesId
       res.forEach(e => {
         draftStrategiesId.push(e._id)
       })
       this.setData({
         draftStrategiesId,
-        strategyNum: res.length
       })
     })
-    db.point.getPointArray(app.globalData.campus._id).then(res => {
-      res.forEach(e => {
-        // console.log(e._openid,openId)
-        if (e._openid == openId) {
-          //e.desc.icon = CloudPathFront + e.desc.icon
-          publishedPoint.push(e);
-          //console.log(publishedPoint)
-        }
-      })
+    db.point.getPointByOpenid(this.data.userOpenId).then(res => {
+      console.log(res)
       this.setData({
-        publishedPoint: publishedPoint,
-        pointNum: publishedPoint.length
+        publishedPoint: res
       })
     })
   },
@@ -2000,7 +1996,7 @@ Page({
    */
   onShow: function () {
     console.log(app.globalData.school._id)
-
+    this.refreshShowedDetailNumber()
     db.section.getSectionArray(app.globalData.school._id).then(res => {
       this.setData({
         departmentsItemOne: this.data.departmentsItemOne.concat(res.data.name),

@@ -54,6 +54,14 @@ input {
   font-size: large;
 }
 
+.detailText {
+  right: 12rpx;
+  position: absolute;
+  display: flex;
+  align-self: center;
+  justify-items: center;
+}
+
 .outBoxView image {
   position: relative;
   widows: 90rpx;

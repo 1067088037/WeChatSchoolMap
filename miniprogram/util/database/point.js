@@ -7,6 +7,19 @@ const dateConstructor = new Date('2020-1-1').constructor
 
 export class Point {
   /**
+   * 通过openid获取标点
+   * @param {string} openid 
+   */
+  async getPointByOpenid(openid) {
+    return await wx.cloud.callFunction({
+      name: 'getPointByOpenid',
+      data: {
+        _openid: openid
+      }
+    }).then(res => res.result.data)
+  }
+
+  /**
    * 获取校区下全部的标点
    * @param {string} campusId
    * @returns {Array} 标点数组
