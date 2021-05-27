@@ -102,17 +102,11 @@
   </view> -->
   <!--修改我的海报页面-->
 
-  <view class="uploadPosterArea" wx:if="{{showChangeMyPost}}">
+  <!-- <view class="uploadPosterArea" wx:if="{{showChangeMyPost}}">
     <mp-cells>
       <mp-cell title="活动名称">
         <input type="text" value="{{postNeedChange.name}}" bindinput="getPostTitle"></input>
       </mp-cell>
-      <!--之前做错的图片部分-->
-      <!-- <mp-cell>
-        <mp-uploader delete="{{true}}" title="海报" max-count="9" files="{{myPostImagesUrl}}" select="{{selectFile}}"
-          upload="{{uplaodFile}}" bindfail="uplaodError" bindsuccess="uploadSuccess"> </mp-uploader>
-      </mp-cell> -->
-
       <mp-cell title="活动介绍">
         <input type="text" value="{{postNeedChange.desc}}" bindinput="getPostContent"></input>
       </mp-cell>
@@ -125,7 +119,8 @@
         </view>
       </view>
     </mp-cells>
-  </view>
+  </view> -->
+
   <!--我的海报界面-->
   <view class="PostArea" wx:if="{{showMyPost}}">
     <view class="posters" wx:for="{{myPost}}" wx:for-index="index" wx:key="key" wx:for-item="item">
@@ -136,8 +131,8 @@
           {{item.desc}}
         </text>
         <view class="changeOrDelete">
-          <view class="change" id="{{item._id}}" bindtap="ChangeThisPost"><text>修改</text></view>
-          <view class="delete" id="{{item._id}}" bindtap="DeleteThisPost"><text>删除</text></view>
+          <view class="change" id="{{item._id}}" bindtap="ChangeThisPost"><button size="mini" type="default">修改</button></view>
+          <view class="delete" id="{{item._id}}" bindtap="DeleteThisPost"><button size="mini" type="warn">删除</button></view>
         </view>
       </view>
     </view>
@@ -157,9 +152,10 @@
       <mp-cell title="活动介绍">
         <input type="text" value="{{postNeedChange.desc}}" bindinput="getPostContent"></input>
       </mp-cell>
-      <button bindtap="postNoChange">取消</button>
-      <!--sendPhoto函数要写成sendPost函数-->
-      <button size="mini" class="post" type="primary" bindtap="sendPhoto" bindtap="ChangeThisPostNow">修改</button>
+      <view>
+        <button size="mini" class="post" type="default" bindtap="postNoChange">取消</button>
+        <button size="mini" class="post" type="primary" bindtap="sendPhotoAndChangeThisPostNow">修改</button>
+      </view>
     </mp-cells>
   </view>
   <!-- 我的海报界面

@@ -526,7 +526,7 @@ Page({
       }
       this.data.userUploadPhotoes.forEach((e, index) => {
         let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
-        console.log("Images: ", )
+        console.log("Images: ",)
         draft.content[index].images.push(images)
       })
       console.log('draft: ', draft)
@@ -647,7 +647,7 @@ Page({
       }
       this.data.userUploadPhotoes.forEach((e, index) => {
         let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
-        console.log("Images: ", )
+        console.log("Images: ",)
         draft.content[index].images.push(images)
       })
       console.log('draft: ', draft)
@@ -803,24 +803,6 @@ Page({
       showMyPost: false
     })
   },
-  sendPhoto() {
-
-    this.data.userUploadPosters.forEach((e, i) => {
-      const filepath = e;
-      const name = util.randomId()
-
-      const cloudpath = "School/4144010561/images/Design/design" + name + filepath.match(/\.[^.]+?$/)[0]
-      console.log(cloudpath)
-      wx.cloud.uploadFile({
-        cloudPath: cloudpath,
-        filePath: filepath,
-        success: res => {
-          console.log(res.fileId)
-        },
-        fail: console.error
-      })
-    })
-  },
   //发送海报到数据库
   sendPost() {
     //console.log(this.data.userUploadPosters);
@@ -883,7 +865,7 @@ Page({
     })
   },
   DeleteThisPost(e) {
-    db.poster.removePoster(e.currentTarget.id).then(res => {}),
+    db.poster.removePoster(e.currentTarget.id).then(res => { }),
       db.poster.getPosterByOpenid(getApp().globalData.openid).then(res => {
         this.setData({
           myPost: res,
@@ -897,7 +879,22 @@ Page({
       showChangeMyPost: false
     })
   },
-  ChangeThisPostNow() {
+  sendPhotoAndChangeThisPostNow() {
+    this.data.userUploadPosters.forEach((e, i) => {
+      const filepath = e;
+      const name = util.randomId()
+      const cloudpath = "School/4144010561/images/Design/design" + name + filepath.match(/\.[^.]+?$/)[0]
+      console.log(cloudpath)
+      wx.cloud.uploadFile({
+        cloudPath: cloudpath,
+        filePath: filepath,
+        success: res => {
+          console.log(res.fileId)
+        },
+        fail: console.error
+      })
+    })
+
     //console.log(this.data.userUploadPosters);
     //postNeedChange
     var that = this;
@@ -905,7 +902,7 @@ Page({
       this.data.postNeedChange.name = this.data.postTitleInput;
     if (this.data.postContentInput != "")
       this.data.postNeedChange.desc = this.data.postContentInput;
-
+    
     // let myPostUrlArray = Array.from(this.data.myPostImagesUrl)
     // var myPostImgaesString = [];
     // myPostUrlArray.forEach(function (postUrl, index) {
@@ -1287,11 +1284,11 @@ Page({
               con.images[index] = im
             })
           })
-          if(res.type == 'publish'){
-          let draft = res.draft
-          draft['id'] = res._id
-          publishedLifeStrategies.push(draft)
-        }
+          if (res.type == 'publish') {
+            let draft = res.draft
+            draft['id'] = res._id
+            publishedLifeStrategies.push(draft)
+          }
         }
       }).then(() => {
         this.setData({
@@ -1302,10 +1299,10 @@ Page({
       }).then(() => {
         this.setData({
           // showEditStrategy: true,
-  
+
         })
         // console.log("关闭Loading")
-        
+
       })
       // resolve()
     })
@@ -1799,24 +1796,24 @@ Page({
       isSaveEditPoint: false
     })
   },
-  showDeletePointDraft(e){
+  showDeletePointDraft(e) {
     wx.showModal({
       title: '是否确定要删除？',
       confirmText: "删除",
       confirmColor: "#FF0000",
       cancelText: "取消",
-      success :(res)=>{
-        if(res.confirm){
-         db.point.removePointById(this.data.selectedPoint._id).then(()=>{
-           wx.showToast({
-             title: '删除成功',
-           })
-           this.setData({
-            // showEditPoint:false,
-            showEditPointPage:false
-           })
-           this.onReady()
-         })
+      success: (res) => {
+        if (res.confirm) {
+          db.point.removePointById(this.data.selectedPoint._id).then(() => {
+            wx.showToast({
+              title: '删除成功',
+            })
+            this.setData({
+              // showEditPoint:false,
+              showEditPointPage: false
+            })
+            this.onReady()
+          })
         }
       }
     })
@@ -1861,7 +1858,7 @@ Page({
             this.onReady()
             this.navigaToEditPublishedStrategy()
             wx.hideLoading({
-              success: (res) => {},
+              success: (res) => { },
             })
             wx.showToast({
               title: '攻略已删除',

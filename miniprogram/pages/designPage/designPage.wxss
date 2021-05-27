@@ -114,7 +114,8 @@ image {
 
 .post {
   margin-top: 20rpx;
-  margin-left: 200rpx;
+  margin-bottom: 20rpx;
+  margin-left: 175rpx;
 }
 
 .postView {
