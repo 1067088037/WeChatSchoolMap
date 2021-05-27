@@ -62,7 +62,7 @@
 </navigator>
 </view>
 <view class="sonhead">
-  <navigator url="../myCenter/focus/focus">
+  <navigator url="../myCenter/myCenter/focus/focus">
   <text>
     关注中活动
   </text>

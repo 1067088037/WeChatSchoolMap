@@ -478,86 +478,110 @@ Page({
     }
     return strategy
   },
+  lifeStrategyStepNamesIsNotEmpty() {
+
+    for (let i = 0; i < this.data.strategyStep.length; i++) {
+      if (this.data.lifeStrategyStepNames[i] == "")
+        return false;
+    }
+    return true;
+  },
+  lifeStrategyDescriptionsIsNotEmpty(){
+    for(let i = 0 ; i < this.data.strategyStep; i++)
+    {
+      if(this.data.lifeStrategyDescriptions[i] == "")
+        return false;
+    }
+    return true;
+  },
   // 发布生活攻略 -- 第一次添加时
   releaseLifeStrategy(e) {
-    wx.showLoading({
-      title: 'wating....',
-    })
-    if (!(this.data.isEditLifeStrategy)) {
-      let superid = app.globalData.campus._id
-      let superType = "campus"
-      let loopTime = this.data.strategyStep.length;
-      let strategy = this.getCreatingLifeStrategy()
-      strategy['type'] = "publish"
-      for (var index = 0; index < loopTime; index++) {
-        let contentObj = {
-          name: this.data.lifeStrategyStepNames[index],
-          coordinates: this.data.lifeStrategyCoordinates[index],
-          desc: this.data.lifeStrategyDescriptions[index],
-          images: this.updatePhotoesToCloud(CloudStrategyPath, index)
+    if (this.data.lifeStrategyTitle != "" && this.lifeStrategyStepNamesIsNotEmpty() && this.lifeStrategyDescriptionsIsNotEmpty()) {
+      wx.showLoading({
+        title: 'wating....',
+      })
+      if (!(this.data.isEditLifeStrategy)) {
+        let superid = app.globalData.campus._id
+        let superType = "campus"
+        let loopTime = this.data.strategyStep.length;
+        let strategy = this.getCreatingLifeStrategy()
+        strategy['type'] = "publish"
+        for (var index = 0; index < loopTime; index++) {
+          let contentObj = {
+            name: this.data.lifeStrategyStepNames[index],
+            coordinates: this.data.lifeStrategyCoordinates[index],
+            desc: this.data.lifeStrategyDescriptions[index],
+            images: this.updatePhotoesToCloud(CloudStrategyPath, index)
+          }
+          console.log(contentObj)
+          strategy.content.push(contentObj)
         }
-        console.log(contentObj)
-        strategy.content.push(contentObj)
+        console.log(strategy)
+        db.strategy.addStrategy(superid, superType, strategy).then(() => {
+          this.setData({
+            showCreateLifeStrategy: false,
+            lifeStrategyStepNames: [],
+            lifeStrategyImages: [],
+            lifeStrategyDescriptions: [],
+            lifeStrategyCoordinates: [],
+            needMarkers: [],
+            strategyStep: [1],
+            lifeStrategyIntro: "",
+            lifeStrategyTitle: "",
+            userUploadPhotoes: []
+          })
+          wx.hideLoading()
+          wx.showToast({
+            title: '发布成功',
+          })
+          this.onReady()
+        })
+      } else {
+        let draft = {
+          name: this.data.draftLifeStrategySelected.name,
+          desc: this.data.draftLifeStrategySelected.desc,
+          content: this.data.draftLifeStrategySelected.content
+        }
+        this.data.userUploadPhotoes.forEach((e, index) => {
+          let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
+          console.log("Images: ", )
+          draft.content[index].images.push(images)
+        })
+        console.log('draft: ', draft)
+        db.strategy.publishFromDraft(this.data.draftLifeStrategySelected.id, draft).then(() => {
+          this.setData({
+            draftLifeStrategySelected: null,
+            showEditStrategy: true,
+            isEditLifeStrategy: false,
+            showCreateLifeStrategy: false,
+            lifeStrategyStepNames: [],
+            lifeStrategyImages: [],
+            lifeStrategyDescriptions: [],
+            lifeStrategyCoordinates: [],
+            needMarkers: [false],
+            strategyStep: [1],
+            userUploadPhotoes: [],
+            lifeStrategyIntro: "",
+            lifeStrategyTitle: "",
+            showIsSaveLifeStrategyEdit: false,
+            files: [],
+            draftLifeStrategies: [],
+            draftLifeStrategySelected: {},
+          })
+          wx.hideLoading()
+          wx.showToast({
+            title: '发布成功',
+          })
+          this.navigaToEditStrategy()
+        })
       }
-      console.log(strategy)
-      db.strategy.addStrategy(superid, superType, strategy).then(() => {
-        this.setData({
-          showCreateLifeStrategy: false,
-          lifeStrategyStepNames: [],
-          lifeStrategyImages: [],
-          lifeStrategyDescriptions: [],
-          lifeStrategyCoordinates: [],
-          needMarkers: [],
-          strategyStep: [],
-          lifeStrategyIntro: "",
-          lifeStrategyTitle: "",
-          userUploadPhotoes: []
-        })
-        wx.hideLoading()
-        wx.showToast({
-          title: '发布成功',
-        })
-      })
-    } else {
-      let draft = {
-        name: this.data.draftLifeStrategySelected.name,
-        desc: this.data.draftLifeStrategySelected.desc,
-        content: this.data.draftLifeStrategySelected.content
-      }
-      this.data.userUploadPhotoes.forEach((e, index) => {
-        let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
-        console.log("Images: ",)
-        draft.content[index].images.push(images)
-      })
-      console.log('draft: ', draft)
-      db.strategy.publishFromDraft(this.data.draftLifeStrategySelected.id, draft).then(() => {
-        this.setData({
-          draftLifeStrategySelected: null,
-          showEditStrategy: true,
-          isEditLifeStrategy: false,
-          showCreateLifeStrategy: false,
-          lifeStrategyStepNames: [],
-          lifeStrategyImages: [],
-          lifeStrategyDescriptions: [],
-          lifeStrategyCoordinates: [],
-          needMarkers: [false],
-          strategyStep: [1],
-          userUploadPhotoes: [],
-          lifeStrategyIntro: "",
-          lifeStrategyTitle: "",
-          showIsSaveLifeStrategyEdit: false,
-          files: [],
-          draftLifeStrategies: [],
-          draftLifeStrategySelected: {},
-        })
-        wx.hideLoading()
-        wx.showToast({
-          title: '发布成功',
-        })
-        this.navigaToEditStrategy()
+      // this.onReady()
+    }else{
+      wx.showToast({
+        title: '请完善内容',
+        icon:'error'
       })
     }
-    this.onReady()
 
   },
   // 是否保存生活攻略在第一次添加时的编辑
@@ -647,7 +671,7 @@ Page({
       }
       this.data.userUploadPhotoes.forEach((e, index) => {
         let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
-        console.log("Images: ",)
+        console.log("Images: ", )
         draft.content[index].images.push(images)
       })
       console.log('draft: ', draft)
@@ -737,14 +761,24 @@ Page({
   },
   // 从创建生活攻略界面返回
   cancelCreateLifeStrategy(e) {
-    if (this.data.isEditLifeStrategy == false) {
-      this.setData({
-        showIsSaveLifeStrategy: true
-      })
+    if (this.data.lifeStrategyTitle != "" ) {
+      if (this.data.isEditLifeStrategy == false) {
+        this.setData({
+          showIsSaveLifeStrategy: true
+        })
+      } else {
+        this.setData({
+          showIsSaveLifeStrategyEdit: true,
+          
+        })
+      }
     } else {
       this.setData({
-        showIsSaveLifeStrategyEdit: true
+        showCreateLifeStrategy: false,
+        lifeStrategyStepNames:[],
+        lifeStrategyDescriptions:[],
       })
+
     }
   },
   // 草稿箱界面显示建筑攻略的函数
@@ -806,22 +840,31 @@ Page({
   //发送海报到数据库
   sendPost() {
     //console.log(this.data.userUploadPosters);
-    db.poster.addPoster(app.globalData.campus._id, {
-      sender: getApp().globalData.openid,
-      name: this.data.postTitleInput,
-      desc: this.data.postContentInput,
-      images: this.uploadPostersToCloud(),
-    })
-    // wx.navigateTo({
-    //   url: '../../pages/posterArea/posterArea',
-    // });
-    wx.showToast({
-      title: '发布成功',
-      icon:'success'
-    })
-    this.setData({
-      showUploadPostArea: false
-    })
+    let images = this.uploadPostersToCloud()
+    console.log(images)
+    if (images.length > 0) {
+      db.poster.addPoster(app.globalData.campus._id, {
+        sender: getApp().globalData.openid,
+        name: this.data.postTitleInput,
+        desc: this.data.postContentInput,
+        images: this.uploadPostersToCloud(),
+      })
+      // wx.navigateTo({
+      //   url: '../../pages/posterArea/posterArea',
+      // });
+      wx.showToast({
+        title: '发布成功',
+        icon: 'success'
+      })
+      this.setData({
+        showUploadPostArea: false
+      })
+    } else {
+      wx.showToast({
+        title: '需要上传海报',
+        icon: 'error'
+      })
+    }
   },
   //出现我的海报页面，从数据库中加载数据
   navigaToMyPost() {
@@ -865,7 +908,7 @@ Page({
     })
   },
   DeleteThisPost(e) {
-    db.poster.removePoster(e.currentTarget.id).then(res => { }),
+    db.poster.removePoster(e.currentTarget.id).then(res => {}),
       db.poster.getPosterByOpenid(getApp().globalData.openid).then(res => {
         this.setData({
           myPost: res,
@@ -879,19 +922,18 @@ Page({
       showChangeMyPost: false
     })
   },
-  deletePoster(e){
+  deletePoster(e) {
     let index = e.detail.index;
-    if(this.data.postNeedChange.images.length > 0)
-    {
+    if (this.data.postNeedChange.images.length > 0) {
       let deletePoster = this.data.postNeedChange.images[index]
       wx.cloud.deleteFile({
-        fileList:[deletePoster],
-        success:res=>{
-          console.log("successfully delete: ",res)
+        fileList: [deletePoster],
+        success: res => {
+          console.log("successfully delete: ", res)
         },
-        fail:console.error()
+        fail: console.error()
       })
-      this.data.postNeedChange.images.splice(index,1);
+      this.data.postNeedChange.images.splice(index, 1);
     }
   },
   sendPhotoAndChangeThisPostNow() {
@@ -912,13 +954,13 @@ Page({
     let images = this.data.postNeedChange.images.concat(this.uploadPostersToCloud())
     //console.log(this.data.userUploadPosters);
     //postNeedChange
-    
+
     var that = this;
     if (this.data.postTitleInput != "")
       this.data.postNeedChange.name = this.data.postTitleInput;
     if (this.data.postContentInput != "")
       this.data.postNeedChange.desc = this.data.postContentInput;
-    if(images.length>0)
+    if (images.length > 0)
       this.data.postNeedChange.images = images
     // let myPostUrlArray = Array.from(this.data.myPostImagesUrl)
     // var myPostImgaesString = [];
@@ -949,7 +991,7 @@ Page({
     })
     wx.showToast({
       title: '成功',
-      icon:'success'
+      icon: 'success'
     })
   },
   //下列一系列函数是图片上传相关函数
@@ -1118,9 +1160,9 @@ Page({
     return images;
   },
   // 上传海报
-  uploadPostersToCloud(){
+  uploadPostersToCloud() {
     let images = []
-    this.data.userUploadPosters.forEach(poster=>{
+    this.data.userUploadPosters.forEach(poster => {
       let type = "Poster"
       let name = util.randomId()
       let cloudPath = "School/4144010561/images/Posters/" + type + name + poster.match(/\.[^.]+?$/)[0];
@@ -1132,7 +1174,7 @@ Page({
         },
         fail: console.error
       })
-      images.push(CloudPathFront+cloudPath);
+      images.push(CloudPathFront + cloudPath);
     })
     return images;
   },
@@ -1285,6 +1327,7 @@ Page({
   navigaToEditPublishedStrategy(e) {
     let publishedArchStrategies = this.data.publishedArchStrategies;
     let publishedLifeStrategies = this.data.publishedLifeStrategies;
+    console.log(this.data.draftStrategiesId.length)
     this.data.draftStrategiesId.forEach(id => {
       db.strategy.getStrategy(id).then(res => {
         if (res.super.type == 'arch') {
@@ -1296,6 +1339,7 @@ Page({
           draft['id'] = res._id
           publishedArchStrategies.push(draft)
         } else {
+          console.log("life",res)
           res.draft.content.forEach(con => {
             con.images.forEach((im, index) => {
               im = CloudPathFront + im;
@@ -1876,7 +1920,7 @@ Page({
             this.onReady()
             this.navigaToEditPublishedStrategy()
             wx.hideLoading({
-              success: (res) => { },
+              success: (res) => {},
             })
             wx.showToast({
               title: '攻略已删除',
