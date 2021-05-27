@@ -21,13 +21,15 @@
 
 .userinfo-avatar {
   position:relative;
-  right:19rpx;
-  bottom:19rpx;
-  overflow: hidden;
-  width: 150rpx;
-  height: 150rpx;
-  margin: 20rpx;
-  border-radius: 50%;
+  right:22rpx;
+  bottom:22rpx;
+    overflow: hidden;
+    width: 150rpx;
+    height: 150rpx;
+    margin: 20rpx;
+    border:3px solid rgba(255, 255, 255, 1);
+      box-shadow:0px 0px 7px 3px rgba(61, 55, 55, 0.2);
+    border-radius: 50%;
 }
 .nameuse{
   position:relative;
@@ -43,33 +45,27 @@
 }
 .head{
   height:300rpx;
-  background:rgb(112,74,96);
+  background:rgb(156, 192, 221);
   margin-top: 30rpx;
   margin-left:30rpx;
   margin-right:30rpx;
   padding:40rpx;
   border-radius: 20rpx;
-  border:10rpx solid gray;
-}
-.head2{
-  border-radius: 75rpx;
-  height:150rpx;
-  width:150rpx;
-  background:white;
-  border:5rpx solid  rgb(202, 174, 178);
+  border:3px solid rgba(255, 255, 255, 1);
+    box-shadow:0px 0px 7px 3px rgba(61, 55, 55, 0.2);
 }
 
 .word1{
   position: relative;
   left:200rpx;
-  bottom:150rpx;
+  bottom:220rpx;
   color:rgb(219, 211, 211);
 
 }
 .word2{
   position:relative;
   left:200rpx;
-  bottom:140rpx;
+  bottom:180rpx;
 }
 .word3{
   position:relative;
@@ -81,8 +77,20 @@
   display:flex; flex-wrap: nowrap;height:200rpx;
 }
 .sonhead{
+  display:flex;
   margin:20rpx;
   background:white;
   border-radius: 30rpx;
-  height:200rpx;
+  height:150rpx;
+  border:3px solid rgba(255, 255, 255, 1);
+      box-shadow:0px 0px 7px 3px rgba(61, 55, 55, 0.2);
 }
+.name{
+  width:auto;
+  position: relative;
+  right: 220rpx;
+}
+.icon{ 
+    width: 50rpx;
+    height: 50rpx;
+  }

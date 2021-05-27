@@ -6,14 +6,20 @@ import {
 import {
   section
 } from '../../../../util/database/section';
-
+const util = require('../../../../util/util')
+const CloudPathFront = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/";
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-  section:{name:"",desc:"",image:"",geo:""},
+    openid:"",
+    sectionid:"",
+    schoolid:"",
+  section:{},
+  title:"",
+  desc:"",
   userUploadPhotoes: [], // 用户上传的图片
   files: []
   },
@@ -40,9 +46,20 @@ Page({
   uploadError(e) {
     console.log('upload error', e.detail)
   },
+  uploadSuccess(e) {
+    console.log('upload success', e.detail)
+    this.setData({
+      userUploadPhotoes: this.data.userUploadPhotoes.concat(e.detail.urls[0])
+    })
+  },
   inputsectionName(e){
     this.setData({
-      section: e.detail.value
+      title: e.detail.value
+    })
+  },
+  inputBriefIntro(e){
+    this.setData({
+    desc:e.detail.value  
     })
   },
   chooseImage: function (e) {
@@ -80,11 +97,71 @@ Page({
       resolve(obj)
     })
   },
+  updatePhotoesToCloud() {
+    let images = []
+
+    this.data.userUploadPhotoes.forEach((e, i) => {
+      const filepath = e;
+      let name = util.randomId()
+      const cloudpath = "School/4144010561/images/Strategies/Strategy" + name + filepath.match(/\.[^.]+?$/)[0]
+      images.push(cloudpath)
+      console.log(cloudpath)
+      wx.cloud.uploadFile({
+        cloudPath: cloudpath,
+        filePath: filepath,
+        success: res => {
+          console.log(res.fileId)
+        },
+        fail: console.error
+      })
+    })
+    return images
+  },
+  sendStrategy() {
+    var schoolid;
+    let title = this.data.title;
+    //let campusId = app.globalData.campus._id
+    let content = [];
+    let obj ={};
+    obj['desc'] = this.data.desc;
+    obj['name'] = this.data.title;
+    console.log(this.data.title);
+    let images = this.updatePhotoesToCloud()
+    obj['image'] = images;
+    obj['geo']="无"
+    var openid=app.globalData.openid;
+    console.log(openid);
+    db.user.getUser(openid).then((res)=>{
+      console.log(res);
+      this.setData({
+        schoolid:res.info.school
+      })
+    }).then(()=>{
+      console.log(this.data.schoolid);
+      console.log(obj);
+      db.section.addSection(this.data.schoolid,obj).then(res=>{
+        this.setData({
+       sectionid:res._id
+        })
+      }).then((res)=>{
+        var openid=app.globalData.openid;
+       db.section.joinSection(this.data.sectionid,48,openid);
+       db.section.addAdmin(this.data.sectionid,openid);
+      })
+    })
+    
+    
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    var openid=app.globalData.openid;
+    console.log(openid);
+    this.setData({
+      selectFile: this.selectFile.bind(this),
+      uplaodFile: this.uplaodFile.bind(this)
+    })
   },
 
   /**

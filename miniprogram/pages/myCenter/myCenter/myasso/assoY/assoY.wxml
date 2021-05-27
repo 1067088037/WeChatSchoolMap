@@ -1,13 +1,8 @@
-<!-- <view>申请表测试用</view> 
-<view wx:for="{{applicationlist}}" wx:for-item="a">
-<view id="{{a._id}}" bindtap=""><text>{{a.name}}</text>
-  <view><text>{a.inform}</text></view>
-<button id="{{a.id}}" catchtap="agree">同意加入</button>
-<button id="{{a.id}}" catchtap="refuse">拒绝加入</button>
+<view wx:for="{{applicationArray}}" wx:for-item="a">
+<view class="textall"><text>{{a.applicantname}}</text>
+ <view> <text>{{a.inform}}</text></view>
+<button data-item="{{a}}" data-openid="ojr_35MDvhNSwJfxk0dSXHkaAorw" catchtap="agree" 
+ size="mini"class="login-button2" hover-class="login-button-hover" >同意加入</button>
+<button data-item="{{a}}"  data-openid="ojr_35MDvhNSwJfxk0dSXHkaAorw" catchtap="refuse" size="mini" class="login-button" hover-class="login-button-hover">拒绝加入</button>
 </view>
--->
-<view id="ch" bindtap="" class="textall"><text>申请人姓名</text>
- <view> <text>申请人感人肺腑的验证消息</text></view>
-<button data-id="ch" data-openid="ojr_35MDvhNSwJfxk0dSXHkaAorw" catchtap="agree" size="mini"class="login-button2" hover-class="login-button-hover" >同意加入</button>
-<button data-id="ch"  data-openid="ojr_35MDvhNSwJfxk0dSXHkaAorw" catchtap="refuse" size="mini" class="login-button" hover-class="login-button-hover">拒绝加入</button>
 </view>

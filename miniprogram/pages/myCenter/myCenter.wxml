@@ -5,7 +5,9 @@
       <view class="userinfo-avatar" bindtap="bindViewTap">
         <open-data type="userAvatarUrl"></open-data>
       </view>
+      <view class="name">
       <open-data type="userNickName" ></open-data>
+      </view>
     </block>
     <block wx:elif="{{!hasUserInfo}}">
       <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 获取头像昵称 </button>
@@ -19,16 +21,14 @@
   </view>
 </view>
 <view class="word1">
-  <text class="word">昵称{{userInfo.nickName}}</text>
+  <text class="word"> 学校：华南理工大学</text>
 </view>
 <view class="word2">
   <text>
-    学校：
+    校区：大学城校区
   </text>
 </view>
-<view class="word3">
-  身份认证：
-</view>
+
 <!--  -
 <scroll-view  scroll-x="true">
   <view class="srcOut">
@@ -42,6 +42,7 @@
 <!-- </scroll-view> -->
 </view>
 <view class="sonhead">
+  <image src="../../images/mycenter/myasso.png" style="height:70rpx;width:70rpx" mode="cover"></image>
   <navigator url="../myCenter/myCenter/creatasso/creatasso">
   <text>
     创建新组织
@@ -49,12 +50,14 @@
 </navigator>
 </view>
 <view class="sonhead">
+  <image src="../../images/mycenter/create.png" style="height:70rpx;width:70rpx"></image>
   <navigator url="../myCenter/myCenter/myasso/myasso">
   <text>
     我的组织
   </text>
 </navigator>
 </view><view class="sonhead">
+  <image src="../../images/mycenter/join.png" style="height:70rpx;width:70rpx"></image>
   <navigator url="./myCenter/join/join">
   <text>
     申请加入组织
@@ -62,13 +65,15 @@
 </navigator>
 </view>
 <view class="sonhead">
+  <image src="../../images/mycenter/focus.png" style="height:70rpx;width:70rpx"></image>
   <navigator url="../myCenter/myCenter/focus/focus">
-  <text>
+  <text color>
     关注中活动
   </text>
 </navigator>
 </view>
 <view class="sonhead">
+  <image src="../../images/mycenter/set.png" style="height:70rpx;width:70rpx"></image>
   <navigator url="../myCenter/myset/myset">
   <text>
     设置

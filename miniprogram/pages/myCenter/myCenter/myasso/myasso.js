@@ -9,24 +9,44 @@ Page({
    * 页面的初始数据
    */
   data: {
-   userasso:{}
+   userasso:[],
+   userassotitle:[]
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var tempusName=[];
     var openid=app.globalData.openid;
     var getinfo={};
     console.log(openid);
     let value;
     db.user.getUser(openid).then((res)=>{
+      console.log(res);
       this.setData({
-        userasso:res.info
+        userasso:res.info.section.join
       })
+      }).then(()=>{console.log(this.data.userasso)}).then(()=>{
+        var i;
+        var tempusName=[];
+        for(i in this.data.userasso)
+        db.section.getSectionById(this.data.userasso[i]).then((res)=>{
+          console.log(res);
+          var obj={};
+             obj['title']=res.name;
+            obj['id']=res._id;
+            console.log(obj);
+            tempusName.push(obj);
+        }).then(()=>{
+          console.log(tempusName);
+          this.setData({
+            userassotitle:tempusName
+          })
+        })
+      }).then(()=>{
+        console.log(this.data.userassotitle)
       })
-    
-      console.log(this.data.userasso);
   },
 
   /**

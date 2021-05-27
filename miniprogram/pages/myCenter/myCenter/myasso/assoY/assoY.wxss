@@ -7,7 +7,7 @@
 }
 .login-button { 
   position: relative;
-  left:105rpx;
+  left:145rpx;
   display:flex;/* 按钮美化 */
 	width: 135rpx; /* 宽度 */
 	height: 70rpx; /* 高度 */
@@ -22,7 +22,7 @@
 }
 .login-button2 { 
   position: relative;
-  left:85rpx;
+  left:125rpx;
   display:flex;/* 按钮美化 */
 	width: 135rpx; /* 宽度 */
 	height: 70rpx; /* 高度 */
@@ -37,4 +37,27 @@
 }
 .login-button-hover { /* 鼠标移入按钮范围时改变颜色 */
 	background: #5599FF;
+}
+
+.btn1 {
+  width: 80%;
+  margin-top: 20rpx;
+  background-color: burlywood;
+  color: rgb(138, 138, 138);
+  border-radius: 98rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnImg {
+  margin-right: 8rpx;
+  width: 46rpx;
+  height: 46rpx;
+}
+
+.btn1::after {
+  border-radius: 98rpx;
+  border: 0; 
 }

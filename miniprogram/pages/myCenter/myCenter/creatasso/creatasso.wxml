@@ -1,16 +1,25 @@
-
-<view ><input type="text" bindconfirm="setsection" placeholder="请输入社团或部门名"/></view>
-<view ><input type="text" bindconfirm="setsection" placeholder="请输入社团介绍"></input></view>
-<mp-cell>
-  <mp-cells>
-<mp-uploader bindfail="uploadError" bindsuccess="uploadSuccess" select="{{selectFile}}" upload="{{uplaodFile}}"
+ <view class="newStrategies" >
+   <view style="display:flex;justify-content:center;">
+     <image src="../../../../images/mycenter/我的申请表单.png" style="width:50rpx;height:50rpx;"></image><text>创建社团申请表</text>
+   </view>
+     <view class="list">
+  <view class="inputStrategyTitle">
+        <input type="text" name="" id="" placeholder="这里输入社团或部门名" bindinput="inputsectionName"></input>
+      </view>
+      <view class="picture">
+      <view class="uploadPicture">
+        <mp-uploader bindfail="uploadError" bindsuccess="uploadSuccess" select="{{selectFile}}" upload="{{uplaodFile}}"
           files="{{files}}" max-count="1" title=""></mp-uploader>
-      </mp-cells>
-    </mp-cell>
-    <view>
-    <button style="color:white;" bindtap="sendsectionform">申请创建</button>
-    </view>  
-    <view>
-    <button style="width:100%" bindtap="returnsectionform">取消</button>
+      </view>
+      </view>
+      <view class="inputStrategyShortBriefIntro">
+        <input type="text" name="" id="" placeholder="为你的社团写一份简介吧" bindinput="inputBriefIntro"></input>
+      </view>
     </view>
-      
+      <view style="justify-content:center">
+        <view style="justify-content:center">
+          <view style="text-align:center;line-height:6rpx padding:0rpx; font-size:28rpx; margin-top:14rpx ;right:10rpx;margin-left:60rpx;margin-right:30rpx;width:220rpx; border-radius:50rpx;border:1rpx solid #006699;color:#006699 " bindtap="sendStrategy">申请创建</view>
+        </view>
+      </view>
+    </view>
+  

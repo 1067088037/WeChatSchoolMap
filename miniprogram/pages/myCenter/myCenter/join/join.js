@@ -7,22 +7,42 @@ Page({
    * 页面的初始数据
    */
   data: {
-    sectionArray:[],
-    schoolid:{},
+    inform:"",
+    tapitem:[],
+    tempsectionArray:[],
+    schoolid:"",
     sectiontext: "", //搜索框的值
     noneview: false, //显示未找到提示
     sectionlist: true, //显示列表
-    sectionArray: [{ //社团信息
-      id: 0,
-      images: "/miniprogram/images/index/centerLocation.png",
-      title: "学生会",
-      status: 1
-    }],
+    sectionArray: [],
     userInfo: null,  
     hidden:false,
     hiddenmodalput: true,
     hiddenmodalput2:true
   },
+  tapsection:function(e){
+var tempid=e.currentTarget.dataset.item.id;
+var temptitle=e.currentTarget.dataset.item.title;
+var tempdesc=e.currentTarget.dataset.item.desc;
+var tempitem={
+  id:tempid,
+title:temptitle,
+desc:tempdesc
+}
+this.setData({
+  tapitem:tempitem,
+  hiddenmodalput:false
+})
+
+  },
+  applicantinput:function(e){
+    var inform=e.detail.value;
+    console.log(inform);
+    this.setData({
+      inform:inform
+    })
+  },
+
   modalinput: function () {
  
     this.setData({
@@ -66,11 +86,20 @@ Page({
  
   },
   confirm2: function () {
- 
+    var sectionapplication={};
+    var openid=app.globalData.openid;
+    sectionapplication['applicant']=openid;
+    sectionapplication['title']=this.data.tapitem.title;
+    sectionapplication['inform']=this.data.inform;
+    sectionapplication['state']="未审核";
+    var id=this.data.tapitem.id;
+    console.log(id);
+    console.log(sectionapplication);
+    db.application.addApplication(id,sectionapplication).then(()=>{console.log("成功上传")})
     this.setData({
  
-      hiddenmodalput2:true
- 
+      hiddenmodalput2:true,
+      hiddenmodalput:true
     })
  
   },
@@ -208,13 +237,32 @@ Page({
         schoolid:res.info.school
       })
     }).then(()=>{
-      console.log(this.data.schoolid);
-      db.section.getSectionArray(this.data.schoolid).then((res)=>{this.setData({
-        sectionArray:res
-      })})
-    })
-    
-    
+    console.log(this.data.schoolid);
+    db.section.getSectionArray(this.data.schoolid).then((res)=>{
+      console.log(res);
+      this.setData({
+      tempsectionArray:res
+    })}).then(()=>{
+      console.log(this.data.tempsectionArray);
+    }).then(()=>
+    {if(this.data.tempsectionArray.length!=0){
+    var tempsectionArray= Array.from(this.data.tempsectionArray.data);
+    var i;
+    for(i in tempsectionArray){
+      var objsection={};
+        objsection['id']=tempsectionArray[i]._id;
+        objsection['desc']=tempsectionArray[i].desc;
+        objsection['title']=tempsectionArray[i].name;
+        objsection['status']=1;
+    this.data.sectionArray.push(objsection);
+    }}}
+    ).then(()=>{
+      this.setData({
+        sectionArray:this.data.sectionArray
+      })
+    })})
+
+
 
 }
   ,

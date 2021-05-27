@@ -8,20 +8,17 @@ Page({
    * 页面的初始数据
    */
   data: {
+    isAdmin:true,
     title:"",
     sectionid:"",
-memberid:{},
-memberif:[{id:'',name:''}],
-tapmemberif:{openid:"",                    
-name:"0",
-isAdmin:false,
-imageurl:""
+tapmemberif:{
 },            //点击到成员的信息
 hiddenmodalput1:true,
-userlevel:0,
-matelevel:0,
 resetfalsehd:true  ,  //等级不足时候跳出来的弹窗
-resetsuccesshd:true   //修改等级成功
+resetsuccesshd:true ,  //修改等级成功
+reset:false,
+getout:false,
+member:[]
   },
   modal1: function () {
      this.setData({
@@ -31,24 +28,69 @@ resetsuccesshd:true   //修改等级成功
     })
  
   },
-  //这个方法有待商榷，新增了是否为社团管理员，这个留着之后社团管理员等级要是有划分再用，所以现在只要是管理员就可以改非管理员为管理员
-
-  resetrank_modal:function(e){
-    console.log(e.currentTarget.dataset.id);
-    var isAdmin=false;
-      if(!isAdmin){
-        this.setData({
-       resetsuccesshd:false,
-       hiddenmodalput1:true})
-       //需要一个修改等级的接口，暂时只有弹窗
-      }
-      else{
-        this.setData({
+ setAdmin:function(e){
+     var temptap={};
+     temptap['openid']=e.currentTarget.dataset.item._openid;
+     temptap['name']=e.currentTarget.dataset.item.nickName;
+     this.setData({
+    tapmemberif:temptap,
+    reset:true
+     })
+ },
+ getoutof:function(e){
+   console.log("成功调用");
+  var temptap={};
+  temptap['openid']=e.currentTarget.dataset.item._openid;
+  temptap['name']=e.currentTarget.dataset.item.nickName;
+  this.setData({
+ tapmemberif:temptap,
+ getout:true
+  })
+},
+ giveUp :function(){
+   this.setData({
+     reset:false
+   })
+ },
+  setnewAdmin:function(){
+      if(!this.data.isAdmin){
+       this.setData({
         resetfalsehd:false,
         hiddenmodalput1:true})
+  
+      }
+      else{
+        db.section.addAdmin(this.data.sectionid,this.data.tapmemberif.openid).then(()=>{
+          console.log("修改成功")
+        })
+        this.setData({
+          resetsuccesshd:false,
+          hiddenmodalput1:true,
+          reset:false
+        })
       }
     
   },
+  getout:function(){
+    if(!this.data.isAdmin){
+      this.setData({
+        resetfalsehd:false,
+        hiddenmodalput1:true})
+
+    }
+    else{
+      console.log("调用成功")
+      db.section.exitSection(this.data.sectionid,this.data.tapmemberif.openid).then(()=>{
+        console.log("请离社团成功")
+      })
+      this.setData({
+        resetsuccesshd:false,
+        hiddenmodalput1:true,
+        getout:false
+      })
+    }
+  
+},
   tryaga :function(){
     this.setData({
       hiddenmodalput1:false,
@@ -83,18 +125,18 @@ resetsuccesshd:true   //修改等级成功
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(options.title);
+    console.log(options.id);
     this.setData({
       title: options.title,
-      sectionid:options.sid
+      sectionid:options.id
     })
     var sectionid=this.data.sectionid;
-    //获取所有处于这个社团的用户openid,目前好像还没有实际的社团ID,所以得不到东西
-    
-  //   db.section.getUserInSection(sectionid).then((res)=>{
-  //     this.setData({
-  //    member:res.openidArray             
-  //   })})
-  //   console.log(this.data.member);
+    console.log(sectionid);
+    db.section.getUserInSection(sectionid).then((res)=>{
+       this.setData({
+      member:res            
+     })}).then(()=>console.log(this.data.member));
     
   //  this.data.member.forEach((data)=>{
   //    db.user.getUser(data).then((res)=>{
