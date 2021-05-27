@@ -1,7 +1,7 @@
 <!--pages/building/building.wxml-->
 <view class="buildingContainer">
   <view class="Canteen" wx:if="{{building.type == 'canteen'}}">
-    <view class="BuildingName">
+    <view class="BuildingName"wx:if="{{!isCreateNewStrategy}}">
       {{building.title}}
     </view>
     <!-- 建筑的图片 -->

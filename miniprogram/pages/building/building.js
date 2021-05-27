@@ -203,7 +203,8 @@ Page({
             db.like.cancelLike(id)
             newStrategy = value
             newStrategy.isLike = false;
-            newStrategy.likeNum--;
+            if(newStrategy.likeNum > 1 )
+              newStrategy.likeNum--;
             idx = index
           }
         }).then(() => {
@@ -216,14 +217,7 @@ Page({
         })
       }
     })
-    // setTimeout(() => {
-    //   console.log(newStrategy)
-    //   this.data.strategies.splice(idx, 1, newStrategy)
-    //   let strategies = this.data.strategies
-    //   this.setData({
-    //     strategies
-    //   })
-    // }, 1000)
+    
 
   },
   strategyLike(e) {

@@ -1262,9 +1262,11 @@ Page({
               con.images[index] = im
             })
           })
+          if(res.type == 'publish'){
           let draft = res.draft
           draft['id'] = res._id
           publishedLifeStrategies.push(draft)
+        }
         }
       }).then(() => {
         this.setData({
@@ -1272,15 +1274,15 @@ Page({
           publishedArchStrategies,
           publishedLifeStrategies
         })
+      }).then(() => {
+        this.setData({
+          // showEditStrategy: true,
+  
+        })
+        // console.log("关闭Loading")
+        
       })
-      resolve()
-    }).then(() => {
-      this.setData({
-        showEditStrategy: true,
-
-      })
-      // console.log("关闭Loading")
-      wx.hideLoading()
+      // resolve()
     })
   },
   // 从建筑草稿编辑界面返回
