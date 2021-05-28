@@ -1,6 +1,6 @@
 <!--pages/building/building.wxml-->
 <view class="buildingContainer">
-  <view class="Canteen" wx:if="{{building.type == 'canteen'}}">
+  <view class="Canteen" wx:if="{{building.type != 'activity'}}">
     <view class="BuildingName" wx:if="{{!isCreateNewStrategy}}">
       {{building.title}}
     </view>
@@ -9,7 +9,7 @@
       <swiper class="imageBanner" indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff"
         circular="{{true}}" autoplay="{{true}}" interval="3000" wx:if="{{building.images != null}}">
         <swiper-item wx:for="{{building.images}}" wx:key="item">
-          <image src="{{item}}"></image>
+          <image mode="scaleToFill" style="width:750rpx;height:350rpx;" src="{{item}}"></image>
         </swiper-item>
       </swiper>
     </view>
@@ -42,7 +42,7 @@
         <button style="width:100%;height:100%;position:absolute;opacity:0;" bindtap="createNewStrategy"></button>
         <image src="/images/global/add.png" mode="scaleToFill" style="width:100%;height:100%"></image>
       </view>
-      <button bindtap="toHomePage">返回</button>
+      <!-- <button bindtap="toHomePage">返回</button> -->
     </view>
     <!-- 发表评论 -->
     <!-- 攻略具体内容 -->
