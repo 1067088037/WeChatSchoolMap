@@ -11,21 +11,114 @@ const CloudPathFront = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d1
 
 const shopPoint = [{
 
-  title: "世博超市",
-  longitude: 113.40203129147403,
-  latitude: 23.048593578356705
-},
-{
+    name: "世博超市",
+    longitude: 113.40203129147403,
+    latitude: 23.048593578356705,
+    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+    text: "",
+    type: "shop",
+    images: [],
+  },
+  {
 
-  title: "7-11便利店",
-  longitude: 113.40188492453046,
-  latitude: 23.051165789442734
-},
-{
-  title: "",
-  longitude: 113.40176343650955,
-  latitude: 23.05108920417096
-}
+    name: "7-11便利店",
+    longitude: 113.40188492453046,
+    latitude: 23.051165789442734,
+    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+    text: "",
+    type: "shop",
+    images: [],
+  },
+  {
+    name: "鲜果多滋味",
+    longitude: 113.40178290097674,
+    latitude: 23.051134472425847,
+    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+    text: "",
+    type: "shop",
+    images: [],
+  },
+  {
+    name: "学之海文具",
+    longitude: 113.40173595732585,
+    latitude: 23.051146925541303,
+    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+    text: "",
+    type: "shop",
+    images: [],
+  },
+  {
+    name: "华工书店",
+    longitude: 113.40172179501997,
+    latitude: 23.051151405057812,
+    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+    text: "",
+    type: "shop",
+    images: [],
+  },
+  {
+    name: "DearMill细工坊",
+    longitude: 113.4016746256143,
+    latitude: 23.051139970480605,
+    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+    text: "",
+    type: "shop",
+    images: [],
+  },
+  {
+    name: "印萌印知美图文",
+    latitude: 23.0511083489013,
+    longitude: 113.40153885794666,
+    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+    text: "",
+    type: "shop",
+    images: [],
+  },
+  {
+    name: "格爵丝造型",
+    latitude: 23.046429341231068,
+    longitude: 113.40176913726657,
+    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+    text: "",
+    type: "shop",
+    images: [],
+  },
+  {
+    name: "中国建设银行",
+    latitude: 23.046460977593863,
+    longitude: 113.40173671845525,
+    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+    text: "",
+    type: "shop",
+    images: [],
+  },
+  {
+    name: "广州燃气集团",
+    latitude: 23.046519983447627,
+    longitude: 113.40165790048934,
+    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+    text: "",
+    type: "shop",
+    images: [],
+  },
+  {
+    name: "佳嘉印图文",
+    latitude: 23.04657007503692,
+    longitude: 113.40163288320957,
+    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+    text: "",
+    type: "shop",
+    images: [],
+  },
+  {
+    name: "凯伦眼镜",
+    latitude: 23.046713055141552,
+    longitude: 113.40166052159941,
+    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+    text: "",
+    type: "shop",
+    images: [],
+  }
 ] // 商店点
 const deliverPickUpPoint = [] // 拿快递的点
 const vouchCenterPoint = [{
@@ -110,7 +203,7 @@ Page({
     }, {
       value: "canteen",
       name: "饭堂",
-      selected: true,
+      selected: false,
     }, {
       value: "shop",
       name: "商店",
@@ -162,6 +255,13 @@ Page({
     monthIndex: 0,
     weekIndex: 0,
     followActivitiesTag: []
+  },
+  getLocation() {
+    this.data.mapCtx.getCenterLocation({
+      success: res => {
+        console.log(res.longitude, res.latitude)
+      }
+    })
   },
   bindfollowMonthChange(e) {
     this.setData({
@@ -374,6 +474,7 @@ Page({
    * @todo 获取点击处的经纬度
    */
   mapTap(e) {
+    console.log(e)
     if (this.data.showPage) {
       this.setData({
         showPage: false,
@@ -716,7 +817,7 @@ Page({
   selectArchFunc(e) {
     selectedArchType = [];
     visibleArchArray = [];
-    console.log(e)
+    // console.log(e)
     let id = parseInt(e.currentTarget.id)
     let archItems = this.data.archItems;
     if (archItems[id].selected) {
