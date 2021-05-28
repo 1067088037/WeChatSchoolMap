@@ -9,7 +9,8 @@ App({
     school: null,      //校园信息
     campus: null,      //校区信息
     buildingSelected: null, // 选中建筑对象
-    archItem: []
+    archItem: [],
+    versionCode: 50
   },
   onLaunch: function () {
     if (!wx.cloud) {

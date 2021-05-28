@@ -38,9 +38,9 @@ function loadSchoolAndCampus(that) {
           db.campus.getCampus(info.campus).then(campus => {
             // console.log(campus)
             getApp().globalData.campus = campus
-            console.log('校区', campus)
+            // console.log('校区', campus)
             that.next()
-            console.log('进入index')
+            // console.log('进入index')
           })
         })
       }
@@ -125,6 +125,12 @@ Page({
       db._db.collection('user').doc(getApp().globalData.userInfo._openid).update({
         data: {
           lastLoginTime: db.serverDate()
+        }
+      })
+      db._db.collection('static').doc('version').get().then(res => {
+        let currentVerCode = getApp().globalData.versionCode
+        if (currentVerCode < res.data.versionCode) {
+          console.warn(`目前的代码包不是最新的，请及时通过Git拉取最新代码！当前版本：${currentVerCode}，最新版本：${res.data.versionCode}`)
         }
       })
       wx.switchTab({

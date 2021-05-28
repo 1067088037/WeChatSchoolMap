@@ -1331,7 +1331,7 @@ Page({
   navigaToEditPublishedStrategy(e) {
     let publishedArchStrategies = this.data.publishedArchStrategies;
     let publishedLifeStrategies = this.data.publishedLifeStrategies;
-    console.log(this.data.draftStrategiesId.length)
+    // console.log(this.data.draftStrategiesId.length)
     if (this.data.draftStrategiesId.length == 0) this.setData({ showEditPublishedStrategy: true, })
     this.data.draftStrategiesId.forEach(id => {
       db.strategy.getStrategy(id).then(res => {
@@ -1345,7 +1345,7 @@ Page({
             draft['id'] = res._id
             publishedArchStrategies.push(draft)
           } else {
-            console.log("life", res)
+            console.log("攻略", res)
             res.draft.content.forEach(con => {
               con.images.forEach((im, index) => {
                 im = CloudPathFront + im;
@@ -1574,7 +1574,7 @@ Page({
         let endate = "" + end.getFullYear().toString() + "-" + (end.getMonth() + 1).toString() + "-" + end.getDate().toString()
         let bgtime = "" + start.getHours() + ":" + start.getMinutes()
         let edtime = "" + end.getHours() + ":" + end.getMinutes()
-        console.log(bgdate, endate, bgtime)
+        // console.log(bgdate, endate, bgtime)
         let userUploadIcon = point.desc.icon
         let Pointfiles = [];
         if (point.desc.images.length > 0) {
@@ -1984,7 +1984,7 @@ Page({
       })
     })
     db.point.getPointByOpenid(this.data.userOpenId).then(res => {
-      console.log(res)
+      console.log(this.data.userOpenId, '的全部标点：', res)
       this.setData({
         publishedPoint: res
       })
@@ -1995,7 +1995,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    console.log(app.globalData.school._id)
+    // console.log(app.globalData.school._id)
     this.refreshShowedDetailNumber()
     db.section.getSectionArray(app.globalData.school._id).then(res => {
       this.setData({

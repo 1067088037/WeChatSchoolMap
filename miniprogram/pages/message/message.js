@@ -141,13 +141,15 @@ Page({
           publishStrategies.push(strategy)
         }
       }).then(() => {
-        console.log(publishStrategies)
         this.setData({
           publishStrategies,
           lifeStrategyNum: publishStrategies.length
         })
       })
     })
+    setTimeout(() => {
+      console.log("发布的攻略", publishStrategies)
+    }, 1000)
   },
 
   /**
@@ -198,8 +200,8 @@ Page({
             let start = new Date(p.time.start);
             let pMonth = start.getMonth();
             let pWeek = start.getDay();
-            console.log(p.tag, tag, month, pMonth, week, pWeek)
-            console.log(this.getSame(p.tag, tag), month, pMonth, week, pWeek)
+            // console.log(p.tag, tag, month, pMonth, week, pWeek)
+            // console.log(this.getSame(p.tag, tag), month, pMonth, week, pWeek)
             // console.log()
             if (this.getSame(p.tag, tag) && (month == pMonth) && (week == pWeek)) {
               let msgObj = {
@@ -216,6 +218,7 @@ Page({
             attentionActivityNum: message.length
           })
         })
+        console.log("消息", message)
       })
     })
     db.strategy.getBriefStrategyArray(superid).then(res => {

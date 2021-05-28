@@ -55,7 +55,6 @@ var selectedArchType = new Array;
 var archArray = new Array;
 var realTimeInfoArray = new Array;
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -99,11 +98,11 @@ Page({
     archItems: [{
       value: "dorm",
       name: "宿舍",
-      selected: false,
+      selected: true,
     }, {
       value: "classRoom",
       name: "教室",
-      selected: false,
+      selected: true,
     }, {
       value: "college",
       name: '学院',
@@ -389,7 +388,7 @@ Page({
       let id = util.randomNumberId();
       let userPoint = [{
         id: id,
-        width: 40,
+        width: 50,
         height: 50,
         longitude: longitude_,
         latitude: latitude_,
@@ -658,7 +657,7 @@ Page({
               id: util.randomNumberId(),
               latitude: la,
               longitude: lon,
-              width: 40,
+              width: 50,
               height: 50
             }];
             this.setData({
@@ -993,7 +992,7 @@ Page({
       // console.log(res)
       res.forEach((value, index) => {
         if (value.type == 'canteen') {
-          console.log(value)
+          // console.log(value)
           archArray.push({
             _id: value._id,
             id: value.markId,
@@ -1002,7 +1001,7 @@ Page({
             type: value.type,
             title: value.name,
             width: 50,
-            height: 40,
+            height: 50,
             iconPath: "/images/building/canteen.png",
             text: value.text,
             images: value.images
@@ -1016,7 +1015,7 @@ Page({
             type: value.type,
             title: value.name,
             width: 50,
-            height: 60,
+            height: 50,
             iconPath: (value['logo'] != undefined && value['logo'] != "") ? value['logo'] : "",
             images: value.images
           })
@@ -1046,8 +1045,8 @@ Page({
             title: value.desc.name,
             longitude: value.geo.coordinates[0],
             latitude: value.geo.coordinates[1],
-            width: 60,
-            height: 70,
+            width: 50,
+            height: 50,
             type: value.type,
             iconPath: (value.desc.icon == "") ? value.desc.icon : value.desc.icon,
             text: value.desc.text,
@@ -1060,8 +1059,8 @@ Page({
             title: value.desc.name,
             longitude: value.geo.coordinates[0],
             latitude: value.geo.coordinates[1],
-            width: 30,
-            height: 40,
+            width: 50,
+            height: 50,
             type: value.type,
             iconPath: "/images/index/realtimeInfo.png",
           })
@@ -1099,14 +1098,14 @@ Page({
         departmentsItem: this.data.departmentsItem.concat(res.data[0].name)
       })
     })
-    console.log("app", app.globalData.buildingSelected)
+    console.log("buildingSelected", app.globalData.buildingSelected)
     if (app.globalData.buildingSelected != null && app.globalData.buildingSelected.type == "activity" && app.globalData.buildingSelected['geo'] != undefined) {
       // console.log("appSelected:",app.globalData.buildingSelected)
       let activitySelected = {
         _id: app.globalData.buildingSelected._id,
         id: app.globalData.buildingSelected.markId,
         width: 50,
-        height: 60,
+        height: 50,
         longitude: app.globalData.buildingSelected.geo.coordinates[0],
         latitude: app.globalData.buildingSelected.geo.coordinates[1],
         title: app.globalData.buildingSelected.desc.name,

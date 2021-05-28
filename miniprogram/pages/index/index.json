@@ -1,10 +1,8 @@
 {
   "usingComponents": {
-    "mp-searchbar": "weui-miniprogram/searchbar/searchbar",
     "mp-dialog": "weui-miniprogram/dialog/dialog",
     "mp-cells": "weui-miniprogram/cells/cells",
     "mp-cell": "weui-miniprogram/cell/cell",
-    "mp-checkbox": "weui-miniprogram/checkbox/checkbox",
     "mp-checkbox-group": "weui-miniprogram/checkbox-group/checkbox-group",
     "mp-uploader": "weui-miniprogram/uploader/uploader",
     "mp-form": "weui-miniprogram/form/form"

@@ -472,7 +472,7 @@
     </view>
     <view wx:if="{{publishedArchStrategies.length==0}}">暂无发布的建筑攻略</view>
     <view style="height:16rpx;text-align:center">----</view>
-    <view class="publishedArchStrategies" wx:if="{{publishedLifeStrategies.length > 0 }}"
+    <view class="publishedArchStrategies" wx:if="{{publishedLifeStrategies.length > 0 }}" wx:key="item"
       wx:for="{{publishedLifeStrategies}}">
       <mp-slideview bindbuttontap="deletePublishedStrategy" buttons="{{slideViewButtons}}" id="{{item.id}}"
         class="archStrategy" style="width: 750rpx; height: 360rpx;" wx:key="index">
