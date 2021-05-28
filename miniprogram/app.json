@@ -22,9 +22,8 @@
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#F6F6F6",
-    "navigationBarTitleText": "校园地图",
+    "navigationBarTitleText": "校园缩影",
     "navigationBarTextStyle": "black"
-    
   },
   "tabBar": {
     "color": "#000000",
