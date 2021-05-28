@@ -1,14 +1,15 @@
 <!--pages/building/building.wxml-->
 <view class="buildingContainer">
   <view class="Canteen" wx:if="{{building.type == 'canteen'}}">
-    <view class="BuildingName"wx:if="{{!isCreateNewStrategy}}">
+    <view class="BuildingName" wx:if="{{!isCreateNewStrategy}}">
       {{building.title}}
     </view>
     <!-- 建筑的图片 -->
     <view class="Images" wx:if="{{showBuilidngBanner}}">
       <swiper class="imageBanner" indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff"
-        circular="{{true}}" autoplay="{{true}}" interval="3000" wx:if="{{building['images']!=undefine}}">
-        <swiper-item wx:for="{{building.images}}" >
+        circular="{{true}}" autoplay="{{true}}" interval="3000" wx:if="{{building.images != null}}">
+        <swiper-item wx:for="{{building.images}}" wx:key="item">
+          <image src="{{item}}"></image>
         </swiper-item>
       </swiper>
     </view>
@@ -132,15 +133,16 @@
   <view wx:if="{{building.type == 'activity'}}">
     <!-- 活动图片 -->
     <view class="Images" style="margin: 10rpx auto;width: 750rpx;height: 480rpx;" wx:if="{{showBuilidngBanner}}">
-      <swiper class="imageBanner" indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff" style="margin: 10rpx auto;width: 750rpx;height: 480rpx;"
-        circular="{{true}}" autoplay="{{true}}" interval="3000">
+      <swiper class="imageBanner" indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff"
+        style="margin: 10rpx auto;width: 750rpx;height: 480rpx;" circular="{{true}}" autoplay="{{true}}"
+        interval="3000">
         <swiper-item wx:for="{{building.images}}" wx:key="index">
           <image src="{{item}}" style="width: 750rpx;height: 480rpx;" mode="scaleToFill"></image>
         </swiper-item>
       </swiper>
     </view>
     <!-- 活动简介 -->
-    <view class="Introduction" >
+    <view class="Introduction">
       {{building.text}}
     </view>
     <button bindtap="toHomePage">返回</button>

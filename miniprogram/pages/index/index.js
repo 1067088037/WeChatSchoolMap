@@ -11,41 +11,41 @@ const CloudPathFront = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d1
 
 const shopPoint = [{
 
-    title: "世博超市",
-    longitude: 113.40203129147403,
-    latitude: 23.048593578356705
-  },
-  {
+  title: "世博超市",
+  longitude: 113.40203129147403,
+  latitude: 23.048593578356705
+},
+{
 
-    title: "7-11便利店",
-    longitude: 113.40188492453046,
-    latitude: 23.051165789442734
-  },
-  {
-    title: "",
-    longitude: 113.40176343650955,
-    latitude: 23.05108920417096
-  }
+  title: "7-11便利店",
+  longitude: 113.40188492453046,
+  latitude: 23.051165789442734
+},
+{
+  title: "",
+  longitude: 113.40176343650955,
+  latitude: 23.05108920417096
+}
 ] // 商店点
 const deliverPickUpPoint = [] // 拿快递的点
 const vouchCenterPoint = [{
-    id: 1,
-    title: "学生卡和水卡充值点",
-    longitude: 113.40268387434162,
-    latitude: 23.04866925793428
-  },
-  {
-    id: 2,
-    title: "学生卡和水卡充值点",
-    longitude: 113.40333534303113,
-    latitude: 23.051645364973492
-  }, {
-    title: "水卡充值点",
-    longitude: 113.40238690806586,
-    latitude: 23.04796789472804
-  }, {
+  id: 1,
+  title: "学生卡和水卡充值点",
+  longitude: 113.40268387434162,
+  latitude: 23.04866925793428
+},
+{
+  id: 2,
+  title: "学生卡和水卡充值点",
+  longitude: 113.40333534303113,
+  latitude: 23.051645364973492
+}, {
+  title: "水卡充值点",
+  longitude: 113.40238690806586,
+  latitude: 23.04796789472804
+}, {
 
-  }
+}
 ] // 充值点
 var activitiesPoint = [] // 活动标记点 -- 暂存
 var isAdd = false; // 是否添加的标记
@@ -123,7 +123,7 @@ Page({
     }, {
       value: "activity",
       name: "活动",
-      selected: false,
+      selected: true,
     }], // 筛选建筑的选项
     departmentsItem: [
       "(全校)", "软件学院", "百步梯", "校学生会"
@@ -159,7 +159,7 @@ Page({
       selected: false
     }],
     Month: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-    WeekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六', ],
+    WeekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六',],
     monthIndex: 0,
     weekIndex: 0,
     followActivitiesTag: []
@@ -594,7 +594,7 @@ Page({
         icon: 'error',
         duration: 2000
       })
-      
+
       this.setData({
         showMarkerDialog: false,
       })
@@ -694,7 +694,7 @@ Page({
           isMoreTrue: false
         })
       }
-      break;
+        break;
     }
     if (isAdd == true)
       return;
@@ -990,7 +990,7 @@ Page({
 
     // 从数据库中获取建筑的标点对象
     db.arch.getArchArray(app.globalData.campus._id).then(res => {
-      // 、、console.log(res)
+      // console.log(res)
       res.forEach((value, index) => {
         if (value.type == 'canteen') {
           console.log(value)
@@ -1004,8 +1004,8 @@ Page({
             width: 50,
             height: 40,
             iconPath: "/images/building/canteen.png",
-            text: value.text
-            
+            text: value.text,
+            images: value.images
           })
         } else {
           archArray.push({
@@ -1017,7 +1017,8 @@ Page({
             title: value.name,
             width: 50,
             height: 60,
-            iconPath:(value['logo']!=undefined &&value['logo']!="" )?value['logo']:""
+            iconPath: (value['logo'] != undefined && value['logo'] != "") ? value['logo'] : "",
+            images: value.images
           })
         }
       })

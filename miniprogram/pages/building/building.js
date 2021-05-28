@@ -203,7 +203,7 @@ Page({
             db.like.cancelLike(id)
             newStrategy = value
             newStrategy.isLike = false;
-            if(newStrategy.likeNum > 1 )
+            if (newStrategy.likeNum > 1)
               newStrategy.likeNum--;
             idx = index
           }
@@ -217,7 +217,7 @@ Page({
         })
       }
     })
-    
+
 
   },
   strategyLike(e) {
@@ -612,7 +612,7 @@ Page({
     }
     if (app.globalData.buildingSelected != null) {
       let building = app.globalData.buildingSelected
-      console.log("building:",building.desc)
+      console.log("building:", building.desc)
       let images = []
       if (building.desc == undefined) {
         if (building.images != undefined) {
@@ -626,11 +626,10 @@ Page({
             building: building
           })
         }
-        else{
+        else {
           this.setData({
-            building:building
+            building: building
           })
-          
         }
       } else if (building.desc != undefined) {
         if (building.desc.images.length > 0) {
@@ -671,7 +670,6 @@ Page({
     db.strategy.getBriefStrategyArray(this.data.building._id).then(res => {
       console.log("获取到该建筑的简略信息", res)
       res.forEach(e => {
-
         strategiesId.push(e._id);
       })
       console.log(strategiesId)
@@ -715,11 +713,11 @@ Page({
           })
         })
         this.setData({
-            //strategies: (testStrategies),
-            strategiesId
-          }),
+          //strategies: (testStrategies),
+          strategiesId
+        }),
           wx.hideLoading({
-            success: (res) => {},
+            success: (res) => { },
           })
       })
     })
