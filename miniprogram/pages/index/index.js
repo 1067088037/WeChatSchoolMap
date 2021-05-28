@@ -11,114 +11,114 @@ const CloudPathFront = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d1
 
 const shopPoint = [{
 
-    name: "世博超市",
-    longitude: 113.40203129147403,
-    latitude: 23.048593578356705,
-    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-    text: "",
-    type: "shop",
-    images: [],
-  },
-  {
+  name: "世博超市",
+  longitude: 113.40203129147403,
+  latitude: 23.048593578356705,
+  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+  text: "",
+  type: "shop",
+  images: [],
+},
+{
 
-    name: "7-11便利店",
-    longitude: 113.40188492453046,
-    latitude: 23.051165789442734,
-    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-    text: "",
-    type: "shop",
-    images: [],
-  },
-  {
-    name: "鲜果多滋味",
-    longitude: 113.40178290097674,
-    latitude: 23.051134472425847,
-    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-    text: "",
-    type: "shop",
-    images: [],
-  },
-  {
-    name: "学之海文具",
-    longitude: 113.40173595732585,
-    latitude: 23.051146925541303,
-    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-    text: "",
-    type: "shop",
-    images: [],
-  },
-  {
-    name: "华工书店",
-    longitude: 113.40172179501997,
-    latitude: 23.051151405057812,
-    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-    text: "",
-    type: "shop",
-    images: [],
-  },
-  {
-    name: "DearMill细工坊",
-    longitude: 113.4016746256143,
-    latitude: 23.051139970480605,
-    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-    text: "",
-    type: "shop",
-    images: [],
-  },
-  {
-    name: "印萌印知美图文",
-    latitude: 23.0511083489013,
-    longitude: 113.40153885794666,
-    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-    text: "",
-    type: "shop",
-    images: [],
-  },
-  {
-    name: "格爵丝造型",
-    latitude: 23.046429341231068,
-    longitude: 113.40176913726657,
-    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-    text: "",
-    type: "shop",
-    images: [],
-  },
-  {
-    name: "中国建设银行",
-    latitude: 23.046460977593863,
-    longitude: 113.40173671845525,
-    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-    text: "",
-    type: "shop",
-    images: [],
-  },
-  {
-    name: "广州燃气集团",
-    latitude: 23.046519983447627,
-    longitude: 113.40165790048934,
-    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-    text: "",
-    type: "shop",
-    images: [],
-  },
-  {
-    name: "佳嘉印图文",
-    latitude: 23.04657007503692,
-    longitude: 113.40163288320957,
-    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-    text: "",
-    type: "shop",
-    images: [],
-  },
-  {
-    name: "凯伦眼镜",
-    latitude: 23.046713055141552,
-    longitude: 113.40166052159941,
-    logo:"cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-    text: "",
-    type: "shop",
-    images: [],
-  }
+  name: "7-11便利店",
+  longitude: 113.40188492453046,
+  latitude: 23.051165789442734,
+  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+  text: "",
+  type: "shop",
+  images: [],
+},
+{
+  name: "鲜果多滋味",
+  longitude: 113.40178290097674,
+  latitude: 23.051134472425847,
+  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+  text: "",
+  type: "shop",
+  images: [],
+},
+{
+  name: "学之海文具",
+  longitude: 113.40173595732585,
+  latitude: 23.051146925541303,
+  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+  text: "",
+  type: "shop",
+  images: [],
+},
+{
+  name: "华工书店",
+  longitude: 113.40172179501997,
+  latitude: 23.051151405057812,
+  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+  text: "",
+  type: "shop",
+  images: [],
+},
+{
+  name: "DearMill细工坊",
+  longitude: 113.4016746256143,
+  latitude: 23.051139970480605,
+  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+  text: "",
+  type: "shop",
+  images: [],
+},
+{
+  name: "印萌印知美图文",
+  latitude: 23.0511083489013,
+  longitude: 113.40153885794666,
+  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+  text: "",
+  type: "shop",
+  images: [],
+},
+{
+  name: "格爵丝造型",
+  latitude: 23.046429341231068,
+  longitude: 113.40176913726657,
+  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+  text: "",
+  type: "shop",
+  images: [],
+},
+{
+  name: "中国建设银行",
+  latitude: 23.046460977593863,
+  longitude: 113.40173671845525,
+  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+  text: "",
+  type: "shop",
+  images: [],
+},
+{
+  name: "广州燃气集团",
+  latitude: 23.046519983447627,
+  longitude: 113.40165790048934,
+  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+  text: "",
+  type: "shop",
+  images: [],
+},
+{
+  name: "佳嘉印图文",
+  latitude: 23.04657007503692,
+  longitude: 113.40163288320957,
+  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+  text: "",
+  type: "shop",
+  images: [],
+},
+{
+  name: "凯伦眼镜",
+  latitude: 23.046713055141552,
+  longitude: 113.40166052159941,
+  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
+  text: "",
+  type: "shop",
+  images: [],
+}
 ] // 商店点
 const deliverPickUpPoint = [] // 拿快递的点
 const vouchCenterPoint = [{
@@ -254,7 +254,8 @@ Page({
     WeekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六',],
     monthIndex: 0,
     weekIndex: 0,
-    followActivitiesTag: []
+    followActivitiesTag: [],
+    tempFiles: []
   },
   getLocation() {
     this.data.mapCtx.getCenterLocation({
@@ -299,7 +300,6 @@ Page({
     let day = this.data.weekIndex
     let month = this.data.monthIndex
     let followActivitiesTag = this.data.followActivitiesTag
-    // TODO  上传至数据库
     console.log(day)
     db.attention.addAttention(openid, followActivitiesTag, month, day).then(() => {
       this.data.labelArray.forEach((e, index) => {
@@ -341,9 +341,7 @@ Page({
   },
   /**
    * addPicker()
-   * @todo 添加选择器，在添加标点界面中
    * @param null
-   * 
    */
   addPicker() {
     this.data.pickerNum.push(1)
@@ -1092,35 +1090,27 @@ Page({
     db.arch.getArchArray(app.globalData.campus._id).then(res => {
       // console.log(res)
       res.forEach((value, index) => {
-        if (value.type == 'canteen') {
-          // console.log(value)
-          archArray.push({
-            _id: value._id,
-            id: value.markId,
-            latitude: value.geo.coordinates[1],
-            longitude: value.geo.coordinates[0],
-            type: value.type,
-            title: value.name,
-            width: 50,
-            height: 50,
-            iconPath: "/images/building/canteen.png",
-            text: value.text,
-            images: value.images
-          })
-        } else {
-          archArray.push({
-            _id: value._id,
-            id: value.markId,
-            latitude: value.geo.coordinates[1],
-            longitude: value.geo.coordinates[0],
-            type: value.type,
-            title: value.name,
-            width: 50,
-            height: 50,
-            iconPath: (value['logo'] != undefined && value['logo'] != "") ? value['logo'] : "",
-            images: value.images
-          })
+        let archObj = {
+          _id: value._id,
+          id: value.markId,
+          latitude: value.geo.coordinates[1],
+          longitude: value.geo.coordinates[0],
+          type: value.type,
+          title: value.name,
+          width: 50,
+          height: 50,
+          text: value.text,
+          images: value.images
         }
+        switch (value.type) {
+          case 'canteen': archObj.iconPath = "/images/building/canteen.png"; break;
+          case 'dorm': archObj.iconPath = "/images/building/dormitory.png"; break;
+          case 'shop': archObj.iconPath = "/images/building/shop.png"; break;
+          case 'classRoom': archObj.iconPath = "/images/building/classroom.png"; break;
+          case 'college': archObj.iconPath = "/images/building/college.png"; break;
+          default: archObj.iconPath = (value['logo'] != undefined && value['logo'] != "") ? value['logo'] : ""; break;
+        }
+        archArray.push(archObj)
       })
     }).then(() => {
       visibleArchArray = []

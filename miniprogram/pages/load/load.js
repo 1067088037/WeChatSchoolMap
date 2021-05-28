@@ -124,7 +124,8 @@ Page({
     if (getApp().globalData.userInfo != undefined) {
       db._db.collection('user').doc(getApp().globalData.userInfo._openid).update({
         data: {
-          lastLoginTime: db.serverDate()
+          lastLoginTime: db.serverDate(),
+          runtimeVersion: getApp().globalData.versionCode
         }
       })
       db._db.collection('static').doc('version').get().then(res => {
