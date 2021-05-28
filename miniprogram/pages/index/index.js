@@ -809,26 +809,28 @@ Page({
   },
   /**
    * selectArchFunc
-   * @todo 筛选显示在地图上标点
-   * @param {*} e  checkbox对象
+   * @param {*} e checkbox对象
    */
   selectArchFunc(e) {
     selectedArchType = [];
     visibleArchArray = [];
     // console.log(e)
-    let id = parseInt(e.currentTarget.id)
     let archItems = this.data.archItems;
-    if (archItems[id].selected) {
-      archItems[id].selected = false;
-    } else {
-      archItems[id].selected = true;
-    }
-    archItems.forEach(e => {
-      if (e.selected) {
-        selectedArchType.push(e.value)
+    if (e != null) {
+      let id = parseInt(e.currentTarget.id)
+      if (archItems[id].selected) {
+        archItems[id].selected = false;
+      } else {
+        archItems[id].selected = true;
       }
-    })
+      archItems.forEach(e => {
+        if (e.selected) {
+          selectedArchType.push(e.value)
+        }
+      })
+    }
 
+    console.log('改变可见性')
     visibleArchArray = [].concat(realTimeInfoArray)
     archArray.forEach((value, index) => {
       if (selectedArchType.indexOf(value.type) != -1) {
@@ -845,6 +847,8 @@ Page({
       archItems,
       markers: visibleArchArray
     })
+
+    db.preference.updateArchItems(this.data.archItems)
   },
 
 
@@ -1048,15 +1052,6 @@ Page({
         selectFile: this.selectFile.bind(this),
         uploadFile: this.uploadFile.bind(this),
       })
-      this.data.archItems.forEach(e => {
-        if (e.selected) {
-          if (selectedArchType.indexOf(e.value) != -1) {
-            //console.log(selectedArchType)
-          } else {
-            selectedArchType.push(e.value)
-          }
-        }
-      })
     }
     //console.log("sss",selectedArchType)
 
@@ -1066,6 +1061,9 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+    wx.showLoading({
+      title: '正在载入建筑物数据',
+    })
     // console.log("On Ready")
     archArray = []
     activitiesPoint = []
@@ -1086,8 +1084,30 @@ Page({
     })
     let campusId = app.globalData.campus._id
 
-    // 从数据库中获取建筑的标点对象
-    db.arch.getArchArray(app.globalData.campus._id).then(res => {
+    db.preference.getPreference().then(res => {
+      let archItems = this.data.archItems
+      archItems.forEach(e => {
+        res.archItems.forEach(dbEle => {
+          if (e.value == dbEle.value) e.selected = dbEle.selected
+        })
+      })
+      // console.log(archItems)
+      this.setData({
+        archItems: archItems
+      })
+    }).then(async () => {
+      this.data.archItems.forEach(e => {
+        if (e.selected) {
+          if (selectedArchType.indexOf(e.value) != -1) {
+            //console.log(selectedArchType)
+          } else {
+            selectedArchType.push(e.value)
+          }
+        }
+      })
+      // console.log(selectedArchType)
+      // 从数据库中获取建筑的标点对象
+      const res = await db.arch.getArchArray(app.globalData.campus._id);
       // console.log(res)
       res.forEach((value, index) => {
         let archObj = {
@@ -1101,7 +1121,7 @@ Page({
           height: 50,
           text: value.text,
           images: value.images
-        }
+        };
         switch (value.type) {
           case 'canteen': archObj.iconPath = "/images/building/canteen.png"; break;
           case 'dorm': archObj.iconPath = "/images/building/dormitory.png"; break;
@@ -1110,52 +1130,59 @@ Page({
           case 'college': archObj.iconPath = "/images/building/college.png"; break;
           default: archObj.iconPath = (value['logo'] != undefined && value['logo'] != "") ? value['logo'] : ""; break;
         }
-        archArray.push(archObj)
+        archArray.push(archObj);
+      });
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        visibleArchArray = []
+        // 、console.log("vvv",visibleArchArray)
+        // console.log(selectedArchType)
+        archArray.forEach((value, index) => {
+          if (selectedArchType.indexOf(value.type) != -1) {
+            //console.log(archArray.length)
+            visibleArchArray.push(value)
+          }
+        })
+        //console.log("vvv",visibleArchArray)
+        this.setData({
+          markers: visibleArchArray
+        })
+        resolve()
       })
     }).then(() => {
-      visibleArchArray = []
-      // 、console.log("vvv",visibleArchArray)
-      archArray.forEach((value, index) => {
-        if (selectedArchType.indexOf(value.type) != -1) {
-          //console.log(archArray.length)
-          visibleArchArray.push(value)
-        }
-      })
-      //console.log("vvv",visibleArchArray)
-    })
-
-    // 从数据库中获取标点对象
-    db.point.getPointArray(app.globalData.campus._id).then(res => {
-      //console.log(res)
-      res.forEach((value, index) => {
-        //console.log("point:",value)
-        if (value.type == 'activity')
-          activitiesPoint.push({
-            _id: value._id,
-            id: value.markId,
-            title: value.desc.name,
-            longitude: value.geo.coordinates[0],
-            latitude: value.geo.coordinates[1],
-            width: 50,
-            height: 50,
-            type: value.type,
-            iconPath: (value.desc.icon == "") ? value.desc.icon : value.desc.icon,
-            text: value.desc.text,
-            images: value.desc.images
-          })
-        else {
-          realTimeInfoArray.push({
-            _id: value._id,
-            id: value.markId,
-            title: value.desc.name,
-            longitude: value.geo.coordinates[0],
-            latitude: value.geo.coordinates[1],
-            width: 50,
-            height: 50,
-            type: value.type,
-            iconPath: "/images/index/realtimeInfo.png",
-          })
-        }
+      // 从数据库中获取标点对象
+      return db.point.getPointArray(app.globalData.campus._id).then(res => {
+        //console.log(res)
+        res.forEach((value, index) => {
+          //console.log("point:",value)
+          if (value.type == 'activity')
+            activitiesPoint.push({
+              _id: value._id,
+              id: value.markId,
+              title: value.desc.name,
+              longitude: value.geo.coordinates[0],
+              latitude: value.geo.coordinates[1],
+              width: 50,
+              height: 50,
+              type: value.type,
+              iconPath: (value.desc.icon == "") ? value.desc.icon : value.desc.icon,
+              text: value.desc.text,
+              images: value.desc.images
+            })
+          else {
+            realTimeInfoArray.push({
+              _id: value._id,
+              id: value.markId,
+              title: value.desc.name,
+              longitude: value.geo.coordinates[0],
+              latitude: value.geo.coordinates[1],
+              width: 50,
+              height: 50,
+              type: value.type,
+              iconPath: "/images/index/realtimeInfo.png",
+            })
+          }
+        })
       })
     }).then(() => {
       activitiesPoint.forEach((value, index) => {
@@ -1163,17 +1190,12 @@ Page({
           visibleArchArray.push(value)
         }
       })
-
       visibleArchArray = visibleArchArray.concat(realTimeInfoArray)
-
       this.setData({
         markers: visibleArchArray
       })
-
+      wx.hideLoading()
     })
-
-    // 默认显示实时信息标点。
-
   },
 
   /**

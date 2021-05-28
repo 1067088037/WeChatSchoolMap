@@ -191,6 +191,9 @@ Page({
             activitiesPoint.push(r);
           }
         })
+        if (attentions.length == 0) {
+          this.setData({ attentionActivityNum: 0 })
+        }
         attentions.forEach(atten => {
           let month = atten.month;
           let week = atten.week;

@@ -22,14 +22,15 @@ export class Point {
   /**
    * 获取校区下全部的标点
    * @param {string} campusId
+   * @param {boolean} getHiden 是否显示隐藏的标点
    * @returns {Array} 标点数组
    */
-  async getPointArray(campusId) {
+  async getPointArray(campusId, getHiden = false) {
     return await wx.cloud.callFunction({
-      name: 'getAllBySuperId',
+      name: 'getPointByCampusId',
       data: {
-        collection: 'point',
-        superId: campusId
+        campusId: campusId,
+        getHiden: getHiden
       }
     }).then(res => res.result.data).catch(err => [])
   }
