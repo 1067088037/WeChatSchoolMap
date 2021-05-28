@@ -10,135 +10,88 @@ const tempTest = require('./tempTest')
 const CloudPathFront = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/";
 
 const shopPoint = [{
-
-  name: "世博超市",
-  longitude: 113.40203129147403,
-  latitude: 23.048593578356705,
-  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-  text: "",
-  type: "shop",
-  images: [],
-},
-{
-
-  name: "7-11便利店",
-  longitude: 113.40188492453046,
-  latitude: 23.051165789442734,
-  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-  text: "",
-  type: "shop",
-  images: [],
-},
-{
-  name: "鲜果多滋味",
-  longitude: 113.40178290097674,
-  latitude: 23.051134472425847,
-  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-  text: "",
-  type: "shop",
-  images: [],
-},
-{
-  name: "学之海文具",
-  longitude: 113.40173595732585,
-  latitude: 23.051146925541303,
-  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-  text: "",
-  type: "shop",
-  images: [],
-},
-{
-  name: "华工书店",
-  longitude: 113.40172179501997,
-  latitude: 23.051151405057812,
-  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-  text: "",
-  type: "shop",
-  images: [],
-},
-{
-  name: "DearMill细工坊",
-  longitude: 113.4016746256143,
-  latitude: 23.051139970480605,
-  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-  text: "",
-  type: "shop",
-  images: [],
-},
-{
-  name: "印萌印知美图文",
-  latitude: 23.0511083489013,
-  longitude: 113.40153885794666,
-  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-  text: "",
-  type: "shop",
-  images: [],
-},
-{
-  name: "格爵丝造型",
-  latitude: 23.046429341231068,
-  longitude: 113.40176913726657,
-  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-  text: "",
-  type: "shop",
-  images: [],
-},
-{
-  name: "中国建设银行",
-  latitude: 23.046460977593863,
-  longitude: 113.40173671845525,
-  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-  text: "",
-  type: "shop",
-  images: [],
-},
-{
-  name: "广州燃气集团",
-  latitude: 23.046519983447627,
-  longitude: 113.40165790048934,
-  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-  text: "",
-  type: "shop",
-  images: [],
-},
-{
-  name: "佳嘉印图文",
-  latitude: 23.04657007503692,
-  longitude: 113.40163288320957,
-  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-  text: "",
-  type: "shop",
-  images: [],
-},
-{
-  name: "凯伦眼镜",
-  latitude: 23.046713055141552,
-  longitude: 113.40166052159941,
-  logo: "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/School/4144010561/images/Point/shop.png",
-  text: "",
-  type: "shop",
-  images: [],
-}
+    name: "图书馆 ",
+    longitude: 113.40538247792563,
+    latitude: 23.046693083903406,
+    
+    text: "",
+    type: "classRoom",
+    images: [],
+  },{
+    name: "学术大讲堂 ",
+    longitude: 113.40681198887796,
+    latitude: 23.04685094782348,
+    
+    text: "",
+    type: "college",
+    images: [],
+  },
+  {
+    name: "B12",
+    longitude: 113.40716671729854,
+    latitude: 23.04230005903462,
+    
+    text: "",
+    type: "college",
+    images: [],
+  }, {
+    name: "音乐厅",
+    longitude: 113.40487415076132,
+    latitude: 23.046156124627498,
+    
+    text: "",
+    type: "college",
+    images: [],
+  },
+  
 ] // 商店点
-const deliverPickUpPoint = [] // 拿快递的点
-const vouchCenterPoint = [{
-  id: 1,
-  title: "学生卡和水卡充值点",
-  longitude: 113.40268387434162,
-  latitude: 23.04866925793428
-},
-{
-  id: 2,
-  title: "学生卡和水卡充值点",
-  longitude: 113.40333534303113,
-  latitude: 23.051645364973492
-}, {
-  title: "水卡充值点",
-  longitude: 113.40238690806586,
-  latitude: 23.04796789472804
-}, {
 
-}
+const vouchCenterPoint = [{
+    id: 1,
+    name: "学生卡和水卡圈存点",
+    longitude: 113.40268387434162,
+    latitude: 23.04866925793428,
+    type:"Service",
+    text: "",
+    images: [],
+  },
+  {
+    id: 2,
+    name: "学生卡和水卡圈存点",
+    longitude: 113.40333534303113,
+    latitude: 23.051645364973492,
+    images: [],
+    text: "",
+    type:"Service"
+  }, {
+    name: "水卡充值点",
+    longitude: 113.40238690806586,
+    latitude: 23.04796789472804,
+    images: [],
+    text: "",
+    type:"Service"
+  }, {
+    name: "校园卡服务中心",
+    longitude: 113.40247027791906,
+    latitude: 23.047744468260245,
+    images: [],
+    text: "",
+    type:"Service"
+  }, {
+    name: "校医院",
+    longitude: 113.40369964771867,
+    latitude: 23.05245737178352,
+    images: [],
+    text: "",
+    type:"Service"
+  }, {
+    name: "桶装水订水点",
+    longitude: 113.4020619426492,
+    latitude: 23.04675934159357,
+    images: [],
+    text: "",
+    type:"Service"
+  }
 ] // 充值点
 var activitiesPoint = [] // 活动标记点 -- 暂存
 var isAdd = false; // 是否添加的标记
@@ -209,13 +162,13 @@ Page({
       name: "商店",
       selected: false,
     }, {
-      value: "vouchCenter",
-      name: "充值点",
+      value: "Service",
+      name: "服务",
       selected: false,
     }, {
       value: "activity",
       name: "活动",
-      selected: true,
+      selected: false,
     }], // 筛选建筑的选项
     departmentsItem: [
       "(全校)", "软件学院", "百步梯", "校学生会"
@@ -251,7 +204,7 @@ Page({
       selected: false
     }],
     Month: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-    WeekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六',],
+    WeekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六', ],
     monthIndex: 0,
     weekIndex: 0,
     followActivitiesTag: [],
@@ -792,7 +745,7 @@ Page({
           isMoreTrue: false
         })
       }
-        break;
+      break;
     }
     if (isAdd == true)
       return;
@@ -1015,12 +968,17 @@ Page({
   onAfterLeave(res) {
     // console.log(res)
   },
-
+  deleteStorage(e){
+    wx.clearStorage({
+      success: (res) => {console.log(res)},
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    
+    
     // 加载后生成MapContext对象
     // console.log("On load")
     wx.getLocation({
@@ -1242,7 +1200,8 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    
+   
   },
 
   /**

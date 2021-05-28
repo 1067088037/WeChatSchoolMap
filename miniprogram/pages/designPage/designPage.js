@@ -545,7 +545,7 @@ Page({
         }
         this.data.userUploadPhotoes.forEach((e, index) => {
           let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
-          console.log("Images: ",)
+          console.log("Images: ", )
           draft.content[index].images.push(images)
         })
         console.log('draft: ', draft)
@@ -672,7 +672,7 @@ Page({
       }
       this.data.userUploadPhotoes.forEach((e, index) => {
         let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
-        console.log("Images: ",)
+        console.log("Images: ", )
         draft.content[index].images.push(images)
       })
       console.log('draft: ', draft)
@@ -1332,7 +1332,9 @@ Page({
     let publishedArchStrategies = this.data.publishedArchStrategies;
     let publishedLifeStrategies = this.data.publishedLifeStrategies;
     // console.log(this.data.draftStrategiesId.length)
-    if (this.data.draftStrategiesId.length == 0) this.setData({ showEditPublishedStrategy: true, })
+    if (this.data.draftStrategiesId.length == 0) this.setData({
+      showEditPublishedStrategy: true,
+    })
     this.data.draftStrategiesId.forEach(id => {
       db.strategy.getStrategy(id).then(res => {
         if (res != null) {
@@ -1925,7 +1927,7 @@ Page({
             this.onReady()
             this.navigaToEditPublishedStrategy()
             wx.hideLoading({
-              success: (res) => { },
+              success: (res) => {},
             })
             wx.showToast({
               title: '攻略已删除',
@@ -1942,12 +1944,24 @@ Page({
   },
   refreshShowedDetailNumber() {
     // console.log('refreshShowedDetailNumber')
-    db.poster.getPosterByOpenid(this.data.userOpenId).then(res => this.setData({ posterNum: res.length }))
-    db.point.getPointByOpenid(this.data.userOpenId).then(res => this.setData({ pointNum: res.length }))
+    db.poster.getPosterByOpenid(this.data.userOpenId).then(res => this.setData({
+      posterNum: res.length
+    }))
+    db.point.getPointByOpenid(this.data.userOpenId).then(res => this.setData({
+      pointNum: res.length
+    }))
     db.strategy.getBriefStrategyArrayByOpenid(this.data.userOpenId).then(res => {
       let publishedStrategyNum = 0
-      res.forEach(e => { if (e.type == 'publish') publishedStrategyNum++ })
-      this.setData({ strategyNum: publishedStrategyNum })
+
+      res.forEach(e => {
+        if (e.type == 'publish') {
+          console.log(e)
+          publishedStrategyNum++
+        }
+      })
+      this.setData({
+        strategyNum: publishedStrategyNum
+      })
     })
   },
 

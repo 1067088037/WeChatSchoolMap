@@ -5,7 +5,7 @@
     longitude="{{longitude}}" scale="17" rotate="240" skew="35" markers="{{markers}}" bindmarkertap="markerstap"
     enable-poi="{{true}}" max-scale="20" min-scale="15" bindtap="mapTap">
   </map>
-
+  <!-- <image style="position:fixed;left:4rpx;top:4rpx;width:40rpx;height:40rpx" bindtap="deleteStorage" src="../../images/global/close.png"></image> -->
   <!-- 选择功能页面的实现 -->
   <view style="position:fixed; bottom:30rpx; width:750rpx;">
     <view wx:if="{{isMoreTrue}}">
@@ -97,8 +97,8 @@
   </view>
   <!-- 是否添加标点的按钮组 -->
   <view class="markerPosBtn" wx:if="{{showMarkerDialog}}">
-    <button bindtap="cancelMarker">取消</button>
-    <button bindtap="confirmMarker">确定</button>
+    <button  style="width: 350rpx; "bindtap="cancelMarker">取消</button>
+    <button style="width: 350rpx;" bindtap="confirmMarker">确定</button>
   </view>
   <!-- 添加图标的实现 -->
   <view class="moreFunctionIcon" wx:if="{{func == ''}}">

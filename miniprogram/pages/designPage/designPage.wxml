@@ -2,9 +2,9 @@
 
 <!-- 搜索框 -->
 <view class="DesignPageContainer">
-  <input class="search" type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx"
+  <!-- <input class="search" type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx"
     confirm-type="search"
-    wx:if="{{showUploadPostArea == false && showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false  && showMyPost == false && showEditPublishedStrategy == false && toEditPublishedArchStartegy == false && toEditPublishedArchStartegy == false && showChangeMyPost==false}}"></input>
+    wx:if="{{showUploadPostArea == false && showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false  && showMyPost == false && showEditPublishedStrategy == false && toEditPublishedArchStartegy == false && toEditPublishedArchStartegy == false && showChangeMyPost==false}}"></input> -->
   <!-- 设计内容区 -->
   <view class="markContainer" style="margin-top:20rpx"
     wx:if="{{showUploadPostArea == false && showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false  && showMyPost == false && showEditPublishedStrategy == false && toEditPublishedArchStartegy == false && toEditPublishedArchStartegy == false && showChangeMyPost==false}}">
