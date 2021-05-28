@@ -1084,30 +1084,19 @@ Page({
     })
     let campusId = app.globalData.campus._id
 
-    db.preference.getPreference().then(res => {
+    let stTime = (new Date()).getTime()
+    let tasks = []
+
+    tasks.push(db.preference.getPreference().then(res => {
       let archItems = this.data.archItems
       archItems.forEach(e => {
         res.archItems.forEach(dbEle => {
           if (e.value == dbEle.value) e.selected = dbEle.selected
         })
       })
-      // console.log(archItems)
-      this.setData({
-        archItems: archItems
-      })
-    }).then(async () => {
-      this.data.archItems.forEach(e => {
-        if (e.selected) {
-          if (selectedArchType.indexOf(e.value) != -1) {
-            //console.log(selectedArchType)
-          } else {
-            selectedArchType.push(e.value)
-          }
-        }
-      })
-      // console.log(selectedArchType)
-      // 从数据库中获取建筑的标点对象
-      const res = await db.arch.getArchArray(app.globalData.campus._id);
+      this.setData({ archItems: archItems })
+    }))
+    tasks.push(db.arch.getArchArray(app.globalData.campus._id).then(res => {
       // console.log(res)
       res.forEach((value, index) => {
         let archObj = {
@@ -1132,26 +1121,9 @@ Page({
         }
         archArray.push(archObj);
       });
-    }).then(() => {
-      return new Promise((resolve, reject) => {
-        visibleArchArray = []
-        // 、console.log("vvv",visibleArchArray)
-        // console.log(selectedArchType)
-        archArray.forEach((value, index) => {
-          if (selectedArchType.indexOf(value.type) != -1) {
-            //console.log(archArray.length)
-            visibleArchArray.push(value)
-          }
-        })
-        //console.log("vvv",visibleArchArray)
-        this.setData({
-          markers: visibleArchArray
-        })
-        resolve()
-      })
-    }).then(() => {
-      // 从数据库中获取标点对象
-      return db.point.getPointArray(app.globalData.campus._id).then(res => {
+    }))
+    tasks.push(// 从数据库中获取标点对象
+      db.point.getPointArray(app.globalData.campus._id).then(res => {
         //console.log(res)
         res.forEach((value, index) => {
           //console.log("point:",value)
@@ -1183,8 +1155,23 @@ Page({
             })
           }
         })
+      }))
+    Promise.all(tasks).then(() => {
+      this.data.archItems.forEach(e => {
+        if (e.selected) {
+          if (selectedArchType.indexOf(e.value) == -1) selectedArchType.push(e.value)
+        }
       })
-    }).then(() => {
+      visibleArchArray = []
+      // console.log(selectedArchType)
+      archArray.forEach((value, index) => {
+        if (selectedArchType.indexOf(value.type) != -1) {
+          visibleArchArray.push(value)
+        }
+      })
+      this.setData({
+        markers: visibleArchArray
+      })
       activitiesPoint.forEach((value, index) => {
         if (selectedArchType.indexOf(value.type) != -1) {
           visibleArchArray.push(value)
@@ -1195,6 +1182,7 @@ Page({
         markers: visibleArchArray
       })
       wx.hideLoading()
+      // console.log('用时', new Date().getTime() - stTime)
     })
   },
 

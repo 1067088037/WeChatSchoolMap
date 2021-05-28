@@ -7,6 +7,7 @@ var _openid = null
 
 function getUserInfo(that, openid) {
   db.user.getUser(openid).then(res => {
+    db.preference.checkInit()
     if (res == null) { //用户信息为空
       if (wx.getUserProfile) { //获取用户配置
         that.setData({
