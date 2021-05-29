@@ -884,15 +884,15 @@ Page({
   // 进入具体建筑的简介弹窗
   markerstap(e) {
     // console.log(e.detail.markerId)
-    if(e.detail.markerId!=null){
-    console.log("用户选择的建筑对象的Id：", e.detail.markerId)
-    app.globalData.buildingSelected = this.getMarkerInfo(e.detail.markerId)
-    console.log("用户选择的建筑对象：", app.globalData.buildingSelected)
-    this.setData({
-      showBuildingDialog: true,
-      buildingSelected: app.globalData.buildingSelected
-    })
-  }
+    if (e.detail.markerId != null) {
+      console.log("用户选择的建筑对象的Id：", e.detail.markerId)
+      app.globalData.buildingSelected = this.getMarkerInfo(e.detail.markerId)
+      console.log("用户选择的建筑对象：", app.globalData.buildingSelected)
+      this.setData({
+        showBuildingDialog: true,
+        buildingSelected: app.globalData.buildingSelected
+      })
+    }
   },
   /**
    * showMarkerInfoPage
@@ -997,88 +997,8 @@ Page({
       },
     })
   },
-  deepCopy(arr){
-    let length = arr.length;
-    let res = []
-    for(let i = 0 ; i < length ; i++)
-    {
-      res[i] = arr[i]
-    }
-    return res
-  },
-  refreshPoint() {
-    console.log("actRe",activitiesPoint)
-    activitiesPoint = []
-    realTimeInfoArray = []
-    console.log("visRe1",visibleArchArray.length,visibleArchArray)
-    let tempVisibleArray = this.deepCopy(visibleArchArray)
-    
-    console.log("temp1",tempVisibleArray)
-    visibleArchArray = tempVisibleArray
-    console.log("visRe2",visibleArchArray.length,visibleArchArray)
-    db.point.getPointArray(app.globalData.campus._id).then(res => {
-      //console.log(res)
-      res.forEach((value, index) => {
-        //console.log("point:",value)
-        if (value.type == 'activity'){
-          activitiesPoint.push({
-            _id: value._id,
-            id: value.markId,
-            title: value.desc.name,
-            longitude: value.geo.coordinates[0],
-            latitude: value.geo.coordinates[1],
-            width: 50,
-            height: 50,
-            type: value.type,
-            iconPath: (value.desc.icon == "") ? value.desc.icon : value.desc.icon,
-            text: value.desc.text,
-            images: value.desc.images
-          })
-        }
-        else {
-          realTimeInfoArray.push({
-            _id: value._id,
-            id: value.markId,
-            title: value.desc.name,
-            longitude: value.geo.coordinates[0],
-            latitude: value.geo.coordinates[1],
-            width: 50,
-            height: 50,
-            type: value.type,
-            iconPath: "/images/index/realtimeInfo.png",
-          })
-        }
-      })
-    }).then(() => {
-      
-      console.log(visibleArchArray.length)
-      for(let i = 0 ; i < visibleArchArray.length;i++){
-        console.log(i,visibleArchArray[i].type)
-        if(visibleArchArray[i].type=='activity'||visibleArchArray[i].type == 'current'){
-          console.log(tempVisibleArray)
-          tempVisibleArray.splice(i,1);
-          console.log(tempVisibleArray.length)
-        }
-      }
-      // visibleArchArray = tempVisibleArray
-      console.log("acarrRe:",activitiesPoint)
-      activitiesPoint.forEach((value, index) => {
-        if (selectedArchType.indexOf(value.type) != -1) {
-          visibleArchArray.push(value)
-        }
-      })
-      console.log("visRe3",visibleArchArray.length,visibleArchArray)
-      visibleArchArray = visibleArchArray.concat(realTimeInfoArray)
-      this.setData({
-        markers: visibleArchArray
-      })
-      // this.data.mapCtx.addMarkers({
-      //   clear:true,
-      //   markers:visibleArchArray
-      // })
-    })
+ 
 
-  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -1128,30 +1048,32 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function (isLoading = true) {
-    if(isLoading){
-    wx.showLoading({
-      title: '正在载入建筑物数据',
-    })
-  }
+    if (isLoading) {
+      wx.showLoading({
+        title: '正在载入建筑物数据',
+      })
+    }
     // console.log("On Ready")
     archArray = []
     activitiesPoint = []
     realTimeInfoArray = []
-    console.log("act",activitiesPoint)
+    console.log("act", activitiesPoint)
     let mCampus = getApp().globalData.campus
     // console.log('初始显示的位置:', mCampus.geo.center)
-    this.setData({
-      longitude: mCampus.geo.center.longitude,
-      latitude: mCampus.geo.center.latitude
-    })
-    let mapContect = wx.createMapContext('myMap', this)
-    this.setData({
-      mapCtx: mapContect
-    })
-    mapContect.moveToLocation({
-      longitude: mCampus.geo.center.longitude,
-      latitude: mCampus.geo.center.latitude
-    })
+    if (isFirstShow == 1) {
+      this.setData({
+        longitude: mCampus.geo.center.longitude,
+        latitude: mCampus.geo.center.latitude
+      })
+      let mapContect = wx.createMapContext('myMap', this)
+      this.setData({
+        mapCtx: mapContect
+      })
+      mapContect.moveToLocation({
+        longitude: mCampus.geo.center.longitude,
+        latitude: mCampus.geo.center.latitude
+      })
+    }
     let campusId = app.globalData.campus._id
 
     let stTime = (new Date()).getTime()
@@ -1214,8 +1136,8 @@ Page({
         //console.log(res)
         res.forEach((value, index) => {
           // console.log("point:",value)
-          console.log("acarr:",activitiesPoint)
-          if (value.type == 'activity' )
+          console.log("acarr:", activitiesPoint)
+          if (value.type == 'activity')
             activitiesPoint.push({
               _id: value._id,
               id: value.markId,
@@ -1229,7 +1151,7 @@ Page({
               text: value.desc.text,
               images: value.desc.images
             })
-          else if(value.type == 'current') {
+          else if (value.type == 'current') {
             realTimeInfoArray.push({
               _id: value._id,
               id: value.markId,
@@ -1257,7 +1179,7 @@ Page({
           visibleArchArray.push(value)
         }
       })
-      
+
       // this.setData({
       //   markers: visibleArchArray
       // })
@@ -1266,13 +1188,13 @@ Page({
           visibleArchArray.push(value)
         }
       })
-      console.log("visi:",visibleArchArray)
+      console.log("visi:", visibleArchArray)
       visibleArchArray = visibleArchArray.concat(realTimeInfoArray)
       this.setData({
-        markers: visibleArchArray
-      })
-      ++isFirstShow
-      if(isLoading)wx.hideLoading()
+          markers: visibleArchArray
+        })
+        ++isFirstShow
+      if (isLoading) wx.hideLoading()
     })
   },
 
@@ -1281,7 +1203,7 @@ Page({
    */
   onShow: function () {
     console.log(this.data.markers)
-    
+
     tempTest.launchTest() //用于临时测试
     tempTest.dbExample() //数据库函数调用示例
     db.section.getSectionArray(app.globalData.school._id).then(res => {
