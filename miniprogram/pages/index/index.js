@@ -1200,14 +1200,42 @@ Page({
       })
       // console.log("visi:", visibleArchArray)
       visibleArchArray = visibleArchArray.concat(realTimeInfoArray)
-      this.setData({
-          markers: visibleArchArray
-        })
+      wx.startLocationUpdate({
+        success:res=>{
+         
+          console.log(res)
+          wx.onLocationChange(this.getUserLocation)
+        },
+        fail:console.error
+      })
+      
         ++isFirstShow
       if (isLoading) wx.hideLoading()
     })
   },
-
+getUserLocation:function(res){
+    // console.log(res)
+    visibleArchArray.forEach((m,idx)=>{
+      if(m['type'] == "user")
+      visibleArchArray.splice(idx,1)
+    })
+    let marker  = {
+      longitude:res.longitude,
+      latitude:res.latitude,
+      id:util.randomNumberId(),
+      iconPath:"/images/global/userSelf.png",
+      width:40,
+      height:40,
+      type:"user",
+      title:'自己'
+    }
+    console.log(marker)
+    visibleArchArray.push(marker)
+    this.setData({
+      markers: visibleArchArray
+    })
+  },
+  
   /**
    * 生命周期函数--监听页面显示
    */
@@ -1245,11 +1273,18 @@ Page({
       })
     } else if (!this.data.isAddedMarker && isFirstShow != 1) {
       // console.log("页面刷新")
+      
       this.onReady(false)
+      
     }
-
+    
+    // this.getUserLocation
+    
+    
+     
+      
   },
-
+  
   /**
    * 生命周期函数--监听页面隐藏
    */

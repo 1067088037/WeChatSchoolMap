@@ -38,6 +38,12 @@
   line-height: 80rpx;
   border-radius: 20rpx;
 }
+.Navigation {
+  width: 65rpx;
+  height: 65rpx;
+  position: relative;
+  padding-left: 40rpx;
+}
 .StrategiesAreaButton{
   margin-top:20rpx;
   display: inline-block;

@@ -455,6 +455,7 @@ Page({
           showBuilidngBanner: true,
           userUploadPhotoes: []
         })
+        this.onShow()
       }
     })
   },
