@@ -1,3 +1,5 @@
+import { db } from "./database"
+
 const _db = wx.cloud.database()
 const cmd = _db.command
 
@@ -178,22 +180,36 @@ export class Section {
    * @param {string} schoolId 
    * @param {object} section 包含name,desc,images,geo
    */
-  addSection(schoolId, section) {
-    console.warn('TODO:调用处没有修改')
+  async addSection(schoolId, section) {
     if (!db.perControl.limitTimeStrategy('addSection', 10000))
       return db.perControl.refusePromise()
-    return _db.collection('section').add({
-      data: {
-        super: {
-          _id: schoolId,
-          type: 'school'
-        },
-        name: section.name,
-        desc: section.desc,
-        images: section.images,
-        geo: section.geo,
-        admin: [],
-        editor: []
+    return _db.collection('section').where({
+      _openid: '{openid}'
+    }).count().then(res => {
+      if (db.perControl.thisPermission >= 64 || res.total < 1) {
+        // console.log('允许')
+        return _db.collection('section').add({
+          data: {
+            super: {
+              _id: schoolId,
+              type: 'school'
+            },
+            name: section.name,
+            desc: section.desc,
+            images: section.images,
+            geo: section.geo,
+            admin: [],
+            editor: []
+          }
+        })
+      } else {
+        // console.log('拒绝')
+        wx.showToast({
+          title: '权限不足或创建的部门数量已达上限',
+          icon: 'none',
+          mask: true
+        })
+        return db.perControl.refusePromise()
       }
     })
   }

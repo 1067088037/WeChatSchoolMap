@@ -16,40 +16,51 @@ export class Strategy {
   async addStrategy(superId, superType, strategy) {
     if (!db.perControl.limitTimeStrategy('addStrategy', 10000, '添加得太频繁\n休息一下吧'))
       return db.perControl.refusePromise()
-    if (strategy.constructor != Object) {
-      console.error('strategy类型非法')
-    } else if (strategy.name.constructor != String) {
-      console.error('name类型非法，需要String')
-    } else if (strategy.content.constructor != Array) {
-      console.error('content类型非法，需要Array')
+    let total = await _db.collection('strategy').where({
+      _openid: '{openid}'
+    }).count()
+    if (db.perControl.thisPermission >= 48 || total < 25) {
+      if (strategy.constructor != Object) {
+        console.error('strategy类型非法')
+      } else if (strategy.name.constructor != String) {
+        console.error('name类型非法，需要String')
+      } else if (strategy.content.constructor != Array) {
+        console.error('content类型非法，需要Array')
+      } else {
+        let _id = util.randomId()
+        await db.like.bindNewLike(_id, 'strategy', null)
+        return _db.collection('strategy').add({
+          data: {
+            _id: _id,
+            super: {
+              _id: superId,
+              type: superType
+            },
+            version: {
+              editVersion: 1,
+              createTime: _db.serverDate(),
+              lastEditTime: _db.serverDate()
+            },
+            publish: {
+              name: strategy.name,
+              desc: strategy.desc,
+              content: strategy.content,
+            },
+            draft: {
+              name: strategy.name,
+              desc: strategy.desc,
+              content: strategy.content,
+            },
+            type: strategy.type
+          }
+        })
+      }
     } else {
-      let _id = util.randomId()
-      await db.like.bindNewLike(_id, 'strategy', null)
-      return _db.collection('strategy').add({
-        data: {
-          _id: _id,
-          super: {
-            _id: superId,
-            type: superType
-          },
-          version: {
-            editVersion: 1,
-            createTime: _db.serverDate(),
-            lastEditTime: _db.serverDate()
-          },
-          publish: {
-            name: strategy.name,
-            desc: strategy.desc,
-            content: strategy.content,
-          },
-          draft: {
-            name: strategy.name,
-            desc: strategy.desc,
-            content: strategy.content,
-          },
-          type: strategy.type
-        }
+      wx.showToast({
+        title: '权限不足或创建的攻略数量已达上限',
+        icon: 'none'
       })
+      return db.perControl.refusePromise()
     }
   }
 

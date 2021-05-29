@@ -1,122 +1,101 @@
 // pages/myCenter/joinasso/joinasso.js
 const app = getApp();
-import{db}from'../../../../util/database/database'
+import { db } from '../../../../util/database/database'
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    inform:"",
-    tapitem:[],
-    tempsectionArray:[],
-    schoolid:"",
+    inform: "",
+    tapitem: [],
+    tempsectionArray: [],
+    schoolid: "",
     sectiontext: "", //搜索框的值
     noneview: false, //显示未找到提示
     sectionlist: true, //显示列表
     sectionArray: [],
-    userInfo: null,  
-    hidden:false,
+    userInfo: null,
+    hidden: false,
     hiddenmodalput: true,
-    hiddenmodalput2:true
+    hiddenmodalput2: true
   },
-  tapsection:function(e){
-var tempid=e.currentTarget.dataset.item.id;
-var temptitle=e.currentTarget.dataset.item.title;
-var tempdesc=e.currentTarget.dataset.item.desc;
-var tempitem={
-  id:tempid,
-title:temptitle,
-desc:tempdesc
-}
-this.setData({
-  tapitem:tempitem,
-  hiddenmodalput:false
-})
+  tapsection: function (e) {
+    var tempid = e.currentTarget.dataset.item.id;
+    var temptitle = e.currentTarget.dataset.item.title;
+    var tempdesc = e.currentTarget.dataset.item.desc;
+    var tempitem = {
+      id: tempid,
+      title: temptitle,
+      desc: tempdesc
+    }
+    this.setData({
+      tapitem: tempitem,
+      hiddenmodalput: false
+    })
 
   },
-  applicantinput:function(e){
-    var inform=e.detail.value;
+  applicantinput: function (e) {
+    var inform = e.detail.value;
     console.log(inform);
     this.setData({
-      inform:inform
+      inform: inform
     })
   },
 
   modalinput: function () {
- 
     this.setData({
- 
       hiddenmodalput: !this.data.hiddenmodalput
- 
     })
- 
   },
- 
+
   //取消按钮
- 
   cancel: function () {
- 
     this.setData({
- 
       hiddenmodalput: true
- 
     });
- 
   },
   cancel2: function () {
- 
     this.setData({
- 
       hiddenmodalput2: true
- 
     });
- 
   },
- 
+
   //确认
- 
   confirm: function () {
- 
     this.setData({
- 
-      hiddenmodalput2:false
- 
+      hiddenmodalput: true,
+      hiddenmodalput2: false
     })
- 
   },
   confirm2: function () {
-    var sectionapplication={};
-    var openid=app.globalData.openid;
-    sectionapplication['applicant']=openid;
-    sectionapplication['title']=this.data.tapitem.title;
-    sectionapplication['inform']=this.data.inform;
-    sectionapplication['state']="未审核";
-    var id=this.data.tapitem.id;
+    var sectionapplication = {};
+    var openid = app.globalData.openid;
+    sectionapplication['applicant'] = openid;
+    sectionapplication['title'] = this.data.tapitem.title;
+    sectionapplication['inform'] = this.data.inform;
+    sectionapplication['state'] = "未审核";
+    var id = this.data.tapitem.id;
     console.log(id);
     console.log(sectionapplication);
-    db.application.addApplication(id,sectionapplication).then(()=>{console.log("成功上传")})
-    this.setData({
- 
-      hiddenmodalput2:true,
-      hiddenmodalput:true
+    db.application.addApplication(id, sectionapplication).then(res => {
+      if (!res.refuse) {
+        console.log("成功上传")
+        this.setData({
+          hiddenmodalput2: true,
+          hiddenmodalput: true
+        })
+      }
     })
- 
   },
   onChangeShowState: function () {
- 
     var that = this;
- 
     that.setData({
- 
       showView: (!that.data.showView)
- 
     })
- 
   },
   // 弹框
   powerDrawer: function (e) {
- 
     var currentStatu = e.currentTarget.dataset.statu;
     console.log(currentStatu);
     this.util(currentStatu)
@@ -131,15 +110,15 @@ this.setData({
     })
     // 第2步：这个动画实例赋给当前的动画实例  
     this.animation = animation;
- 
+
     // 第3步：执行第一组动画  
     animation.opacity(0).rotateX(-100).step();
- 
+
     // 第4步：导出动画对象赋给数据对象储存  
     this.setData({
       animationData: animation.export()
     })
- 
+
     // 第5步：设置定时器到指定时候后，执行第二组动画  
     setTimeout(function () {
       // 执行第二组动画  
@@ -150,7 +129,7 @@ this.setData({
       })
       //关闭  
       if (currentStatu == "close") {
- 
+
         this.setData({
           showModalStatus: false
         });
@@ -170,7 +149,7 @@ this.setData({
     }
   },
 
-  input1: function(e) {
+  input1: function (e) {
     //当删除input的值为空时
     if (e.detail.value == "") {
       this.setData({
@@ -187,9 +166,9 @@ this.setData({
     this.setData({
       sectiontext: e.detail.value
     })
-   this.search();
+    this.search();
   },
-  search: function() {
+  search: function () {
     var searchtext = this.data.sectiontext; //搜索框的值
     console.log(searchtext);
     var sss = true;
@@ -205,7 +184,7 @@ this.setData({
           })
           sss = false //隐藏未找到提示
         }
-        else{
+        else {
           this.setData({
             [temp]: 0,
           })
@@ -223,49 +202,47 @@ this.setData({
     }
   },
 
-  
-
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var openid=app.globalData.openid;
+    var openid = app.globalData.openid;
     let value;
-    db.user.getUser(openid).then((res)=>{
+    db.user.getUser(openid).then((res) => {
       console.log(res)
       this.setData({
-        schoolid:res.info.school
+        schoolid: res.info.school
       })
-    }).then(()=>{
-    console.log(this.data.schoolid);
-    db.section.getSectionArray(this.data.schoolid).then((res)=>{
-      console.log(res);
-      this.setData({
-      tempsectionArray:res
-    })}).then(()=>{
-      console.log(this.data.tempsectionArray);
-    }).then(()=>
-    {if(this.data.tempsectionArray.length!=0){
-    var tempsectionArray= Array.from(this.data.tempsectionArray.data);
-    var i;
-    for(i in tempsectionArray){
-      var objsection={};
-        objsection['id']=tempsectionArray[i]._id;
-        objsection['desc']=tempsectionArray[i].desc;
-        objsection['title']=tempsectionArray[i].name;
-        objsection['status']=1;
-    this.data.sectionArray.push(objsection);
-    }}}
-    ).then(()=>{
-      this.setData({
-        sectionArray:this.data.sectionArray
+    }).then(() => {
+      console.log(this.data.schoolid);
+      db.section.getSectionArray(this.data.schoolid).then((res) => {
+        console.log(res);
+        this.setData({
+          tempsectionArray: res
+        })
+      }).then(() => {
+        console.log(this.data.tempsectionArray);
+      }).then(() => {
+        if (this.data.tempsectionArray.length != 0) {
+          var tempsectionArray = Array.from(this.data.tempsectionArray.data);
+          var i;
+          for (i in tempsectionArray) {
+            var objsection = {};
+            objsection['id'] = tempsectionArray[i]._id;
+            objsection['desc'] = tempsectionArray[i].desc;
+            objsection['title'] = tempsectionArray[i].name;
+            objsection['status'] = 1;
+            this.data.sectionArray.push(objsection);
+          }
+        }
+      }
+      ).then(() => {
+        this.setData({
+          sectionArray: this.data.sectionArray
+        })
       })
-    })})
-
-
-
-}
-  ,
+    })
+  },
 
   /**
    * 生命周期函数--监听页面初次渲染完成

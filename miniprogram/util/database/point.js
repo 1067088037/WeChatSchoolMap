@@ -45,39 +45,49 @@ export class Point {
    * @param {DB.IGeoJSONPoint} geo 
    * @param {Array} tag 标签数组
    */
-  addPoint(campusId, belong, type, time, desc, geo, tag) {
+  async addPoint(campusId, belong, type, time, desc, geo, tag) {
     if (!db.perControl.limitTimeStrategy('addPoint', 20000, '添加标点得太快了\n休息一下吧'))
       return db.perControl.refusePromise()
-    if (belong.constructor != Array) {
-      console.error('belong类型非法，如果为空请传入[]')
-    } else if (type.constructor != String) {
-      console.error('type类型非法')
-    } else if (type != 'current' && type != 'activity') {
-      console.error('type值非法')
-    } else if (time.constructor != Object) {
-      console.error('time类型非法')
-    } else if (desc.constructor != Object) {
-      console.error('desc类型非法')
-    } else if (geo.constructor != _db.Geo.Point(0, 0).constructor) {
-      console.error("geo类型非法")
-    } else if (tag.constructor != Array) {
-      console.error('tag类型非法')
+    let total = await _db.collection('point').where({
+      _openid: '{openid}'
+    }).count()
+    if (db.perControl.thisPermission >= 48 || total < 10) {
+      if (belong.constructor != Array) {
+        console.error('belong类型非法，如果为空请传入[]')
+      } else if (type.constructor != String) {
+        console.error('type类型非法')
+      } else if (type != 'current' && type != 'activity') {
+        console.error('type值非法')
+      } else if (time.constructor != Object) {
+        console.error('time类型非法')
+      } else if (desc.constructor != Object) {
+        console.error('desc类型非法')
+      } else if (geo.constructor != _db.Geo.Point(0, 0).constructor) {
+        console.error("geo类型非法")
+      } else if (tag.constructor != Array) {
+        console.error('tag类型非法')
+      } else {
+        return _db.collection('point').add({
+          data: {
+            super: {
+              _id: campusId,
+              type: 'campus'
+            },
+            belong: belong,
+            time: time,
+            desc: desc,
+            geo: geo,
+            markId: util.randomNumberId(),
+            type: type,
+            tag: tag
+          }
+        })
+      }
     } else {
-      return _db.collection('point').add({
-        data: {
-          super: {
-            _id: campusId,
-            type: 'campus'
-          },
-          belong: belong,
-          time: time,
-          desc: desc,
-          geo: geo,
-          markId: util.randomNumberId(),
-          type: type,
-          tag: tag
-        }
+      wx.showToast({
+        title: '权限不足或创建的标点数量已达上限',
       })
+      return db.perControl.refusePromise()
     }
   }
 

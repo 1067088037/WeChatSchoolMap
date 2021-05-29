@@ -10,7 +10,7 @@ App({
     campus: null,      //校区信息
     buildingSelected: null, // 选中建筑对象
     archItem: [],
-    versionCode: 59
+    versionCode: 61
   },
   onLaunch: function () {
     if (!wx.cloud) {

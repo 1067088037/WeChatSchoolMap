@@ -63,14 +63,13 @@ export class Attention {
    * @param {Object} attention 
    */
   async removeAttention(openid, attention) {
-    console.warn('TODO:调用处没有修改')
-    if (!db.perControl.limitTimeStrategy('removeAttention', 300))
+    if (!db.perControl.limitTimeStrategy('removeAttention', 200, '取消关注得太快了\n休息一下吧'))
       return db.perControl.refusePromise()
     if (attention.constructor != Object) {
       console.error('attention类型非法')
     } else {
       await this.checkInit(openid)
-      _db.collection('attention').where({
+      return _db.collection('attention').where({
         _id: openid,
         _openid: '{openid}'
       }).update({

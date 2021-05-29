@@ -14,19 +14,19 @@ Page({
    * 页面的初始数据
    */
   data: {
-    successHidden:true,
-    openid:"",
-    sectionid:"",
-    schoolid:"",
-  section:{},
-  title:"",
-  desc:"",
-  userUploadPhotoes: [], // 用户上传的图片
-  files: []
+    successHidden: true,
+    openid: "",
+    sectionid: "",
+    schoolid: "",
+    section: {},
+    title: "",
+    desc: "",
+    userUploadPhotoes: [], // 用户上传的图片
+    files: []
   },
-  setsection:function(e){
+  setsection: function (e) {
     this.setData({
-    section:e.detial.value
+      section: e.detial.value
     })
   },
   selectFile(files) {
@@ -53,14 +53,14 @@ Page({
       userUploadPhotoes: this.data.userUploadPhotoes.concat(e.detail.urls[0])
     })
   },
-  inputsectionName(e){
+  inputsectionName(e) {
     this.setData({
       title: e.detail.value
     })
   },
-  inputBriefIntro(e){
+  inputBriefIntro(e) {
     this.setData({
-    desc:e.detail.value  
+      desc: e.detail.value
     })
   },
   chooseImage: function (e) {
@@ -123,49 +123,63 @@ Page({
     let title = this.data.title;
     //let campusId = app.globalData.campus._id
     let content = [];
-    let obj ={};
+    let obj = {};
     obj['desc'] = this.data.desc;
     obj['name'] = this.data.title;
     console.log(this.data.title);
+    if (obj.name === "" || obj.desc === "") {
+      wx.showToast({
+        title: '请填写完整信息',
+        icon: 'error'
+      })
+      return
+    }
     let images = this.updatePhotoesToCloud()
     obj['image'] = images;
-    obj['geo']="无"
-    var openid=app.globalData.openid;
+    obj['geo'] = "无"
+    var openid = app.globalData.openid;
     console.log(openid);
-    db.user.getUser(openid).then((res)=>{
+    wx.showLoading({
+      title: 'Loading...',
+    })
+    db.user.getUser(openid).then((res) => {
       console.log(res);
       this.setData({
-        schoolid:res.info.school
+        schoolid: res.info.school
       })
-    }).then(()=>{
+    }).then(() => {
       console.log(this.data.schoolid);
       console.log(obj);
-      db.section.addSection(this.data.schoolid,obj).then(res=>{
-        this.setData({
-       sectionid:res._id
-        })
-      }).then((res)=>{
-        var openid=app.globalData.openid;
-       db.section.joinSection(this.data.sectionid,48,openid);
-       db.section.addAdmin(this.data.sectionid,openid);
+      db.section.addSection(this.data.schoolid, obj).then(res => {
+        if (!res.refuse) {
+          this.setData({
+            sectionid: res._id
+          })
+          var openid = app.globalData.openid;
+          db.section.joinSection(this.data.sectionid, 48, openid);
+          db.section.addAdmin(this.data.sectionid, openid);
+          this.setData({
+            successHidden: false
+          });
+          var that = this;
+          wx.hideLoading()
+          setTimeout(function () {
+            that.setData({
+              successHidden: true
+            });
+            wx.navigateBack({
+              delta: 1,
+            })
+          }, 500)
+        } else wx.hideLoading()
       })
     })
-    this.setData({
-      successHidden: false
-    });
-    var that = this;
-    setTimeout(function(){
-      that.setData({
-          successHidden: true
-         });
-    },500)
-    
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var openid=app.globalData.openid;
+    var openid = app.globalData.openid;
     console.log(openid);
     this.setData({
       selectFile: this.selectFile.bind(this),

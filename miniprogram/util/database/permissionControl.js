@@ -1,9 +1,20 @@
 import { db } from "./database"
+const _db = wx.cloud.database()
 
 var timeStrategy = {}
 var ignoreLimit = false
 
 export class PermissionControl {
+  thisPermission = -1
+
+  constructor() {
+    _db.collection('user').where({
+      _openid: '{openid}'
+    }).get().then(res => {
+      this.thisPermission = res.data[0].info.permission
+    })
+  }
+
   /**
    * 开发者在调试时忽略所有限制
    */

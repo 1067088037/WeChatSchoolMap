@@ -92,31 +92,41 @@ export class Poster {
   async addPoster(campusId, poster) {
     if (!db.perControl.limitTimeStrategy('addPoster', 20000, '上传太频繁了\n休息一下吧'))
       return db.perControl.refusePromise()
-    if (poster.sender.constructor != String) {
-      console.error('sender类型非法')
-    } else if (poster.name.constructor != String) {
-      console.error('name类型非法')
-    } else if (poster.desc.constructor != String) {
-      console.error('desc类型非法')
-    } else if (poster.images.constructor != Array) {
-      console.error('images类型非法')
+    let total = await _db.collection('poster').where({
+      _openid: '{openid}'
+    }).count()
+    if (db.perControl.thisPermission >= 48 || total < 3) {
+      if (poster.sender.constructor != String) {
+        console.error('sender类型非法')
+      } else if (poster.name.constructor != String) {
+        console.error('name类型非法')
+      } else if (poster.desc.constructor != String) {
+        console.error('desc类型非法')
+      } else if (poster.images.constructor != Array) {
+        console.error('images类型非法')
+      } else {
+        let posterId = util.randomId()
+        _db.collection('poster').add({
+          data: {
+            _id: posterId,
+            super: {
+              _id: campusId,
+              type: 'campus'
+            },
+            sender: poster.sender,
+            sendTime: _db.serverDate(),
+            name: poster.name,
+            desc: poster.desc,
+            images: poster.images
+          }
+        })
+        return db.like.bindNewLike(posterId, 'poster', null)
+      }
     } else {
-      let posterId = util.randomId()
-      _db.collection('poster').add({
-        data: {
-          _id: posterId,
-          super: {
-            _id: campusId,
-            type: 'campus'
-          },
-          sender: poster.sender,
-          sendTime: _db.serverDate(),
-          name: poster.name,
-          desc: poster.desc,
-          images: poster.images
-        }
+      wx.showToast({
+        title: '权限不足或创建的海报数量已达上限',
       })
-      return db.like.bindNewLike(posterId, 'poster', null)
+      return db.perControl.refusePromise()
     }
   }
 
