@@ -203,7 +203,7 @@
 }
 .cancelNewStrategy{
   display: inline-block;
-  margin-left: 40rpx;
+  margin-left: 20rpx;
   border-radius: 20rpx;
   width: 200rpx;
 }
@@ -212,7 +212,7 @@
 }
 .createNewStrategy{
   width: 450rpx;
-  margin-left: 80rpx;
+  margin-left: 60rpx;
   border-radius: 30rpx;
   
   display: inline-block;

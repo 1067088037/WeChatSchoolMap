@@ -268,10 +268,20 @@ Page({
    * @todo 从添加攻略界面返回到攻略界面,弹出对话框是否保存编辑
    */
   returnStrategyArea() {
-
-    this.setData({
-      isExitAddStrategy: true,
-    })
+    if (this.data.strategyTitle == "" && this.data.strategyBriefIntro == "" && this.data.strategyContent == "") {
+      this.setData({
+        isCreateNewStrategy: false,
+        showStrategiesArea: true,
+        showBuilidngBanner: true,
+        userUploadPhotoes: [],
+        StrategyTitle: "",
+        StrategyContent: "",
+      })
+    } else {
+      this.setData({
+        isExitAddStrategy: true,
+      })
+    }
   },
   /**
    * isSaveEdit
@@ -632,8 +642,7 @@ Page({
           this.setData({
             building: building
           })
-        }
-        else {
+        } else {
           this.setData({
             building: building
           })
@@ -720,11 +729,11 @@ Page({
           })
         })
         this.setData({
-          //strategies: (testStrategies),
-          strategiesId
-        }),
+            //strategies: (testStrategies),
+            strategiesId
+          }),
           wx.hideLoading({
-            success: (res) => { },
+            success: (res) => {},
           })
       })
     })
