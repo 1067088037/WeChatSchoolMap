@@ -138,7 +138,6 @@ export class Point {
    * @param {string} pointId 数据库中ID
    */
   async removePointById(pointId) {
-    console.warn('TODO:调用处没有修改')
     if (!db.perControl.limitTimeStrategy('removePointById', 1000, '删除得太快了\n休息一下吧'))
       return db.perControl.refusePromise()
     await _db.collection('point').doc(pointId).get().then(res => {
@@ -146,7 +145,10 @@ export class Point {
         fileList: res.data.desc.images
       })
     })
-    await _db.collection('point').doc(pointId).remove()
+    await _db.collection('point').where({
+      _id: pointId,
+      _openid: '{openid}'
+    }).remove()
     return db.comment.removeAllComment([pointId])
   }
 
@@ -168,7 +170,10 @@ export class Point {
     //         fileList: res.data.desc.images
     //       })
     //     })
-    //     _db.collection('point').doc(e._id).remove()
+    //     _db.collection('point').where({
+    //       _id: e._id,
+    //       _openid: '{openid}'
+    //     }).remove()
     //     _db.comment.removeAllComment(e._id)
     //   })
     // })
@@ -180,7 +185,10 @@ export class Point {
    * @param {object} data 要更新的内容
    */
   updatePointById(pointId, data) {
-    return _db.collection('point').doc(pointId).update({
+    return _db.collection('point').where({
+      _id: pointId,
+      _openid: '{openid}'
+    }).update({
       data: data
     })
   }
@@ -192,7 +200,8 @@ export class Point {
    */
   updatePointByMarkId(markId, data) {
     return _db.collection('point').where({
-      markId: markId
+      markId: markId,
+      _openid: '{openid}'
     }).update({
       data: data
     })

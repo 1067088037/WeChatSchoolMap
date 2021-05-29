@@ -6,6 +6,11 @@
 import { db } from "../../util/database/database";
 
 export function launchTest() {
+  // db.arch.addArch('1ace8ef160901b1b008f69ae08b0ee8a', {
+  //   name: '1222'
+  // })
+  // db.arch.removeArchById('cbddf0af60b1f74b0cab5141416d522c')
+
   // db.perControl.ignoreLimitWhenDev()
 
   // db.poster.removePoster('hdn5vgnx2wi222ngqxlvqjmhjr843hsb')

@@ -14,7 +14,10 @@ export class Poster {
     if (!db.perControl.limitTimeStrategy('addAttention', 1000))
       return db.perControl.refusePromise()
     await db.attention.checkInit(openid)
-    return await _db.collection('attention').doc(openid).update({
+    return await _db.collection('attention').where({
+      _id: openid,
+      _openid: '{openid}'
+    }).update({
       data: {
         poster: cmd.addToSet(posterId)
       }
@@ -30,7 +33,10 @@ export class Poster {
     if (!db.perControl.limitTimeStrategy('removeAttention', 1000))
       return db.perControl.refusePromise()
     await db.attention.checkInit(openid)
-    return await _db.collection('attention').doc(openid).update({
+    return await _db.collection('attention').where({
+      _id: openid,
+      _openid: '{openid}'
+    }).update({
       data: {
         poster: cmd.pull(posterId)
       }
@@ -122,7 +128,8 @@ export class Poster {
     if (!db.perControl.limitTimeStrategy('removePoster', 1000, '删除得太频繁\n休息一下吧'))
       return db.perControl.refusePromise()
     await _db.collection('like').where({
-      'super._id': posterId
+      'super._id': posterId,
+      _openid: '{openid}'
     }).remove()
     await db.comment.removeAllComment(posterId)
     await _db.collection('poster').doc(posterId).get().then(res => {
@@ -131,7 +138,10 @@ export class Poster {
         fileList: res.data.images
       })
     })
-    return _db.collection('poster').doc(posterId).remove()
+    return _db.collection('poster').where({
+      _id: posterId,
+      _openid: '{openid}'
+    }).remove()
   }
 
   /**
@@ -146,7 +156,10 @@ export class Poster {
       console.error('poster类型非法')
     } else {
       poster._id = undefined
-      return await _db.collection('poster').doc(posterId).update({
+      return await _db.collection('poster').where({
+        _id: posterId,
+        _openid: '{openid}'
+      }).update({
         data: poster
       })
     }

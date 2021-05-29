@@ -80,7 +80,10 @@ export class Application {
    * @param {string} applicationId 申请表ID
    */
   removeApplication(applicationId) {
-    _db.collection('application').doc(applicationId).remove()
+    _db.collection('application').where({
+      _id: applicationId,
+      _openid: '{openid}'
+    }).remove()
   }
 
   /**
@@ -89,7 +92,10 @@ export class Application {
    * @param {object} application 
    */
   updateApplication(applicationId, application) {
-    _db.collection('application').doc(applicationId).update({
+    _db.collection('application').where({
+      _id: applicationId,
+      _openid: '{openid}'
+    }).update({
       data: application
     })
   }

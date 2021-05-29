@@ -75,9 +75,13 @@ export class Comment {
         fileList: res.data.images
       })
     })
-    await _db.collection('comment').doc(commentId).remove()
+    await _db.collection('comment').where({
+      _id: commentId,
+      _openid: '{openid}'
+    }).remove()
     return _db.collection('like').where({
-      'super._id': commentId
+      'super._id': commentId,
+      _openid: '{openid}'
     }).remove()
   }
 }
