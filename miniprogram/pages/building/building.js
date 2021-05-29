@@ -51,7 +51,7 @@ Page({
 
   },
   notShowDeleteComment(e) {
-    console.log(e)
+    // console.log(e)
     if (this.data.isDeleteComment) {
       this.setData({
         isDeleteComment: false,
@@ -61,7 +61,7 @@ Page({
     }
   },
   showDeleteComment(e) {
-    console.log(e)
+    // console.log(e)
     let openid = app.globalData.openid
     let commentId = e.currentTarget.id
     let commentX = e.touches[0].clientX * 2
