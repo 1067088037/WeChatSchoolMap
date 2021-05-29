@@ -508,7 +508,9 @@ Page({
       isAddedMarker: true,
       showMarkerDialogfa: false,
       func: '',
-      iconfiles:[{url:this.data.markers[0].iconPath}]
+      iconfiles: [{
+        url: this.data.markers[0].iconPath
+      }]
     })
   },
   chooseImage: function (e) {
@@ -613,7 +615,7 @@ Page({
   confirmTap(e) {
     isAdd = false;
     let newPoint = this.data.markers.pop()
-   
+
     console.log("标点坐标： ", newPoint)
     let campusId = app.globalData.campus._id;
     let belongs = []
@@ -637,7 +639,7 @@ Page({
     let time = db.point.generateTimeObj(show, start, end, hide)
     let name = this.data.newMarkerTitle
     let text = this.data.newMarkerDesc
-    let icon = ( this.uploadIcontoCloud()!="")?this.uploadIcontoCloud():newPoint.iconPath
+    let icon = (this.uploadIcontoCloud() != "") ? this.uploadIcontoCloud() : newPoint.iconPath
     let images = this.updatePhotoesToCloud()
     let desc = db.point.generateDescObj(name, text, icon, images)
     if (name != "" && text != "") {
@@ -663,7 +665,7 @@ Page({
 
       this.setData({
         showMarkerDialog: false,
-        userUploadIcons:""
+        userUploadIcons: ""
       })
     }
   },
@@ -992,12 +994,12 @@ Page({
       },
     })
   },
-  refreshPoint(){
+  refreshPoint() {
     activitiesPoint = []
     realTimeInfoArray = []
-    visibleArchArray.forEach((marker,index)=>{
-      if(marker.type == 'activity' || marker.type == "current"){
-        visibleArchArray.splice(index,1)
+    visibleArchArray.forEach((marker, index) => {
+      if (marker.type == 'activity' || marker.type == "current") {
+        visibleArchArray.splice(index, 1)
       }
     })
     db.point.getPointArray(app.globalData.campus._id).then(res => {
@@ -1032,7 +1034,7 @@ Page({
           })
         }
       })
-    }).then(()=>{
+    }).then(() => {
       activitiesPoint.forEach((value, index) => {
         if (selectedArchType.indexOf(value.type) != -1) {
           visibleArchArray.push(value)
@@ -1043,7 +1045,7 @@ Page({
         markers: visibleArchArray
       })
     })
-  
+
   },
   /**
    * 生命周期函数--监听页面加载
@@ -1062,6 +1064,9 @@ Page({
       }
     })
 
+    if (app.globalData.archItem == undefined) {
+      app.globalData.archItem = []
+    }
     // 绑定this才能上传
     if (app.globalData.archItem.length > 0) {
       this.setData({
