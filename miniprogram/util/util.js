@@ -32,6 +32,7 @@ export function randomNumberId() {
 export class LogTime {
   stTime = new Date().getTime()
   tag = "标签"
+  enable = true
 
   constructor(tag) {
     this.tag = tag
@@ -43,6 +44,6 @@ export class LogTime {
   }
 
   logTime(message = "?") {
-    console.log(this.tag, " 用时", (new Date().getTime() - this.stTime), "ms @", message)
+    if (this.enable) console.log(this.tag, " 用时", (new Date().getTime() - this.stTime), "ms @", message)
   }
 }

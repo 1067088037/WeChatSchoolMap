@@ -28,7 +28,9 @@ Page({
     publishStrategies: [],
     showLifeStrategyDetail: false,
     selectedLifeStrategy: null,
-    showMap: false
+    showMap: false,
+    attentionActivityNum: -1,
+    lifeStrategyNum: -1
   },
   navigaToAttentionPage(e) {
     this.setData({
@@ -36,26 +38,9 @@ Page({
     })
   },
   navigaToLifeStrategiesPage(e) {
-    let publishStrategies = []
-    this.data.publishStrategyIds.forEach(id => {
-      db.strategy.getStrategy(id).then(res => {
-        if (res.type == 'publish') {
-          res.publish.content.forEach(con => {
-            con.images.forEach((im, index) => {
-              im = CloudPathFront + im;
-              con.images[index] = im;
-            })
-          })
-          let strategy = res.publish;
-          strategy.id = res._id;
-          publishStrategies.push(strategy)
-        }
-      }).then(() => {
-        this.setData({
-          publishStrategies,
-          showLifeStrategiesPage: true
-        })
-      })
+    this.refreshShowedDetailNumber()
+    this.setData({
+      showLifeStrategiesPage: true,
     })
   },
   intoLifeStrategy(e) {
@@ -114,7 +99,7 @@ Page({
   },
   returnToHomePageFromSP(e) {
     this.setData({
-      publishStrategies: [],
+      // publishStrategies: [],
       showLifeStrategiesPage: false
     })
   },
@@ -136,8 +121,35 @@ Page({
       url: '../index/index'
     })
     this.setData({
-      messageData: message
+      messageData: message,
+      attentionActivityNum: message.length
     })
+  },
+  refreshShowedDetailNumber() {
+    let publishStrategies = []
+    this.data.publishStrategyIds.forEach(id => {
+      db.strategy.getStrategy(id).then(res => {
+        if (res.type == 'publish') {
+          res.publish.content.forEach(con => {
+            con.images.forEach((im, index) => {
+              im = CloudPathFront + im;
+              con.images[index] = im;
+            })
+          })
+          let strategy = res.publish;
+          strategy.id = res._id;
+          publishStrategies.push(strategy)
+        }
+      }).then(() => {
+        this.setData({
+          publishStrategies,
+          lifeStrategyNum: publishStrategies.length
+        })
+      })
+    })
+    setTimeout(() => {
+      console.log("发布的攻略", publishStrategies)
+    }, 1000)
   },
 
   /**
@@ -179,33 +191,37 @@ Page({
             activitiesPoint.push(r);
           }
         })
-        attentions.forEach(atten=>{
+        if (attentions.length == 0) {
+          this.setData({ attentionActivityNum: 0 })
+        }
+        attentions.forEach(atten => {
           let month = atten.month;
           let week = atten.week;
           let tag = atten.value;
           //console.log(atten)
-          activitiesPoint.forEach(p=>{
+          activitiesPoint.forEach(p => {
             let start = new Date(p.time.start);
             let pMonth = start.getMonth();
-            let pWeek  = start.getDay();
-            console.log(p.tag,tag,month,pMonth,week,pWeek)
-            console.log(this.getSame(p.tag,tag),month,pMonth,week,pWeek)
+            let pWeek = start.getDay();
+            // console.log(p.tag, tag, month, pMonth, week, pWeek)
+            // console.log(this.getSame(p.tag, tag), month, pMonth, week, pWeek)
             // console.log()
-            if(this.getSame(p.tag,tag) && (month == pMonth)&&(week == pWeek))
-            {
+            if (this.getSame(p.tag, tag) && (month == pMonth) && (week == pWeek)) {
               let msgObj = {
-                src :  p.desc.icon,
-                msg:p.desc.name,
-                activity:p,
-                tag:tag,
+                src: p.desc.icon,
+                msg: p.desc.name,
+                activity: p,
+                tag: tag,
               }
               message.push(msgObj)
             }
           })
           this.setData({
-            messageData:message
+            messageData: message,
+            attentionActivityNum: message.length
           })
         })
+        console.log("消息", message)
       })
     })
     db.strategy.getBriefStrategyArray(superid).then(res => {
@@ -215,7 +231,7 @@ Page({
       this.setData({
         publishStrategyIds
       })
-    })
+    }).then(() => this.refreshShowedDetailNumber())
   },
 
   /**

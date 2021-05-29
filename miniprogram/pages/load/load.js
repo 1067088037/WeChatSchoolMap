@@ -7,6 +7,7 @@ var _openid = null
 
 function getUserInfo(that, openid) {
   db.user.getUser(openid).then(res => {
+    db.preference.checkInit()
     if (res == null) { //用户信息为空
       if (wx.getUserProfile) { //获取用户配置
         that.setData({
@@ -29,7 +30,7 @@ function loadSchoolAndCampus(that) {
       let info = {}
       if (res != null) info = res.info
       else getSchoolAndCampusToChoose(that)
-      if (Object.keys(info).length == 0) { //对象为空
+      if (info == undefined || Object.keys(info).length == 0) { //对象为空
         getSchoolAndCampusToChoose(that)
       } else {
         db.school.getSchool(info.school).then(school => {
@@ -38,9 +39,9 @@ function loadSchoolAndCampus(that) {
           db.campus.getCampus(info.campus).then(campus => {
             // console.log(campus)
             getApp().globalData.campus = campus
-            console.log('校区',campus)
+            // console.log('校区', campus)
             that.next()
-            console.log('进入index')
+            // console.log('进入index')
           })
         })
       }
@@ -121,10 +122,23 @@ Page({
   },
   //如果成功获取用户信息则跳转到
   next: function () {
-    if (getApp().globalData.userInfo != undefined)
+    if (getApp().globalData.userInfo != undefined) {
+      db._db.collection('user').doc(getApp().globalData.userInfo._openid).update({
+        data: {
+          lastLoginTime: db.serverDate(),
+          runtimeVersion: getApp().globalData.versionCode
+        }
+      })
+      db._db.collection('static').doc('version').get().then(res => {
+        let currentVerCode = getApp().globalData.versionCode
+        if (currentVerCode < res.data.versionCode) {
+          console.warn(`目前的代码包不是最新的，请及时通过Git拉取最新代码！当前版本：${currentVerCode}，最新版本：${res.data.versionCode}`)
+        }
+      })
       wx.switchTab({
         url: '../index/index'
       })
+    }
   },
   // 获取用户信息的函数
   getUserProfile() {

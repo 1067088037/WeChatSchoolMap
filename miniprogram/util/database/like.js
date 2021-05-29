@@ -1,3 +1,6 @@
+import { db } from "./database"
+const util = require('../util')
+
 const _db = wx.cloud.database()
 const cmd = _db.command
 
@@ -26,6 +29,8 @@ export class Like {
    * @param {string} superId 
    */
   async giveALike(superId) {
+    if (!db.perControl.limitTimeStrategy('giveALike', 200))
+      return db.perControl.refusePromise()
     let openid = getApp().globalData.openid
     if (openid == null) {
       console.error('点赞的openid为null')
@@ -45,6 +50,8 @@ export class Like {
    * @param {string} superId 
    */
   async cancelLike(superId) {
+    if (!db.perControl.limitTimeStrategy('cancelLike', 200))
+      return db.perControl.refusePromise()
     return await _db.collection('like').where({
       "super._id": superId
     }).update({

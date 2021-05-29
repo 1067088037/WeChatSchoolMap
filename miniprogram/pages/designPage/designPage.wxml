@@ -2,9 +2,9 @@
 
 <!-- 搜索框 -->
 <view class="DesignPageContainer">
-  <input class="search" type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx"
+  <!-- <input class="search" type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx"
     confirm-type="search"
-    wx:if="{{showUploadPostArea == false && showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false  && showMyPost == false && showEditPublishedStrategy == false && toEditPublishedArchStartegy == false && toEditPublishedArchStartegy == false && showChangeMyPost==false}}"></input>
+    wx:if="{{showUploadPostArea == false && showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false  && showMyPost == false && showEditPublishedStrategy == false && toEditPublishedArchStartegy == false && toEditPublishedArchStartegy == false && showChangeMyPost==false}}"></input> -->
   <!-- 设计内容区 -->
   <view class="markContainer" style="margin-top:20rpx"
     wx:if="{{showUploadPostArea == false && showEditStrategy == false && showCreateLifeStrategy == false && showEditPoint == false  && showMyPost == false && showEditPublishedStrategy == false && toEditPublishedArchStartegy == false && toEditPublishedArchStartegy == false && showChangeMyPost==false}}">
@@ -129,7 +129,7 @@
     <view class="posters" wx:for="{{myPost}}" wx:for-index="index" wx:key="key" wx:for-item="item">
       <view class="post-container">
         <text class="postTitle">{{item.name}}</text>
-        <image style="width:90%" src="{{item.images[0]}}" mode="aspectFit "></image>
+        <image style="width:90%" src="{{item.images[0]}}" mode="widthFix"></image>
         <text>
           {{item.desc}}
         </text>
@@ -251,8 +251,8 @@
       <!-- <mp-dialog show="{{isShowDeleteDraft}}" buttons="{{dialogButtons}}" bindbuttontap="isSaveEdit">
         <view>是否删除编辑记录</view>
       </mp-dialog> -->
-      <view class="deleteStrategy" style="padding:30rpx 18rpx; height:60rpx;width:55rpx;position:relative">
-        <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/delete.png"
+      <view class="deleteStrategy" style="padding:30rpx 18rpx; height:60rpx;width:60rpx;position:relative">
+        <image src="/images/global/delete.png"
           mode="aspectFit" style="width:100%;height:100%" bindtap="showDeleteDraft"></image>
       </view>
     </view>
@@ -293,9 +293,9 @@
         </view>
       </view>
     </view>
-    <view class="deleteStrategy" style="padding:30rpx 18rpx; height:60rpx;width:55rpx;position:relative"
+    <view class="deleteStrategy" style="padding:30rpx 18rpx; height:60rpx;width:60rpx;position:relative"
       wx:if="{{isEditLifeStrategy}}">
-      <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/delete.png"
+      <image src="/images/global/delete.png"
         mode="scaleToFill" style="width:100%;height:100%" bindtap="showDeleteDraftLifeStrategy"></image>
     </view>
     <view style="margin-top:30rpx">
@@ -317,9 +317,8 @@
   <!-- 编辑发布标点 -->
   <view class="EditPublishedPoint" wx:if="{{showEditPoint}}">
 
-    <button style="width:200rpx;margin-left:0rpx; padding:0; display:inline-block" bindtap="returnFromEditPoint"> ⬅返回
+    <button style="width:200rpx;margin-left:0rpx; padding:0; display:inline-block;margin-bottom: 40rpx" bindtap="returnFromEditPoint"> ⬅返回
     </button>
-
 
     <view class="PublishedPointList" wx:if="{{showEditPointPage==false}}">
       <view class="PublishedPoints" wx:if="{{publishedPoint != []}}" wx:for="{{publishedPoint}}" wx:key="item">
@@ -334,8 +333,8 @@
         <text>你尚未发布任何标点噢~</text>
       </view>
     </view>
-    <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/delete.png"
-      mode="scaleToFill" style="width:50rpx;height:50rpx; margin-left:450rpx" bindtap="showDeletePointDraft"
+    <image src="/images/global/delete.png"
+      mode="scaleToFill" style="width:60rpx;height:60rpx; margin-left:400rpx" bindtap="showDeletePointDraft"
       wx:if="{{showEditPointPage}}"></image>
     <view class="EditPointPage" wx:if="{{showEditPointPage}}">
 
@@ -472,16 +471,16 @@
     </view>
     <view wx:if="{{publishedArchStrategies.length==0}}">暂无发布的建筑攻略</view>
     <view style="height:16rpx;text-align:center">----</view>
-    <view class="publishedArchStrategies" wx:if="{{publishedLifeStrategies.length > 0 }}" wx:for="{{publishedLifeStrategies}}">
+    <view class="publishedArchStrategies" wx:if="{{publishedLifeStrategies.length > 0 }}" wx:key="item"
+      wx:for="{{publishedLifeStrategies}}">
       <mp-slideview bindbuttontap="deletePublishedStrategy" buttons="{{slideViewButtons}}" id="{{item.id}}"
-        class="archStrategy" style="width: 750rpx; height: 360rpx;"  wx:key="index">
+        class="archStrategy" style="width: 750rpx; height: 360rpx;" wx:key="index">
 
         <image mode="aspectFit" src="{{item.content[0].images[0]}}" style="width: 200rpx;height: 200rpx; padding:4rpx"
           wx:if="{{item.content[0].images.length > 0}}"></image>
         <view style="display:inline-block;position:relative; top:0rpx">
-          <view >
-            <text 
-              style="display: inline;margin-left: 20rpx;text-align:center;font-size: large;">{{item.name}}</text>
+          <view>
+            <text style="display: inline;margin-left: 20rpx;text-align:center;font-size: large;">{{item.name}}</text>
           </view>
           <view>
             <text space="nbsp"> 简介：</text>

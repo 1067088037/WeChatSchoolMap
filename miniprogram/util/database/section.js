@@ -73,7 +73,10 @@ export class Section {
    * @param {string} openid 
    */
   async removeAdmin(sectionId, openid) {
-    return await _db.collection('section').doc(sectionId).update({
+    return await _db.collection('section').where({
+      _id: sectionId,
+      _openid: '{openid}'
+    }).update({
       data: {
         admin: cmd.pull(openid)
       }
@@ -105,7 +108,10 @@ export class Section {
    * @param {string} openid 
    */
   async removeEditor(sectionId, openid) {
-    return await _db.collection('section').doc(sectionId).update({
+    return await _db.collection('section').where({
+      _id: sectionId,
+      _openid: '{openid}'
+    }).update({
       data: {
         editor: cmd.pull(openid)
       }
@@ -120,20 +126,29 @@ export class Section {
    */
   async joinSection(sectionId, permission, openid = getApp().globalData.openid) {
     if (permission == 48) {
-      await _db.collection('section').doc(sectionId).update({
+      await _db.collection('section').where({
+        _id: sectionId,
+        _openid: '{openid}'
+      }).update({
         data: {
           editor: cmd.addToSet(openid)
         }
       })
     }
     else if (permission == 64) {
-      await _db.collection('section').doc(sectionId).update({
+      await _db.collection('section').where({
+        _id: sectionId,
+        _openid: '{openid}'
+      }).update({
         data: {
           admin: cmd.addToSet(openid)
         }
       })
     }
-    return _db.collection('user').doc(openid).update({
+    return _db.collection('user').where({
+      _id: openid,
+      _openid: '{openid}'
+    }).update({
       data: {
         'info.section.join': cmd.addToSet(sectionId)
       }
@@ -148,7 +163,10 @@ export class Section {
   async exitSection(sectionId, openid = getApp().globalData.openid) {
     this.removeAdmin(sectionId, openid)
     this.removeEditor(sectionId, openid)
-    return _db.collection('user').doc(openid).update({
+    return _db.collection('user').where({
+      _id: openid,
+      _openid: '{openid}'
+    }).update({
       data: {
         'info.section.join': cmd.pull(sectionId)
       }
@@ -161,6 +179,9 @@ export class Section {
    * @param {object} section 包含name,desc,images,geo
    */
   addSection(schoolId, section) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('addSection', 10000))
+      return db.perControl.refusePromise()
     return _db.collection('section').add({
       data: {
         super: {
@@ -182,10 +203,16 @@ export class Section {
    * @param {string} sectionId 部门ID
    */
   async removeSection(sectionId) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('removeSection', 3000))
+      return db.perControl.refusePromise()
     await this.getUserInSection(sectionId).then(res => {
       console.log(res)
       res.forEach(e => {
-        _db.collection('user').doc(e._openid).update({
+        _db.collection('user').where({
+          _id: e._id,
+          _openid: '{openid}'
+        }).update({
           data: {
             'info.section.join': cmd.pull(sectionId)
           }
@@ -197,7 +224,10 @@ export class Section {
         fileList: res.data.images
       })
     })
-    return _db.collection('section').doc(sectionId).remove()
+    return _db.collection('section').where({
+      _id: sectionId,
+      _openid: '{openid}'
+    }).remove()
   }
 
   /**
@@ -206,7 +236,10 @@ export class Section {
    * @param {object} section 
    */
   updateSection(sectionId, section) {
-    return _db.collection('section').doc(sectionId).update({
+    return _db.collection('section').where({
+      _id: sectionId,
+      _openid: '{openid}'
+    }).update({
       data: section
     })
   }

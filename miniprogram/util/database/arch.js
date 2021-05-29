@@ -91,7 +91,10 @@ export class Arch {
       _db.collection('arch').doc(archId).get().then(res => {
         this.refreshArchLastUpdateTime(res.data.super._id)
       })
-      return _db.collection('arch').doc(archId).update({
+      return _db.collection('arch').where({
+        _id: archId,
+        _openid: '{openid}'
+      }).update({
         data: arch
       })
     }
@@ -112,7 +115,8 @@ export class Arch {
         this.refreshArchLastUpdateTime(res.data.super._id)
       })
       return _db.collection('arch').where({
-        markId: markId
+        markId: markId,
+        _openid: '{openid}'
       }).update({
         data: arch
       })
@@ -124,14 +128,20 @@ export class Arch {
    * @param {string} archId 建筑物ID
    */
   async removeArchById(archId) {
-    _db.collection('arch').doc(archId).get().then(res => {
+    await _db.collection('arch').doc(archId).get().then(res => {
       this.refreshArchLastUpdateTime(res.data.super._id)
       wx.cloud.deleteFile({
         fileList: res.data.images
       })
     })
-    await _db.collection('arch').doc(archId).remove()
-    await _db.collection('strategy').where({ 'super._id': archId }).remove()
+    await _db.collection('arch').where({
+      _id: archId,
+      _openid: '{openid}'
+    }).remove()
+    await _db.collection('strategy').where({
+      'super._id': archId,
+      _openid: '{openid}'
+    }).remove()
     return db.comment.removeAllComment(archId)
   }
 
@@ -152,8 +162,14 @@ export class Arch {
       markId: markId
     }).get().then(async res => {
       res.data.forEach(async e => {
-        await _db.collection('arch').doc(e._id).remove()
-        await _db.collection('strategy').where({ 'super._id': e._id }).remove()
+        await _db.collection('arch').where({
+          _id: e._id,
+          _openid: '{openid}'
+        }).remove()
+        await _db.collection('strategy').where({
+          'super._id': e._id,
+          _openid: '{openid}'
+        }).remove()
         await _db.comment.removeAllComment(e._id)
       })
     })

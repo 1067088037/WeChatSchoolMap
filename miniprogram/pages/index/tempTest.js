@@ -6,6 +6,13 @@
 import { db } from "../../util/database/database";
 
 export function launchTest() {
+  // db.arch.addArch('1ace8ef160901b1b008f69ae08b0ee8a', {
+  //   name: '1222'
+  // })
+  // db.arch.removeArchById('cbddf0af60b1f74b0cab5141416d522c')
+
+  // db.perControl.ignoreLimitWhenDev()
+
   // db.poster.removePoster('hdn5vgnx2wi222ngqxlvqjmhjr843hsb')
 
   // db.poster.addAttention('ojr_35JJZSWh0xHtk_0k9GRJ4TqQ', '123456')
@@ -65,7 +72,14 @@ export function launchTest() {
   //   ]
   // })
 
-  // db.like.giveALike('4wenija2tt4k6uptqkv758rlluieyp2x')
+  // db.like.giveALike('4wenija2tt4k6uptqkv758rlluieyp2x').then(res => {
+  //   if (res.refuse) console.log('拒绝')
+  //   else console.log('同意')
+  // })
+  // db.like.giveALike('4wenija2tt4k6uptqkv758rlluieyp2x').then(res => {
+  //   if (res.refuse) console.log('拒绝')
+  //   else console.log('同意')
+  // })
 
   // db.like.countLike('4wenija2tt4k6uptqkv758rlluieyp2x').then(res => {
   //   console.log(res)
@@ -107,6 +121,13 @@ export function launchTest() {
 }
 
 export function dbExample() {
+  // db.arch.getArchArray('1ace8ef160901b1b008f69ae08b0ee8a').then(res => {
+  //   for (let arch of res) {
+  //     // console.log(arch.name, arch._id)
+  //     if (arch.images.length == 0) console.log(arch.name)
+  //   }
+  // })
+
   // db.point.updatePointByMarkId(233, {
   //   tag: db.cmd.push('233'), //无条件插入数组
   //   tag: db.cmd.addToSet('233'), //在数组中没有该元素的情况下插入

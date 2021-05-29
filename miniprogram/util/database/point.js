@@ -7,16 +7,30 @@ const dateConstructor = new Date('2020-1-1').constructor
 
 export class Point {
   /**
+   * 通过openid获取标点
+   * @param {string} openid 
+   */
+  async getPointByOpenid(openid) {
+    return await wx.cloud.callFunction({
+      name: 'getPointByOpenid',
+      data: {
+        _openid: openid
+      }
+    }).then(res => res.result.data)
+  }
+
+  /**
    * 获取校区下全部的标点
    * @param {string} campusId
+   * @param {boolean} getHiden 是否显示隐藏的标点
    * @returns {Array} 标点数组
    */
-  async getPointArray(campusId) {
+  async getPointArray(campusId, getHiden = false) {
     return await wx.cloud.callFunction({
-      name: 'getAllBySuperId',
+      name: 'getPointByCampusId',
       data: {
-        collection: 'point',
-        superId: campusId
+        campusId: campusId,
+        getHiden: getHiden
       }
     }).then(res => res.result.data).catch(err => [])
   }
@@ -32,6 +46,8 @@ export class Point {
    * @param {Array} tag 标签数组
    */
   addPoint(campusId, belong, type, time, desc, geo, tag) {
+    if (!db.perControl.limitTimeStrategy('addPoint', 20000, '添加标点得太快了\n休息一下吧'))
+      return db.perControl.refusePromise()
     if (belong.constructor != Array) {
       console.error('belong类型非法，如果为空请传入[]')
     } else if (type.constructor != String) {
@@ -122,12 +138,17 @@ export class Point {
    * @param {string} pointId 数据库中ID
    */
   async removePointById(pointId) {
+    if (!db.perControl.limitTimeStrategy('removePointById', 1000, '删除得太快了\n休息一下吧'))
+      return db.perControl.refusePromise()
     await _db.collection('point').doc(pointId).get().then(res => {
       wx.cloud.deleteFile({
         fileList: res.data.desc.images
       })
     })
-    await _db.collection('point').doc(pointId).remove()
+    await _db.collection('point').where({
+      _id: pointId,
+      _openid: '{openid}'
+    }).remove()
     return db.comment.removeAllComment([pointId])
   }
 
@@ -136,19 +157,26 @@ export class Point {
    * @param {string} markId 标注ID
    */
   async removePointByMarkId(markId) {
-    return _db.collection('point').where({
-      markId: markId
-    }).get().then(res => {
-      res.data.forEach(async e => {
-        await _db.collection('point').doc(e._id).get().then(res => {
-          wx.cloud.deleteFile({
-            fileList: res.data.desc.images
-          })
-        })
-        _db.collection('point').doc(e._id).remove()
-        _db.comment.removeAllComment(e._id)
-      })
-    })
+    console.error('没用过这个函数呢！')
+    // console.warn('TODO:调用处没有修改')
+    // if (!db.perControl.limitTimeStrategy('removePointByMarkId', 2000))
+    //   return db.perControl.refusePromise()
+    // return _db.collection('point').where({
+    //   markId: markId
+    // }).get().then(res => {
+    //   res.data.forEach(async e => {
+    //     await _db.collection('point').doc(e._id).get().then(res => {
+    //       wx.cloud.deleteFile({
+    //         fileList: res.data.desc.images
+    //       })
+    //     })
+    //     _db.collection('point').where({
+    //       _id: e._id,
+    //       _openid: '{openid}'
+    //     }).remove()
+    //     _db.comment.removeAllComment(e._id)
+    //   })
+    // })
   }
 
   /**
@@ -157,7 +185,10 @@ export class Point {
    * @param {object} data 要更新的内容
    */
   updatePointById(pointId, data) {
-    return _db.collection('point').doc(pointId).update({
+    return _db.collection('point').where({
+      _id: pointId,
+      _openid: '{openid}'
+    }).update({
       data: data
     })
   }
@@ -169,7 +200,8 @@ export class Point {
    */
   updatePointByMarkId(markId, data) {
     return _db.collection('point').where({
-      markId: markId
+      markId: markId,
+      _openid: '{openid}'
     }).update({
       data: data
     })

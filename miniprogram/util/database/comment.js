@@ -39,6 +39,8 @@ export class Comment {
    * @param {object} comment 需要包含 reply,text,images
    */
   async addComment(superId, superType, comment) {
+    if (!db.perControl.limitTimeStrategy('addComment', 6000))
+      return db.perControl.refusePromise()
     let commentId = util.randomId()
     if (comment.constructor != Object) {
       console.error("comment类型非法")
@@ -65,14 +67,21 @@ export class Comment {
    * @param {string} commentId 
    */
   async removeComment(commentId) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('removeComment', 1000))
+      return db.perControl.refusePromise()
     await _db.collection('comment').doc(commentId).get().then(res => {
       wx.cloud.deleteFile({
         fileList: res.data.images
       })
     })
-    await _db.collection('comment').doc(commentId).remove()
+    await _db.collection('comment').where({
+      _id: commentId,
+      _openid: '{openid}'
+    }).remove()
     return _db.collection('like').where({
-      'super._id': commentId
+      'super._id': commentId,
+      _openid: '{openid}'
     }).remove()
   }
 }

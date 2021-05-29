@@ -159,24 +159,19 @@ Page({
       reply: null,
       text: this.data.commentValue,
       images: []
+    }).then(res => {
+      if (!res.refuse) {
+        this.intoDetailStrategy(superId)
+        wx.showToast({
+          title: '成功',
+          icon: 'success',
+          duration: 1000
+        })
+        that.setData({
+          commentValue: "",
+        })
+      }
     })
-
-    wx.showLoading({
-      title: '发生中',
-    })
-    setTimeout(() => {
-      this.intoDetailStrategy(superId)
-      wx.showToast({
-        title: '成功',
-        icon: 'success',
-        duration: 1000
-      })
-      that.setData({
-        commentValue: "",
-      })
-    }, 800)
-
-
   },
   /**
    * likeClick
@@ -188,24 +183,29 @@ Page({
     console.log(e)
     let id = e.currentTarget.id;
     console.log("点赞攻略的id是：", id)
-    let newStrategy = new Object
+    let newStrategy = {}
     let idx = 0;
     this.data.strategies.forEach((value, index) => {
       if (value.id == id) {
         db.like.isLike(id).then(res => {
           if (!res) {
-            db.like.giveALike(id);
-            newStrategy = value
-            newStrategy.isLike = true;
-            newStrategy.likeNum++;
-            idx = index
+            return db.like.giveALike(id).then(res => {
+              newStrategy = value
+              if (!res.refuse) {
+                newStrategy.isLike = true;
+                newStrategy.likeNum++;
+              }
+              idx = index
+            })
           } else {
-            db.like.cancelLike(id)
-            newStrategy = value
-            newStrategy.isLike = false;
-            if(newStrategy.likeNum > 1 )
-              newStrategy.likeNum--;
-            idx = index
+            return db.like.cancelLike(id).then(res => {
+              newStrategy = value
+              if (!res.refuse) {
+                newStrategy.isLike = false;
+                if (newStrategy.likeNum > 1) newStrategy.likeNum--;
+              }
+              idx = index
+            })
           }
         }).then(() => {
           console.log(newStrategy)
@@ -217,20 +217,24 @@ Page({
         })
       }
     })
-    
-
   },
   strategyLike(e) {
     let newObject = this.data.selectedStrategy;
     db.like.isLike(newObject.id).then(res => {
       if (!res) {
-        db.like.giveALike(newObject.id)
-        newObject.likeNum++;
-        newObject.isLike = true;
+        return db.like.giveALike(newObject.id).then(res => {
+          if (!res.refuse) {
+            newObject.likeNum++;
+            newObject.isLike = true;
+          }
+        })
       } else {
-        db.like.cancelLike(newObject.id)
-        newObject.likeNum--;
-        newObject.isLike = false;
+        return db.like.cancelLike(newObject.id).then(res => {
+          if (!res.refuse) {
+            newObject.likeNum--;
+            newObject.isLike = false;
+          }
+        })
       }
     }).then(() => {
       this.setData({
@@ -264,10 +268,20 @@ Page({
    * @todo 从添加攻略界面返回到攻略界面,弹出对话框是否保存编辑
    */
   returnStrategyArea() {
-
-    this.setData({
-      isExitAddStrategy: true,
-    })
+    if (this.data.strategyTitle == "" && this.data.strategyBriefIntro == "" && this.data.strategyContent == "") {
+      this.setData({
+        isCreateNewStrategy: false,
+        showStrategiesArea: true,
+        showBuilidngBanner: true,
+        userUploadPhotoes: [],
+        StrategyTitle: "",
+        StrategyContent: "",
+      })
+    } else {
+      this.setData({
+        isExitAddStrategy: true,
+      })
+    }
   },
   /**
    * isSaveEdit
@@ -306,14 +320,16 @@ Page({
         desc: desc,
         type: 'draft'
       }
-      db.strategy.addStrategy(campusId, "arch", strategy)
-      this.setData({
-        isCreateNewStrategy: false,
-        showStrategiesArea: true,
-        showBuilidngBanner: true,
-        userUploadPhotoes: []
+      db.strategy.addStrategy(campusId, "arch", strategy).then(res => {
+        if (!res.refuse) {
+          this.setData({
+            isCreateNewStrategy: false,
+            showStrategiesArea: true,
+            showBuilidngBanner: true,
+            userUploadPhotoes: []
+          })
+        }
       })
-      return;
     }
   },
 
@@ -370,12 +386,15 @@ Page({
       type: 'publish'
     }
     content.push(obj);
-    db.strategy.addStrategy(superId, "arch", strategy)
-    this.setData({
-      isCreateNewStrategy: false,
-      showStrategiesArea: true,
-      showBuilidngBanner: true,
-      userUploadPhotoes: []
+    db.strategy.addStrategy(superId, "arch", strategy).then(res => {
+      if (!res.refuse) {
+        this.setData({
+          isCreateNewStrategy: false,
+          showStrategiesArea: true,
+          showBuilidngBanner: true,
+          userUploadPhotoes: []
+        })
+      }
     })
   },
   /**
@@ -428,7 +447,6 @@ Page({
             // 测试数据Strategies,正常使用时应从数据库获取
             strategies: [].concat(testStrategies)
           })
-          wx.hideLoading()
         })
       })
     })
@@ -440,6 +458,7 @@ Page({
    */
   intoDetailStrategy(e) {
     let log = new LogTime("进入具体攻略区")
+    log.enable = false
     // 获取该攻略区的评论
     console.log(e)
     var that = this
@@ -574,31 +593,29 @@ Page({
     var that = this
     //console.log(this.data.comments[index].id)
     let isLike;
-    db.like.isLike(this.data.comments[index].id).then(r => {
+    let comment = this.data.comments
+    db.like.isLike(this.data.comments[index].id).then(async r => {
       isLike = r;
-      console.log(isLike)
+      // console.log(isLike)
       if (!isLike) {
-        db.like.giveALike(this.data.comments[index].id)
-        let comment = this.data.comments
-        comment[index].isLike = true;
-        let likeNums = this.data.likeNums;
-        comment[index].likeNum = comment[index].likeNum + 1
-        this.setData({
-          comments: comment,
-        })
+        const res = await db.like.giveALike(this.data.comments[index].id);
+        if (!res.refuse) {
+          comment[index].isLike = true;
+          // let likeNums = this.data.likeNums;
+          comment[index].likeNum = comment[index].likeNum + 1;
+        }
       } else {
-        db.like.cancelLike(this.data.comments[index].id)
-        let comment = this.data.comments
-        comment[index].isLike = false;
-        comment[index].likeNum = comment[index].likeNum - 1
-        this.setData({
-          comments: comment,
-        })
+        const res_1 = await db.like.cancelLike(this.data.comments[index].id);
+        if (!res_1.refuse) {
+          comment[index].isLike = false;
+          comment[index].likeNum = comment[index].likeNum - 1;
+        }
       }
+    }).then(() => {
+      this.setData({
+        comments: comment,
+      })
     })
-
-
-
   },
   /**
    * 生命周期函数--监听页面加载
@@ -612,7 +629,7 @@ Page({
     }
     if (app.globalData.buildingSelected != null) {
       let building = app.globalData.buildingSelected
-      console.log("building:",building.desc)
+      console.log("building:", building.desc)
       let images = []
       if (building.desc == undefined) {
         if (building.images != undefined) {
@@ -625,12 +642,10 @@ Page({
           this.setData({
             building: building
           })
-        }
-        else{
+        } else {
           this.setData({
-            building:building
+            building: building
           })
-          
         }
       } else if (building.desc != undefined) {
         if (building.desc.images.length > 0) {
@@ -671,7 +686,6 @@ Page({
     db.strategy.getBriefStrategyArray(this.data.building._id).then(res => {
       console.log("获取到该建筑的简略信息", res)
       res.forEach(e => {
-
         strategiesId.push(e._id);
       })
       console.log(strategiesId)

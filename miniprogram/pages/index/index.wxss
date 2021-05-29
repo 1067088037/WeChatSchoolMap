@@ -129,7 +129,7 @@
 }
 
 .markerPosBtn {
-  padding-left: 10rpx;
+  margin-left: 20rpx;
   position: fixed;
   bottom: 0rpx;
   background: white;
@@ -141,7 +141,7 @@
   display: inline-block;
   text-align: center;
   height: 75rpx;
-  width: 20rpx;
+  
 }
 
 .uploader {
@@ -226,6 +226,7 @@ view.weui-dialog__wrp.FollowDialog>view>view.weui-dialog__ft {
   backdrop-filter: blur(6rpx);
   box-shadow: 10rpx 0rpx 50rpx 15rpx rgba(255, 255, 255, 0.1);
 }
+
 .Navigation {
   width: 65rpx;
   height: 65rpx;

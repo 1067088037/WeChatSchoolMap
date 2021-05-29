@@ -1,3 +1,5 @@
+import { db } from "./database"
+
 const _db = wx.cloud.database()
 
 export class Application {
@@ -45,6 +47,9 @@ export class Application {
    * @param {object} section 包括 applicant，title，infrom，state 不要传入createTime
    */
   addApplication(sectionId, section) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('addApplication', 3000))
+      return db.perControl.refusePromise()
     if (section.applicant == null) {
       console.error('申请者不能为空')
     } else if (section.title == null) {
@@ -75,7 +80,10 @@ export class Application {
    * @param {string} applicationId 申请表ID
    */
   removeApplication(applicationId) {
-    _db.collection('application').doc(applicationId).remove()
+    _db.collection('application').where({
+      _id: applicationId,
+      _openid: '{openid}'
+    }).remove()
   }
 
   /**
@@ -84,7 +92,10 @@ export class Application {
    * @param {object} application 
    */
   updateApplication(applicationId, application) {
-    _db.collection('application').doc(applicationId).update({
+    _db.collection('application').where({
+      _id: applicationId,
+      _openid: '{openid}'
+    }).update({
       data: application
     })
   }

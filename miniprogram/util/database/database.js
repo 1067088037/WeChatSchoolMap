@@ -14,6 +14,8 @@ import { Global } from './global'
 import { Application } from './application'
 import { Poster } from './poster'
 import { Attention } from './attention'
+import { Preference } from './preference'
+import { PermissionControl } from './permissionControl'
 
 export class DataBase {
   _db = _db //数据库实例
@@ -34,6 +36,8 @@ export class DataBase {
   application = new Application()
   poster = new Poster()
   attention = new Attention()
+  preference = new Preference()
+  perControl = new PermissionControl()
 }
 
 export const db = new DataBase()

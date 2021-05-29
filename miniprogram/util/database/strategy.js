@@ -14,6 +14,8 @@ export class Strategy {
    * time是Object，包含首次创建时间fisrtCreate和最后修改时间lastEdit
    */
   async addStrategy(superId, superType, strategy) {
+    if (!db.perControl.limitTimeStrategy('addStrategy', 10000, '添加得太频繁\n休息一下吧'))
+      return db.perControl.refusePromise()
     if (strategy.constructor != Object) {
       console.error('strategy类型非法')
     } else if (strategy.name.constructor != String) {
@@ -56,7 +58,7 @@ export class Strategy {
    * @param {string} strategyId 攻略ID
    */
   async getStrategy(strategyId) {
-    return await _db.collection('strategy').doc(strategyId).get().then(res => res.data)
+    return await _db.collection('strategy').doc(strategyId).get().then(res => res.data).catch(err => null)
   }
 
   /**
@@ -89,6 +91,9 @@ export class Strategy {
    * @param {string} strategyId 
    */
   async removeStrategy(strategyId) {
+    if (!db.perControl.limitTimeStrategy('removeStrategy', 1000))
+      return db.perControl.refusePromise()
+    // console.log(strategyId)
     await _db.collection('strategy').doc(strategyId).get().then(res => {
       console.log(res.data)
       let draftContent = res.data.draft.content
@@ -96,19 +101,24 @@ export class Strategy {
       console.log(draftContent, publishContent)
       draftContent.forEach(element => {
         wx.cloud.deleteFile({
-          fileList: element.image
+          fileList: element.images
         })
       });
       publishContent.forEach(element => {
         wx.cloud.deleteFile({
-          fileList: element.image
+          fileList: element.images
         })
       });
     }).then(() => {
-      _db.collection('strategy').doc(strategyId).remove()
+      // _db.collection('strategy').doc(strategyId).get().then(res => console.log(res))
+      _db.collection('strategy').where({
+        _id: strategyId,
+        _openid: '{openid}'
+      }).remove()
     }).catch(err => console.error(err))
     await _db.collection('like').where({
-      'super._id': strategyId
+      'super._id': strategyId,
+      _openid: '{openid}'
     }).remove().catch(err => console.error(err))
     return db.comment.removeAllComment(strategyId).catch(err => console.error(err))
   }
@@ -119,7 +129,10 @@ export class Strategy {
    * @param {object} data 
    */
   updateDraftStrategy(strategyId, draft) {
-    return _db.collection('strategy').doc(strategyId).update({
+    return _db.collection('strategy').where({
+      _id: strategyId,
+      _openid: '{openid}'
+    }).update({
       data: {
         "version.editVersion": cmd.inc(1),
         "version.lastEditTime": _db.serverDate(),
@@ -133,8 +146,13 @@ export class Strategy {
    * @param {string} strategyId 
    */
   async publishFromDraft(strategyId) {
+    if (!db.perControl.limitTimeStrategy('publishFromDraft', 3000))
+      return db.perControl.refusePromise()
     const res = await _db.collection('strategy').doc(strategyId).get()
-    return _db.collection('strategy').doc(strategyId).update({
+    return _db.collection('strategy').where({
+      _id: strategyId,
+      _openid: '{openid}'
+    }).update({
       data: {
         publish: res.data.draft,
         type: "publish"
