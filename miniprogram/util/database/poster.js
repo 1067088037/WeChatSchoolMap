@@ -92,10 +92,10 @@ export class Poster {
   async addPoster(campusId, poster) {
     if (!db.perControl.limitTimeStrategy('addPoster', 20000, '上传太频繁了\n休息一下吧'))
       return db.perControl.refusePromise()
-    let total = await _db.collection('poster').where({
+    let res = await _db.collection('poster').where({
       _openid: '{openid}'
     }).count()
-    if (db.perControl.thisPermission >= 48 || total < 3) {
+    if (db.perControl.thisPermission >= 48 || res.total < 5) {
       if (poster.sender.constructor != String) {
         console.error('sender类型非法')
       } else if (poster.name.constructor != String) {

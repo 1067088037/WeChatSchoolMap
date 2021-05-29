@@ -48,10 +48,10 @@ export class Point {
   async addPoint(campusId, belong, type, time, desc, geo, tag) {
     if (!db.perControl.limitTimeStrategy('addPoint', 20000, '添加标点得太快了\n休息一下吧'))
       return db.perControl.refusePromise()
-    let total = await _db.collection('point').where({
+    let res = await _db.collection('point').where({
       _openid: '{openid}'
     }).count()
-    if (db.perControl.thisPermission >= 48 || total < 10) {
+    if (db.perControl.thisPermission >= 48 || res.total < 10) {
       if (belong.constructor != Array) {
         console.error('belong类型非法，如果为空请传入[]')
       } else if (type.constructor != String) {
@@ -86,6 +86,7 @@ export class Point {
     } else {
       wx.showToast({
         title: '权限不足或创建的标点数量已达上限',
+        icon: 'none'
       })
       return db.perControl.refusePromise()
     }
