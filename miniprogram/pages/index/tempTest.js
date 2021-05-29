@@ -107,6 +107,13 @@ export function launchTest() {
 }
 
 export function dbExample() {
+  // db.arch.getArchArray('1ace8ef160901b1b008f69ae08b0ee8a').then(res => {
+  //   for (let arch of res) {
+  //     // console.log(arch.name, arch._id)
+  //     if (arch.images.length == 0) console.log(arch.name)
+  //   }
+  // })
+
   // db.point.updatePointByMarkId(233, {
   //   tag: db.cmd.push('233'), //无条件插入数组
   //   tag: db.cmd.addToSet('233'), //在数组中没有该元素的情况下插入

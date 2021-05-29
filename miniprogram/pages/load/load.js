@@ -30,7 +30,7 @@ function loadSchoolAndCampus(that) {
       let info = {}
       if (res != null) info = res.info
       else getSchoolAndCampusToChoose(that)
-      if (Object.keys(info).length == 0) { //对象为空
+      if (info == undefined || Object.keys(info).length == 0) { //对象为空
         getSchoolAndCampusToChoose(that)
       } else {
         db.school.getSchool(info.school).then(school => {
