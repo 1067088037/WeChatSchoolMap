@@ -203,6 +203,7 @@
 }
 .cancelNewStrategy{
   display: inline-block;
+  margin-left: 40rpx;
   border-radius: 20rpx;
   width: 200rpx;
 }
@@ -210,10 +211,10 @@
   background-color: white;
 }
 .createNewStrategy{
-  width: 500rpx;
-  margin-left: 50rpx;
+  width: 450rpx;
+  margin-left: 80rpx;
   border-radius: 30rpx;
-  background:red;
+  
   display: inline-block;
 }
 .uploadPicture {

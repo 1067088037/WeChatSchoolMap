@@ -201,7 +201,7 @@
   <view class="markerIcon">标记图示</view>
   <view class="markerIcon-cell">
     <mp-uploader ext-class="uploader" title="标记图示上传" bindfail="uploadError" bindsuccess="uploadSuccess"
-      select="{{selectFile}}" upload="{{uploadFile}}" files="{{files}}" max-count="1">
+      select="{{selectFile}}" upload="{{uploadFile}}" files="{{iconfiles}}" max-count="1">
     </mp-uploader>
   </view>
   <button type="primary" bindtap="confirmTap"

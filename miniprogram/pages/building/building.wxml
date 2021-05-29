@@ -117,10 +117,10 @@
       </view>
       <view class="StrategyButtonSet">
         <view class="cancelNewStrategy">
-          <button style="width:100%" bindtap="returnStrategyArea">取消</button>
+          <button style="width:100%" bindtap="returnStrategyArea" type="default">取消</button>
         </view>
         <view class="createNewStrategy">
-          <button style="color:white;" bindtap="sendStrategy">发布攻略</button>
+          <button style="color:white;" bindtap="sendStrategy" type="primary">发布攻略</button>
         </view>
       </view>
       <mp-dialog show="{{isExitAddStrategy}}" buttons="{{dialogButtons}}" bindbuttontap="isSaveEdit">

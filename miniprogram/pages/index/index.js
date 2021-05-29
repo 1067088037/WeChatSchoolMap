@@ -10,88 +10,88 @@ const tempTest = require('./tempTest')
 const CloudPathFront = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/";
 
 const shopPoint = [{
-  name: "图书馆 ",
-  longitude: 113.40538247792563,
-  latitude: 23.046693083903406,
+    name: "图书馆 ",
+    longitude: 113.40538247792563,
+    latitude: 23.046693083903406,
 
-  text: "",
-  type: "classRoom",
-  images: [],
-}, {
-  name: "学术大讲堂 ",
-  longitude: 113.40681198887796,
-  latitude: 23.04685094782348,
+    text: "",
+    type: "classRoom",
+    images: [],
+  }, {
+    name: "学术大讲堂 ",
+    longitude: 113.40681198887796,
+    latitude: 23.04685094782348,
 
-  text: "",
-  type: "college",
-  images: [],
-},
-{
-  name: "B12",
-  longitude: 113.40716671729854,
-  latitude: 23.04230005903462,
+    text: "",
+    type: "college",
+    images: [],
+  },
+  {
+    name: "B12",
+    longitude: 113.40716671729854,
+    latitude: 23.04230005903462,
 
-  text: "",
-  type: "college",
-  images: [],
-}, {
-  name: "音乐厅",
-  longitude: 113.40487415076132,
-  latitude: 23.046156124627498,
+    text: "",
+    type: "college",
+    images: [],
+  }, {
+    name: "音乐厅",
+    longitude: 113.40487415076132,
+    latitude: 23.046156124627498,
 
-  text: "",
-  type: "college",
-  images: [],
-},
+    text: "",
+    type: "college",
+    images: [],
+  },
 
 ] // 商店点
 
 const vouchCenterPoint = [{
-  id: 1,
-  name: "学生卡和水卡圈存点",
-  longitude: 113.40268387434162,
-  latitude: 23.04866925793428,
-  type: "Service",
-  text: "",
-  images: [],
-},
-{
-  id: 2,
-  name: "学生卡和水卡圈存点",
-  longitude: 113.40333534303113,
-  latitude: 23.051645364973492,
-  images: [],
-  text: "",
-  type: "Service"
-}, {
-  name: "水卡充值点",
-  longitude: 113.40238690806586,
-  latitude: 23.04796789472804,
-  images: [],
-  text: "",
-  type: "Service"
-}, {
-  name: "校园卡服务中心",
-  longitude: 113.40247027791906,
-  latitude: 23.047744468260245,
-  images: [],
-  text: "",
-  type: "Service"
-}, {
-  name: "校医院",
-  longitude: 113.40369964771867,
-  latitude: 23.05245737178352,
-  images: [],
-  text: "",
-  type: "Service"
-}, {
-  name: "桶装水订水点",
-  longitude: 113.4020619426492,
-  latitude: 23.04675934159357,
-  images: [],
-  text: "",
-  type: "Service"
-}
+    id: 1,
+    name: "学生卡和水卡圈存点",
+    longitude: 113.40268387434162,
+    latitude: 23.04866925793428,
+    type: "Service",
+    text: "",
+    images: [],
+  },
+  {
+    id: 2,
+    name: "学生卡和水卡圈存点",
+    longitude: 113.40333534303113,
+    latitude: 23.051645364973492,
+    images: [],
+    text: "",
+    type: "Service"
+  }, {
+    name: "水卡充值点",
+    longitude: 113.40238690806586,
+    latitude: 23.04796789472804,
+    images: [],
+    text: "",
+    type: "Service"
+  }, {
+    name: "校园卡服务中心",
+    longitude: 113.40247027791906,
+    latitude: 23.047744468260245,
+    images: [],
+    text: "",
+    type: "Service"
+  }, {
+    name: "校医院",
+    longitude: 113.40369964771867,
+    latitude: 23.05245737178352,
+    images: [],
+    text: "",
+    type: "Service"
+  }, {
+    name: "桶装水订水点",
+    longitude: 113.4020619426492,
+    latitude: 23.04675934159357,
+    images: [],
+    text: "",
+    type: "Service"
+  }
 ] // 充值点
 var activitiesPoint = [] // 活动标记点 -- 暂存
 var isAdd = false; // 是否添加的标记
@@ -204,7 +204,7 @@ Page({
       selected: false
     }],
     Month: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-    WeekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六',],
+    WeekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六', ],
     monthIndex: 0,
     weekIndex: 0,
     followActivitiesTag: [],
@@ -363,17 +363,17 @@ Page({
    */
   bindBeginDateChange(e) {
     let date = new Date(e.detail.value)
-    if(date > this.data.bgdate){
-    this.setData({
-      bgdate: e.detail.value,
-      endate: e.detail.value
-    })
-  }else{
+    if (date > this.data.bgdate) {
+      this.setData({
+        bgdate: e.detail.value,
+        endate: e.detail.value
+      })
+    } else {
       wx.showToast({
         title: '输入正确的日期',
-        icon:'error'
+        icon: 'error'
       })
-  }
+    }
   },
   /**
    * bindEndDateChange
@@ -452,6 +452,7 @@ Page({
         id: id,
         width: 50,
         height: 50,
+        iconPath: "/images/global/activity.png",
         longitude: longitude_,
         latitude: latitude_,
       }]
@@ -502,11 +503,12 @@ Page({
    * @param {*} e 
    */
   confirmMarker() {
-    console.log(this.data.markers)
+    console.log(this.data.markers[0].iconPath)
     this.setData({
       isAddedMarker: true,
       showMarkerDialogfa: false,
-      func: ''
+      func: '',
+      iconfiles:[{url:this.data.markers[0].iconPath}]
     })
   },
   chooseImage: function (e) {
@@ -611,7 +613,8 @@ Page({
   confirmTap(e) {
     isAdd = false;
     let newPoint = this.data.markers.pop()
-    console.log("标点坐标： ",newPoint)
+   
+    console.log("标点坐标： ", newPoint)
     let campusId = app.globalData.campus._id;
     let belongs = []
     for (var i = 0; i < this.data.pickerNum.length; i++) {
@@ -624,7 +627,7 @@ Page({
     let type;
     if (this.data.markerTypes[this.data.markerType] != '活动') {
       type = "current"
-    }else {
+    } else {
       type = "activity"
     }
     let show = new Date(this.data.bgdate + " 00:00")
@@ -634,7 +637,7 @@ Page({
     let time = db.point.generateTimeObj(show, start, end, hide)
     let name = this.data.newMarkerTitle
     let text = this.data.newMarkerDesc
-    let icon = this.uploadIcontoCloud()
+    let icon = ( this.uploadIcontoCloud()!="")?this.uploadIcontoCloud():newPoint.iconPath
     let images = this.updatePhotoesToCloud()
     let desc = db.point.generateDescObj(name, text, icon, images)
     if (name != "" && text != "") {
@@ -660,6 +663,7 @@ Page({
 
       this.setData({
         showMarkerDialog: false,
+        userUploadIcons:""
       })
     }
   },
@@ -722,7 +726,8 @@ Page({
               latitude: la,
               longitude: lon,
               width: 50,
-              height: 50
+              height: 50,
+              iconPath: "/images/global/activity.png",
             }];
             this.setData({
               pagePosition: "center",
@@ -757,7 +762,7 @@ Page({
           isMoreTrue: false
         })
       }
-        break;
+      break;
     }
     if (isAdd == true)
       return;
@@ -982,7 +987,9 @@ Page({
   },
   deleteStorage(e) {
     wx.clearStorage({
-      success: (res) => { console.log(res) },
+      success: (res) => {
+        console.log(res)
+      },
     })
   },
   /**
@@ -1064,7 +1071,9 @@ Page({
           if (e.value == dbEle.value) e.selected = dbEle.selected
         })
       })
-      this.setData({ archItems: archItems })
+      this.setData({
+        archItems: archItems
+      })
     }))
     tasks.push(db.arch.getArchArray(app.globalData.campus._id).then(res => {
       // console.log(res)
@@ -1082,18 +1091,32 @@ Page({
           images: value.images
         };
         switch (value.type) {
-          case 'canteen': archObj.iconPath = "/images/building/canteen.png"; break;
-          case 'dorm': archObj.iconPath = "/images/building/dormitory.png"; break;
-          case 'shop': archObj.iconPath = "/images/building/shop.png"; break;
-          case 'classRoom': archObj.iconPath = "/images/building/classroom.png"; break;
-          case 'college': archObj.iconPath = "/images/building/college.png"; break;
-          case 'Service': archObj.iconPath = "/images/building/service.png"; break;
-          default: archObj.iconPath = (value['logo'] != undefined && value['logo'] != "") ? value['logo'] : ""; break;
+          case 'canteen':
+            archObj.iconPath = "/images/building/canteen.png";
+            break;
+          case 'dorm':
+            archObj.iconPath = "/images/building/dormitory.png";
+            break;
+          case 'shop':
+            archObj.iconPath = "/images/building/shop.png";
+            break;
+          case 'classRoom':
+            archObj.iconPath = "/images/building/classroom.png";
+            break;
+          case 'college':
+            archObj.iconPath = "/images/building/college.png";
+            break;
+          case 'Service':
+            archObj.iconPath = "/images/building/service.png";
+            break;
+          default:
+            archObj.iconPath = (value['logo'] != undefined && value['logo'] != "") ? value['logo'] : "";
+            break;
         }
         archArray.push(archObj);
       });
     }))
-    tasks.push(// 从数据库中获取标点对象
+    tasks.push( // 从数据库中获取标点对象
       db.point.getPointArray(app.globalData.campus._id).then(res => {
         //console.log(res)
         res.forEach((value, index) => {
@@ -1191,8 +1214,7 @@ Page({
         buildingSelected: activitySelected,
         showBuildingDialog: true
       })
-    }
-    else if(!this.data.isAddedMarker){
+    } else if (!this.data.isAddedMarker) {
       console.log("页面刷新")
       this.onReady()
     }

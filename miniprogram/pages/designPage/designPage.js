@@ -916,19 +916,29 @@ Page({
     })
   },
   DeleteThisPost(e) {
-    db.poster.removePoster(e.currentTarget.id).then(async res => {
-      console.log(res)
-      if (res.refuse == undefined || !res.refuse) {
-        await db.poster.getPosterByOpenid(getApp().globalData.openid).then(res => {
-          this.setData({
-            myPost: res,
-            myPostNumber: res.length,
-            showMyPost: false
+    wx.showModal({
+      title:"是否删除",
+      cancelColor: 'cancelColor',
+      confirmColor:'#FF0000',
+      success:res=>{
+        if(res.confirm){
+          db.poster.removePoster(e.currentTarget.id).then(async res => {
+            console.log(res)
+            if (res.refuse == undefined || !res.refuse) {
+              await db.poster.getPosterByOpenid(getApp().globalData.openid).then(res => {
+                this.setData({
+                  myPost: res,
+                  myPostNumber: res.length,
+                  showMyPost: false
+                })
+              })
+              this.refreshShowedDetailNumber()
+            }
           })
-        })
-        this.refreshShowedDetailNumber()
+        }
       }
     })
+    
   },
   postNoChange() {
     this.setData({
