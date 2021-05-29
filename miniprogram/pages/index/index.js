@@ -992,6 +992,59 @@ Page({
       },
     })
   },
+  refreshPoint(){
+    activitiesPoint = []
+    realTimeInfoArray = []
+    visibleArchArray.forEach((marker,index)=>{
+      if(marker.type == 'activity' || marker.type == "current"){
+        visibleArchArray.splice(index,1)
+      }
+    })
+    db.point.getPointArray(app.globalData.campus._id).then(res => {
+      //console.log(res)
+      res.forEach((value, index) => {
+        //console.log("point:",value)
+        if (value.type == 'activity')
+          activitiesPoint.push({
+            _id: value._id,
+            id: value.markId,
+            title: value.desc.name,
+            longitude: value.geo.coordinates[0],
+            latitude: value.geo.coordinates[1],
+            width: 50,
+            height: 50,
+            type: value.type,
+            iconPath: (value.desc.icon == "") ? value.desc.icon : value.desc.icon,
+            text: value.desc.text,
+            images: value.desc.images
+          })
+        else {
+          realTimeInfoArray.push({
+            _id: value._id,
+            id: value.markId,
+            title: value.desc.name,
+            longitude: value.geo.coordinates[0],
+            latitude: value.geo.coordinates[1],
+            width: 50,
+            height: 50,
+            type: value.type,
+            iconPath: "/images/index/realtimeInfo.png",
+          })
+        }
+      })
+    }).then(()=>{
+      activitiesPoint.forEach((value, index) => {
+        if (selectedArchType.indexOf(value.type) != -1) {
+          visibleArchArray.push(value)
+        }
+      })
+      visibleArchArray = visibleArchArray.concat(realTimeInfoArray)
+      this.setData({
+        markers: visibleArchArray
+      })
+    })
+  
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -1216,7 +1269,7 @@ Page({
       })
     } else if (!this.data.isAddedMarker) {
       console.log("页面刷新")
-      this.onReady()
+      this.refreshPoint()
     }
 
   },

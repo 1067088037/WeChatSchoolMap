@@ -1,7 +1,12 @@
 /* pages/building/building.wxss */
 .imageBanner {
   margin-top: 20rpx;
+  width: 750rpx;
+  height: 400rpx;
   /* margin-left: 20rpx; */
+}
+.hint{
+  color: rgb(187, 186, 186);
 }
 .imageBanner image{
   width: 750rpx;

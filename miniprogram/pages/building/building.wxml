@@ -9,7 +9,7 @@
       <swiper class="imageBanner" indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff"
         circular="{{true}}" autoplay="{{true}}" interval="3000" wx:if="{{building.images != null}}">
         <swiper-item wx:for="{{building.images}}" wx:key="item">
-          <image mode="scaleToFill" style="width:750rpx;height:350rpx;" src="{{item}}"></image>
+          <image mode="aspectFill" style="width:750rpx;" src="{{item}}"></image>
         </swiper-item>
       </swiper>
     </view>
@@ -17,7 +17,8 @@
     <view class="Introduction" wx:if="{{selectedStrategy ==null && isCreateNewStrategy == false}}">
       {{building.text}}
     </view>
-    <view class="StrategiesArea" wx:if="{{selectedStrategy ==null && isCreateNewStrategy == false }}">
+    <view class="StrategiesArea"
+      wx:if="{{selectedStrategy ==null && strategies.length > 0 && isCreateNewStrategy == false }}">
       <view class="Strategies" wx:for="{{strategies}}" wx:key="item">
         <view class="Strategy" id="{{item.id}}">
           <image src="{{item.src[0]}}" bindtap="intoDetailStrategy" id="{{item.id}}"></image>
@@ -38,11 +39,18 @@
         </view>
       </view>
       <!-- 添加攻略的按钮 -->
-      <view class="addStrategy" style="left:600rpx;width:100rpx;height:100rpx;position:fixed; bottom:30rpx;">
-        <button style="width:100%;height:100%;position:absolute;opacity:0;" bindtap="createNewStrategy"></button>
-        <image src="/images/global/add.png" mode="scaleToFill" style="width:100%;height:100%"></image>
-      </view>
+
       <!-- <button bindtap="toHomePage">返回</button> -->
+    </view>
+    <view class="addStrategy" style="left:600rpx;width:100rpx;height:100rpx;position:fixed; bottom:30rpx;"
+      wx:if="{{selectedStrategy == null && isCreateNewStrategy == false }}">
+      <button style="width:100%;height:100%;position:absolute;opacity:0;" bindtap="createNewStrategy"></button>
+      <image src="/images/global/add.png" mode="scaleToFill" style="width:100%;height:100%"></image>
+    </view>
+    <view class="hint" wx:if="{{selectedStrategy == null && strategies.length == 0 && isCreateNewStrategy == false }}">
+      <text decode style="text-align:center;">--该建筑没有攻略--\n
+        --想要看攻略？看看学生第一饭堂吧--\n
+        --想添加攻略？点击右下角的按钮--</text>
     </view>
     <!-- 发表评论 -->
     <!-- 攻略具体内容 -->
