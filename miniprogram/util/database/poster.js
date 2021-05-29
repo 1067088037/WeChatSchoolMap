@@ -11,6 +11,9 @@ export class Poster {
    * @param {String} posterId 
    */
   async addAttention(openid, posterId) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('addAttention', 1000))
+      return db.perControl.refusePromise()
     await db.attention.checkInit(openid)
     return await _db.collection('attention').doc(openid).update({
       data: {
@@ -25,6 +28,9 @@ export class Poster {
    * @param {string} posterId 
    */
   async removeAttention(openid, posterId) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('removeAttention', 1000))
+      return db.perControl.refusePromise()
     await db.attention.checkInit(openid)
     return await _db.collection('attention').doc(openid).update({
       data: {
@@ -80,6 +86,9 @@ export class Poster {
    * @param {object} poster 包含sender，name，desc，images 不需要传入sendTime
    */
   async addPoster(schoolId, poster) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('addPoster', 10000))
+      return db.perControl.refusePromise()
     if (poster.sender.constructor != String) {
       console.error('sender类型非法')
     } else if (poster.name.constructor != String) {
@@ -113,6 +122,9 @@ export class Poster {
    * @param {string} posterId 
    */
   async removePoster(posterId) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('removePoster', 1000))
+      return db.perControl.refusePromise()
     await _db.collection('like').where({
       'super._id': posterId
     }).remove()
@@ -132,6 +144,9 @@ export class Poster {
    * @param {object} poster 
    */
   async updatePoster(posterId, poster) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('updatePoster', 1000))
+      return db.perControl.refusePromise()
     if (poster.constructor != Object) {
       console.error('poster类型非法')
     } else {

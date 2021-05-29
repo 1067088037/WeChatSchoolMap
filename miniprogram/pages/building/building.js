@@ -440,6 +440,7 @@ Page({
    */
   intoDetailStrategy(e) {
     let log = new LogTime("进入具体攻略区")
+    log.enable = false
     // 获取该攻略区的评论
     console.log(e)
     var that = this

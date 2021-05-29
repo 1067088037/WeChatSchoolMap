@@ -1,3 +1,5 @@
+import { db } from "./database"
+
 const _db = wx.cloud.database()
 const cmd = _db.command
 
@@ -12,6 +14,9 @@ export class Attention {
    * @param {number} week 
    */
   async addAttention(openid, value, month, week) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('addAttention', 2000))
+      return db.perControl.refusePromise()
     if (value.constructor != Array) {
       console.error('value类型非法')
     } else {
@@ -36,6 +41,9 @@ export class Attention {
    * @param {Array} attentionArray 
    */
   async updateAttention(openid, attentionArray) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('updateAttention', 2000))
+      return db.perControl.refusePromise()
     await this.checkInit(openid)
     _db.collection('attention').doc(openid).update({
       data: {
@@ -50,6 +58,9 @@ export class Attention {
    * @param {Object} attention 
    */
   async removeAttention(openid, attention) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('removeAttention', 300))
+      return db.perControl.refusePromise()
     if (attention.constructor != Object) {
       console.error('attention类型非法')
     } else {

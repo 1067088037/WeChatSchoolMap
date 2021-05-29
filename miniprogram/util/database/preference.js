@@ -1,3 +1,5 @@
+import { db } from "./database"
+
 const _db = wx.cloud.database()
 
 let haveInit = false
@@ -20,6 +22,9 @@ export class Preference {
    * @param {object} archItems 
    */
   async updateArchItems(archItems) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('updateArchItems', 200))
+      return db.perControl.refusePromise()
     await this.checkInit()
     let deepCopyArchItems = []
     archItems.forEach(e => deepCopyArchItems.push({

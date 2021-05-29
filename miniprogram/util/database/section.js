@@ -161,6 +161,9 @@ export class Section {
    * @param {object} section 包含name,desc,images,geo
    */
   addSection(schoolId, section) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('addSection', 10000))
+      return db.perControl.refusePromise()
     return _db.collection('section').add({
       data: {
         super: {
@@ -182,6 +185,9 @@ export class Section {
    * @param {string} sectionId 部门ID
    */
   async removeSection(sectionId) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('removeSection', 3000))
+      return db.perControl.refusePromise()
     await this.getUserInSection(sectionId).then(res => {
       console.log(res)
       res.forEach(e => {

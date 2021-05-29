@@ -6,6 +6,8 @@
 import { db } from "../../util/database/database";
 
 export function launchTest() {
+  // db.perControl.ignoreLimitWhenDev()
+
   // db.poster.removePoster('hdn5vgnx2wi222ngqxlvqjmhjr843hsb')
 
   // db.poster.addAttention('ojr_35JJZSWh0xHtk_0k9GRJ4TqQ', '123456')
@@ -65,7 +67,14 @@ export function launchTest() {
   //   ]
   // })
 
-  // db.like.giveALike('4wenija2tt4k6uptqkv758rlluieyp2x')
+  // db.like.giveALike('4wenija2tt4k6uptqkv758rlluieyp2x').then(res => {
+  //   if (res.refuse) console.log('拒绝')
+  //   else console.log('同意')
+  // })
+  // db.like.giveALike('4wenija2tt4k6uptqkv758rlluieyp2x').then(res => {
+  //   if (res.refuse) console.log('拒绝')
+  //   else console.log('同意')
+  // })
 
   // db.like.countLike('4wenija2tt4k6uptqkv758rlluieyp2x').then(res => {
   //   console.log(res)

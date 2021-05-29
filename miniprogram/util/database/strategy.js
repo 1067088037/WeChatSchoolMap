@@ -14,6 +14,9 @@ export class Strategy {
    * time是Object，包含首次创建时间fisrtCreate和最后修改时间lastEdit
    */
   async addStrategy(superId, superType, strategy) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('addStrategy', 10000))
+      return db.perControl.refusePromise()
     if (strategy.constructor != Object) {
       console.error('strategy类型非法')
     } else if (strategy.name.constructor != String) {
@@ -89,7 +92,10 @@ export class Strategy {
    * @param {string} strategyId 
    */
   async removeStrategy(strategyId) {
-    console.log(strategyId)
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('removeStrategy', 1000))
+      return db.perControl.refusePromise()
+    // console.log(strategyId)
     await _db.collection('strategy').doc(strategyId).get().then(res => {
       // console.log(res.data)
       let draftContent = res.data.draft.content
@@ -135,6 +141,9 @@ export class Strategy {
    * @param {string} strategyId 
    */
   async publishFromDraft(strategyId) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('publishFromDraft', 3000))
+      return db.perControl.refusePromise()
     const res = await _db.collection('strategy').doc(strategyId).get()
     return _db.collection('strategy').doc(strategyId).update({
       data: {

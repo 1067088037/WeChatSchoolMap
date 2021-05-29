@@ -46,6 +46,9 @@ export class Point {
    * @param {Array} tag 标签数组
    */
   addPoint(campusId, belong, type, time, desc, geo, tag) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('addPoint', 10000))
+      return db.perControl.refusePromise()
     if (belong.constructor != Array) {
       console.error('belong类型非法，如果为空请传入[]')
     } else if (type.constructor != String) {
@@ -136,6 +139,9 @@ export class Point {
    * @param {string} pointId 数据库中ID
    */
   async removePointById(pointId) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('removePointById', 2000))
+      return db.perControl.refusePromise()
     await _db.collection('point').doc(pointId).get().then(res => {
       wx.cloud.deleteFile({
         fileList: res.data.desc.images
@@ -150,6 +156,9 @@ export class Point {
    * @param {string} markId 标注ID
    */
   async removePointByMarkId(markId) {
+    console.warn('TODO:调用处没有修改')
+    if (!db.perControl.limitTimeStrategy('removePointByMarkId', 2000))
+      return db.perControl.refusePromise()
     return _db.collection('point').where({
       markId: markId
     }).get().then(res => {
