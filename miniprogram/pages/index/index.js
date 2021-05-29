@@ -152,11 +152,11 @@ Page({
     }, {
       value: "college",
       name: '学院',
-      selected: false,
+      selected: true,
     }, {
       value: "canteen",
       name: "饭堂",
-      selected: false,
+      selected: true,
     }, {
       value: "shop",
       name: "商店",
@@ -168,7 +168,7 @@ Page({
     }, {
       value: "activity",
       name: "活动",
-      selected: false,
+      selected: true,
     }], // 筛选建筑的选项
     departmentsItem: [
       "(全校)", "软件学院", "百步梯", "校学生会"
