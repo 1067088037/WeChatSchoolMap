@@ -133,6 +133,10 @@ Page({
         let currentVerCode = getApp().globalData.versionCode
         if (currentVerCode < res.data.versionCode) {
           console.warn(`目前的代码包不是最新的，请及时通过Git拉取最新代码！当前版本：${currentVerCode}，最新版本：${res.data.versionCode}`)
+          // wx.showToast({
+          //   title: `当前版本：${currentVerCode}，最新版本：${res.data.versionCode}\n请重新打开更新程序`,
+          //   icon: 'none'
+          // })
         }
       })
       wx.switchTab({

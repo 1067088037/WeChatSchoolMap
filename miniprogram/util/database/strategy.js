@@ -16,10 +16,10 @@ export class Strategy {
   async addStrategy(superId, superType, strategy) {
     if (!db.perControl.limitTimeStrategy('addStrategy', 10000, '添加得太频繁\n休息一下吧'))
       return db.perControl.refusePromise()
-    let total = await _db.collection('strategy').where({
+    let res = await _db.collection('strategy').where({
       _openid: '{openid}'
     }).count()
-    if (db.perControl.thisPermission >= 48 || total < 25) {
+    if (db.perControl.thisPermission >= 48 || res.total < 25) {
       if (strategy.constructor != Object) {
         console.error('strategy类型非法')
       } else if (strategy.name.constructor != String) {

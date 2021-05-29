@@ -10,11 +10,11 @@ App({
     campus: null,      //校区信息
     buildingSelected: null, // 选中建筑对象
     archItem: [],
-    versionCode: 64
+    versionCode: 65
   },
   onLaunch: function () {
     console.log('当前版本:', this.globalData.versionCode)
-    
+        
     wx.showLoading({
       title: '加载中..',
       mask: true
