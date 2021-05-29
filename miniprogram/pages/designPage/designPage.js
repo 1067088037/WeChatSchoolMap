@@ -2027,6 +2027,7 @@ Page({
         newMapCtx: wx.createMapContext('newMap', this)
       })
     })
+    this.onReady();
   },
 
   /**
