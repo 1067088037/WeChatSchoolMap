@@ -997,7 +997,15 @@ Page({
       },
     })
   },
-  
+  deepCopy(arr){
+    let length = arr.length;
+    let res = []
+    for(let i = 0 ; i < length ; i++)
+    {
+      res[i] = arr[i]
+    }
+    return res
+  },
  
   /**
    * 生命周期函数--监听页面加载
