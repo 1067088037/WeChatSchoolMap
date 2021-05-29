@@ -60,8 +60,8 @@
       <view class="StrategyImages">
         <swiper class="StrategyImageBanner" indicator-dots indicator-color="rgba(255,255,255,0.5)"
           indicator-active-color="blue" circular="{{true}}" autoplay="{{false}}" interval="3000">
-          <swiper-item wx:for="{{selectedStrategy.src}}" wx:key="item">
-            <image src="{{item}}" mode="heightFix">
+          <swiper-item  wx:for="{{selectedStrategy.src}}" wx:key="item">
+            <image src="{{item}}" mode="aspectFill" style="width:100%;" >
             </image>
           </swiper-item>
         </swiper>

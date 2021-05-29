@@ -461,7 +461,7 @@ Page({
       })
     } else {
       let lifeStrategyCoordinates = this.data.lifeStrategyCoordinates
-      lifeStrategyCoordinates[contentIndex] = {
+      lifeStrategyCoordinates[this.data.contentIndex] = {
         longitude: null,
         latitude: null
       }
@@ -1061,7 +1061,7 @@ Page({
   uploadSuccess(e) {
     console.log('upload success', e.detail)
     this.setData({
-      userUploadPosters: this.data.userUploadPosters.concat(e.detail.urls[0]),
+      userUploadPosters: this.data.userUploadPosters.concat(e.detail.urls),
     })
   },
   uploadIconSuccess(e) {
@@ -1076,7 +1076,7 @@ Page({
   uploadPhotoesSuccess(e) {
     console.log('upload success', e.detail)
     this.setData({
-      userUploadPhotoes: this.data.userUploadPhotoes.concat(e.detail.urls[0])
+      userUploadPhotoes: this.data.userUploadPhotoes.concat(e.detail.urls)
     })
   },
   inputStrategyTitle(e) {

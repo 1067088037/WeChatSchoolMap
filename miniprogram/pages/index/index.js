@@ -363,7 +363,9 @@ Page({
    */
   bindBeginDateChange(e) {
     let date = new Date(e.detail.value)
-    if (date > this.data.bgdate) {
+    let bgDate  = new Date(this.data.bgdate)
+    console.log(date,bgDate)
+    if (date >= bgDate) {
       this.setData({
         bgdate: e.detail.value,
         endate: e.detail.value
@@ -561,7 +563,7 @@ Page({
   uploadPhotoesSuccess(e) {
     console.log('upload success', e)
     this.setData({
-      userUploadPhotoes: this.data.userUploadPhotoes.concat(e.detail.urls[0])
+      userUploadPhotoes: this.data.userUploadPhotoes.concat(e.detail.urls)
     })
   },
   selectFile(files) {

@@ -201,7 +201,7 @@ Page({
   uploadSuccess(e) {
     console.log('upload success', e.detail)
     this.setData({
-      userUploadPhotoes: this.data.userUploadPhotoes.concat(e.detail.urls[0])
+      userUploadPhotoes: this.data.userUploadPhotoes.concat(e.detail.urls)
     })
   },
   //获取用户输入的评论内容
