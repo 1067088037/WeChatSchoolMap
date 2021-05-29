@@ -153,6 +153,6 @@
     <view class="Introduction">
       {{building.text}}
     </view>
-    <button bindtap="toHomePage">返回</button>
+    <!-- <button bindtap="toHomePage">返回</button> -->
   </view>
 </view>

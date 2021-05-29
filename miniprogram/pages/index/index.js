@@ -8,7 +8,7 @@ let RATE = wx.getSystemInfoSync().screenHeight / wx.getSystemInfoSync().screenWi
 const app = getApp() // 小程序全局
 const tempTest = require('./tempTest')
 const CloudPathFront = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/";
-
+let isFirstShow = 1
 const shopPoint = [{
     name: "图书馆 ",
     longitude: 113.40538247792563,
@@ -652,8 +652,7 @@ Page({
             markers: [],
             // isMoreTrue:true
           })
-
-          this.onReady()
+          this.refreshPoint()
         }
       })
     } else {
@@ -804,6 +803,7 @@ Page({
 
     console.log('改变可见性')
     visibleArchArray = [].concat(realTimeInfoArray)
+    console.log(activitiesPoint)
     archArray.forEach((value, index) => {
       if (selectedArchType.indexOf(value.type) != -1) {
         visibleArchArray.push(value)
@@ -814,6 +814,7 @@ Page({
         visibleArchArray.push(value)
       }
     })
+    console.log(visibleArchArray)
     app.globalData.archItem = this.data.archItems
     this.setData({
       archItems,
@@ -883,6 +884,7 @@ Page({
   // 进入具体建筑的简介弹窗
   markerstap(e) {
     // console.log(e.detail.markerId)
+    if(e.detail.markerId!=null){
     console.log("用户选择的建筑对象的Id：", e.detail.markerId)
     app.globalData.buildingSelected = this.getMarkerInfo(e.detail.markerId)
     console.log("用户选择的建筑对象：", app.globalData.buildingSelected)
@@ -890,6 +892,7 @@ Page({
       showBuildingDialog: true,
       buildingSelected: app.globalData.buildingSelected
     })
+  }
   },
   /**
    * showMarkerInfoPage
@@ -994,19 +997,30 @@ Page({
       },
     })
   },
+  deepCopy(arr){
+    let length = arr.length;
+    let res = []
+    for(let i = 0 ; i < length ; i++)
+    {
+      res[i] = arr[i]
+    }
+    return res
+  },
   refreshPoint() {
+    console.log("actRe",activitiesPoint)
     activitiesPoint = []
     realTimeInfoArray = []
-    visibleArchArray.forEach((marker, index) => {
-      if (marker.type == 'activity' || marker.type == "current") {
-        visibleArchArray.splice(index, 1)
-      }
-    })
+    console.log("visRe1",visibleArchArray.length,visibleArchArray)
+    let tempVisibleArray = this.deepCopy(visibleArchArray)
+    
+    console.log("temp1",tempVisibleArray)
+    visibleArchArray = tempVisibleArray
+    console.log("visRe2",visibleArchArray.length,visibleArchArray)
     db.point.getPointArray(app.globalData.campus._id).then(res => {
       //console.log(res)
       res.forEach((value, index) => {
         //console.log("point:",value)
-        if (value.type == 'activity')
+        if (value.type == 'activity'){
           activitiesPoint.push({
             _id: value._id,
             id: value.markId,
@@ -1020,6 +1034,7 @@ Page({
             text: value.desc.text,
             images: value.desc.images
           })
+        }
         else {
           realTimeInfoArray.push({
             _id: value._id,
@@ -1035,15 +1050,32 @@ Page({
         }
       })
     }).then(() => {
+      
+      console.log(visibleArchArray.length)
+      for(let i = 0 ; i < visibleArchArray.length;i++){
+        console.log(i,visibleArchArray[i].type)
+        if(visibleArchArray[i].type=='activity'||visibleArchArray[i].type == 'current'){
+          console.log(tempVisibleArray)
+          tempVisibleArray.splice(i,1);
+          console.log(tempVisibleArray.length)
+        }
+      }
+      // visibleArchArray = tempVisibleArray
+      console.log("acarrRe:",activitiesPoint)
       activitiesPoint.forEach((value, index) => {
         if (selectedArchType.indexOf(value.type) != -1) {
           visibleArchArray.push(value)
         }
       })
+      console.log("visRe3",visibleArchArray.length,visibleArchArray)
       visibleArchArray = visibleArchArray.concat(realTimeInfoArray)
       this.setData({
         markers: visibleArchArray
       })
+      // this.data.mapCtx.addMarkers({
+      //   clear:true,
+      //   markers:visibleArchArray
+      // })
     })
 
   },
@@ -1095,14 +1127,17 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
+  onReady: function (isLoading = true) {
+    if(isLoading){
     wx.showLoading({
       title: '正在载入建筑物数据',
     })
+  }
     // console.log("On Ready")
     archArray = []
     activitiesPoint = []
     realTimeInfoArray = []
+    console.log("act",activitiesPoint)
     let mCampus = getApp().globalData.campus
     // console.log('初始显示的位置:', mCampus.geo.center)
     this.setData({
@@ -1178,8 +1213,9 @@ Page({
       db.point.getPointArray(app.globalData.campus._id).then(res => {
         //console.log(res)
         res.forEach((value, index) => {
-          //console.log("point:",value)
-          if (value.type == 'activity')
+          // console.log("point:",value)
+          console.log("acarr:",activitiesPoint)
+          if (value.type == 'activity' )
             activitiesPoint.push({
               _id: value._id,
               id: value.markId,
@@ -1193,7 +1229,7 @@ Page({
               text: value.desc.text,
               images: value.desc.images
             })
-          else {
+          else if(value.type == 'current') {
             realTimeInfoArray.push({
               _id: value._id,
               id: value.markId,
@@ -1221,20 +1257,22 @@ Page({
           visibleArchArray.push(value)
         }
       })
-      this.setData({
-        markers: visibleArchArray
-      })
+      
+      // this.setData({
+      //   markers: visibleArchArray
+      // })
       activitiesPoint.forEach((value, index) => {
         if (selectedArchType.indexOf(value.type) != -1) {
           visibleArchArray.push(value)
         }
       })
+      console.log("visi:",visibleArchArray)
       visibleArchArray = visibleArchArray.concat(realTimeInfoArray)
       this.setData({
         markers: visibleArchArray
       })
-      wx.hideLoading()
-      // console.log('用时', new Date().getTime() - stTime)
+      ++isFirstShow
+      if(isLoading)wx.hideLoading()
     })
   },
 
@@ -1242,7 +1280,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    console.log(this.data.markers)
+    
     tempTest.launchTest() //用于临时测试
     tempTest.dbExample() //数据库函数调用示例
     db.section.getSectionArray(app.globalData.school._id).then(res => {
@@ -1272,9 +1311,9 @@ Page({
         buildingSelected: activitySelected,
         showBuildingDialog: true
       })
-    } else if (!this.data.isAddedMarker) {
+    } else if (!this.data.isAddedMarker && isFirstShow != 1) {
       console.log("页面刷新")
-      this.refreshPoint()
+      this.onReady(false)
     }
 
   },
