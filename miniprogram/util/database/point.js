@@ -46,8 +46,7 @@ export class Point {
    * @param {Array} tag 标签数组
    */
   addPoint(campusId, belong, type, time, desc, geo, tag) {
-    console.warn('TODO:调用处没有修改')
-    if (!db.perControl.limitTimeStrategy('addPoint', 10000))
+    if (!db.perControl.limitTimeStrategy('addPoint', 20000, '添加标点得太快了\n休息一下吧'))
       return db.perControl.refusePromise()
     if (belong.constructor != Array) {
       console.error('belong类型非法，如果为空请传入[]')
@@ -140,7 +139,7 @@ export class Point {
    */
   async removePointById(pointId) {
     console.warn('TODO:调用处没有修改')
-    if (!db.perControl.limitTimeStrategy('removePointById', 2000))
+    if (!db.perControl.limitTimeStrategy('removePointById', 1000, '删除得太快了\n休息一下吧'))
       return db.perControl.refusePromise()
     await _db.collection('point').doc(pointId).get().then(res => {
       wx.cloud.deleteFile({
@@ -156,22 +155,23 @@ export class Point {
    * @param {string} markId 标注ID
    */
   async removePointByMarkId(markId) {
-    console.warn('TODO:调用处没有修改')
-    if (!db.perControl.limitTimeStrategy('removePointByMarkId', 2000))
-      return db.perControl.refusePromise()
-    return _db.collection('point').where({
-      markId: markId
-    }).get().then(res => {
-      res.data.forEach(async e => {
-        await _db.collection('point').doc(e._id).get().then(res => {
-          wx.cloud.deleteFile({
-            fileList: res.data.desc.images
-          })
-        })
-        _db.collection('point').doc(e._id).remove()
-        _db.comment.removeAllComment(e._id)
-      })
-    })
+    console.error('没用过这个函数呢！')
+    // console.warn('TODO:调用处没有修改')
+    // if (!db.perControl.limitTimeStrategy('removePointByMarkId', 2000))
+    //   return db.perControl.refusePromise()
+    // return _db.collection('point').where({
+    //   markId: markId
+    // }).get().then(res => {
+    //   res.data.forEach(async e => {
+    //     await _db.collection('point').doc(e._id).get().then(res => {
+    //       wx.cloud.deleteFile({
+    //         fileList: res.data.desc.images
+    //       })
+    //     })
+    //     _db.collection('point').doc(e._id).remove()
+    //     _db.comment.removeAllComment(e._id)
+    //   })
+    // })
   }
 
   /**

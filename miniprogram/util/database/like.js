@@ -29,7 +29,6 @@ export class Like {
    * @param {string} superId 
    */
   async giveALike(superId) {
-    console.warn('TODO:调用处没有修改')
     if (!db.perControl.limitTimeStrategy('giveALike', 200))
       return db.perControl.refusePromise()
     let openid = getApp().globalData.openid
@@ -51,7 +50,6 @@ export class Like {
    * @param {string} superId 
    */
   async cancelLike(superId) {
-    console.warn('TODO:调用处没有修改')
     if (!db.perControl.limitTimeStrategy('cancelLike', 200))
       return db.perControl.refusePromise()
     return await _db.collection('like').where({

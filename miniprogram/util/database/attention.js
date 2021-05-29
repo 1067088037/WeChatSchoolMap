@@ -14,8 +14,7 @@ export class Attention {
    * @param {number} week 
    */
   async addAttention(openid, value, month, week) {
-    console.warn('TODO:调用处没有修改')
-    if (!db.perControl.limitTimeStrategy('addAttention', 2000))
+    if (!db.perControl.limitTimeStrategy('addAttention', 1500, '添加得太频繁了\n休息一下吧'))
       return db.perControl.refusePromise()
     if (value.constructor != Array) {
       console.error('value类型非法')

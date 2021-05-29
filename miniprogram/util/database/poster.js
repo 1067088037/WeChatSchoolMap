@@ -11,7 +11,6 @@ export class Poster {
    * @param {String} posterId 
    */
   async addAttention(openid, posterId) {
-    console.warn('TODO:调用处没有修改')
     if (!db.perControl.limitTimeStrategy('addAttention', 1000))
       return db.perControl.refusePromise()
     await db.attention.checkInit(openid)
@@ -28,7 +27,6 @@ export class Poster {
    * @param {string} posterId 
    */
   async removeAttention(openid, posterId) {
-    console.warn('TODO:调用处没有修改')
     if (!db.perControl.limitTimeStrategy('removeAttention', 1000))
       return db.perControl.refusePromise()
     await db.attention.checkInit(openid)
@@ -49,15 +47,15 @@ export class Poster {
   }
 
   /**
-   * 获取全校的海报
-   * @param {string} schoolId 
+   * 获取校区的海报
+   * @param {string} campusId 
    */
-  async getPosterBySchoolId(schoolId) {
+  async getPosterByCampusId(campusId) {
     return await wx.cloud.callFunction({
       name: 'getAllBySuperId',
       data: {
         collection: 'poster',
-        superId: schoolId
+        superId: campusId
       }
     }).then(res => res.result).catch(err => [])
   }
@@ -82,12 +80,11 @@ export class Poster {
 
   /**
    * 新建海报
-   * @param {string} schoolId 
+   * @param {string} campusId 
    * @param {object} poster 包含sender，name，desc，images 不需要传入sendTime
    */
-  async addPoster(schoolId, poster) {
-    console.warn('TODO:调用处没有修改')
-    if (!db.perControl.limitTimeStrategy('addPoster', 10000))
+  async addPoster(campusId, poster) {
+    if (!db.perControl.limitTimeStrategy('addPoster', 20000, '上传太频繁了\n休息一下吧'))
       return db.perControl.refusePromise()
     if (poster.sender.constructor != String) {
       console.error('sender类型非法')
@@ -103,8 +100,8 @@ export class Poster {
         data: {
           _id: posterId,
           super: {
-            _id: schoolId,
-            type: 'school'
+            _id: campusId,
+            type: 'campus'
           },
           sender: poster.sender,
           sendTime: _db.serverDate(),
@@ -122,8 +119,7 @@ export class Poster {
    * @param {string} posterId 
    */
   async removePoster(posterId) {
-    console.warn('TODO:调用处没有修改')
-    if (!db.perControl.limitTimeStrategy('removePoster', 1000))
+    if (!db.perControl.limitTimeStrategy('removePoster', 1000, '删除得太频繁\n休息一下吧'))
       return db.perControl.refusePromise()
     await _db.collection('like').where({
       'super._id': posterId
@@ -135,7 +131,7 @@ export class Poster {
         fileList: res.data.images
       })
     })
-    await _db.collection('poster').doc(posterId).remove()
+    return _db.collection('poster').doc(posterId).remove()
   }
 
   /**
@@ -144,8 +140,7 @@ export class Poster {
    * @param {object} poster 
    */
   async updatePoster(posterId, poster) {
-    console.warn('TODO:调用处没有修改')
-    if (!db.perControl.limitTimeStrategy('updatePoster', 1000))
+    if (!db.perControl.limitTimeStrategy('updatePoster', 1000, '更新得太频繁\n休息一下吧'))
       return db.perControl.refusePromise()
     if (poster.constructor != Object) {
       console.error('poster类型非法')

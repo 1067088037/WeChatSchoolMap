@@ -20,46 +20,55 @@ Page({
     //console.log(e)
     db.poster.getAttention(getApp().globalData.openid).then(res => {
       let attentionArray = Array.from(res)
+      wx.showLoading({
+        title: 'Loading...',
+      })
       if (attentionArray.indexOf(e.currentTarget.id) != -1) {
         db.poster.removeAttention(getApp().globalData.openid, e.currentTarget.id).then(res => {
-        console.log("取消收藏")
-        db.poster.getAttention(getApp().globalData.openid).then(res2 => {
-          let attentionArray2 = Array.from(res2)
-          let postArr = Array.from(this.data.postArray)
-          var attentionOrNotVar = this.data.attentionOrNot;
-          var imagesAttentionVar = that.data.imagesAttention;
-          postArr.forEach(function (post, index) {
-            attentionOrNotVar[index] = (attentionArray2.indexOf(post._id) == -1) ? 0 : 1;
-            imagesAttentionVar[index] = (attentionArray2.indexOf(post._id) == -1) ? "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/collect.png" : "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/collect_selected.png";
-            console.log("foreach")
-            that.setData({
-              attentionOrNot: attentionOrNotVar,
-              imagesAttention: imagesAttentionVar
+          if (!res.refuse) {
+            console.log("取消收藏")
+            db.poster.getAttention(getApp().globalData.openid).then(res2 => {
+              let attentionArray2 = Array.from(res2)
+              let postArr = Array.from(this.data.postArray)
+              var attentionOrNotVar = this.data.attentionOrNot;
+              var imagesAttentionVar = that.data.imagesAttention;
+              postArr.forEach(function (post, index) {
+                attentionOrNotVar[index] = (attentionArray2.indexOf(post._id) == -1) ? 0 : 1;
+                imagesAttentionVar[index] = (attentionArray2.indexOf(post._id) == -1) ? "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/collect.png" : "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/collect_selected.png";
+                console.log("foreach")
+                that.setData({
+                  attentionOrNot: attentionOrNotVar,
+                  imagesAttention: imagesAttentionVar
+                })
+              })
+              wx.hideLoading()
             })
-          })
-  
-        })
+          } else {
+            wx.hideLoading()
+          }
         })
       }
       else {
         db.poster.addAttention(getApp().globalData.openid, e.currentTarget.id).then(res => {
-          console.log("收藏")
-          db.poster.getAttention(getApp().globalData.openid).then(res2 => {
-            let attentionArray2 = Array.from(res2)
-            let postArr = Array.from(this.data.postArray)
-            var attentionOrNotVar = this.data.attentionOrNot;
-            var imagesAttentionVar = that.data.imagesAttention;
-            postArr.forEach(function (post, index) {
-              attentionOrNotVar[index] = (attentionArray2.indexOf(post._id) == -1) ? 0 : 1;
-              imagesAttentionVar[index] = (attentionArray2.indexOf(post._id) == -1) ? "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/collect.png" : "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/collect_selected.png";
-              console.log("foreach")
-              that.setData({
-                attentionOrNot: attentionOrNotVar,
-                imagesAttention: imagesAttentionVar
+          if (!res.refuse) {
+            // console.log("收藏")
+            db.poster.getAttention(getApp().globalData.openid).then(res2 => {
+              let attentionArray2 = Array.from(res2)
+              let postArr = Array.from(this.data.postArray)
+              var attentionOrNotVar = this.data.attentionOrNot;
+              var imagesAttentionVar = that.data.imagesAttention;
+              postArr.forEach(function (post, index) {
+                attentionOrNotVar[index] = (attentionArray2.indexOf(post._id) == -1) ? 0 : 1;
+                imagesAttentionVar[index] = (attentionArray2.indexOf(post._id) == -1) ? "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/collect.png" : "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/collect_selected.png";
+                console.log("foreach")
+                that.setData({
+                  attentionOrNot: attentionOrNotVar,
+                  imagesAttention: imagesAttentionVar
+                })
               })
+              wx.hideLoading()
             })
-    
-          })
+          } else wx.hideLoading()
         })
       }
     })
@@ -70,8 +79,7 @@ Page({
   onLoad: function (options) {
     var that = this;
     //从数据库中请求海报的数据
-    db.poster.getPosterBySchoolId('1ace8ef160901b1b008f69ae08b0ee8a').then(res => {
-      //console.log("救命，我数据呢。。。。")
+    db.poster.getPosterByCampusId(getApp().globalData.campus._id).then(res => {
       //console.log(res.data)
       that.setData({
         postArray: res.data

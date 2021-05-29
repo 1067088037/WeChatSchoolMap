@@ -254,22 +254,24 @@ Page({
     let month = this.data.monthIndex
     let followActivitiesTag = this.data.followActivitiesTag
     console.log(day)
-    db.attention.addAttention(openid, followActivitiesTag, month, day).then(() => {
-      this.data.labelArray.forEach((e, index) => {
-        e.selected = false
-        this.data.labelArray[index] = e
-      })
-      this.setData({
-        func: '',
-        weekIndex: 0,
-        monthIndex: 0,
-        followActivitiesTag: [],
-        labelArray: this.data.labelArray
-      })
-      wx.showToast({
-        title: '关注成功',
-        duration: 1000
-      })
+    db.attention.addAttention(openid, followActivitiesTag, month, day).then(res => {
+      if (!res.refuse) {
+        this.data.labelArray.forEach((e, index) => {
+          e.selected = false
+          this.data.labelArray[index] = e
+        })
+        this.setData({
+          func: '',
+          weekIndex: 0,
+          monthIndex: 0,
+          followActivitiesTag: [],
+          labelArray: this.data.labelArray
+        })
+        wx.showToast({
+          title: '关注成功',
+          duration: 1000
+        })
+      }
     })
   },
   selectedLabel(e) {
@@ -628,17 +630,19 @@ Page({
     let images = this.updatePhotoesToCloud()
     let desc = db.point.generateDescObj(name, text, icon, images)
     if (name != "" && text != "") {
-      db.point.addPoint(campusId, belongs, type, time, desc, db.Geo.Point(newPoint.longitude, newPoint.latitude), this.data.newMarkerTag)
+      db.point.addPoint(campusId, belongs, type, time, desc, db.Geo.Point(newPoint.longitude, newPoint.latitude), this.data.newMarkerTag).then(res => {
+        if (!res.refuse) {
+          this.setData({
+            isAddedMarker: false,
+            showMarkerDialog: false,
+            func: '',
+            markers: [],
+            // isMoreTrue:true
+          })
 
-      this.setData({
-        isAddedMarker: false,
-        showMarkerDialog: false,
-        func: '',
-        markers: [],
-        // isMoreTrue:true
+          this.onReady()
+        }
       })
-
-      this.onReady()
     } else {
       wx.showModal({
         title: '需填写标题以及简介',

@@ -39,8 +39,7 @@ export class Comment {
    * @param {object} comment 需要包含 reply,text,images
    */
   async addComment(superId, superType, comment) {
-    console.warn('TODO:调用处没有修改')
-    if (!db.perControl.limitTimeStrategy('addComment', 3000))
+    if (!db.perControl.limitTimeStrategy('addComment', 6000))
       return db.perControl.refusePromise()
     let commentId = util.randomId()
     if (comment.constructor != Object) {
