@@ -137,10 +137,10 @@ Page({
     }, {
       text: '确定'
     }], // 添加标点对话框的按钮
-    bgdate: "2021-05-03", // 活动开始日期 暂存
+    bgdate: (new Date()).toLocaleDateString(), // 活动开始日期 暂存
     bgtime: "08:00",
     edtime: "22:30",
-    endate: "2021-05-04", // 活动结束日期 
+    endate: (new Date()).toLocaleDateString(), // 活动结束日期 
     archItems: [{
       value: "dorm",
       name: "宿舍",
@@ -362,10 +362,18 @@ Page({
    * @todo 改变开始日期
    */
   bindBeginDateChange(e) {
+    let date = new Date(e.detail.value)
+    if(date > this.data.bgdate){
     this.setData({
       bgdate: e.detail.value,
       endate: e.detail.value
     })
+  }else{
+      wx.showToast({
+        title: '输入正确的日期',
+        icon:'error'
+      })
+  }
   },
   /**
    * bindEndDateChange
@@ -465,7 +473,7 @@ Page({
     isAdd = false;
     this.data.markers.pop()
     this.setData({
-      markers: [],
+      markers: visibleArchArray,
       isAddedMarker: false,
       showMarkerDialog: false,
       newMarkerTag: [],
@@ -479,6 +487,7 @@ Page({
    */
   cancelMarker() {
     this.data.markers.pop()
+    console.log(visibleArchArray)
     this.setData({
       markers: visibleArchArray,
       showMarkerDialog: false,
@@ -493,6 +502,7 @@ Page({
    * @param {*} e 
    */
   confirmMarker() {
+    console.log(this.data.markers)
     this.setData({
       isAddedMarker: true,
       showMarkerDialogfa: false,
@@ -600,8 +610,8 @@ Page({
    */
   confirmTap(e) {
     isAdd = false;
-
     let newPoint = this.data.markers.pop()
+    console.log("标点坐标： ",newPoint)
     let campusId = app.globalData.campus._id;
     let belongs = []
     for (var i = 0; i < this.data.pickerNum.length; i++) {
@@ -612,12 +622,10 @@ Page({
     }
 
     let type;
-    if (this.data.markerTypes[this.data.markerType] == '实时消息') {
+    if (this.data.markerTypes[this.data.markerType] != '活动') {
       type = "current"
-    } else if (this.data.markerTypes[this.data.markerType] == '活动') {
+    }else {
       type = "activity"
-    } else {
-      type = this.data.markerTypes[this.data.markerType];
     }
     let show = new Date(this.data.bgdate + " 00:00")
     let start = new Date(this.data.bgdate + " " + this.data.bgtime)
@@ -1183,6 +1191,10 @@ Page({
         buildingSelected: activitySelected,
         showBuildingDialog: true
       })
+    }
+    else if(!this.data.isAddedMarker){
+      console.log("页面刷新")
+      this.onReady()
     }
 
   },
