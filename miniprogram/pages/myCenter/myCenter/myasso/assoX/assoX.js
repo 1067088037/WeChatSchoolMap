@@ -8,7 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    isAdmin:true,
+    isAdmin:false,
     title:"",
     sectionid:"",
 tapmemberif:{
@@ -131,8 +131,14 @@ member:[]
       title: options.title,
       sectionid:options.id
     })
+    var openid=app.globalData.openid;
     var sectionid=this.data.sectionid;
     console.log(sectionid);
+    db.section.getUserPermission(sectionid,openid).then((res)=>
+    this.setData({
+      isAdmin:res.isAdmin
+    })
+    )
     db.section.getUserInSection(sectionid).then((res)=>{
        this.setData({
       member:res            

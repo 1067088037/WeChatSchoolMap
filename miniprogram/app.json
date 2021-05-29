@@ -11,7 +11,8 @@
     "pages/myCenter/myCenter/join/join",
     "pages/myCenter/myCenter/creatasso/creatasso",
     "pages/myCenter/myCenter/myasso/assoX/assoX",
-    "pages/myCenter/myCenter/myasso/assoY/assoY"
+    "pages/myCenter/myCenter/myasso/assoY/assoY",
+    "pages/myCenter/myCenter/myset/myset"
   ],
   "permission": {
     "scope.userLocation": {

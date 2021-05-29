@@ -74,7 +74,7 @@
 </view>
 <view class="sonhead">
   <image src="../../images/mycenter/set.png" style="height:70rpx;width:70rpx"></image>
-  <navigator url="../myCenter/myset/myset">
+  <navigator url="./myCenter/myset/myset">
   <text>
     设置
   </text>

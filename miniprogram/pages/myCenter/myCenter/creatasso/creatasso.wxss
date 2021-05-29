@@ -42,3 +42,22 @@
   padding:5rpx;
   border:2rpx solid rgb(83, 88, 92)
 }
+.FollowDialog {
+  justify-content: center;
+  width: 200rpx;
+  padding: 0rpx;
+  height: 200rpx;
+  position: fixed;
+  bottom: 600rpx;
+  left: 250rpx;
+  border-radius: 30rpx;
+  border:2rpx,solid,rgb(131, 220, 255);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(4rpx);
+  box-shadow: 10rpx 0rpx 50rpx 12rpx rgba(200, 200, 200, 0.5);
+}
+.icon{
+  position: relative;
+  left:45rpx;
+  top:15rpx;
+}

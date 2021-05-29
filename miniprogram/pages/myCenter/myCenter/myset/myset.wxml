@@ -1,0 +1,14 @@
+<view style="display:flex;justify-content:center;"><image src="../../../../images/mycenter/设置 (1).png" style="width:50rpx;height:50rpx;"></image><view>用户</view>   
+
+</view>
+<view style="position:relative;left:230rpx">
+<view class="fake3"></view>
+</view>
+<view class="section">
+  <view class="section__title"><text>所选校区</text></view>
+  <picker bindchange="schoolChange" value="{{index}}" range="{{array}}">
+    <view class="picker">
+      当前选择：{{array[index]}}
+    </view>
+  </picker>
+</view>

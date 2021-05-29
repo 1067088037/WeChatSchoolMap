@@ -1,8 +1,24 @@
+<view style="display:flex;justify-content:center;"><image src="../../../../../images/mycenter/部门.png" style="width:50rpx;height:50rpx;"></image><view>{{title}}</view>   
+
+</view>
+<view style="position:relative;left:230rpx">
+<view class="fake3"></view>
+</view>
+<view class="header_right">   
+    <navigator url="../assoX/assoX?id={{sectionid}}&title={{title}}" style="color:gray" open-type="redirect">成员列表</navigator>
+    <view class="fake2"></view>  
+    <navigator url="../assoY/assoY?sid={{sectionid}}&title={{title}}" open-type="redirect" >申请表</navigator>  
+    <view wx:if="{{isAdmin}}" class="permission">可审批</view>
+<view hidden="{{isAdmin}}" class="permission">无权限</view>
+  </view>  
+  
+  <view class="fake"></view>
 <view wx:for="{{applicationArray}}" wx:for-item="a">
-<view class="textall"><text>{{a.applicantname}}</text>
- <view> <text>{{a.inform}}</text></view>
-<button data-item="{{a}}" data-openid="ojr_35MDvhNSwJfxk0dSXHkaAorw" catchtap="agree" 
- size="mini"class="login-button2" hover-class="login-button-hover" >同意加入</button>
-<button data-item="{{a}}"  data-openid="ojr_35MDvhNSwJfxk0dSXHkaAorw" catchtap="refuse" size="mini" class="login-button" hover-class="login-button-hover">拒绝加入</button>
+<view class="FollowDialog"><text>申请人：{{a.applicantname}}</text>
+ <view> <text>申请信息：{{a.inform}}</text></view>
+ <view style="display:flex">
+<view data-item="{{a}}" data-openid="ojr_35MDvhNSwJfxk0dSXHkaAorw" catchtap="agree"  style="position:relative;left:20rpx;text-align:center;line-height:6rpx padding:0rpx; font-size:28rpx; margin-top:14rpx ;right:10rpx;margin-left:60rpx;margin-right:30rpx;width:220rpx; border-radius:50rpx;border:1rpx solid #006699;color:white;background:#006699;">同意加入</view>
+<view data-item="{{a}}" data-openid="ojr_35MDvhNSwJfxk0dSXHkaAorw" catchtap="refuse" style="position:relative;left:20rpx;text-align:center;line-height:6rpx padding:0rpx; font-size:28rpx; margin-top:14rpx ;right:10rpx;margin-left:60rpx;margin-right:30rpx;width:220rpx; border-radius:50rpx;border:1rpx solid #006699;color:#006699 " >拒绝加入</view>
+</view>
 </view>
 </view>

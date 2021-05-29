@@ -1,11 +1,12 @@
-<view style="justify-content:center">我关注的活动</view>
+<view class="classReflect">我关注的活动</view>
 <view wx:for="{{attentionArray}}" wx:for-item="a">
 <view class="FollowDialog" >
+  <view style="position:relative;left:20rpx;">
     <view class="Follow">
       <text style="display:block;margin-left:26rpx;margin-top:36rpx;">已经关注活动标签:</text>
       <view class="head">
       <block wx:for="{{a.value}}" wx:for-item="v" style=" margin-bottom:20rpx;border-bottom:0.5rpx solid #eeeeee">
-        <view style="text-align:center;line-height:6rpx padding:0rpx; font-size:28rpx; margin-top:14rpx ;right:10rpx;margin-right:4rpx;width:220rpx; border-radius:50rpx;border:1rpx solid #006699;color:#006699 "  >
+        <view style="text-align:center;line-height:6rpx padding:0rpx; font-size:28rpx; margin-top:14rpx ;right:10rpx;margin-right:4rpx;width:150rpx; border-radius:50rpx;border:1rpx solid #006699;color:#006699 "  >
           {{v}}
         </view>
       </block>
@@ -22,12 +23,13 @@
     </view>
   </view>
    </block>
-      <block class="bo">
-        <button type=""
-          style="text-align:center;line-height:6rpx padding:0rpx; font-size:28rpx; margin-top:14rpx ;right:10rpx;margin-right:4rpx;width:220rpx; border-radius:50rpx;border:1rpx solid #006699;color:#006699 "
-          bindtap="cancel" data-item="{{a}}">取消关注</button>
-      </block>
+      <view class="bo">
+        <view type=""
+          style="text-align:center;line-height:6rpx padding:0rpx; font-size:28rpx; margin-top:14rpx ;right:10rpx;margin-right:4rpx;width:220rpx; border-radius:50rpx;border:1rpx solid #006699;color:#006699;position:relative;left:400rpx; "
+          bindtap="cancel" data-item="{{a}}">取消关注</view>
+      </view>
     </view>
+  </view>
   </view>
   </view>
   

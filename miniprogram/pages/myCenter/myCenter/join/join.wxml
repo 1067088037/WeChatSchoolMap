@@ -1,10 +1,23 @@
-<input value="{{sectiontext}}" type='text' confirm-type='search' bindinput='input1' style='border:1px solid #f00'
+<view class="classReflect"><text class="classReflect">加入社团</text></view>
+<input value="{{sectiontext}}" type='text' confirm-type='search' bindinput='input1' style='border:1px solid gray;width:400rpx;position:relative;left:300rpx'
   placeholder="请输入社团或组织名称" />
 <view wx:if="{{noneview}}">
   <text>抱歉，没有相关社团</text>
 </view>
+<view style="display:flex" >
+<view style="width:7rpx;height:5rpx;background:black"></view>
+<view style="width:100rpx;height:5rpx;background:gray"></view>
+</view>
 <view wx:for="{{sectionArray}}" wx:for-item="s">
- <text wx:if="{{s.status}}" data-item="{{s}}" bindtap="tapsection">{{s.title}}</text></view>
+ <view wx:if="{{s.status}}" data-item="{{s}}" bindtap="tapsection" class="run">
+   <view class="all1">
+  <view class="asso1"></view>
+  <view class="asso2"></view>
+  <view class="asso3"></view>
+  <view class="wordt"> <text>{{s.title}}</text></view>
+  <view class="contain"><image src="../../../../images/mycenter/个性头像.png" class="image1" mode="cover"></image></view>
+</view>
+<view class="fake5"></view></view></view>
 <modal hidden="{{hiddenmodalput}}" title="{{tapitem.title}}" confirm-text="申请加入" cancel-text="退出" bindcancel="cancel"
   bindconfirm="confirm">
   <view><text>{{tapitem.desc}}</text></view>
@@ -21,3 +34,11 @@
   bindconfirm="confirm2">
 <input bindinput="applicantinput"/>
 </modal>
+<view class="all1">
+  <view class="asso1"></view>
+  <view class="asso2"></view>
+  <view class="asso3"></view>
+  <view class="wordt"> <text>测试社团</text></view>
+  <view class="contain"><image src="../../../../images/mycenter/个性头像.png" class="image1" mode="cover"></image></view>
+</view>
+<view class="fake5"></view>

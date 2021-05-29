@@ -22,4 +22,11 @@
         </view>
       </view>
     </view>
-  
+  <view hidden="{{successHidden}}" class="FollowDialog">
+    <view class="icon">
+    <view style="justify-content:center">
+      <image src="../../../../images/mycenter/成功.png" style="width:100rpx;height:100rpx;justify-content:center"></image>
+    </view>
+    <view style="color:gray;position:relative;right:10rpx">创建成功!</view>
+    </view>
+  </view>

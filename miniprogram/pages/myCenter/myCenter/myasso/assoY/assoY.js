@@ -8,6 +8,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    _options:{},
+  title:"",
 applicationlist:[],
 applicationArray:[],
 sectionid:"",
@@ -34,8 +36,47 @@ agree :function (e) {
     inform:"审核完毕",
     state:"已通过"
   };
-  db.application.updateApplication(id,appliction)
-  that.onLoad();
+  db.application.updateApplication(id,appliction);
+  console.log(this.data.sectionid);
+  console.log(this.data.title);
+  var sectionid=this.data.sectionid;
+  var openid=app.globalData.openid;
+  db.section.getUserPermission(sectionid,openid).then((res)=>
+  this.setData({
+    isAdmin:res.isAdmin
+  })
+  )
+  var tempapplistArray=[];
+  db.application.getApplicationBySectionId(sectionid,["未审核"]).then((res)=>
+  {console.log(res);
+  this.setData({
+    applicationlist:res.data
+  })}
+  ).then(()=>{console.log(this.data.applicationlist)}).then(()=>{
+    if(this.data.applicationlist==undefined){
+    this.setData({
+      applicationArray:null
+    })
+    }
+    var i;
+    for(i in this.data.applicationlist){
+    db.user.getUser(this.data.applicationlist[i].applicant).then((res)=>{
+      var tempapplist={};
+      tempapplist['id']=this.data.applicationlist[i]._id;
+      tempapplist['applicantid']=this.data.applicationlist[i].applicant;
+    tempapplist['inform']=this.data.applicationlist[i].inform;
+    tempapplist['state']=this.data.applicationlist[i].state;
+      tempapplist['applicantname']=res.userInfo.nickName;
+      tempapplistArray.push(tempapplist);
+    }).then(()=>{
+      this.setData(
+        {
+          applicationArray:tempapplistArray
+        }
+      )
+    })
+  }
+  }).then(()=>{console.log(this.data.applicationArray);})
 console.log("修改成功");}
 else{
   console.log("修改失败");
@@ -59,9 +100,41 @@ refuse :function (e) {
   };
   db.application.updateApplication(id,appliction)
   console.log("修改成功");
-var options={};
-options['sid']=that.data.sectionid;
-that.onLoad(options);
+  console.log(this.data.sectionid);
+  console.log(this.data.title);
+  var sectionid=this.data.sectionid;
+  var openid=app.globalData.openid;
+  db.section.getUserPermission(sectionid,openid).then((res)=>
+  this.setData({
+    isAdmin:res.isAdmin
+  })
+  )
+  var tempapplistArray=[];
+  db.application.getApplicationBySectionId(sectionid,["未审核"]).then((res)=>
+  {console.log(res);
+  this.setData({
+    applicationlist:res.data
+  })}
+  ).then(()=>{console.log(this.data.applicationlist)}).then(()=>{
+    var i;
+    for(i in this.data.applicationlist){
+    db.user.getUser(this.data.applicationlist[i].applicant).then((res)=>{
+      var tempapplist={};
+      tempapplist['id']=this.data.applicationlist[i]._id;
+      tempapplist['applicantid']=this.data.applicationlist[i].applicant;
+    tempapplist['inform']=this.data.applicationlist[i].inform;
+    tempapplist['state']=this.data.applicationlist[i].state;
+      tempapplist['applicantname']=res.userInfo.nickName;
+      tempapplistArray.push(tempapplist);
+    }).then(()=>{
+      this.setData(
+        {
+          applicationArray:tempapplistArray
+        }
+      )
+    })
+  }
+  }).then(()=>{console.log(this.data.applicationArray);})
 }
   else{
     console.log("修改失败");
@@ -72,9 +145,12 @@ that.onLoad(options);
    */
   onLoad: function (options) {
     this.setData({
- sectionid:options.sid
+      _options:options,
+ sectionid:options.sid,
+ title:options.title
     })
     console.log(this.data.sectionid);
+    console.log(this.data.title);
     var sectionid=this.data.sectionid;
     var openid=app.globalData.openid;
     db.section.getUserPermission(sectionid,openid).then((res)=>

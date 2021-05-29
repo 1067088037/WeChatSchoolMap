@@ -2,7 +2,6 @@
 .link:first-child:before{display:none;}  
 .header_right{
   display:flex;
-  background:rgb(51, 110, 150);
 }
 .userinfo-avatar {
   overflow: hidden;
@@ -49,4 +48,29 @@
 }
 .button1{
   margin:20rpx;
+}
+.fake{
+  position:relative;
+  left:35rpx;
+  width:60rpx;
+  height:3rpx;
+  background:black;
+}
+.fake2{
+  margin:10rpx;
+  height:30rpx;
+  width:3rpx;
+  background:rgb(49, 47, 47);
+}
+.fake3{
+  height:2rpx;
+  width:300rpx;
+  background:rgb(44, 40, 40);
+}
+.permission{
+  border:2rpx rgb(95, 80, 67) solid;
+  border-radius: 10rpx;
+  color:rgb(95, 80, 67);
+  position:relative;
+  left:350rpx;
 }

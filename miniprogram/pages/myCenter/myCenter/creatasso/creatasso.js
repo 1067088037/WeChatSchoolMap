@@ -14,6 +14,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    successHidden:true,
     openid:"",
     sectionid:"",
     schoolid:"",
@@ -149,7 +150,15 @@ Page({
        db.section.addAdmin(this.data.sectionid,openid);
       })
     })
-    
+    this.setData({
+      successHidden: false
+    });
+    var that = this;
+    setTimeout(function(){
+      that.setData({
+          successHidden: true
+         });
+    },500)
     
   },
   /**

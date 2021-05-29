@@ -1,8 +1,17 @@
-<view>{{title}}   当前身份：</view>
+<view style="display:flex;justify-content:center;"><image src="../../../../../images/mycenter/部门.png" style="width:50rpx;height:50rpx;"></image><view>{{title}}</view>   
+
+</view>
+<view style="position:relative;left:230rpx">
+<view class="fake3"></view>
+</view>
 <view class="header_right">   
-    <navigator url="../../myasso/myasso" class="link">成员列表</navigator>  
-    <navigator url="../assoY/assoY?sid={{sectionid}}" class="link">申请表</navigator>  
+    <navigator url="../../myasso/myasso" open-type="redirect">成员列表</navigator>
+    <view class="fake2"></view>  
+    <navigator url="../assoY/assoY?sid={{sectionid}}&title={{title}}" open-type="redirect" style="color:gray">申请表</navigator>  
+    <view wx:if="{{isAdmin}}" class="permission">管理员</view>
+<view hidden="{{isAdmin}}" class="permission">成员</view>
   </view>  
+  <view class="fake"></view>
   <view wx:for="{{member}}" wx:for-item="m" class="FollowDialog">
 <view class="membershow" >
   <view style="display:flex">
