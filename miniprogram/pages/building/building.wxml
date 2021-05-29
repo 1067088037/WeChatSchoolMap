@@ -1,6 +1,6 @@
 <!--pages/building/building.wxml-->
-<view class="buildingContainer">
-  <view class="Canteen" wx:if="{{building.type != 'activity'}}">
+<view class="buildingContainer"  >
+  <view class="Canteen"  wx:if="{{building.type != 'activity'}}">
     <view class="BuildingName" wx:if="{{!isCreateNewStrategy}}">
       {{building.title}}
     </view>
@@ -54,7 +54,7 @@
     </view>
     <!-- 发表评论 -->
     <!-- 攻略具体内容 -->
-    <view class="DetailStrategyPage" id="{{selectedStrategy.id}}" wx:if="{{selectedStrategy.isClicked}}">
+    <view class="DetailStrategyPage" id="{{selectedStrategy.id}}" wx:if="{{selectedStrategy.isClicked}}" >
       <button style="position:fixed; top:0rpx; padding : 0; width:120rpx" bindtap="toStrategiesAreaPage">⬅返回</button>
       <!-- 用户添加的攻略图片 -->
       <view class="StrategyImages">
@@ -79,8 +79,8 @@
         <view class="commentTitle">
           评论<text style="font-size:30rpx;color:gray;margin-left:10rpx">({{commentNum}})</text>
         </view>
-        <view class="Comments">
-          <view class="comments" wx:for="{{comments}}" wx:key="index">
+        <view class="Comments" >
+          <view class="comments" wx:for="{{comments}}" wx:key="index" bindlongpress="showDeleteComment"  bindtap="notShowDeleteComment" id="{{item.id}}" hover-class="._hover_class">
             <view style="margin-top:16rpx">
               <image class="userAvatar" src="{{item.userAvatarUrl}}" mode="cover"></image>
               <text style="margin-left:10rpx;bottom:16rpx;position:relative">{{item.nickName}}</text>
@@ -95,6 +95,7 @@
           </view>
           <view style="text-align:center;">--The End--</view>
         </view>
+        <view class="deleteComment-btn" style="position:fixed;top:{{commentY}}rpx;left:{{commentX}}rpx" wx:if="{{isDeleteComment}}" hover-class="_hover_class" bindtap="toDeletComment">删除</view>
         <view class="postStrategyComment">
           <input style="width: 500rpx;" class="StrategyAreaInputComment" bindinput="getComment" placeholder="随便说点什么"
             bindconfirm="sendComment" confirm-type="send" value="{{commentValue}}"></input>

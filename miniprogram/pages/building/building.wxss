@@ -29,7 +29,15 @@
  text-align:center;
  background:transparent
 }
-
+.deleteComment-btn{background:gray;
+  height: 80rpx;
+  width: 80rpx;
+  color: white;
+  text-align: center;
+  font-size: 32rpx;
+  line-height: 80rpx;
+  border-radius: 20rpx;
+}
 .StrategiesAreaButton{
   margin-top:20rpx;
   display: inline-block;

@@ -50,6 +50,67 @@ Page({
     strategiesIds: []
 
   },
+  notShowDeleteComment(e) {
+    console.log(e)
+    if (this.data.isDeleteComment) {
+      this.setData({
+        isDeleteComment: false,
+        deletCommentId: "",
+        deletCommentsuperId: ""
+      })
+    }
+  },
+  showDeleteComment(e) {
+    console.log(e)
+    let openid = app.globalData.openid
+    let commentId = e.currentTarget.id
+    let commentX = e.touches[0].clientX * 2
+    let commentY = e.touches[0].clientY * 2
+    this.data.comments.forEach(e => {
+      if (commentId == e.id && openid == e.openid) {
+        this.setData({
+          isDeleteComment: true,
+          commentX,
+          commentY,
+          deletCommentId: commentId,
+          deletCommentsuperId: e.superId
+        })
+      }
+    })
+
+  },
+  toDeletComment(e) {
+    // removeComment
+    wx.showModal({
+      cancelColor: 'cancelColor',
+      title: "是否要删除评论",
+      confirmColor: "#FF0000",
+      success: res => {
+        if (res.confirm) {
+          db.comment.removeComment(this.data.deletCommentId).then((res) => {
+            if (!res.refuse) {
+              this.intoDetailStrategy(this.data.deletCommentsuperId)
+              this.setData({
+                isDeleteComment: false,
+                deletCommentId: "",
+                deletCommentsuperId: ""
+              })
+            }
+          })
+        }
+      }
+    })
+  },
+  onPageScroll(e) {
+    // console.log(e)
+    if (this.data.isDeleteComment) {
+      this.setData({
+        isDeleteComment: false,
+        deletCommentId: "",
+        deletCommentsuperId: ""
+      })
+    }
+  },
   inputTitle(e) {
     this.setData({
       strategyTitle: e.detail.value
@@ -468,7 +529,7 @@ Page({
     let userInfos = []
     let isAndLikeNum = []
     let commentNum;
-    let targetStrategyId = (e.type == 'tap') ? e.currentTarget.id : e;
+    let targetStrategyId = (e['type'] == 'tap') ? e.currentTarget.id : e;
     console.log("选中的攻略id是", targetStrategyId)
     wx.showLoading({
       title: 'loading...',
@@ -487,7 +548,8 @@ Page({
           var commentObj = {
             openid: v._openid,
             text: v.text,
-            id: v._id
+            id: v._id,
+            superId: v.super._id
           }
           commentsIdArray.push(v._id)
           comments.push(commentObj)

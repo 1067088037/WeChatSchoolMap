@@ -67,7 +67,7 @@ export class Comment {
    * @param {string} commentId 
    */
   async removeComment(commentId) {
-    console.warn('TODO:调用处没有修改')
+    
     if (!db.perControl.limitTimeStrategy('removeComment', 1000))
       return db.perControl.refusePromise()
     await _db.collection('comment').doc(commentId).get().then(res => {

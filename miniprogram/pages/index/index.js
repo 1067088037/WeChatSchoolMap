@@ -1065,7 +1065,7 @@ Page({
     archArray = []
     activitiesPoint = []
     realTimeInfoArray = []
-    console.log("act", activitiesPoint)
+    // console.log("act", activitiesPoint)
     let mCampus = getApp().globalData.campus
     // console.log('初始显示的位置:', mCampus.geo.center)
     if (isFirstShow == 1) {
@@ -1144,7 +1144,7 @@ Page({
         //console.log(res)
         res.forEach((value, index) => {
           // console.log("point:",value)
-          console.log("acarr:", activitiesPoint)
+          // console.log("acarr:", activitiesPoint)
           if (value.type == 'activity')
             activitiesPoint.push({
               _id: value._id,
@@ -1196,7 +1196,7 @@ Page({
           visibleArchArray.push(value)
         }
       })
-      console.log("visi:", visibleArchArray)
+      // console.log("visi:", visibleArchArray)
       visibleArchArray = visibleArchArray.concat(realTimeInfoArray)
       this.setData({
           markers: visibleArchArray
@@ -1210,7 +1210,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    console.log(this.data.markers)
+    // console.log(this.data.markers)
 
     tempTest.launchTest() //用于临时测试
     tempTest.dbExample() //数据库函数调用示例
@@ -1220,7 +1220,7 @@ Page({
         departmentsItem: this.data.departmentsItem.concat(res.data[0].name)
       })
     })
-    console.log("buildingSelected", app.globalData.buildingSelected)
+    // console.log("buildingSelected", app.globalData.buildingSelected)
     if (app.globalData.buildingSelected != null && app.globalData.buildingSelected.type == "activity" && app.globalData.buildingSelected['geo'] != undefined) {
       // console.log("appSelected:",app.globalData.buildingSelected)
       let activitySelected = {
@@ -1242,7 +1242,7 @@ Page({
         showBuildingDialog: true
       })
     } else if (!this.data.isAddedMarker && isFirstShow != 1) {
-      console.log("页面刷新")
+      // console.log("页面刷新")
       this.onReady(false)
     }
 
