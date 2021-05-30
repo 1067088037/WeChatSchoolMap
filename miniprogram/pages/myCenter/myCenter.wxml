@@ -1,3 +1,6 @@
+<view wx:if="{{getUserInfo}}" style="margin-top:20rpx">
+      <button type="primary" bindtap="getUserProfile">登录</button>
+</view>
 <view class="head">
 <view class="head2">
   <view class="getUserInfo">
@@ -16,7 +19,6 @@
     </block>
     <block wx:else>
       <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      
     </block>
   </view>
 </view>

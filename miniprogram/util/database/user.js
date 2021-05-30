@@ -1,6 +1,8 @@
 const _db = wx.cloud.database()
 const cmd = _db.command
 
+var debug = false
+
 export class User {
   /**
    * 调用云函数获取openid
@@ -9,6 +11,9 @@ export class User {
   async getOpenId() {
     return await wx.cloud.callFunction({
       name: 'login'
+    }).then(res => {
+      if (debug) res.result.openid = '---' + res.result.openid
+      return res
     }).catch(err => null)
   }
 
@@ -43,27 +48,32 @@ export class User {
    * @param {string} openid 
    * @param {object} userInfo 
    */
-  setUserInfo(openid, userInfo) {
+  async setUserInfo(openid, userInfo) {
+    console.log(openid)
     if (userInfo.constructor != Object) {
       console.error('userInfo类型非法')
     } else {
-      return _db.collection('user').doc(openid).get().then(res => {
-        _db.collection('user').doc(openid).update({
+      let count = await _db.collection('user').where({ _openid: openid }).count()
+      if (count.total != 0) {
+        return _db.collection('user').where({
+          _openid: openid
+        }).update({
           data: {
             userInfo: userInfo,
           }
         })
-      }).catch(e => {
+      } else {
         return _db.collection('user').add({
           data: {
             _id: openid,
+            _openid: openid,
             userInfo: userInfo,
             info: {},
             point: [],
             favorite: []
           }
         })
-      })
+      }
     }
   }
 

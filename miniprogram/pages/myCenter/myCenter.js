@@ -1,3 +1,5 @@
+import { db } from "../../util/database/database"
+
 // pages/myCenter/myCenter.js
 Page({
 
@@ -6,12 +8,13 @@ Page({
    */
   data: {
     versionCode: -1,
-    userInfo:{},
-    hasUserInfo:false,
+    userInfo: {},
+    hasUserInfo: false,
     canIUseGetUserProfile: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     canIUseGetUserProfile: false,
-    canIUseOpenData: wx.canIUse('open-data.type.userAvatarUrl') && wx.canIUse('open-data.type.userNickName')
+    canIUseOpenData: wx.canIUse('open-data.type.userAvatarUrl') && wx.canIUse('open-data.type.userNickName'),
+    getUserInfo: false
   },
 
   /**
@@ -23,18 +26,31 @@ Page({
     })
     if (wx.getUserProfile) {
       this.setData({
-        canIUseGetUserProfile: true
+        canIUseGetUserProfile: true,
       })
     }
+    db.user.getUser(getApp().globalData.openid).then(res => {
+      if (res.userInfo.nickName == undefined) {
+        this.setData({
+          getUserInfo: true
+        })
+      }
+    })
   },
-  getUserProfile(){
+  getUserProfile() {
     wx.getUserProfile({
-      desc:"用于完善用户信息",
-      sucess:res=>{
+      desc: "用于完善用户信息",
+      success: res => {
+        console.log(getApp().globalData.openid)
+        console.log(res)
         this.setData({
           userInfo: res.userInfo,
           hasUserInfo: true,
+          getUserInfo: false
         })
+        db.user.setUserInfo(getApp().globalData.openid, res.userInfo)
+        console.log("获取用户信息成功")
+        getApp().globalData.userInfo.userInfo = res.userInfo
       }
     })
   },

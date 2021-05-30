@@ -17,7 +17,7 @@
     <view style="margin-botton:20rpx">
       <view class="Introduction" wx:if="{{selectedStrategy ==null && isCreateNewStrategy == false}}"
         style="margin-bottom:15rpx">
-        <text user-select="true">{{building.text}}</text>
+        <text user-select="true">{{building.text == null ? '该建筑没有简介' : building.text}}</text>
       </view>
     </view>
     <view style="height:1rpx;width:80%;background:#ccc;margin-left:10%;"></view>

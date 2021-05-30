@@ -210,7 +210,7 @@ Page({
     weekIndex: 0,
     followActivitiesTag: [],
     tempFiles: [],
-    currentLocation: null //用户当前位置
+    currentLocation: null, //用户当前位置
   },
   getLocation() {
     this.data.mapCtx.getCenterLocation({
@@ -906,7 +906,8 @@ Page({
           console.log("用户选择的建筑对象的Id：", e.detail.markerId)
           app.globalData.buildingSelected = this.getMarkerInfo(e.detail.markerId)
           console.log("用户选择的建筑对象：", app.globalData.buildingSelected)
-          app.globalData.buildingSelected.text = app.globalData.buildingSelected.text.replaceAll("\\n", '\n')
+          if (app.globalData.buildingSelected.text != undefined)
+            app.globalData.buildingSelected.text = app.globalData.buildingSelected.text.replaceAll("\\n", '\n')
           this.setData({
             showBuildingDialog: true,
             buildingSelected: app.globalData.buildingSelected

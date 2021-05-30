@@ -39,6 +39,13 @@
         {
           "name": "pages/posterArea/posterArea",
           "pathName": "pages/posterArea/posterArea",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/myCenter/myCenter",
+          "pathName": "pages/myCenter/myCenter",
+          "query": "",
           "scene": null
         }
       ]

@@ -696,7 +696,8 @@ Page({
       console.log("building:", building.desc)
       let images = []
       if (building.desc == undefined) {
-        building.text = building.text.replaceAll("\\n", '\n')
+        if (building.text != undefined)
+          building.text = building.text.replaceAll("\\n", '\n')
         if (building.images != undefined) {
           // building.images.forEach(e => {
           //   e = CloudPathFront + e

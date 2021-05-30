@@ -9,9 +9,12 @@ function getUserInfo(that, openid) {
   db.user.getUser(openid).then(res => {
     // console.log(res)
     if (res == null) { //用户信息为空
-      console.log("用户信息为空")
-      that.setData({
-        needToGetUserInfo: true //显示获取用户信息提示
+      console.log("用户信息为空", openid)
+      db.user.setUserInfo(openid, {}).then(() => {
+        that.setData({
+          needToGetUserInfo: true //显示获取用户信息提示
+        })
+        // loadSchoolAndCampus(that) //加载学校和校区
       })
     } else {
       getApp().globalData.userInfo = res //暂存用户信息
@@ -21,7 +24,7 @@ function getUserInfo(that, openid) {
 }
 
 function loadSchoolAndCampus(that) {
-  // console.log('loadSchoolAndCampus')
+// console.log('loadSchoolAndCampus')
   db.user.getUser(_openid).then(res => {
     // console.log(res)
     if (res != null) {
@@ -34,6 +37,14 @@ function loadSchoolAndCampus(that) {
         tasks.push(db.school.getSchool(info.school).then(school => { getApp().globalData.school = school }))
         tasks.push(db.campus.getCampus(info.campus).then(campus => { getApp().globalData.campus = campus }))
         Promise.all(tasks).then(() => {
+          // console.log('NEXT')
+          if (getApp().globalData.userInfo.userInfo.nickName == undefined) {
+            console.log('未登录')
+            getApp().globalData.userInfo.userInfo = {
+              avatarUrl: '/miniprogram/images/global/logo.png',
+              nickName: '未登录'
+            }
+          }
           that.next()
         })
       }
@@ -120,6 +131,12 @@ Page({
       })
     })
   },
+  skipGetUserProfile: function () {
+    this.setData({
+      needToGetUserInfo: false //显示获取用户信息提示
+    })
+    loadSchoolAndCampus(this) //加载学校和校区
+  },
   //如果成功获取用户信息则跳转到
   next: function () {
     if (getApp().globalData.userInfo != undefined) {
@@ -162,6 +179,10 @@ Page({
               })
             },
             fail: err => {
+              that.setData({
+                needToGetUserInfo: false //显示获取用户信息提示
+              })
+              loadSchoolAndCampus(that) //加载学校和校区
               console.log('获取用户信息失败')
               wx.showToast({
                 title: '获取信息失败',

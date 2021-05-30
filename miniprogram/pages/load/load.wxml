@@ -3,6 +3,7 @@
 <view class="container">
   <block wx:if="{{needToGetUserInfo}}">
     <button bindtap="getUserProfile" type="primary"> 获取头像昵称 </button>
+    <button bindtap="skipGetUserProfile" type="default" style="margin-top:20rpx"> 不提供并继续 </button>
     <view class='med'>————— · —————</view>
     <view class='txt'>
       欢迎使用小程序，我们需要一些您的公开信息，包括微信昵称和头像。请放心，我们会妥善保管您的信息~
