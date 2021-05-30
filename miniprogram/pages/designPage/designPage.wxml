@@ -233,7 +233,7 @@
         </input>
       </view>
       <view class="inputMainBody">
-        <textarea name="" id="" cols="30" rows="10" placeholder="添加正文" bindinput="inputStrategyMainBody"
+        <textarea name="" id="" maxlength="999" placeholder="添加正文" bindinput="inputStrategyMainBody"
           value="{{draftStrategySelected.content[0].desc}}">
         </textarea>
       </view>
@@ -278,7 +278,7 @@
         <view class="inputLifeStrategyStep" id="{{index}}">
           <input id="{{index}}" class="inputLifeStrategyStepTitle" placeholder="第{{index+1}}步的标题"
             bindinput="inputLifeStrategyStepTitle" value="{{lifeStrategyStepNames[index]}}"></input>
-          <textarea name="" cols="50" rows="500" placeholder="这里输入主要内容" id="{{index}}"
+          <textarea name="" maxlength="999" placeholder="这里输入主要内容" id="{{index}}"
             bindinput="inputLifeStrategyDescription" value="{{lifeStrategyDescriptions[index]}}">
           </textarea>
         </view>
@@ -407,7 +407,7 @@
       <view class="marker_desc">标记简介</view>
       <view class="description-cell" style="background:white">
         <textarea class="description-area" name="markerDesc" placeholder="请输入标记简介" confirm-type="done"
-          bindinput="inputMarkerDesc" bindconfirm="inputMarkerDesc" maxlength="300"
+          bindinput="inputMarkerDesc" bindconfirm="inputMarkerDesc" maxlength="999"
           placeholder-class="textAreaPlaceHolder" value="{{selectedPoint.desc.text}}"></textarea>
         <view class="AddLabelArea">
           <text>标签：</text>
