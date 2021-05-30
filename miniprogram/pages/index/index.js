@@ -10,88 +10,88 @@ const tempTest = require('./tempTest')
 const CloudPathFront = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/";
 let isFirstShow = 1
 const shopPoint = [{
-    name: "图书馆 ",
-    longitude: 113.40538247792563,
-    latitude: 23.046693083903406,
+  name: "图书馆 ",
+  longitude: 113.40538247792563,
+  latitude: 23.046693083903406,
 
-    text: "",
-    type: "classRoom",
-    images: [],
-  }, {
-    name: "学术大讲堂 ",
-    longitude: 113.40681198887796,
-    latitude: 23.04685094782348,
+  text: "",
+  type: "classRoom",
+  images: [],
+}, {
+  name: "学术大讲堂 ",
+  longitude: 113.40681198887796,
+  latitude: 23.04685094782348,
 
-    text: "",
-    type: "college",
-    images: [],
-  },
-  {
-    name: "B12",
-    longitude: 113.40716671729854,
-    latitude: 23.04230005903462,
+  text: "",
+  type: "college",
+  images: [],
+},
+{
+  name: "B12",
+  longitude: 113.40716671729854,
+  latitude: 23.04230005903462,
 
-    text: "",
-    type: "college",
-    images: [],
-  }, {
-    name: "音乐厅",
-    longitude: 113.40487415076132,
-    latitude: 23.046156124627498,
+  text: "",
+  type: "college",
+  images: [],
+}, {
+  name: "音乐厅",
+  longitude: 113.40487415076132,
+  latitude: 23.046156124627498,
 
-    text: "",
-    type: "college",
-    images: [],
-  },
+  text: "",
+  type: "college",
+  images: [],
+},
 
 ] // 商店点
 
 const vouchCenterPoint = [{
-    id: 1,
-    name: "学生卡和水卡圈存点",
-    longitude: 113.40268387434162,
-    latitude: 23.04866925793428,
-    type: "Service",
-    text: "",
-    images: [],
-  },
-  {
-    id: 2,
-    name: "学生卡和水卡圈存点",
-    longitude: 113.40333534303113,
-    latitude: 23.051645364973492,
-    images: [],
-    text: "",
-    type: "Service"
-  }, {
-    name: "水卡充值点",
-    longitude: 113.40238690806586,
-    latitude: 23.04796789472804,
-    images: [],
-    text: "",
-    type: "Service"
-  }, {
-    name: "校园卡服务中心",
-    longitude: 113.40247027791906,
-    latitude: 23.047744468260245,
-    images: [],
-    text: "",
-    type: "Service"
-  }, {
-    name: "校医院",
-    longitude: 113.40369964771867,
-    latitude: 23.05245737178352,
-    images: [],
-    text: "",
-    type: "Service"
-  }, {
-    name: "桶装水订水点",
-    longitude: 113.4020619426492,
-    latitude: 23.04675934159357,
-    images: [],
-    text: "",
-    type: "Service"
-  }
+  id: 1,
+  name: "学生卡和水卡圈存点",
+  longitude: 113.40268387434162,
+  latitude: 23.04866925793428,
+  type: "Service",
+  text: "",
+  images: [],
+},
+{
+  id: 2,
+  name: "学生卡和水卡圈存点",
+  longitude: 113.40333534303113,
+  latitude: 23.051645364973492,
+  images: [],
+  text: "",
+  type: "Service"
+}, {
+  name: "水卡充值点",
+  longitude: 113.40238690806586,
+  latitude: 23.04796789472804,
+  images: [],
+  text: "",
+  type: "Service"
+}, {
+  name: "校园卡服务中心",
+  longitude: 113.40247027791906,
+  latitude: 23.047744468260245,
+  images: [],
+  text: "",
+  type: "Service"
+}, {
+  name: "校医院",
+  longitude: 113.40369964771867,
+  latitude: 23.05245737178352,
+  images: [],
+  text: "",
+  type: "Service"
+}, {
+  name: "桶装水订水点",
+  longitude: 113.4020619426492,
+  latitude: 23.04675934159357,
+  images: [],
+  text: "",
+  type: "Service"
+}
 ] // 充值点
 var activitiesPoint = [] // 活动标记点 -- 暂存
 var isAdd = false; // 是否添加的标记
@@ -112,11 +112,12 @@ Page({
     latitude: 0,
     isMoreTrue: false, // 是否需要选择更多功能
     functions: [ // 功能名称数组
+      "定位",
       "海报",
       "添加",
       "搜索",
       "筛选",
-      "关注"
+      "关注",
     ],
     markers: [],
     func: '', // 功能名称
@@ -204,11 +205,12 @@ Page({
       selected: false
     }],
     Month: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-    WeekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六', ],
+    WeekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六',],
     monthIndex: 0,
     weekIndex: 0,
     followActivitiesTag: [],
-    tempFiles: []
+    tempFiles: [],
+    currentLocation: null //用户当前位置
   },
   getLocation() {
     this.data.mapCtx.getCenterLocation({
@@ -702,21 +704,37 @@ Page({
     })
     // 根据用户选择，显示不同的页面
     switch (this.data.func) {
-      case "海报": {
+      case "定位":
+        if (this.data.currentLocation == null) {
+          wx.showToast({
+            title: '定位失败',
+            icon: 'error'
+          })
+        } else {
+          this.data.mapCtx.moveToLocation({
+            longitude: this.data.currentLocation.longitude,
+            latitude: this.data.currentLocation.latitude
+          })
+        }
+        this.setData({
+          func: '',
+          pagePosition: "top",
+          isMoreTrue: false
+        })
+        break;
+      case "海报":
         this.setData({
           pagePosition: "center",
           isMoreTrue: false
         })
         break;
-      }
-      case "搜索": {
+      case "搜索":
         this.setData({
           pagePosition: "top",
           isMoreTrue: false
         })
         break;
-      }
-      case "添加": {
+      case "添加":
         let la;
         let lon;
         this.data.mapCtx.getCenterLocation({
@@ -742,28 +760,24 @@ Page({
         })
         isAdd = true;
         break;
-      }
-      case "筛选": {
+      case "筛选":
         this.setData({
           pagePosition: "top",
           isMoreTrue: false
         })
         break;
-      }
-      case "关注": {
+      case "关注":
         this.setData({
           pagePosition: "top",
           isMoreTrue: false
         })
         break;
-      }
-      default: {
+      default:
         this.setData({
           pagePosition: "center",
           isMoreTrue: false
         })
-      }
-      break;
+        break;
     }
     if (isAdd == true)
       return;
@@ -885,9 +899,9 @@ Page({
   markerstap(e) {
     // console.log(e.detail.markerId)
     // console.log(e)
-    visibleArchArray.forEach(m=>{
+    visibleArchArray.forEach(m => {
       // console.log(m)
-      if(m.id == e.detail.markerId && m.type !='user'){
+      if (m.id == e.detail.markerId && m.type != 'user') {
         if (e.detail.markerId != null) {
           console.log("用户选择的建筑对象的Id：", e.detail.markerId)
           app.globalData.buildingSelected = this.getMarkerInfo(e.detail.markerId)
@@ -900,7 +914,7 @@ Page({
         return;
       }
     })
-    
+
   },
   /**
    * showMarkerInfoPage
@@ -1204,9 +1218,9 @@ Page({
       // console.log("visi:", visibleArchArray)
       visibleArchArray = visibleArchArray.concat(realTimeInfoArray)
       this.setData({
-          markers: visibleArchArray
-        })
-        ++isFirstShow
+        markers: visibleArchArray
+      })
+      ++isFirstShow
       if (isLoading) {
         wx.hideLoading()
         // console.log('检测代码包版本')
@@ -1235,6 +1249,7 @@ Page({
   },
   getUserLocation: function (res) {
     // console.log(isAdd)
+    this.data.currentLocation = res
     if (this.data.showMarkerDialog) {
       return
     } else {
@@ -1250,9 +1265,9 @@ Page({
           longitude: res.longitude,
           latitude: res.latitude,
           id: util.randomNumberId(),
-          iconPath: "/images/global/userSelf.png",
-          width: 40,
-          height: 40,
+          iconPath: getApp().globalData.userInfo.userInfo.avatarUrl,
+          width: 50,
+          height: 50,
           type: "user",
           title: '自己'
         }
