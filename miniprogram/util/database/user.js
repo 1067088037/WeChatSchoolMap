@@ -75,7 +75,9 @@ export class User {
     if (info.constructor != Object) {
       console.error('info类型非法')
     } else {
-      return _db.collection('user').doc(openid).update({
+      return _db.collection('user').where({
+        _openid: openid
+      }).update({
         data: {
           info: info
         }
@@ -182,6 +184,16 @@ export class User {
    * @param {string} openid 
    */
   async getUser(openid) {
-    return await _db.collection('user').doc(openid).get().then(res => res.data).catch(err => null)
+    return await _db.collection('user').where({
+      _openid: openid
+    }).get().then(res => {
+      if (res.data.length != 0) return res.data[0] //找到了用户信息
+      else return null //没有找到
+    }).catch(err => {
+      wx.showToast({
+        title: '网络异常',
+        icon: 'error'
+      })
+    })
   }
 }

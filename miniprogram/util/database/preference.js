@@ -39,11 +39,11 @@ export class Preference {
 
   async checkInit() {
     if (haveInit) return true
-    await _db.collection('preference').doc(this.currentOpenid()).get().then(res => {
+    return await _db.collection('preference').doc(this.currentOpenid()).get().then(res => {
       haveInit = true
       return res
     }).catch(async () => {
-      await _db.collection('preference').add({
+      return await _db.collection('preference').add({
         data: {
           _id: this.currentOpenid(),
           archItems: []

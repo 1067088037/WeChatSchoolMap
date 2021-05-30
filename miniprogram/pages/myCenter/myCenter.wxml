@@ -80,3 +80,6 @@
   </text>
 </navigator>
 </view>
+<view style="margin-top:25rpx">
+  <text style="color:#ddd; padding:20rpx">内部版本号:{{versionCode}}</text>
+</view>

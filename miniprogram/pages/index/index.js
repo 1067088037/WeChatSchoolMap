@@ -10,88 +10,88 @@ const tempTest = require('./tempTest')
 const CloudPathFront = "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/";
 let isFirstShow = 1
 const shopPoint = [{
-    name: "图书馆 ",
-    longitude: 113.40538247792563,
-    latitude: 23.046693083903406,
+  name: "图书馆 ",
+  longitude: 113.40538247792563,
+  latitude: 23.046693083903406,
 
-    text: "",
-    type: "classRoom",
-    images: [],
-  }, {
-    name: "学术大讲堂 ",
-    longitude: 113.40681198887796,
-    latitude: 23.04685094782348,
+  text: "",
+  type: "classRoom",
+  images: [],
+}, {
+  name: "学术大讲堂 ",
+  longitude: 113.40681198887796,
+  latitude: 23.04685094782348,
 
-    text: "",
-    type: "college",
-    images: [],
-  },
-  {
-    name: "B12",
-    longitude: 113.40716671729854,
-    latitude: 23.04230005903462,
+  text: "",
+  type: "college",
+  images: [],
+},
+{
+  name: "B12",
+  longitude: 113.40716671729854,
+  latitude: 23.04230005903462,
 
-    text: "",
-    type: "college",
-    images: [],
-  }, {
-    name: "音乐厅",
-    longitude: 113.40487415076132,
-    latitude: 23.046156124627498,
+  text: "",
+  type: "college",
+  images: [],
+}, {
+  name: "音乐厅",
+  longitude: 113.40487415076132,
+  latitude: 23.046156124627498,
 
-    text: "",
-    type: "college",
-    images: [],
-  },
+  text: "",
+  type: "college",
+  images: [],
+},
 
 ] // 商店点
 
 const vouchCenterPoint = [{
-    id: 1,
-    name: "学生卡和水卡圈存点",
-    longitude: 113.40268387434162,
-    latitude: 23.04866925793428,
-    type: "Service",
-    text: "",
-    images: [],
-  },
-  {
-    id: 2,
-    name: "学生卡和水卡圈存点",
-    longitude: 113.40333534303113,
-    latitude: 23.051645364973492,
-    images: [],
-    text: "",
-    type: "Service"
-  }, {
-    name: "水卡充值点",
-    longitude: 113.40238690806586,
-    latitude: 23.04796789472804,
-    images: [],
-    text: "",
-    type: "Service"
-  }, {
-    name: "校园卡服务中心",
-    longitude: 113.40247027791906,
-    latitude: 23.047744468260245,
-    images: [],
-    text: "",
-    type: "Service"
-  }, {
-    name: "校医院",
-    longitude: 113.40369964771867,
-    latitude: 23.05245737178352,
-    images: [],
-    text: "",
-    type: "Service"
-  }, {
-    name: "桶装水订水点",
-    longitude: 113.4020619426492,
-    latitude: 23.04675934159357,
-    images: [],
-    text: "",
-    type: "Service"
-  }
+  id: 1,
+  name: "学生卡和水卡圈存点",
+  longitude: 113.40268387434162,
+  latitude: 23.04866925793428,
+  type: "Service",
+  text: "",
+  images: [],
+},
+{
+  id: 2,
+  name: "学生卡和水卡圈存点",
+  longitude: 113.40333534303113,
+  latitude: 23.051645364973492,
+  images: [],
+  text: "",
+  type: "Service"
+}, {
+  name: "水卡充值点",
+  longitude: 113.40238690806586,
+  latitude: 23.04796789472804,
+  images: [],
+  text: "",
+  type: "Service"
+}, {
+  name: "校园卡服务中心",
+  longitude: 113.40247027791906,
+  latitude: 23.047744468260245,
+  images: [],
+  text: "",
+  type: "Service"
+}, {
+  name: "校医院",
+  longitude: 113.40369964771867,
+  latitude: 23.05245737178352,
+  images: [],
+  text: "",
+  type: "Service"
+}, {
+  name: "桶装水订水点",
+  longitude: 113.4020619426492,
+  latitude: 23.04675934159357,
+  images: [],
+  text: "",
+  type: "Service"
+}
 ] // 充值点
 var activitiesPoint = [] // 活动标记点 -- 暂存
 var isAdd = false; // 是否添加的标记
@@ -204,7 +204,7 @@ Page({
       selected: false
     }],
     Month: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-    WeekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六', ],
+    WeekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六',],
     monthIndex: 0,
     weekIndex: 0,
     followActivitiesTag: [],
@@ -363,8 +363,8 @@ Page({
    */
   bindBeginDateChange(e) {
     let date = new Date(e.detail.value)
-    let bgDate  = new Date(this.data.bgdate)
-    console.log(date,bgDate)
+    let bgDate = new Date(this.data.bgdate)
+    console.log(date, bgDate)
     if (date >= bgDate) {
       this.setData({
         bgdate: e.detail.value,
@@ -765,7 +765,7 @@ Page({
           isMoreTrue: false
         })
       }
-      break;
+        break;
     }
     if (isAdd == true)
       return;
@@ -999,21 +999,32 @@ Page({
       },
     })
   },
-  deepCopy(arr){
+  deepCopy(arr) {
     let length = arr.length;
     let res = []
-    for(let i = 0 ; i < length ; i++)
-    {
+    for (let i = 0; i < length; i++) {
       res[i] = arr[i]
     }
     return res
   },
- 
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    // console.log('检测代码包版本')
+    db._db.collection('static').doc('version').get().then(res => {
+      let currentVerCode = getApp().globalData.versionCode
+      if (currentVerCode < res.data.versionCode) {
+        console.warn(`目前的代码包不是最新的，请及时通过Git拉取最新代码！当前版本：${currentVerCode}，最新版本：${res.data.versionCode}`)
+        wx.showToast({
+          title: `当前版本${currentVerCode} 最新版本${res.data.versionCode} \n 请及时更新小程序`,
+          icon: 'none',
+          mask: false,
+          duration: 2500
+        })
+      }
+    })
 
     // 加载后生成MapContext对象
     // console.log("On load")
@@ -1201,33 +1212,32 @@ Page({
       // console.log("visi:", visibleArchArray)
       visibleArchArray = visibleArchArray.concat(realTimeInfoArray)
       wx.startLocationUpdate({
-        success:res=>{
-         
+        success: res => {
           console.log(res)
           wx.onLocationChange(this.getUserLocation)
         },
-        fail:console.error
+        fail: console.error
       })
-      
-        ++isFirstShow
+
+      ++isFirstShow
       if (isLoading) wx.hideLoading()
     })
   },
-getUserLocation:function(res){
+  getUserLocation: function (res) {
     // console.log(res)
-    visibleArchArray.forEach((m,idx)=>{
-      if(m['type'] == "user")
-      visibleArchArray.splice(idx,1)
+    visibleArchArray.forEach((m, idx) => {
+      if (m['type'] == "user")
+        visibleArchArray.splice(idx, 1)
     })
-    let marker  = {
-      longitude:res.longitude,
-      latitude:res.latitude,
-      id:util.randomNumberId(),
-      iconPath:"/images/global/userSelf.png",
-      width:40,
-      height:40,
-      type:"user",
-      title:'自己'
+    let marker = {
+      longitude: res.longitude,
+      latitude: res.latitude,
+      id: util.randomNumberId(),
+      iconPath: "/images/global/userSelf.png",
+      width: 40,
+      height: 40,
+      type: "user",
+      title: '自己'
     }
     console.log(marker)
     visibleArchArray.push(marker)
@@ -1235,7 +1245,7 @@ getUserLocation:function(res){
       markers: visibleArchArray
     })
   },
-  
+
   /**
    * 生命周期函数--监听页面显示
    */
@@ -1273,18 +1283,18 @@ getUserLocation:function(res){
       })
     } else if (!this.data.isAddedMarker && isFirstShow != 1) {
       // console.log("页面刷新")
-      
+
       this.onReady(false)
-      
+
     }
-    
+
     // this.getUserLocation
-    
-    
-     
-      
+
+
+
+
   },
-  
+
   /**
    * 生命周期函数--监听页面隐藏
    */

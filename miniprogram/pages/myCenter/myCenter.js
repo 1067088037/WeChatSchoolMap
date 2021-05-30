@@ -5,6 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    versionCode: -1,
     userInfo:{},
     hasUserInfo:false,
     canIUseGetUserProfile: false,
@@ -17,6 +18,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.setData({
+      versionCode: getApp().globalData.versionCode
+    })
     if (wx.getUserProfile) {
       this.setData({
         canIUseGetUserProfile: true
@@ -31,7 +35,6 @@ Page({
           userInfo: res.userInfo,
           hasUserInfo: true,
         })
-        
       }
     })
   },

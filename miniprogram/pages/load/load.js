@@ -7,17 +7,14 @@ var _openid = null
 
 function getUserInfo(that, openid) {
   db.user.getUser(openid).then(res => {
-    db.preference.checkInit()
+    // console.log(res)
     if (res == null) { //用户信息为空
-      if (wx.getUserProfile) { //获取用户配置
-        that.setData({
-          needToGetUserInfo: true
-        })
-      }
+      console.log("用户信息为空")
+      that.setData({
+        needToGetUserInfo: true //显示获取用户信息提示
+      })
     } else {
-      let userInfo = res
-      getApp().globalData.userInfo = userInfo //暂存用户信息
-      // console.log(userInfo)
+      getApp().globalData.userInfo = res //暂存用户信息
       loadSchoolAndCampus(that) //加载学校和校区
     }
   })
@@ -26,23 +23,18 @@ function getUserInfo(that, openid) {
 function loadSchoolAndCampus(that) {
   // console.log('loadSchoolAndCampus')
   db.user.getUser(_openid).then(res => {
-    if (res != null || getApp().globalData.userInfo != null) {
-      let info = {}
-      if (res != null) info = res.info
-      else getSchoolAndCampusToChoose(that)
-      if (info == undefined || Object.keys(info).length == 0) { //对象为空
+    // console.log(res)
+    if (res != null) {
+      getApp().globalData.userInfo = res
+      let info = res.info
+      if (info == undefined || info['school'] == undefined || info['school'] == undefined) { //对象为空
         getSchoolAndCampusToChoose(that)
       } else {
-        db.school.getSchool(info.school).then(school => {
-          getApp().globalData.school = school
-          // console.log(school)
-          db.campus.getCampus(info.campus).then(campus => {
-            // console.log(campus)
-            getApp().globalData.campus = campus
-            // console.log('校区', campus)
-            that.next()
-            // console.log('进入index')
-          })
+        let tasks = []
+        tasks.push(db.school.getSchool(info.school).then(school => { getApp().globalData.school = school }))
+        tasks.push(db.campus.getCampus(info.campus).then(campus => { getApp().globalData.campus = campus }))
+        Promise.all(tasks).then(() => {
+          that.next()
         })
       }
     }
@@ -108,59 +100,73 @@ Page({
   onConfirmTapped: async function () {
     // console.log(schoolData[this.data.schoolIndex])
     // console.log(campusData[this.data.campusIndex])
+    wx.showLoading({
+      title: '正在保存信息',
+      mask: true
+    })
     await db.user.setInfo(_openid, {
       school: schoolData[this.data.schoolIndex]._id,
       campus: campusData[this.data.campusIndex]._id,
-      section: {
-        admin: null,
-        join: []
-      },
+      section: { admin: null, join: [] },
       permission: 16
     }).then(res => {
+      wx.hideLoading()
       loadSchoolAndCampus(this)
+    }).catch(err => {
+      wx.hideLoading()
+      wx.showToast({
+        title: '网络异常',
+        icon: 'error'
+      })
     })
   },
   //如果成功获取用户信息则跳转到
   next: function () {
     if (getApp().globalData.userInfo != undefined) {
+      // console.log('向数据库更新运行时')
       db._db.collection('user').doc(getApp().globalData.userInfo._openid).update({
         data: {
           lastLoginTime: db.serverDate(),
           runtimeVersion: getApp().globalData.versionCode
         }
       })
-      db._db.collection('static').doc('version').get().then(res => {
-        let currentVerCode = getApp().globalData.versionCode
-        if (currentVerCode < res.data.versionCode) {
-          console.warn(`目前的代码包不是最新的，请及时通过Git拉取最新代码！当前版本：${currentVerCode}，最新版本：${res.data.versionCode}`)
-          // wx.showToast({
-          //   title: `当前版本：${currentVerCode}，最新版本：${res.data.versionCode}\n请重新打开更新程序`,
-          //   icon: 'none'
-          // })
-        }
+      // console.log('跳转页面')
+      db.preference.checkInit().then(() => {
+        wx.switchTab({
+          url: '../index/index'
+        })
+      }).catch(err => {
+        wx.switchTab({
+          url: '../index/index'
+        })
       })
-      wx.switchTab({
-        url: '../index/index'
-      })
+    } else {
+      console.log('userInfo为空')
     }
   },
   // 获取用户信息的函数
   getUserProfile() {
     var that = this
-    // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
-    // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
+    console.log('getUserProfile')
     wx.getSetting({
       success(res) {
         if (res.authSetting['scope.userInfo']) {
           wx.getUserProfile({
             desc: '用于完善用户资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-            success: (res) => {
+            success: res => {
               console.log("获取用户信息成功")
-              // console.log(res)
-              db.user.setUserInfo(_openid, res.userInfo)
               getApp().globalData.userInfo = res.userInfo
-              // console.log(getApp().globalData.userInfo)
-              loadSchoolAndCampus(that)
+              db.user.setUserInfo(_openid, res.userInfo).then(() => {
+                console.log('.then 设置用户信息成功')
+                loadSchoolAndCampus(that)
+              })
+            },
+            fail: err => {
+              console.log('获取用户信息失败')
+              wx.showToast({
+                title: '获取信息失败',
+                icon: 'error'
+              })
             }
           })
         }
@@ -178,8 +184,8 @@ Page({
       success(res) {
         console.log("在缓存中获取openid成功 = " + res.data)
         _openid = res.data
-        getApp().globalData.openid = res.data
-        getUserInfo(that, res.data)
+        getApp().globalData.openid = _openid
+        getUserInfo(that, _openid)
       },
       fail() {
         console.log("在缓存中获取openid失败")
