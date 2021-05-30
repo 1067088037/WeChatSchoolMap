@@ -1,7 +1,7 @@
 const _db = wx.cloud.database()
 const cmd = _db.command
 
-var debug = false
+var debug = true
 
 export class User {
   /**
@@ -16,12 +16,14 @@ export class User {
     } else {
       wx.showModal({
         title: '没有登录',
-        content: '您还没有登录，请先登录！',
+        content: '部分功能需要登录才能查看。您还没有登录，请先登录',
         confirmText: '去登录',
-        success: () => {
-          wx.switchTab({
-            url: '../../pages/myCenter/myCenter',
-          })
+        success: res => {
+          if (res.confirm) {
+            wx.switchTab({
+              url: '../../pages/myCenter/myCenter',
+            })
+          } else console.log('取消登录')
         }
       })
       return false
