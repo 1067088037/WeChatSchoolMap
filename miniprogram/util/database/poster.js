@@ -95,7 +95,16 @@ export class Poster {
     let res = await _db.collection('poster').where({
       _openid: '{openid}'
     }).count()
-    if (db.perControl.thisPermission >= 48 || res.total < 5) {
+    const allAllowPer = 48
+    const maxPoster = 5
+    if (db.perControl.thisPermission < allAllowPer && res.total >= maxPoster) {
+      wx.showModal({
+        title: '添加海报失败',
+        content: `您已经添加了${res.total}张海报，达到了上限。您可以删除部分海报或提高权限以继续添加海报。`,
+        showCancel: false
+      })
+      return db.perControl.refusePromise()
+    } else {
       if (poster.sender.constructor != String) {
         console.error('sender类型非法')
       } else if (poster.name.constructor != String) {
@@ -122,11 +131,6 @@ export class Poster {
         })
         return db.like.bindNewLike(posterId, 'poster', null)
       }
-    } else {
-      wx.showToast({
-        title: '权限不足或创建的海报数量已达上限',
-      })
-      return db.perControl.refusePromise()
     }
   }
 

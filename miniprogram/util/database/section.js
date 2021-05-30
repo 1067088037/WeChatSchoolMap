@@ -186,8 +186,17 @@ export class Section {
     return _db.collection('section').where({
       _openid: '{openid}'
     }).count().then(res => {
-      if (db.perControl.thisPermission >= 64 || res.total < 1) {
-        // console.log('允许')
+      const allAllowPer = 48
+      const maxSection = 1
+      console.log(res.total)
+      if (db.perControl.thisPermission < allAllowPer && res.total >= maxSection) {
+        wx.showModal({
+          title: '添加部门失败',
+          content: `您已经添加了${res.total}个部门，达到了上限。您可以删除部分部门或提高权限以继续添加部门。`,
+          showCancel: false
+        })
+        return db.perControl.refusePromise()
+      } else {
         return _db.collection('section').add({
           data: {
             super: {
@@ -202,14 +211,6 @@ export class Section {
             editor: []
           }
         })
-      } else {
-        // console.log('拒绝')
-        wx.showToast({
-          title: '权限不足或创建的部门数量已达上限',
-          icon: 'none',
-          mask: true
-        })
-        return db.perControl.refusePromise()
       }
     })
   }
