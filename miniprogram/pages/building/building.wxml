@@ -14,9 +14,10 @@
       </swiper>
     </view>
     <!-- 建筑的简介 -->
-    <view class="Introduction" wx:if="{{selectedStrategy ==null && isCreateNewStrategy == false}}">
+    <view class="Introduction" wx:if="{{selectedStrategy ==null && isCreateNewStrategy == false}}" style="margin-bottom:15rpx">
       {{building.text}}
     </view>
+    <view style="height:1rpx;width:80%;background:#ccc;margin-left:10%;"></view>
     <view class="StrategiesArea"
       wx:if="{{selectedStrategy ==null && strategies.length > 0 && isCreateNewStrategy == false }}">
       <view class="Strategies" wx:for="{{strategies}}" wx:key="item">

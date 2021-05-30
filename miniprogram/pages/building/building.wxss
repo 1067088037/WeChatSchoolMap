@@ -15,7 +15,7 @@
   width: 720rpx;
   margin-top: 20rpx;
   margin-left: 15rpx;
-  height: 240rpx;
+  height: auto;
   /* border: 1rpx solid lightgray; */
 }
 .BuildingName{
