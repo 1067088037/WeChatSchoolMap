@@ -6,6 +6,8 @@
 import { db } from "../../util/database/database";
 
 export function launchTest() {
+  db.user.checkIsLogin()
+  
   // db.arch.addArch('1ace8ef160901b1b008f69ae08b0ee8a', {
   //   name: '1222'
   // })

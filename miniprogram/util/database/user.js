@@ -5,6 +5,30 @@ var debug = false
 
 export class User {
   /**
+   * 检查是否登录
+   * @param {string} openid 
+   */
+  checkIsLogin() {
+    let userInfo = getApp().globalData.userInfo.userInfo
+    if (userInfo != undefined && Object.keys(userInfo).length >= 6) {
+      // console.log('已登录')
+      return true
+    } else {
+      wx.showModal({
+        title: '没有登录',
+        content: '您还没有登录，请先登录！',
+        confirmText: '去登录',
+        success: () => {
+          wx.switchTab({
+            url: '../../pages/myCenter/myCenter',
+          })
+        }
+      })
+      return false
+    }
+  }
+
+  /**
    * 调用云函数获取openid
    * @returns {string} openid
    */
