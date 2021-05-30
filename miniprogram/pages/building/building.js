@@ -540,7 +540,7 @@ Page({
     log.logTime("开始请求评论")
     db.comment.getAllComment(targetStrategyId).then(res => {
       log.logTime("评论请求完成")
-      console.log("res: ", res)
+      console.log("res: ", res,res.length)
       let avatars = []
       let likeNums = []
       commentNum = res.length
@@ -739,14 +739,17 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    wx.showLoading({
-      title: 'loading...',
-    })
+    
     let that = this
     console.log("Ready")
     let strategiesId = []
     let testStrategies = []
     db.strategy.getBriefStrategyArray(this.data.building._id).then(res => {
+      if(res.length > 0){
+      wx.showLoading({
+        title: 'loading...',
+      })
+    }
       console.log("获取到该建筑的简略信息", res)
       res.forEach(e => {
         strategiesId.push(e._id);
@@ -767,40 +770,41 @@ Page({
           tempStrategy['description'] = strategy.publish.content[0].desc;
           tempStrategy['title'] = strategy.publish.content[0].name;
           testStrategies.push(tempStrategy)
-        })
-      })
-    }).then(() => {
-      db.like.getIsAndCountLike(strategiesId).then(res => {
-        console.log("res", res)
-        console.log("testStrategies", testStrategies)
-        testStrategies.forEach(s => {
-          let isAndlike = res.result.find((item, index) => {
-            return item.superId == s.id
-          })
-          s['likeNum'] = isAndlike.count;
-          s['isLike'] = isAndlike.isLike;
-        })
-      }).then(() => {
-        testStrategies.forEach(e => {
-          db.comment.getAllComment(e.id).then(com => {
-            e.commentNum = com.length
-            console.log(com.length)
-          }).then(() => {
-            this.setData({
-              strategies: testStrategies
+        }).then(() => {
+          db.like.getIsAndCountLike(strategiesId).then(res => {
+            console.log("res", res)
+            console.log("testStrategies", testStrategies)
+            testStrategies.forEach(s => {
+              let isAndlike = res.result.find((item, index) => {
+                return item.superId == s.id
+              })
+              console.log("IAL: ",isAndlike)
+              s['likeNum'] = isAndlike.count;
+              s['isLike'] = isAndlike.isLike;
             })
-            wx.hideLoading()
+          }).then(() => {
+            testStrategies.forEach(e => {
+              db.comment.getAllComment(e.id).then(com => {
+                e.commentNum = 0
+                com.forEach(v=>{
+                  if(v.text != undefined){
+                    e.commentNum++
+                  }
+                })
+                console.log("comnum: ",com)
+              }).then(() => {
+                this.setData({
+                  strategies: testStrategies
+                })
+                wx.hideLoading()
+              })
+            })
+            this.setData({
+                //strategies: (testStrategies),
+                strategiesId
+              })
           })
         })
-        this.setData({
-            //strategies: (testStrategies),
-            strategiesId
-          })
-      }).then(() => {
-        this.setData({
-          strategies: testStrategies
-        })
-        wx.hideLoading()
       })
     })
   },

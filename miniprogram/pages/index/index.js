@@ -654,7 +654,7 @@ Page({
             markers: [],
             // isMoreTrue:true
           })
-          this.refreshPoint()
+          this.onReady(false)
         }
       })
     } else {
@@ -740,8 +740,6 @@ Page({
             })
           }
         })
-
-
         isAdd = true;
         break;
       }
@@ -1215,47 +1213,52 @@ Page({
     return values
   },
   getUserLocation: function (res) {
+    console.log(isAdd)
+    if (this.data.showMarkerDialog) {
+      return
+    } else {
+      //   let obj = {}
+      //   let tempVis  = []
+      //  for(let i  = 0 ; i < visibleArchArray.length; i++)
+      //  {
+      //    if(!obj[visibleArchArray[i].type]){
+      //      tempVis.push(visibleArchArray[i]);
+      //      obj[visibleArchArray[i].type] = true
+      //    }
+      //  }
+      //  visibleArchArray = tempVis
+      // console.log("before: ", visibleArchArray)
 
-    //   let obj = {}
-    //   let tempVis  = []
-    //  for(let i  = 0 ; i < visibleArchArray.length; i++)
-    //  {
-    //    if(!obj[visibleArchArray[i].type]){
-    //      tempVis.push(visibleArchArray[i]);
-    //      obj[visibleArchArray[i].type] = true
-    //    }
-    //  }
-    //  visibleArchArray = tempVis
-    console.log("before: ", visibleArchArray)
-
-    console.log(this.getObjArrayValues(visibleArchArray))
-    while (this.getObjArrayValues(visibleArchArray).length > 0) {
-      visibleArchArray.forEach((m, idx) => {
-        if (m['type'] == "user")
-          visibleArchArray.splice(idx, 1)
-      })
-    }
-    console.log("after: ", visibleArchArray)
-    setTimeout(() => {
-      let marker = {
-        longitude: res.longitude,
-        latitude: res.latitude,
-        id: util.randomNumberId(),
-        iconPath: "/images/global/userSelf.png",
-        width: 40,
-        height: 40,
-        type: "user",
-        title: '自己'
+      console.log(this.getObjArrayValues(visibleArchArray))
+      while (this.getObjArrayValues(visibleArchArray).length > 0) {
+        visibleArchArray.forEach((m, idx) => {
+          if (m['type'] == "user")
+            visibleArchArray.splice(idx, 1)
+        })
       }
-      console.log(marker)
-      if (this.getObjArrayValues(visibleArchArray).length == 0) visibleArchArray.push(marker)
-      console.log("last: ", visibleArchArray)
+      // console.log("after: ", visibleArchArray)
+      setTimeout(() => {
+        let marker = {
+          longitude: res.longitude,
+          latitude: res.latitude,
+          id: util.randomNumberId(),
+          iconPath: "/images/global/userSelf.png",
+          width: 40,
+          height: 40,
+          type: "user",
+          title: '自己'
+        }
+        // console.log(marker)
+        if (this.getObjArrayValues(visibleArchArray).length == 0 && this.data.showMarkerDialog == false) {
+          visibleArchArray.push(marker)
+          console.log("last: ", visibleArchArray)
 
-      this.setData({
-        markers: visibleArchArray
-      })
-    }, 2000);
-
+          this.setData({
+            markers: visibleArchArray
+          })
+        }
+      },1000);
+    }
   },
 
   /**
@@ -1300,13 +1303,24 @@ Page({
     }
     console.log("页面刷新")
     setTimeout(() => {
-      wx.startLocationUpdate({
-        success: res => {
-          console.log(res)
-          wx.onLocationChange(this.getUserLocation)
-        },
-        fail: console.error
-      })
+      if (!isAdd) {
+        wx.startLocationUpdate({
+          success: res => {
+            console.log(res)
+            wx.onLocationChange(this.getUserLocation)
+          },
+          fail: console.error
+        })
+      } else {
+        wx.stopLocationUpdate({
+          success: (res) => {
+            console.log(res)
+            wx.offLocationChange(this.getUserLocation)
+          },
+        })
+
+      }
+
     }, 2000);
 
     // this.getUserLocation
