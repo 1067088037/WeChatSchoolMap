@@ -27,7 +27,8 @@ Page({
     showComment: false, // 攻略按钮显示
     isLike: false, // 攻略是否点赞
     intoComment: false, // 是否进入评论区
-    strategies: [], // 攻略集合
+    strategies: [
+    ], // 攻略集合
     selectedStrategy: null, // 选中的攻略
     showBuilidngBanner: true, // 建筑图片区是否显示
     isCreateNewStrategy: false, // 是否新建攻略

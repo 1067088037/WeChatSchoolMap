@@ -146,7 +146,7 @@
         style="margin: 10rpx auto;width: 750rpx;height: 480rpx;" circular="{{true}}" autoplay="{{true}}"
         interval="3000">
         <swiper-item wx:for="{{building.images}}" wx:key="index">
-          <image src="{{item}}" style="width: 750rpx;height: 480rpx;" mode="scaleToFill"></image>
+          <image src="{{item}}" mode="aspectFill" style="width:750rpx;"></image>
         </swiper-item>
       </swiper>
     </view>
