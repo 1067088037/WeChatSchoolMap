@@ -1,15 +1,17 @@
-<view wx:if="{{getUserInfo}}" style="margin-top:20rpx">
-  <button type="primary" bindtap="getUserProfile">登录</button>
-</view>
 <view class="head">
   <view class="head2">
     <view class="getUserInfo">
       <block wx:if="{{canIUseOpenData}}" class="userinfo-opendata">
-        <view class="userinfo-avatar" bindtap="bindViewTap">
-          <open-data type="userAvatarUrl"></open-data>
+        <view style="display:flex">
+          <view class="userinfo-avatar" bindtap="bindViewTap">
+            <open-data type="userAvatarUrl"></open-data>
+          </view>
+          <open-data style="margin:auto;font-size:42rpx;font-weight:bold;color:#0b7285;" type="userNickName">
+          </open-data>
         </view>
-        <view class="name">
-          <open-data type="userNickName"></open-data>
+        <view>
+          <view style="font-weight:bold;color:#0c8599;">学校：华南理工大学</view>
+          <view style="font-weight:bold;color:#0c8599;">校区：大学城校区 </view>
         </view>
       </block>
       <block wx:elif="{{!hasUserInfo}}">
@@ -21,14 +23,6 @@
         <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
       </block>
     </view>
-  </view>
-  <view class="word1">
-    <text class="word"> 学校：华南理工大学</text>
-  </view>
-  <view class="word2">
-    <text>
-      校区：大学城校区
-    </text>
   </view>
 
   <!--  -
@@ -43,45 +37,50 @@
   </view>
 <!-- </scroll-view> -->
 </view>
-<view class="sonhead" hover-class="_hover_list" bindtap="navigaTocreatasso">
+
+<view wx:if="{{getUserInfo}}" style="margin-bottom:20rpx;margin-top:30rpx">
+  <button type="primary" bindtap="getUserProfile">登录</button>
+</view>
+
+<view class="sonhead">
   <image src="../../images/mycenter/myasso.png" style="height:70rpx;width:70rpx" mode="cover"></image>
-  <!-- <navigator url="../myCenter/myCenter/creatasso/creatasso"> -->
+  <navigator url="../myCenter/myCenter/creatasso/creatasso">
     <text>
       创建新组织
     </text>
-  <!-- </navigator> -->
+  </navigator>
 </view>
-<view class="sonhead" hover-class="_hover_list" bindtap="navigaToMyasso">
+<view class="sonhead">
   <image src="../../images/mycenter/create.png" style="height:70rpx;width:70rpx"></image>
-  <!-- <navigator url="../myCenter/myCenter/myasso/myasso"> -->
+  <navigator url="../myCenter/myCenter/myasso/myasso">
     <text>
       我的组织
     </text>
-  <!-- </navigator> -->
+  </navigator>
 </view>
-<view class="sonhead" hover-class="_hover_list" bindtap="navigaToJoin">
+<view class="sonhead">
   <image src="../../images/mycenter/join.png" style="height:70rpx;width:70rpx"></image>
-  <!-- <navigator url="./myCenter/join/join"> -->
+  <navigator url="./myCenter/join/join">
     <text>
       申请加入组织
     </text>
-  <!-- </navigator> -->
+  </navigator>
 </view>
-<view class="sonhead" hover-class="_hover_list" bindtap="navigaToFocus">
+<view class="sonhead">
   <image src="../../images/mycenter/focus.png" style="height:70rpx;width:70rpx"></image>
-  <!-- <navigator url="../myCenter/myCenter/focus/focus"> -->
+  <navigator url="../myCenter/myCenter/focus/focus">
     <text color>
       关注中活动
     </text>
-  <!-- </navigator> -->
+  </navigator>
 </view>
-<view class="sonhead" hover-class="_hover_list" bindtap="navigaToMyset">
+<view class="sonhead">
   <image src="../../images/mycenter/set.png" style="height:70rpx;width:70rpx"></image>
-  <!-- <navigator url="./myCenter/myset/myset"> -->
+  <navigator url="./myCenter/myset/myset">
     <text>
       设置
     </text>
-  <!-- </navigator> -->
+  </navigator>
 </view>
 <view style="margin-top:25rpx">
   <text style="color:#ddd; padding:20rpx">内部版本号:{{versionCode}}</text>
