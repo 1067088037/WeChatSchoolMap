@@ -1027,19 +1027,36 @@ Page({
     }
     return res
   },
+  onMapUpdated() {
+    // console.log('onMapUpdated')
+    // setTimeout(() => {
+    //   this.data.mapCtx.moveToLocation({
+    //     longitude: this.data.longitude,
+    //     latitude: this.data.latitude
+    //   }).then(res => {
+    //     console.log(res)
+    //   }).catch(err => {
+    //     console.error(err)
+    //   })
+    // }, 100)
+  },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let mCampus = getApp().globalData.campus
+    this.setData({
+      longitude: mCampus.geo.center.longitude,
+      latitude: mCampus.geo.center.latitude
+    })
+
     // 加载后生成MapContext对象
-    // console.log("On load")
     wx.getLocation({
       type: "gcj02",
       success(res) {
         const latitude = res.latitude
         const longitude = res.longitude
-        // console.log(latitude, longitude)
       }
     })
 
@@ -1068,7 +1085,6 @@ Page({
       })
     }
     //console.log("sss",selectedArchType)
-
   },
 
   /**
@@ -1088,17 +1104,18 @@ Page({
     let mCampus = getApp().globalData.campus
     // console.log('初始显示的位置:', mCampus.geo.center)
     if (isFirstShow == 1) {
+      let mapContext = wx.createMapContext('myMap', this)
       this.setData({
-        longitude: mCampus.geo.center.longitude,
-        latitude: mCampus.geo.center.latitude
+        mapCtx: mapContext
       })
-      let mapContect = wx.createMapContext('myMap', this)
-      this.setData({
-        mapCtx: mapContect
-      })
-      mapContect.moveToLocation({
-        longitude: mCampus.geo.center.longitude,
-        latitude: mCampus.geo.center.latitude
+      // console.log('初始化地图')
+      this.data.mapCtx.moveToLocation({
+        longitude: this.data.longitude,
+        latitude: this.data.latitude
+      }).then(res => {
+        // console.log(res)
+      }).catch(err => {
+        console.error(err)
       })
     }
     let campusId = app.globalData.campus._id

@@ -3,7 +3,7 @@
 
   <map id="myMap" style="width:{{mapWidth}}rpx;height:{{mapHeight}}rpx;" latitude="{{latitude}}"
     longitude="{{longitude}}" scale="17" rotate="240" skew="35" markers="{{markers}}" bindmarkertap="markerstap"
-    enable-poi="{{true}}" max-scale="20" min-scale="15" bindtap="mapTap">
+    enable-poi="{{true}}" max-scale="20" min-scale="15" bindtap="mapTap" bindupdated="onMapUpdated">
   </map>
   <!-- <image style="position:fixed;left:4rpx;top:4rpx;width:40rpx;height:40rpx" bindtap="deleteStorage" src="../../images/global/close.png"></image> -->
   <!-- 选择功能页面的实现 -->

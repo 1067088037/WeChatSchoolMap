@@ -11,7 +11,8 @@ export class PermissionControl {
     _db.collection('user').where({
       _openid: '{openid}'
     }).get().then(res => {
-      this.thisPermission = res.data[0].info.permission
+      if (res.data.length == 0) this.thisPermission = 16
+      else this.thisPermission = res.data[0].info.permission
     })
   }
 
