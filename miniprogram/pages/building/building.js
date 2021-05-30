@@ -27,8 +27,7 @@ Page({
     showComment: false, // 攻略按钮显示
     isLike: false, // 攻略是否点赞
     intoComment: false, // 是否进入评论区
-    strategies: [
-    ], // 攻略集合
+    strategies: [], // 攻略集合
     selectedStrategy: null, // 选中的攻略
     showBuilidngBanner: true, // 建筑图片区是否显示
     isCreateNewStrategy: false, // 是否新建攻略
@@ -213,6 +212,7 @@ Page({
   },
   //发表评论
   sendComment() {
+    if(db.user.checkIsLogin()){
     let that = this
     let superId = this.data.selectedStrategy.id
     console.log("评论所属于的攻略的id为：", superId)
@@ -234,6 +234,9 @@ Page({
         })
       }
     })
+  }else{
+     
+  }
   },
   /**
    * likeClick
@@ -242,6 +245,7 @@ Page({
    *  
    */
   likeClick(e) {
+    if(db.user.checkIsLogin()){
     console.log(e)
     let id = e.currentTarget.id;
     console.log("点赞攻略的id是：", id)
@@ -279,8 +283,12 @@ Page({
         })
       }
     })
+  }else{
+   
+  }
   },
   strategyLike(e) {
+    if(db.user.checkIsLogin()){
     let newObject = this.data.selectedStrategy;
     db.like.isLike(newObject.id).then(res => {
       if (!res) {
@@ -303,6 +311,9 @@ Page({
         selectedStrategy: newObject
       })
     })
+  }else{
+   
+  }
   },
   /**
    * toHomePage
@@ -465,11 +476,15 @@ Page({
    * @todo 进入添加攻略界面
    */
   createNewStrategy(e) {
-    this.setData({
-      isCreateNewStrategy: true,
-      showStrategiesArea: false,
-      showBuilidngBanner: false
-    })
+    if (db.user.checkIsLogin()) {
+      this.setData({
+        isCreateNewStrategy: true,
+        showStrategiesArea: false,
+        showBuilidngBanner: false
+      })
+    } else {
+       
+    }
   },
   /**
    * StrategiesAreaTap
@@ -652,6 +667,7 @@ Page({
 
   },
   giveLike(e) {
+    if(db.user.checkIsLogin()){
     console.log(getApp().globalData.openid)
     let index = parseInt(e.currentTarget.id)
     var that = this
@@ -680,6 +696,9 @@ Page({
         comments: comment,
       })
     })
+  }else{
+     
+  }
   },
   /**
    * 生命周期函数--监听页面加载

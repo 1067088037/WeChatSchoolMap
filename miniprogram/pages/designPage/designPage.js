@@ -547,7 +547,7 @@ Page({
         }
         this.data.userUploadPhotoes.forEach((e, index) => {
           let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
-          console.log("Images: ",)
+          console.log("Images: ", )
           draft.content[index].images.push(images)
         })
         console.log('draft: ', draft)
@@ -678,7 +678,7 @@ Page({
       }
       this.data.userUploadPhotoes.forEach((e, index) => {
         let images = this.updatePhotoesToCloud(CloudStrategyPath, index)
-        console.log("Images: ",)
+        console.log("Images: ", )
         draft.content[index].images.push(images)
       })
       console.log('draft: ', draft)
@@ -828,9 +828,13 @@ Page({
   },
   // 导航至上传海报界面
   nevigaToUpLoadPoster() {
-    this.setData({
-      showUploadPostArea: true
-    })
+    if (db.user.checkIsLogin()) {
+      this.setData({
+        showUploadPostArea: true
+      })
+    } else {
+      
+    }
   },
   // 回到设计主页面
   backToHomePage() {
@@ -917,11 +921,11 @@ Page({
   },
   DeleteThisPost(e) {
     wx.showModal({
-      title:"是否删除",
+      title: "是否删除",
       cancelColor: 'cancelColor',
-      confirmColor:'#FF0000',
-      success:res=>{
-        if(res.confirm){
+      confirmColor: '#FF0000',
+      success: res => {
+        if (res.confirm) {
           db.poster.removePoster(e.currentTarget.id).then(async res => {
             console.log(res)
             if (res.refuse == undefined || !res.refuse) {
@@ -938,7 +942,7 @@ Page({
         }
       }
     })
-    
+
   },
   postNoChange() {
     this.setData({
@@ -1573,9 +1577,13 @@ Page({
   },
   // 去创建生活攻略界面
   navigaToCreateLifeStrategy(e) {
+    if(db.user.checkIsLogin()){
     this.setData({
       showCreateLifeStrategy: true
     })
+  }else{
+   
+  }
   },
   // 是否显示上传标点
   navigaToPostedPoint(e) {
@@ -1947,7 +1955,7 @@ Page({
             this.onReady()
             this.navigaToEditPublishedStrategy()
             wx.hideLoading({
-              success: (res) => { },
+              success: (res) => {},
             })
             wx.showToast({
               title: '攻略已删除',
