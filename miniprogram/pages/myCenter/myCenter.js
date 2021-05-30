@@ -54,7 +54,42 @@ Page({
       }
     })
   },
-
+  navigaTocreatasso(e){
+    if(db.user.checkIsLogin()){
+      wx.navigateTo({
+        url: '../myCenter/myCenter/creatasso/creatasso',
+      })
+    }else{
+    }
+  },
+  navigaToMyasso(e){
+    if(db.user.checkIsLogin()){
+      wx.navigateTo({
+        url: '../myCenter/myCenter/myasso/myasso',
+      })
+    }else{}
+  },
+  navigaToJoin(e){
+    if(db.user.checkIsLogin()){
+      wx.navigateTo({
+        url: './myCenter/join/join',
+      })
+    }else{}
+  },
+  navigaToFocus(e){
+    if(db.user.checkIsLogin()){
+      wx.navigateTo({
+        url: '../myCenter/myCenter/focus/focus',
+      })
+    }else{}
+  },
+  navigaToMyset(e){
+    if(db.user.checkIsLogin()){
+      wx.navigateTo({
+        url: './myCenter/myset/myset',
+      })
+    }else{}
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
