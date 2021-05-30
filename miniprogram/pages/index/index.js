@@ -906,6 +906,7 @@ Page({
           console.log("用户选择的建筑对象的Id：", e.detail.markerId)
           app.globalData.buildingSelected = this.getMarkerInfo(e.detail.markerId)
           console.log("用户选择的建筑对象：", app.globalData.buildingSelected)
+          app.globalData.buildingSelected.text = app.globalData.buildingSelected.text.replaceAll("\\n", '\n')
           this.setData({
             showBuildingDialog: true,
             buildingSelected: app.globalData.buildingSelected
@@ -1330,6 +1331,7 @@ Page({
         text: app.globalData.buildingSelected.desc.text
       }
 
+      activitySelected.text = activitySelected.text.replaceAll("\\n", '\n')
       this.setData({
         markers: [activitySelected],
         buildingSelected: activitySelected,

@@ -541,7 +541,7 @@ Page({
     log.logTime("开始请求评论")
     db.comment.getAllComment(targetStrategyId).then(res => {
       log.logTime("评论请求完成")
-      console.log("res: ", res,res.length)
+      console.log("res: ", res, res.length)
       let avatars = []
       let likeNums = []
       commentNum = res.length
@@ -696,6 +696,7 @@ Page({
       console.log("building:", building.desc)
       let images = []
       if (building.desc == undefined) {
+        building.text = building.text.replaceAll("\\n", '\n')
         if (building.images != undefined) {
           // building.images.forEach(e => {
           //   e = CloudPathFront + e
@@ -716,6 +717,7 @@ Page({
           images = building.desc.images;
           building.images = images
           building.text = building.desc.text
+          building.text = building.text.replaceAll("\\n", '\n')
           this.setData({
             building: building
           })
@@ -740,17 +742,17 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    
+
     let that = this
     console.log("Ready")
     let strategiesId = []
     let testStrategies = []
     db.strategy.getBriefStrategyArray(this.data.building._id).then(res => {
-      if(res.length > 0){
-      wx.showLoading({
-        title: 'loading...',
-      })
-    }
+      if (res.length > 0) {
+        wx.showLoading({
+          title: 'loading...',
+        })
+      }
       console.log("获取到该建筑的简略信息", res)
       res.forEach(e => {
         strategiesId.push(e._id);
@@ -779,7 +781,7 @@ Page({
               let isAndlike = res.result.find((item, index) => {
                 return item.superId == s.id
               })
-              console.log("IAL: ",isAndlike)
+              console.log("IAL: ", isAndlike)
               s['likeNum'] = isAndlike.count;
               s['isLike'] = isAndlike.isLike;
             })
@@ -787,12 +789,12 @@ Page({
             testStrategies.forEach(e => {
               db.comment.getAllComment(e.id).then(com => {
                 e.commentNum = 0
-                com.forEach(v=>{
-                  if(v.text != undefined){
+                com.forEach(v => {
+                  if (v.text != undefined) {
                     e.commentNum++
                   }
                 })
-                console.log("comnum: ",com)
+                // console.log("comnum: ", com)
               }).then(() => {
                 this.setData({
                   strategies: testStrategies
@@ -801,9 +803,9 @@ Page({
               })
             })
             this.setData({
-                //strategies: (testStrategies),
-                strategiesId
-              })
+              //strategies: (testStrategies),
+              strategiesId
+            })
           })
         })
       })

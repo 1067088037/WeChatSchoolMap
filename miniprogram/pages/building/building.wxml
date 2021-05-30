@@ -1,9 +1,9 @@
 <!--pages/building/building.wxml-->
-<view class="buildingContainer"  >
-  <view class="Canteen"  wx:if="{{building.type != 'activity'}}">
-    <view class="BuildingName" wx:if="{{!isCreateNewStrategy}}">
-      {{building.title}}
-    </view>
+<view class="buildingContainer">
+  <view class="BuildingName" wx:if="{{!isCreateNewStrategy}}">
+    {{building.title}}
+  </view>
+  <view class="Canteen" wx:if="{{building.type != 'activity'}}">
     <!-- 建筑的图片 -->
     <view class="Images" wx:if="{{showBuilidngBanner}}">
       <swiper class="imageBanner" indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff"
@@ -14,8 +14,11 @@
       </swiper>
     </view>
     <!-- 建筑的简介 -->
-    <view class="Introduction" wx:if="{{selectedStrategy ==null && isCreateNewStrategy == false}}" style="margin-bottom:15rpx">
-      {{building.text}}
+    <view style="margin-botton:20rpx">
+      <view class="Introduction" wx:if="{{selectedStrategy ==null && isCreateNewStrategy == false}}"
+        style="margin-bottom:15rpx">
+        <text user-select="true">{{building.text}}</text>
+      </view>
     </view>
     <view style="height:1rpx;width:80%;background:#ccc;margin-left:10%;"></view>
     <view class="StrategiesArea"
@@ -40,7 +43,6 @@
         </view>
       </view>
       <!-- 添加攻略的按钮 -->
-
       <!-- <button bindtap="toHomePage">返回</button> -->
     </view>
     <view class="addStrategy" style="left:600rpx;width:100rpx;height:100rpx;position:fixed; bottom:30rpx;"
@@ -55,14 +57,14 @@
     </view>
     <!-- 发表评论 -->
     <!-- 攻略具体内容 -->
-    <view class="DetailStrategyPage" id="{{selectedStrategy.id}}" wx:if="{{selectedStrategy.isClicked}}" >
+    <view class="DetailStrategyPage" id="{{selectedStrategy.id}}" wx:if="{{selectedStrategy.isClicked}}">
       <button style="position:fixed; top:0rpx; padding : 0; width:120rpx" bindtap="toStrategiesAreaPage">⬅返回</button>
       <!-- 用户添加的攻略图片 -->
       <view class="StrategyImages">
         <swiper class="StrategyImageBanner" indicator-dots indicator-color="rgba(255,255,255,0.5)"
           indicator-active-color="blue" circular="{{true}}" autoplay="{{false}}" interval="3000">
-          <swiper-item  wx:for="{{selectedStrategy.src}}" wx:key="item">
-            <image src="{{item}}" mode="aspectFill" style="width:100%;" >
+          <swiper-item wx:for="{{selectedStrategy.src}}" wx:key="item">
+            <image src="{{item}}" mode="aspectFill" style="width:100%;">
             </image>
           </swiper-item>
         </swiper>
@@ -80,8 +82,9 @@
         <view class="commentTitle">
           评论<text style="font-size:30rpx;color:gray;margin-left:10rpx">({{commentNum}})</text>
         </view>
-        <view class="Comments" >
-          <view class="comments" wx:for="{{comments}}" wx:key="index" bindlongpress="showDeleteComment"  bindtap="notShowDeleteComment" id="{{item.id}}" hover-class="._hover_class">
+        <view class="Comments">
+          <view class="comments" wx:for="{{comments}}" wx:key="index" bindlongpress="showDeleteComment"
+            bindtap="notShowDeleteComment" id="{{item.id}}" hover-class="._hover_class">
             <view style="margin-top:16rpx">
               <image class="userAvatar" src="{{item.userAvatarUrl}}" mode="cover"></image>
               <text style="margin-left:10rpx;bottom:16rpx;position:relative">{{item.nickName}}</text>
@@ -96,7 +99,8 @@
           </view>
           <view style="text-align:center;">--The End--</view>
         </view>
-        <view class="deleteComment-btn" style="position:fixed;top:{{commentY}}rpx;left:{{commentX}}rpx" wx:if="{{isDeleteComment}}" hover-class="_hover_class" bindtap="toDeletComment">删除</view>
+        <view class="deleteComment-btn" style="position:fixed;top:{{commentY}}rpx;left:{{commentX}}rpx"
+          wx:if="{{isDeleteComment}}" hover-class="_hover_class" bindtap="toDeletComment">删除</view>
         <view class="postStrategyComment">
           <input style="width: 500rpx;" class="StrategyAreaInputComment" bindinput="getComment" placeholder="随便说点什么"
             bindconfirm="sendComment" confirm-type="send" value="{{commentValue}}"></input>
@@ -123,7 +127,7 @@
         <input type="text" name="" id="" placeholder="好的简介更引人入胜噢~" bindinput="inputBriefIntro"></input>
       </view>
       <view class="inputMainBody">
-        <textarea name="" id=""  placeholder="添加正文" bindinput="inputContent" maxlength="999"></textarea>
+        <textarea name="" id="" placeholder="添加正文" bindinput="inputContent" maxlength="999"></textarea>
       </view>
       <view class="StrategyButtonSet">
         <view class="cancelNewStrategy">
