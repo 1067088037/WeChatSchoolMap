@@ -1,7 +1,7 @@
 const _db = wx.cloud.database()
 const cmd = _db.command
 
-var debug = true
+var debug = false
 
 export class User {
   /**
@@ -16,7 +16,7 @@ export class User {
     } else {
       wx.showModal({
         title: '没有登录',
-        content: '部分功能需要登录才能查看。您还没有登录，请先登录',
+        content: '部分功能需要登录才能使用。您还没有登录，请先登录',
         confirmText: '去登录',
         success: res => {
           if (res.confirm) {
