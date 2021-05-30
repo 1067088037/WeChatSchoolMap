@@ -19,7 +19,16 @@ export class Strategy {
     let res = await _db.collection('strategy').where({
       _openid: '{openid}'
     }).count()
-    if (db.perControl.thisPermission >= 48 || res.total < 25) {
+    const allAllowPer = 48
+    const maxStrategy = 15
+    if (db.perControl.thisPermission < allAllowPer && res.total >= maxStrategy) {
+      wx.showModal({
+        title: '添加攻略失败',
+        content: `您已经添加了${res.total}个攻略，达到了上限。您可以删除部分攻略或提高权限以继续添加攻略。`,
+        showCancel: false
+      })
+      return db.perControl.refusePromise()
+    } else {
       if (strategy.constructor != Object) {
         console.error('strategy类型非法')
       } else if (strategy.name.constructor != String) {
@@ -55,12 +64,6 @@ export class Strategy {
           }
         })
       }
-    } else {
-      wx.showToast({
-        title: '权限不足或创建的攻略数量已达上限',
-        icon: 'none'
-      })
-      return db.perControl.refusePromise()
     }
   }
 

@@ -51,7 +51,16 @@ export class Point {
     let res = await _db.collection('point').where({
       _openid: '{openid}'
     }).count()
-    if (db.perControl.thisPermission >= 48 || res.total < 10) {
+    const allAllowPer = 48
+    const maxPoint = 10
+    if (db.perControl.thisPermission < allAllowPer && res.total >= maxPoint) {
+      wx.showModal({
+        title: '添加标点失败',
+        content: `您已经添加了${res.total}个标点，达到了上限。您可以删除部分标点或提高权限以继续添加标点。`,
+        showCancel: false
+      })
+      return db.perControl.refusePromise()
+    } else {
       if (belong.constructor != Array) {
         console.error('belong类型非法，如果为空请传入[]')
       } else if (type.constructor != String) {
@@ -83,12 +92,6 @@ export class Point {
           }
         })
       }
-    } else {
-      wx.showToast({
-        title: '权限不足或创建的标点数量已达上限',
-        icon: 'none'
-      })
-      return db.perControl.refusePromise()
     }
   }
 

@@ -84,41 +84,39 @@ Page({
       that.setData({
         postArray: res.data
       })
-      
-      }).then(()=>{
-        let postArray = Array.from(that.data.postArray);
+    }).then(() => {
+      let postArray = Array.from(that.data.postArray);
       var avatarUrl = that.data.avatarUrl
+      let tasks = []
       postArray.forEach(function (post, index) {
-        db.user.getUser(post.sender).then(senderInfo => {
-          console.log(senderInfo)
+        tasks.push(db.user.getUser(post.sender).then(senderInfo => {
           avatarUrl[index] = senderInfo.userInfo.avatarUrl
-          console.log(index)
-          that.setData({
-            avatarUrl: avatarUrl
-          })
-        })
+        }))
       })
-    }).then(()=>{
-      db.poster.getAttention(getApp().globalData.openid).then(resAtt => {
-        console.log(resAtt)
-        let attentionArray = Array.from(resAtt)
-        //console.log(attentionArray)
-        let postArr =this.data.postArray
-        var attentionOrNotVar = that.data.attentionOrNot;
-        var imagesAttentionVar = that.data.imagesAttention;
-        postArr.forEach(function (post, index) {
-          //console.log(attentionArray.indexOf(post._id))
-          attentionOrNotVar[index] = (attentionArray.indexOf(post._id) == -1) ? 0 : 1;
-          imagesAttentionVar[index] = (attentionArray.indexOf(post._id) == -1) ? "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/collect.png" : "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/collect_selected.png";
-          //console.log(that.data.attentionOrNot)
-          that.setData({
-            attentionOrNot: attentionOrNotVar,
-            imagesAttention: imagesAttentionVar
+      Promise.all(tasks).then(() => {
+        that.setData({
+          avatarUrl: avatarUrl
+        })
+        db.poster.getAttention(getApp().globalData.openid).then(resAtt => {
+          console.log('getAttention', resAtt)
+          let attentionArray = Array.from(resAtt)
+          //console.log(attentionArray)
+          let postArr = this.data.postArray
+          var attentionOrNotVar = that.data.attentionOrNot;
+          var imagesAttentionVar = that.data.imagesAttention;
+          postArr.forEach(function (post, index) {
+            //console.log(attentionArray.indexOf(post._id))
+            attentionOrNotVar[index] = (attentionArray.indexOf(post._id) == -1) ? 0 : 1;
+            imagesAttentionVar[index] = (attentionArray.indexOf(post._id) == -1) ? "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/collect.png" : "cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/images/collect_selected.png";
+            //console.log(that.data.attentionOrNot)
+            that.setData({
+              attentionOrNot: attentionOrNotVar,
+              imagesAttention: imagesAttentionVar
+            })
           })
         })
       })
     })
-    //console.log("onLoad")
   },
 
   /**
