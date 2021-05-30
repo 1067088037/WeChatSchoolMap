@@ -74,7 +74,7 @@
           upload="{{uplaodFile}}" bindfail="uplaodError" bindsuccess="uploadSuccess"> </mp-uploader>
       </mp-cell>
       <mp-cell title="活动介绍">
-        <textarea type="text" placeholder="请输入活动介绍" bindinput="getPostContent" style="margin-left:12rpx"></textarea>
+        <textarea type="text" placeholder="请输入活动介绍" bindinput="getPostContent" style="margin-left:12rpx" maxlength="999"></textarea>
       </mp-cell>
       <view class="cancleOrPost">
         <view class="cancleView">

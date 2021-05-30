@@ -10,8 +10,15 @@
           <text class="time">{{item.sendTime}}</text>
         </view>
         <text class="postTitle">{{item.name}}</text>
-
-        <image wx:if="{{item.images != []}}" src="{{item.images[0]}}" mode="widthFix"></image>
+        <!-- <scroll-view  scroll-y="true" >
+          <view style="hegiht:100%" wx:for="{{item.images}}" wx:for-item="im" wx:key="index">
+            <image wx:if="{{item.images != []}}" src="{{im}}" mode="widthFix" show-menu-by-longpress
+              bindtap="preview" id="{{item._id}}"></image>
+          </view>
+        </scroll-view> -->
+        <image wx:if="{{item.images != []}}" src="{{item.images[0]}}" mode="widthFix"
+        show-menu-by-longpress bindtap="preview" id = "{{item._id}}"
+        ></image>
 
         <text>
           {{item.desc}}
