@@ -1289,7 +1289,6 @@ Page({
    */
   onShow: function () {
     // console.log(this.data.markers)
-
     tempTest.launchTest() //用于临时测试
     tempTest.dbExample() //数据库函数调用示例
     db.section.getSectionArray(app.globalData.school._id).then(res => {
@@ -1321,7 +1320,6 @@ Page({
       })
     } else if (!this.data.isAddedMarker && isFirstShow != 1) {
       console.log("页面刷新")
-
       this.onReady(false)
     }
     console.log("页面刷新")
@@ -1341,23 +1339,16 @@ Page({
             wx.offLocationChange(this.getUserLocation)
           },
         })
-
       }
-
-    }, 2000);
-
+    }, 100);
     // this.getUserLocation
-
-
-
-
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    wx.stopLocationUpdate()
   },
 
   /**
