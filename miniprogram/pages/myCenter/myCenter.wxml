@@ -42,45 +42,45 @@
   <button type="primary" bindtap="getUserProfile">登录</button>
 </view>
 
-<view class="sonhead">
+<view class="sonhead" bindtap="navigaTocreatasso" hover-class="_hover_list">
   <image src="../../images/mycenter/myasso.png" style="height:70rpx;width:70rpx" mode="cover"></image>
-  <navigator url="../myCenter/myCenter/creatasso/creatasso">
+  <!-- <navigator url="../myCenter/myCenter/creatasso/creatasso"> -->
     <text>
       创建新组织
     </text>
-  </navigator>
+  <!-- </navigator> -->
 </view>
-<view class="sonhead">
+<view class="sonhead" bindtap="navigaToMyasso" hover-class="_hover_list"> 
   <image src="../../images/mycenter/create.png" style="height:70rpx;width:70rpx"></image>
-  <navigator url="../myCenter/myCenter/myasso/myasso">
+  <!-- <navigator url="../myCenter/myCenter/myasso/myasso"> -->
     <text>
       我的组织
     </text>
-  </navigator>
+  <!-- </navigator> -->
 </view>
-<view class="sonhead">
+<view class="sonhead" bindtap="navigaToJoin" hover-class="_hover_list">
   <image src="../../images/mycenter/join.png" style="height:70rpx;width:70rpx"></image>
-  <navigator url="./myCenter/join/join">
+  <!-- <navigator url="./myCenter/join/join"> -->
     <text>
       申请加入组织
     </text>
-  </navigator>
+  <!-- </navigator> -->
 </view>
-<view class="sonhead">
+<view class="sonhead" bindtap="navigaToFocus" hover-class="_hover_list">
   <image src="../../images/mycenter/focus.png" style="height:70rpx;width:70rpx"></image>
-  <navigator url="../myCenter/myCenter/focus/focus">
+  <!-- <navigator url="../myCenter/myCenter/focus/focus"> -->
     <text color>
       关注中活动
     </text>
-  </navigator>
+  <!-- </navigator> -->
 </view>
-<view class="sonhead">
+<view class="sonhead" bindtap="navigaToMyset" hover-class="_hover_list">
   <image src="../../images/mycenter/set.png" style="height:70rpx;width:70rpx"></image>
-  <navigator url="./myCenter/myset/myset">
+  <!-- <navigator url="./myCenter/myset/myset"> -->
     <text>
       设置
     </text>
-  </navigator>
+  <!-- </navigator> -->
 </view>
 <view style="margin-top:25rpx">
   <text style="color:#ddd; padding:20rpx">内部版本号:{{versionCode}}</text>
