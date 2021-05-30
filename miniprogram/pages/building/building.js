@@ -789,15 +789,18 @@ Page({
             this.setData({
               strategies: testStrategies
             })
+            wx.hideLoading()
           })
         })
         this.setData({
             //strategies: (testStrategies),
             strategiesId
-          }),
-          wx.hideLoading({
-            success: (res) => {},
           })
+      }).then(() => {
+        this.setData({
+          strategies: testStrategies
+        })
+        wx.hideLoading()
       })
     })
   },

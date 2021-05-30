@@ -1,29 +1,4 @@
 <view class="PosterArea">
-  <swiper indicator-dots="true" autoplay="true" interval="3000">
-
-    <!--放前三个活动的图片轮播-->
-    <swiper-item>
-      <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png"
-        mode="widthFix">
-      </image>
-    </swiper-item>
-
-
-    <swiper-item>
-      <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png"
-        mode="widthFix">
-      </image>
-    </swiper-item>
-
-
-    <swiper-item>
-      <image src="cloud://cloud1-4gd8s9ra41d160d3.636c-cloud1-4gd8s9ra41d160d3-1305608874/Global/posters/绿植领养活动.png"
-        mode="widthFix">
-      </image>
-    </swiper-item>
-
-
-  </swiper>
   <view class="PostArea">
     <!--加一个while循环，显示多个活动-->
 

@@ -84,7 +84,9 @@ Page({
       that.setData({
         postArray: res.data
       })
-      let postArray = Array.from(that.data.postArray);
+      
+      }).then(()=>{
+        let postArray = Array.from(that.data.postArray);
       var avatarUrl = that.data.avatarUrl
       postArray.forEach(function (post, index) {
         db.user.getUser(post.sender).then(senderInfo => {
@@ -96,12 +98,12 @@ Page({
           })
         })
       })
-      console.log(getApp().globalData.openid)
+    }).then(()=>{
       db.poster.getAttention(getApp().globalData.openid).then(resAtt => {
         console.log(resAtt)
         let attentionArray = Array.from(resAtt)
         //console.log(attentionArray)
-        let postArr = Array.from(res.data)
+        let postArr =this.data.postArray
         var attentionOrNotVar = that.data.attentionOrNot;
         var imagesAttentionVar = that.data.imagesAttention;
         postArr.forEach(function (post, index) {
