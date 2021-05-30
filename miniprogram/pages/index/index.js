@@ -439,7 +439,7 @@ Page({
    * @todo 获取点击处的经纬度
    */
   mapTap(e) {
-    console.log(e)
+    // console.log(e)
     if (this.data.showPage) {
       this.setData({
         showPage: false,
@@ -1266,8 +1266,8 @@ Page({
           latitude: res.latitude,
           id: util.randomNumberId(),
           iconPath: getApp().globalData.userInfo.userInfo.avatarUrl,
-          width: 50,
-          height: 50,
+          width: 30,
+          height: 30,
           type: "user",
           title: '自己'
         }
