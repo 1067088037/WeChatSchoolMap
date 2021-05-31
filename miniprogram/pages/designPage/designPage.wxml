@@ -239,12 +239,20 @@
       </view>
       <view class="StrategyButtonSet">
         <view class="cancelNewStrategy">
+          <button style="width:100%" bindtap="isShowSaveEditDialog" type="default">取消</button>
+        </view>
+        <view class="createNewStrategy">
+          <button style="color:white;" bindtap="publishDraft" type="primary">发布攻略</button>
+        </view>
+      </view>
+      <!-- <view class="StrategyButtonSet">
+        <view class="cancelNewStrategy">
           <button style="width:100%" bindtap="isShowSaveEditDialog">取消</button>
         </view>
         <view class="createNewStrategy">
           <button style="color:white;" bindtap="publishDraft">发布攻略</button>
         </view>
-      </view>
+      </view> -->
       <mp-dialog show="{{isExitEditStrategy}}" buttons="{{dialogButtons}}" bindbuttontap="isSaveEdit">
         <view>是否需要保存编辑记录</view>
       </mp-dialog>

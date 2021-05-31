@@ -526,6 +526,7 @@ Page({
               lifeStrategyImages: [],
               lifeStrategyDescriptions: [],
               lifeStrategyCoordinates: [],
+              files:[],
               needMarkers: [],
               strategyStep: [1],
               lifeStrategyIntro: "",
@@ -624,7 +625,7 @@ Page({
         strategy.content.push(contentObj)
       }
       console.log(strategy)
-      db.strategy.addStrategy(superid, superType, strategy).then(() => {
+      db.strategy.addStrategy(superid, superType, strategy).then((res) => {
         if (!res.refuse) {
           this.setData({
             showIsSaveLifeStrategy: false,
@@ -1812,7 +1813,7 @@ Page({
           files: this.data.files
         })
       }
-    } else {
+    } else if(this.data.draftLifeStrategySelected != null) {
       console.log(e)
       let id = parseInt(e.currentTarget.id)
       let filePath = this.data.draftLifeStrategySelected.content[id].images[e.detail.index]
@@ -1829,6 +1830,13 @@ Page({
       this.data.files[id].splice(e.detail.index, 1)
       this.setData({
         draftLifeStrategySelected: this.data.draftLifeStrategySelected
+      })
+    } else{
+      this.data.userUploadPhotoes[e.detail.index].pop()
+      this.data.files[e.detail.index].pop()
+      this.setData({
+        userUploadPhotoes:this.data.userUploadPhotoes,
+        files:this.data.files.pop()
       })
     }
   },
