@@ -63,7 +63,7 @@ export class Poster {
         collection: 'poster',
         superId: campusId
       }
-    }).then(res => res.result).catch(err => [])
+    }).then(res => res.result).catch(err => { return { data: [] } })
   }
 
   /**
