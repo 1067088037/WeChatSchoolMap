@@ -1,3 +1,6 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "mp-badget":"weui-miniprogram/badge/badge",
+    "mp-slideview": "weui-miniprogram/slideview/slideview"
+  }
 }

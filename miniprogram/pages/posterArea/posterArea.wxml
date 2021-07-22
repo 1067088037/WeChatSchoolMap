@@ -1,0 +1,37 @@
+<view class="PosterArea">
+  <view class="PostArea">
+    <!--加一个while循环，显示多个活动-->
+
+    <view class="posters" wx:for="{{postArray}}" wx:for-index="index" wx:key="key" wx:for-item="item">
+      <view class="post-container">
+        <view class="senderInfo">
+          <image class="avatar" src="{{avatarUrl[index]}}">
+          </image>
+          <text class="time">{{item.sendTime}}</text>
+        </view>
+        <text class="postTitle">{{item.name}}</text>
+        <!-- <scroll-view  scroll-y="true" >
+          <view style="hegiht:100%" wx:for="{{item.images}}" wx:for-item="im" wx:key="index">
+            <image wx:if="{{item.images != []}}" src="{{im}}" mode="widthFix" show-menu-by-longpress
+              bindtap="preview" id="{{item._id}}"></image>
+          </view>
+        </scroll-view> -->
+        <image wx:if="{{item.images != []}}" src="{{item.images[0]}}" mode="widthFix"
+        show-menu-by-longpress bindtap="preview" id = "{{item._id}}"
+        ></image>
+
+        <text>
+          {{item.desc}}
+        </text>
+        <view class="collectOrLike">
+          <view id="{{item._id}}" bindtap="attentionOrCancelAttention">
+            <image src="{{imagesAttention[index]}}">
+            </image>
+          </view>
+        </view>
+
+      </view>
+
+    </view>
+  </view>
+</view>

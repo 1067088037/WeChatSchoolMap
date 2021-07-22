@@ -1,4 +1,5 @@
 {
+  "setting": {},
   "condition": {
     "plugin": {
       "list": []
@@ -12,14 +13,39 @@
     "miniprogram": {
       "list": [
         {
-          "id": -1,
-          "name": "db guide",
-          "pathName": "pages/databaseGuide/databaseGuide",
-          "query": ""
-        },
-        {
           "name": "pages/index/index",
           "pathName": "pages/index/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/load/load",
+          "pathName": "pages/load/load",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/building/building",
+          "pathName": "pages/building/building",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/designPage/designPage",
+          "pathName": "pages/designPage/designPage",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/posterArea/posterArea",
+          "pathName": "pages/posterArea/posterArea",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/myCenter/myCenter",
+          "pathName": "pages/myCenter/myCenter",
+          "query": "",
           "scene": null
         }
       ]

@@ -1,0 +1,75 @@
+/* pages/myCenter/focus/focus.wxss */
+.labelView{
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  padding: 1rpx 10rpx;
+  width: 140rpx;
+  height: 50rpx;
+  
+  font-size: 26rpx;
+  border-radius: 12rpx;
+  text-align: center;
+  margin-right: 5rpx;
+  margin-top: 15rpx;
+  margin-bottom: 15rpx;
+}
+.FollowDialog{
+  margin:20rpx;
+  width:680rpx;
+  padding:0rpx;
+  position: relative;
+  left:20rpx;
+  height: auto;
+  height:450rpx;
+  border: 1rpx solid rgb(151, 151, 151);
+  border-radius: 40rpx;
+  background:white;
+}
+view.weui-dialog__wrp.FollowDialog > view > view.weui-dialog__ft{
+  height: 0;
+}
+.Navigation {
+  width: 65rpx;
+  height: 65rpx;
+  position: relative;
+  padding-left: 40rpx;
+}
+
+.introduce {
+  /* width: 100rpx; */
+  height: 400rpx;
+  color:black;
+  /* border: 1rpx solid black; */
+}
+.selectShowPoint{
+  width: 730rpx;
+  margin-left: 10rpx;
+  position: fixed;
+  top:5rpx;
+  background:white;
+  border: 1rpx solid rgb(151, 151, 151);
+  border-radius: 20rpx;
+  justify-items: center;
+}
+.month{
+  position: relative;
+  bottom: 20rpx;
+  display:flex;
+}
+.bo{
+  position: relative;
+  bottom:35rpx;
+}
+.head{
+  display:flex;
+  flex-wrap:wrap;
+  width:600rpx;
+}
+.classReflect{ 
+  -webkit-box-reflect: below 10px 
+  -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(255, 255, 255, 0.51))); 
+  color:#006699;
+  font-size:45rpx;
+  font-style: italic;
+  }

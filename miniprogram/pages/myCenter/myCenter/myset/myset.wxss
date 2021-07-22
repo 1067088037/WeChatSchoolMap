@@ -1,0 +1,17 @@
+/* pages/myCenter/myCenter/myset/myset.wxss */
+.section__title{
+  font-size:45rpx;
+}
+.picker{
+  background:white;
+  color:gray;
+  padding-top :10rpx;
+  padding-right :10rpx;
+  padding-bottom:10rpx;
+  padding-left:25rpx;
+}
+.fake3{
+  height:2rpx;
+  width:300rpx;
+  background:rgb(44, 40, 40);
+}

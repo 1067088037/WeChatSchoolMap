@@ -1,2 +1,100 @@
 <!--pages/message/message.wxml-->
-<text>pages/message/message.wxml</text>
+
+<view class="MessageSelectorPage"
+  wx:if="{{showLifeStrategiesPage == false && showAttentionPage == false && showLifeStrategyDetail == false &&showMap == false}}">
+  <view class="markContainer" style="margin-top:30rpx">
+    <view class="outBoxView" bindtap="navigaToAttentionPage" hover-class="_hover_list">
+      <image mode="heightFix" src="../../images/message/attention.png"></image>
+      <view class="titleBox">
+        <text class="titleText">关注的活动消息</text>
+      </view>
+      <view class="detailText">{{attentionActivityNum == -1 ? "" : attentionActivityNum}}</view>
+    </view>
+  </view>
+  <view class="markContainer" style="margin-top:30rpx">
+    <view class="outBoxView" bindtap="navigaToLifeStrategiesPage" hover-class="_hover_list">
+      <image mode="heightFix" src="../../images/message/life_strategy.png"></image>
+      <view class="titleBox">
+        <text class="titleText">生活攻略</text>
+      </view>
+      <view class="detailText">{{lifeStrategyNum == -1 ? "" : lifeStrategyNum}}</view>
+    </view>
+  </view>
+</view>
+<!-- 生活攻略简图界面 -->
+<view wx:if="{{showLifeStrategiesPage}}">
+  <view style="display:block; width:300rpx;align-item:flex-start">
+    <button style="padding:0; text-align:left" bindtap="returnToHomePageFromSP">⬅返回</button>
+  </view>
+  <view class="LifeStrategies" wx:for="{{publishStrategies}}" wx:key="index">
+    <view class="lifeStrategy" id="{{item.id}}" bindtap="intoLifeStrategy">
+      <image src="{{item.content[0].images[0]}}" id="{{item.id}}"></image>
+      <text id="{{item.id}}"> {{item.name}} </text>
+    </view>
+  </view>
+</view>
+<!-- 选中具体攻略界面 -->
+<view wx:if="{{showLifeStrategyDetail && showMap ==false}}">
+  <view style="display:block; width:300rpx;align-item:flex-start">
+    <button style="padding:0; text-align:left" bindtap="returnToLifeStrategiesPage">⬅返回</button>
+  </view>
+  <view class="LifeStrategyDetail">
+    <view class="LifeStrategyTitle">
+      <text
+        style="display:block; text-align:center;font-size:32rpx;font-weight:bold;">{{selectedLifeStrategy.name}}</text>
+      <text style="display:block; text-align:center">{{selectedLifeStrategy.desc}}</text>
+    </view>
+    <view class="LifeStrategyContent" wx:for="{{selectedLifeStrategy.content}}" wx:key="index">
+      <view class="StepTitle">
+        <text style="display:block; text-align:center">{{item.name}}</text>
+        <text style="display:block; text-align:center">{{item.desc}}</text>
+      </view>
+      <view>
+        <swiper class="imageBanner" indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff"
+          circular="{{true}}" next-margin="20rpx">
+          <swiper-item class="ContentImage" wx:for="{{item.images}}" wx:for-item="im" wx:key="index">
+            <image mode="scaleToFill" style="align-content: center;width:100%;height:100%" src="{{im}}"></image>
+          </swiper-item>
+        </swiper>
+      </view>
+    </view>
+    <view style="margin-left:20rpx">
+      <image id="{{selectedLifeStrategy.id}}" bindtap="navigatoMark" style="height:50rpx;width:50rpx"
+        src="../../images/global/navigation.png"></image>
+    </view>
+  </view>
+</view>
+<!-- 关注的活动消息页面 -->
+<view wx:if="{{showAttentionPage}}">
+  <view style="display:block; width:300rpx;align-item:flex-start">
+    <button style="padding:0; text-align:left" bindtap="returnToHomePageFromAP">⬅返回</button>
+  </view>
+  <view class="MessageContainer" wx:if="{{messageData.length>0}}">
+    <view class="MessageBoxs" wx:for="{{messageData}}" wx:key="item" id="{{index}}" bindtap="enterMessage">
+      <!-- buttons="{{slideButtons}}" -->
+      <view class="MessageBox">
+        <image src="{{item.src}}" mode="widthFix" class="MessageImage"></image>
+        <mp-badget wx:if="{{item.msgNum > 99}}" content="99+"
+          style="position:absolute;margin-left: 15px;margin-right: 5px" ext-class="blue" />
+        <mp-badget wx:if="{{item.msgNum>0&&item.msgNum<=99}}" content="{{item.msgNum}}"
+          style="position:absolute;margin-left: 15px;margin-right: 5px" ext-class="blue" />
+        <text>{{item.msg}}</text>
+        <view style="margin-left:16rpx; display:inline-block; " wx:for="{{item.tag}}" wx:key="index" wx:for-item="tag">
+          <text style="border:1rpx solid #A9D0F5;font-size:26rpx;font-style:oblique;background:white "> {{tag}}</text>
+        </view>
+      </view>
+    </view>
+
+  </view>
+  <view wx:if="{{messageData.length == 0}}">
+    <text>暂无您关注的活动消息</text>
+  </view>
+</view>
+<view wx:if="{{showMap}}">
+
+  <map id="newMap" style="width:{{mapWidth}}rpx;height:{{mapHeight}}rpx;" latitude="{{latitude}}"
+    longitude="{{longitude}}" scale="17" rotate="240" skew="35" markers="{{markers}}" bindcallouttap="markerstap"
+    enable-poi="{{true}}" max-scale="20" min-scale="15" bindtap="newMapTap">
+    <button style="position:fixed;top:0;left:0" bindtap="returnToLifeStrategyDetail">⬅返回</button>
+  </map>
+</view>

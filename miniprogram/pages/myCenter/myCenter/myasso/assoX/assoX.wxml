@@ -1,0 +1,60 @@
+<view style="display:flex;justify-content:center;"><image src="../../../../../images/mycenter/部门.png" style="width:50rpx;height:50rpx;"></image><view>{{title}}</view>   
+
+</view>
+<view style="position:relative;left:230rpx">
+<view class="fake3"></view>
+</view>
+<view class="header_right">   
+    <navigator url="../../myasso/myasso" open-type="redirect">成员列表</navigator>
+    <view class="fake2"></view>  
+    <navigator url="../assoY/assoY?sid={{sectionid}}&title={{title}}" open-type="redirect" style="color:gray">申请表</navigator>  
+    <view wx:if="{{isAdmin}}" class="permission">管理员</view>
+<view hidden="{{isAdmin}}" class="permission">成员</view>
+  </view>  
+  <view class="fake"></view>
+  <view wx:for="{{member}}" wx:for-item="m" class="FollowDialog">
+<view class="membershow" >
+  <view style="display:flex">
+  <image src="{{m.avatarUrl}}" mode="cover" class="userinfo-avatar"></image>
+  <view class="button1">成员名称：{{m.nickName}}</view>
+</view>
+  <view style="display:flex">
+<view wx:if="{{m.isAdmin}}" class="labelView"><text>管理员</text></view>
+<view hidden="{{m.isAdmin}}" class="labelView"><text>成员</text></view>
+<view hidden="{{m.isAdmin}}" ><view bindtap="setAdmin" data-item="{{m}}"  style="text-align:center;line-height:6rpx padding:0rpx; font-size:28rpx; margin-top:14rpx ;right:10rpx;margin-left:60rpx;margin-right:30rpx;width:220rpx; border-radius:50rpx;border:1rpx solid #006699;color:#006699 ">设为管理员</view></view>
+<view hidden="{{m.isAdmin}}" ><view bindtap="getoutof" data-item="{{m}}" style="text-align:center;line-height:6rpx padding:0rpx; font-size:28rpx; margin-top:14rpx ;right:10rpx;margin-right:4rpx;width:150rpx; border-radius:50rpx;border:1rpx solid #006699;color:#006699 ">请离社团</view></view>
+</view>
+  </view>
+  </view>
+  
+  <modal wx:if="{{reset}}" title="确认" confirm-text="确定" cancel-text="取消" bindcancel="giveUp" bindconfirm="setnewAdmin">
+  <view>是否修改该成员为管理员</view>
+</modal>
+
+<modal wx:if="{{getout}}" title="确认" confirm-text="确定" cancel-text="取消" bindcancel="giveUp2" bindconfirm="getout">
+  <view>是否将该成员请离社团</view>
+</modal>
+<!--  
+<view class="mask" bindtap='modelCancel' catchtouchmove="preventTouchMove" wx:if="{{showModalDlg}}"></view>
+<view class="modalDlg" wx:if="{{showModalDlg}}">
+    <text>社团成员</text>
+    <text>成员名称</text>
+    <text>成员头像</text>
+    <text>成员职称及其可操控动作</text>
+    <view>
+    <button bindtap="sendmessage">发送工作消息</button>
+    <button bindtap="resetrank">任命为管理员</button>
+    <button bindtap="outasso">请离社团</button>
+    </view>
+</view>
+ -->
+
+<modal wx:if="{{resetflasehd}}" title="修改失败" confirm-text="确定" cancel-text="重试" bindcancel="tryaga" bindconfirm="accessfail">
+  <view>修改失败，您的权限不足</view>
+</modal>
+
+<modal hidden="{{resetsuccesshd}}" title="修改成功" confirm-text="确定" cancel-text="重新修改" bindcancel="tryagasu" bindconfirm="accesssu">
+  <view>修改成功，您已经成功改变该同学的权限</view>
+</modal>
+
+

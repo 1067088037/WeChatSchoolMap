@@ -1,0 +1,98 @@
+/* pages/myCenter/myasso/assoY/assoY.wxss */
+.textall{
+  background:rgb(211, 189, 189);
+  border-width: 20rpx;
+  border-radius: 30rpx;
+  height:220rpx;
+}
+.login-button { 
+  position: relative;
+  left:145rpx;
+  text-align:center;
+  line-height:6rpx;
+  padding:0rpx;
+  font-size:28rpx; 
+  margin-top:14rpx ;
+  right:10rpx;
+  margin-left:60rpx;
+  margin-right:30rpx;
+  width:220rpx;
+   border-radius:50rpx;
+   border:1rpx solid #006699;
+   color:#006699 
+}
+.login-button2 { 
+  position: relative;
+  left:125rpx;
+  display:flex;/* 按钮美化 */
+	width: 135rpx; /* 宽度 */
+	height: 70rpx; /* 高度 */
+	border-width: 10rpx; /* 边框宽度 */
+	border-radius: 20rpx; /* 边框半径 */
+	background: #b7b9bb; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: rgb(63, 148, 218); /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+}
+.login-button-hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #5599FF;
+}
+
+.btn1 {
+  width: 80%;
+  margin-top: 20rpx;
+  background-color: burlywood;
+  color: rgb(138, 138, 138);
+  border-radius: 98rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnImg {
+  margin-right: 8rpx;
+  width: 46rpx;
+  height: 46rpx;
+}
+
+.btn1::after {
+  border-radius: 98rpx;
+  border: 0; 
+}
+.fake{
+  position:relative;
+  left:180rpx;
+  width:40rpx;
+  height:3rpx;
+  background:black;
+}
+.fake2{
+  margin:10rpx;
+  height:30rpx;
+  width:3rpx;
+  background:rgb(49, 47, 47);
+}
+.header_right{
+  display:flex;
+}
+.permission{
+  border:2rpx rgb(95, 80, 67) solid;
+  border-radius: 10rpx;
+  color:rgb(95, 80, 67);
+  position:relative;
+  left:350rpx;
+}
+.FollowDialog{
+  margin:10rpx;
+  width:680rpx;
+  padding:20rpx;
+  position: relative;
+  height: auto;
+  border: 1rpx solid rgb(151, 151, 151);
+  border-radius: 40rpx;
+  background:white;
+  display:block;
+}

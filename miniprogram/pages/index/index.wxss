@@ -1,161 +1,257 @@
-/**index.wxss**/
-
-page {
-  background: #f6f6f6;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+/* 加号的样式 */
+.more {
+  display: block;
+  /* border: 1px solid red; */
+  width: 85rpx;
+  text-align: center;
+  line-height: 60rpx;
+  height: 85rpx;
+  font-size: 30rpx;
+  border-radius: 50rpx;
+  position: fixed;
+  right: 20rpx;
+  top: 20rpx;
+  box-shadow: 0rpx 0rpx 50rpx 25rpx rgba(128, 128, 128, 0.4);
+  opacity: 0.75;
 }
 
-.userinfo, .uploader, .tunnel {
-  margin-top: 40rpx;
-  height: 140rpx;
+.selectActivityTimeBlock {
+  orphans: 0.5;
+}
+
+/* 功能页面的样式 */
+.funcMask {
+  height: 100%;
   width: 100%;
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-left: none;
-  border-right: none;
+  position: fixed;
+  background-color: rgba(0, 0, 0, .5);
+  z-index: 2;
+  top: 0;
+  left: 0;
+  align-items: center;
+}
+
+.funcMaskContent {
+  padding: 25rpx 0;
+  width: 70%;
+  margin: 25% auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  border-radius: 40rpx;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(4.5rpx);
+  box-shadow: 10rpx 0rpx 50rpx 25rpx rgba(160, 160, 160, 0.15);
+}
+
+.funcMaskText {
+  width: 80%;
+  font-size: 30rpx;
+  color: #856d5f;
   display: flex;
   flex-direction: row;
   align-items: center;
-  transition: all 300ms ease;
+
+  margin: 25rpx 0 25rpx 0;
 }
 
-.userinfo {
-  padding-left: 120rpx;
+.index {
+  color: #fff;
+  font-size: 40rpx;
+  height: 60rpx;
+  width: 60rpx;
+  background: #664a2c;
+  display: block;
+  text-align: center;
+  line-height: 60rpx;
+  border-radius: 30rpx;
+  margin-right: 10rpx;
 }
 
-.userinfo-avatar {
-  width: 100rpx;
-  height: 100rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-  background-size: cover;
-  background-color: white;
+.item {
+  border-radius: 20rpx;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur();
+  box-shadow: 10rpx 0rpx 50rpx 10rpx rgba(128, 128, 128, 0.12);
 }
 
-.userinfo-block-avatar {
-  width: 100rpx;
-  height: 100rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-  overflow: hidden;
+.ruleHide {
+  height: 60rpx !important;
+  width: 60rpx !important;
+  position: absolute;
+  top: 0rpx;
+  right: -0rpx;
 }
 
-.userinfo-avatar[size] {
-  width: 100rpx;
-}
-
-
-.userinfo-avatar:after {
-  border: none;
-}
-
-.userinfo-nickname {
-  font-size: 32rpx;
-  color: #007aff;
-  background-color: white;
-  background-size: cover;
-  text-align: left;
-  padding-left: 0;
-  margin-left: 10px;
-}
-
-.userinfo-nickname::after {
-  border: none;
-}
-
-.userinfo-nickname-wrapper {
-  flex: 1;
-}
-
-.uploader, .tunnel {
-  height: auto;
-  padding: 0 0 0 40rpx;
-  flex-direction: column;
-  align-items: flex-start;
-  box-sizing: border-box;
-}
-
-.uploader-text, .tunnel-text {
-  width: 100%;
-  line-height: 52px;
-  font-size: 34rpx;
-  color: #007aff;
-}
-
-.uploader-container {
-  width: 100%;
-  height: 400rpx;
-  padding: 20rpx 20rpx 20rpx 0;
+.title {
   display: flex;
-  align-content: center;
-  justify-content: center;
-  box-sizing: border-box;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.uploader-image {
-  width: 100%;
-  height: 360rpx;
-}
-
-.tunnel {
-  padding: 0 0 0 40rpx;
-}
-
-.tunnel-text {
-  position: relative;
-  color: #222;
-  display: flex;
-  flex-direction: row;
-  align-content: center;
   justify-content: space-between;
-  box-sizing: border-box;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.tunnel-text:first-child {
-  border-top: none;
+.search {
+  border-radius: 10rpx;
+  border: 1rpx black;
+  box-shadow: darkgray 5rpx 5rpx 10rpx;
+  width: 720rpx;
+  text-align: center;
+  margin-left: 15rpx;
+  margin: 20rpx;
+  height: 60rpx;
 }
 
-.tunnel-switch {
-  position: absolute;
-  right: 20rpx;
-  top: -2rpx;
+.scrollPost {
+  height: 900rpx;
+  white-space: nowrap;
 }
 
-.disable {
-  color: #888;
+.PosterArea {
+  margin-top: 200rpx;
 }
 
-.service {
+.markerName {
+  text-align: center;
+}
+
+.begin-date {
+  text-align: center;
+
+}
+
+.end-date {
+  text-align: center;
+}
+
+.departPick {
+  text-align: center;
+}
+
+.markerPosBtn {
+  margin-left: 20rpx;
   position: fixed;
-  right: 40rpx;
-  bottom: 40rpx;
-  width: 140rpx;
-  height: 140rpx;
-  border-radius: 50%;
-  background: linear-gradient(#007aff, #0063ce);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-content: center;
+  bottom: 0rpx;
+  background: white;
+  height: 100rpx;
+
+}
+
+.markerPosBtn button {
+  display: inline-block;
+  text-align: center;
+  height: 75rpx;
+  
+}
+
+.uploader {
+  color: rgb(151, 151, 151);
+  margin-top: 5rpx;
+  border-top: 0.5rpx solid rgb(187, 186, 186);
+  padding-left: 32rpx;
+
+}
+
+.markerInfoPage button {
+  margin-top: 35rpx;
+}
+
+.selectArch {
+  background: white;
+  margin-top: 600rpx;
+  margin-left: 600rpx;
+  height: 400rpx;
+  widows: 400rpx;
+}
+
+.marker_desc {
+  color: rgb(151, 151, 151);
+  padding-left: 32rpx;
+}
+
+.markerIcon {
+  color: rgb(151, 151, 151);
+  padding-left: 32rpx;
+}
+
+.description-cell {
+  background: white;
+}
+
+.description-area {
+  margin-left: 75rpx;
+  width: 600rpx;
+}
+
+.labelView {
+  display: inline-block;
   justify-content: center;
-  transition: all 300ms ease;
+  align-items: center;
+  padding: 1rpx 10rpx;
+  width: 135rpx;
+  height: 50rpx;
+
+  font-size: 26rpx;
+  border-radius: 12rpx;
+  text-align: center;
+  margin-right: 5rpx;
+  margin-top: 15rpx;
+  margin-bottom: 15rpx;
 }
 
-.service-button {
-  position: absolute;
-  top: 40rpx;
+.FollowDialog {
+  width: 680rpx;
+  padding: 0rpx;
+  height: auto;
+  position: fixed;
+  bottom: 300rpx;
+  left: 35rpx;
+  height: 644rpx;
+  border-radius: 30rpx;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(4rpx);
+  box-shadow: 10rpx 0rpx 50rpx 12rpx rgba(200, 200, 200, 0.5);
 }
 
-.service:active {
-  box-shadow: none;
+view.weui-dialog__wrp.FollowDialog>view>view.weui-dialog__ft {
+  height: 0;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(6rpx);
+  box-shadow: 10rpx 0rpx 50rpx 15rpx rgba(255, 255, 255, 0.1);
 }
 
-.request-text {
-  padding: 20rpx 0;
-  font-size: 24rpx;
-  line-height: 36rpx;
-  word-break: break-all;
+view.weui-dialog__wrp.FollowDialog>view>view.weui-dialog__ft {
+  height: 0;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(6rpx);
+  box-shadow: 10rpx 0rpx 50rpx 15rpx rgba(255, 255, 255, 0.1);
+}
+
+.Navigation {
+  width: 65rpx;
+  height: 65rpx;
+  position: relative;
+  padding-left: 40rpx;
+}
+
+.introduce {
+  /* width: 100rpx; */
+  height: 200rpx;
+  color: black;
+  text-align: left;
+  /* border: 1rpx solid black; */
+}
+
+.selectShowPoint {
+  width: 696rpx;
+  margin: 10rpx 16rpx;
+  position: fixed;
+  top: 5rpx;
+  padding: 8rpx;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(4.5rpx);
+  box-shadow: 10rpx 0rpx 50rpx 25rpx rgba(160, 160, 160, 0.2);
+  border-radius: 20rpx;
+  justify-items: center;
+  align-items: center;
 }

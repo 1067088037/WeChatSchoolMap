@@ -1,81 +1,214 @@
-<!--index.wxml-->
-<view class="container">
+<!--pages/schoolMap/schoolMap.wxml-->
+<view class="Container" wx:if="{{!isAddedMarker}}">
 
-  <view class="userinfo">
-    <text>欢迎开发者\n常霆钰、张洁、许吴达、黄嘉婷</text>
+  <map id="myMap" style="width:{{mapWidth}}rpx;height:{{mapHeight}}rpx;" latitude="{{latitude}}"
+    longitude="{{longitude}}" scale="17" rotate="240" skew="35" markers="{{markers}}" bindmarkertap="markerstap"
+    enable-poi="{{true}}" max-scale="20" min-scale="15" bindtap="mapTap" bindupdated="onMapUpdated">
+  </map>
+
+  <!-- <image style="position:fixed;left:4rpx;top:4rpx;width:40rpx;height:40rpx" bindtap="deleteStorage" src="../../images/global/close.png"></image> -->
+
+  <!-- 选择功能页面的实现 -->
+  <view style="position:fixed; bottom:30rpx; width:750rpx;">
+    <view wx:if="{{isMoreTrue}}">
+      <view class="funcMask{{isMoreTrue?'isMoreShow':'isMoreHide'}}">
+        <view class='funcMaskContent'>
+          <view class='funcMaskText' wx:for='{{functions}}' wx:for-index='index' wx:key="index">
+            <!-- <view class="index">{{index+1}}</view> -->
+            <!-- <view style="margin-left: 26rpx ; border:1rpx solid #006699"> -->
+            <button class="item" bindtap="popup" data-item="{{item}}" wx:if="{{item!='海报'}}">{{item}}</button>
+            <button class="item" bindtap="navigatorToPosterArea" data-item="{{item}}"
+              wx:if="{{item=='海报'}}">{{item}}</button>
+            <!-- </view> -->
+          </view>
+        </view>
+      </view>
+    </view>
   </view>
+  <!-- 实现点击功能弹出相应的页面 -->
+  <page-container show="{{showPage}}" overlay="{{overlay}}" close-on-slide-down duration="{{pageDuration}}"
+    position="{{pagePosition}}" bindbeforeenter="onBeforeEnter" bindenter="onEnter" bindafterenter="onAfterEnter"
+    bindbeforeleave="onBeforeLeave" bindleave="onLeave" bindafterleave="onAfterLeave" bindclickoverlay="onClickOverlay">
+    <!-- 搜索框 -->
+    <view wx:if="{{func=='搜索'}}">
+      <input class="search" type="text" placeholder="搜索" placeholder-style="color:#566; font-size:28rpx"
+        confirm-type="search" bindconfirm="search"></input>
+    </view>
 
-  <!-- 用户 openid -->
-  <view class="userinfo">
-    <block wx:if="{{canIUseOpenData}}" class="userinfo-opendata">
-      <view class="userinfo-block-avatar" bindtap="bindViewTap">
-        <open-data type="userAvatarUrl"></open-data>
+  </page-container>
+  <!-- 筛选界面  -->
+  <view wx:if="{{func=='筛选'}}" class="selectShowPoint">
+    <block wx:for="{{archItems}}" wx:key="item" style="margin-bottom:20rpx;border-bottom:0.5rpx solid #eeeeee">
+      <view class='labelView {{item.selected ? "active" : ""}}' data-value="{{item.name}}" checked="{{item.selected}}"
+        data-index="{{index}}" bindtap="selectArchFunc" id="{{index}}"
+        style="margin-left:10rpx; margin-right:10rpx width:148rpx; border: 3rpx solid {{(item.selected)?'#ff0033':'#006699' }}; color: {{(item.selected)?'#ff0033':'#006699' }};">
+        {{item.name}}
       </view>
     </block>
-    <block wx:elif="{{!hasUserInfo}}">
-      <button 
-        wx:if="{{canIUseGetUserProfile}}" 
-        bindtap="getUserProfile"
-        class="userinfo-avatar"
-        style="background-image: url({{avatarUrl}})"
-        size="default"
-      ></button>
-      <button
-        wx:else
-        open-type="getUserInfo" 
-        bindgetuserinfo="onGetUserInfo"
-        class="userinfo-avatar"
-        style="background-image: url({{avatarUrl}})"
-        size="default"
-      ></button>
-    </block>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-block-avatar" src="{{avatarUrl}}" mode="cover"></image>
-    </block>
-    <view class="userinfo-nickname-wrapper">
-      <button class="userinfo-nickname" bindtap="onGetOpenid">点击获取 openid</button>
+  </view>
+  <!-- 关注弹窗 -->
+  <view class="FollowDialog" wx:if="{{func=='关注'}}">
+    <view class="Follow">
+      <text style="display:block;margin-left:26rpx;margin-top:36rpx;">添加关注活动的标签:</text>
+      <block wx:for="{{labelArray}}" wx:key="item" style="margin-bottom:20rpx;border-bottom:0.5rpx solid #eeeeee">
+        <view class='labelView {{item.selected ? "active" : ""}}' data-value="{{item.name}}" bindtap='AddLabel'
+          checked="{{item.selected}}" data-index="{{index}}" bindtap="selectedFollowLabel" id="{{index}}"
+          style="margin-left:20rpx; width:130rpx; border: 1rpx solid {{(item.selected)?'#ff0033':'#726B6B' }}; color: {{(item.selected)?'#ff0033':'#726B6B' }};">
+          {{item.name}}
+        </view>
+      </block>
+      <block class="selectActivityTimeBlock">
+        <mp-cells>
+          <mp-cell prop="beginTime" title="期望活动开始月份">
+            <picker mode="selector" value="{{monthIndex}}" range="{{Month}}" bindchange="bindfollowMonthChange">
+              <view class="begintime" style="text-align:center;">
+                {{Month[monthIndex]}}
+              </view>
+            </picker>
+          </mp-cell>
+          <mp-cell prop="endTime" title="期望活动结束星期">
+            <picker mode="selector" value="{{weekIndex}}" range="{{WeekDays}}" bindchange="bindfollowWeekDayChange">
+              <view class="begin-date">
+                {{WeekDays[weekIndex]}}
+              </view>
+            </picker>
+          </mp-cell>
+        </mp-cells>
+      </block>
+      <block>
+        <button type=""
+          style="text-align:center;line-height:6rpx padding:0rpx; font-size:28rpx; margin-top:14rpx ;right:10rpx;margin-right:4rpx;width:186rpx; border-radius:50rpx;border:1rpx solid #006699;color:#006699 "
+          bindtap="followActivityTap">+关注</button>
+      </block>
     </view>
   </view>
+  <!-- 建筑的简介对话框 -->
+  <view>
+    <mp-dialog title="{{buildingSelected.title}}" show="{{showBuildingDialog}}" bindbuttontap="toDetailPage"
+      buttons="{{buildingBtns}}">
+      <view class="introduce">
+        {{buildingSelected.text}}
+      </view>
+      <view class="Navigation" style="position:fixed;bottom:20">
+        <button class="navigation-btn" style="width:100%;height:100%;position:absolute;opacity:0;"
+          bindtap="navigation"></button>
+        <image src="/images/global/navigation.png" mode="scaleToFill" style="width:100%;height:100%">
+        </image>
+      </view>
+    </mp-dialog>
+  </view>
+  <!-- 是否添加标点的按钮组 -->
+  <view class="markerPosBtn" wx:if="{{showMarkerDialog}}">
+    <button style="width: 350rpx; " bindtap="cancelMarker">取消</button>
+    <button style="width: 350rpx;" bindtap="confirmMarker">确定</button>
+  </view>
+  <!-- 添加图标的实现 -->
+  <view class="moreFunctionIcon" wx:if="{{func == ''}}">
+    <image class="more" bindtap="showFunction"
+      src="{{!isMoreTrue? '/images/global/add.png' : '/images/global/close.png'}}"></image>
+  </view>
+</view>
+<!-- 输入添加的标点的内容 -->
+<view class="markerInfoPage" wx:if="{{isAddedMarker}}">
+  <view class="markerIcon" wx:if="{{markerTypes[markerType] == '活动'}}">活动图片</view>
+  <view class="markerIcon-cell">
+    <mp-uploader ext-class="uploader" title="活动上传" bindfail="uploadError" bindsuccess="uploadPhotoesSuccess"
+      select="{{selectFile}}" upload="{{uploadFile}}" files="{{files}}" max-count="9">
+    </mp-uploader>
+  </view>
+  <mp-cells title="标记点信息">
+    <!-- 输入标点的名称 -->
+    <mp-cell prop="markerPointName" title="标记点名称">
+      <input class="markerName" type="text" placeholder="请输入活动名称" placeholder-class="markerName" confirm-type="done"
+        bindinput="inputMarkerName" bindconfirm="inputMarkerName">
+      </input>
+    </mp-cell>
+    <!-- 标点开始日期 -->
+    <mp-cell prop="beginDate" title="开始日期">
+      <picker date-field="date" mode="date" value="{{bgdate}}" start="2021-05-03" end="2021-12-31"
+        bindchange="bindBeginDateChange">
+        <view class="begin-date">
+          {{bgdate}}
+        </view>
+      </picker>
+    </mp-cell>
+    <!-- 标点开始时间 -->
+    <mp-cell prop="beginTime" title="开始时间">
+      <picker date-field="time" mode="time" value="{{bgtime}}" start="12:00" end="22:00"
+        bindchange="bindBeginTimeChange">
+        <view class="begintime" style="text-align:center;">
+          {{bgtime}}
+        </view>
+      </picker>
+    </mp-cell>
+    <!-- 标点结束日期 -->
+    <mp-cell prop="endDate" title="结束日期">
+      <picker date-field="date" mode="date" value="{{endate}}" start="2021-05-03" end="2021-12-31"
+        bindchange="bindEndDateChange">
+        <view class="end-date">
+          {{endate}}
+        </view>
+      </picker>
+    </mp-cell>
+    <!-- 标点结束时间 -->
+    <mp-cell prop="endTime" title="结束时间">
+      <picker date-field="time" mode="time" value="{{edtime}}" start="08:00" end="23:00" bindchange="bindEndTimeChange">
+        <view class="begin-date">
+          {{edtime}}
+        </view>
+      </picker>
+    </mp-cell>
+    <!-- 标点的类型 -->
+    <mp-cell prop="markerType" title="标记类型">
+      <picker data-field="" mode="selector" range="{{markerTypes}}" value="{{0}}" bindchange="markerTypeChange">
+        <view class="departPick">{{markerTypes[markerType]}}</view>
+      </picker>
+    </mp-cell>
+    <!-- 标点可见性 -->
+    <mp-cell prop="visible" title="标记可见性">
+      <view wx:for="{{pickerNum}}" wx:key="item" id="{{index}}">
+        <picker data-field="" mode="selector" range="{{departmentsItem}}" value="{{0}}" bindchange="visibleChange"
+          id="{{index}}">
+          <view class="departPick">{{departmentsItem[departmentsIndex[index]]}}</view>
+        </picker>
+      </view>
+    </mp-cell>
+    <!-- 增加可见性选择 -->
+    <button class="morePicker"
+      style="width: 200rpx; text-align:center;padding:0;margin-left: 0rpx; margin-top:0rpx; display:inline-block"
+      bindtap="addPicker">+</button>
+    <button class="morePicker"
+      style="width: 200rpx; text-align:center;padding:0;margin-left: 330rpx; margin-top:0rpx;display:inline-block"
+      bindtap="deletePicker">-</button>
 
-
-  <!-- 上传图片 -->
-  <view class="uploader">
-    <view class="uploader-text" bindtap="doUpload">
-      <text>上传图片</text>
+  </mp-cells>
+  <!-- 输入标记简介 -->
+  <view class="marker_desc">标记简介</view>
+  <view class="description-cell">
+    <textarea class="description-area" name="markerDesc" placeholder="请输入标记简介" confirm-type="done"
+      bindinput="inputMarkerDesc" bindconfirm="inputMarkerDesc" maxlength="200"
+      placeholder-class="textAreaPlaceHolder"></textarea>
+    <view class="AddLabelArea">
+      <text>标签：</text>
+      <block wx:for="{{labelArray}}" wx:key="item">
+        <view class='labelView {{item.selected ? "active" : ""}}' data-value="{{item.name}}" checked="{{item.selected}}"
+          data-index="{{index}}" bindtap="selectedLabel" id="{{index}}"
+          style=" border: 1rpx solid {{(item.selected)?'#ff0033':'#726B6B' }}; color: {{(item.selected)?'#ff0033':'#726B6B' }};">
+          {{item.name}}
+        </view>
+      </block>
     </view>
-    <view class="uploader-container" wx:if="{{imgUrl}}">
-      <image class="uploader-image" src="{{imgUrl}}" mode="aspectFit" bindtap="previewImg"></image>
-    </view>
   </view>
-
-
-  <!-- 操作数据库 -->
-  <view class="uploader">
-    <navigator url="../databaseGuide/databaseGuide" open-type="navigate" class="uploader-text">
-      <text>前端操作数据库</text>
-    </navigator>
+  <!-- 输入标记图示 -->
+  <view class="markerIcon">标记图示</view>
+  <view class="markerIcon-cell">
+    <mp-uploader ext-class="uploader" title="标记图示上传" bindfail="uploadError" bindsuccess="uploadSuccess"
+      select="{{selectFile}}" upload="{{uploadFile}}" files="{{iconfiles}}" max-count="1">
+    </mp-uploader>
   </view>
-
-  <!-- 即时通信 -->
-  <view class="uploader">
-    <navigator url="../im/im" open-type="navigate" class="uploader-text">
-      <text>即时通信 Demo</text>
-    </navigator>
-  </view>
-
-  <!-- 新建云函数 -->
-  <view class="uploader">
-    <navigator url="../addFunction/addFunction" open-type="navigate" class="uploader-text">
-      <text>快速新建云函数</text>
-    </navigator>
-  </view>
-
-  <!-- 云调用 -->
-  <view class="uploader">
-    <navigator url="../openapi/openapi" open-type="navigate" class="uploader-text">
-      <text>云调用</text>
-    </navigator>
-  </view>
-
-
+  <button type="primary" bindtap="confirmTap"
+    style="box-shadow: 0rpx 6rpx 12rpx 4rpx rgba(128, 128, 128, 0.2);">确定</button>
+  <button type="default" bindtap="returnMarker"
+    style="box-shadow: 0rpx 6rpx 12rpx 4rpx rgba(128, 128, 128, 0.2);">返回</button>
+  <view style="height:40rpx"></view>
 </view>

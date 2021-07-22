@@ -1,0 +1,68 @@
+/* pages/myCenter/joinasso/joinasso.wxss */
+.asso1{
+  border-style: solid;
+            border-width: 70rpx 70rpx 70rpx 70rpx;
+            border-color:rgb(137, 218, 255) white white rgb(111, 198, 238);
+            width: 0px;
+            height: 0px;
+}
+.asso2{
+  width:450rpx;
+  height:140rpx;
+  background-color:white;
+  flex-shrink: 0;
+}
+.asso3{
+  height:140rpx;
+  width:10rpx;
+  background:gray;
+  border-width:0rpx 3rpx 0rpx 0rpx;
+  border-color:black;
+  border-style: solid;
+  flex-shrink: 0;
+}
+.wordt{
+  height: 40rpx;
+  width:508rpx;
+  position: relative;
+  right:500rpx;
+  background:black;
+  top:15rpx;
+  color:white;
+  text-indent:0.5em;
+  flex-shrink: 0;
+}
+.image1{
+  width:90rpx;
+  height:90rpx;
+  border:3rpx black solid;
+}
+.contain{
+  position: relative;
+  right:1120rpx;
+  top:10rpx;
+}
+.all1{
+  position:relative;
+  left:30rpx;
+  display: flex;
+  flex-shrink:0;
+}
+.fake5{
+  height:10rpx;
+  position:relative;
+  left:30rpx;
+  width:400rpx;
+background:white;
+border:1px solid rgb(51, 47, 47);
+    box-shadow:0px 0px 7px 3px rgba(61, 55, 55, 0.2);
+}
+.run{
+  margin:15rpx;
+}
+.classReflect{ 
+  font-size:45rpx;
+  font-style: italic;
+  -webkit-box-reflect: below 0rpx 
+  -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(255, 255, 255, 0.3))); 
+  }

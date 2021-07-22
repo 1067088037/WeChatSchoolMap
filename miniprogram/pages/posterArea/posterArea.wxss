@@ -1,0 +1,51 @@
+/* pages/posterArea/posterArea.wxss */
+.PosterArea swiper {
+  margin-top: 20rpx;
+  margin-left: 50rpx;
+}
+
+.post-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20rpx;
+  margin-left: 42rpx;
+  margin-right: 42rpx;
+  border-top: 1px solid white;
+  border-bottom: 1px;
+  background-color: #fff;
+  padding-bottom: 5px;
+}
+
+
+.senderInfo {
+  margin: 10rpx 0rpx 20rpx 10rpx
+}
+
+
+.senderInfo image {
+
+  height: 60rpx;
+  width: 60rpx;
+  vertical-align: middle;
+}
+
+.senderInfo text {
+  margin-left: 20rpx;
+  margin-bottom: 10px;
+  vertical-align: middle;
+  font-size: 26rpx;
+}
+
+.postTitle {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
+.collectOrLike image {
+
+  height: 50rpx;
+  width: 50rpx;
+}

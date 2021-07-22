@@ -1,0 +1,350 @@
+/* pages/building/building.wxss */
+.imageBanner {
+  margin-top: 20rpx;
+  width: 750rpx;
+  height: 400rpx;
+  /* margin-left: 20rpx; */
+}
+
+.hint {
+  color: rgb(187, 186, 186);
+}
+
+.imageBanner image {
+  width: 750rpx;
+}
+
+.Introduction {
+  width: 85%;
+  margin: 25rpx auto;
+  height: auto;
+  padding: 36rpx;
+  background: #c9e3df;
+  color: #289180;
+  font-weight: bold;
+  border-radius: 30rpx;
+  box-shadow: 8rpx 8rpx 30rpx 10rpx rgba(192, 192, 192, 0.5);
+}
+
+.BuildingName {
+  margin: 20rpx auto;
+  width: 400rpx;
+  align-items: center;
+  border-radius: 20rpx;
+  font-size: 42rpx;
+  font-weight: bold;
+  text-align: center;
+  background: #c9e3df;
+  color: #289180;
+  box-shadow: 4rpx 4rpx 16rpx 6rpx rgba(192, 192, 192, 0.5);
+}
+
+.deleteComment-btn {
+  background: gray;
+  height: 80rpx;
+  width: 80rpx;
+  color: white;
+  text-align: center;
+  font-size: 32rpx;
+  line-height: 80rpx;
+  border-radius: 20rpx;
+}
+
+.Navigation {
+  width: 65rpx;
+  height: 65rpx;
+  position: relative;
+  padding-left: 40rpx;
+}
+
+.StrategiesAreaButton {
+  margin-top: 20rpx;
+  display: inline-block;
+  position: relative;
+  margin-left: 45rpx;
+  width: 660rpx;
+  height: 128rpx;
+  border-radius: 55rpx;
+  border: 1rpx solid lightgray;
+  align-items: center;
+  background: snow;
+  text-align: center;
+  line-height: 128rpx;
+}
+
+._hover_class {
+  opacity: 0.9;
+  background: #eeeeee;
+}
+
+.postComment {
+  position: relative;
+  bottom: 0rpx;
+  background: snow;
+  height: 70rpx;
+  width: 750rpx;
+  border-radius: 20rpx;
+  align-items: center;
+}
+
+.postComment input {
+  margin-top: 10rpx;
+  margin-left: 5rpx;
+  position: absolute;
+  border: 3rpx solid lightgray;
+  background: lightgray;
+  border-radius: 20rpx;
+  width: 745rpx;
+  height: 50rpx;
+  align-items: center;
+  text-align: center
+}
+
+.Strategy {
+  width: 350rpx;
+  height: auto;
+}
+
+.StrategiesArea {
+  background: snow
+}
+
+.Strategies {
+  display: inline-block;
+  width: 350rpx;
+  height: auto;
+  background: white;
+  margin-left: 20rpx;
+  border-radius: 20rpx;
+  margin-top: 20rpx;
+}
+
+.StrategiesArea image {
+  width: 350rpx;
+  height: 300rpx;
+  border-radius: 15rpx;
+}
+
+.StrategiesArea text {
+  display: inline;
+  margin-left: 20rpx;
+  text-align: left;
+
+}
+
+.like-btn {
+  margin-left: 140rpx;
+  display: inline-block;
+  height: 60rpx;
+  width: 100rpx;
+  align-items: center;
+
+}
+
+.commentLlikeBtn {
+  display: inline-block;
+  height: 60rpx;
+  width: 100rpx;
+  align-items: center;
+  position: absolute;
+  right: 1rpx;
+}
+
+.StrategyLlikeBtn {
+  display: inline-block;
+  height: 80rpx;
+  width: 100rpx;
+  align-items: center;
+  margin-left: 608rpx;
+}
+
+.StrategyLlikeBtn image {
+  top: 10rpx;
+  height: 50rpx;
+  width: 50rpx;
+  position: relative;
+}
+
+.commentLlikeBtn image {
+  height: 50rpx;
+  width: 50rpx;
+  position: relative;
+}
+
+.like-btn text {
+  position: absolute;
+  margin-left: 10rpx;
+  margin-right: 10rpx;
+  padding-bottom: 20rpx;
+}
+
+.like-btn image {
+
+  height: 50rpx;
+  width: 50rpx;
+  position: relative;
+}
+
+.comment-btn {
+
+  display: inline-block;
+  height: 60rpx;
+  width: 110rpx;
+}
+
+.comment-btn image {
+  height: 50rpx;
+  width: 50rpx;
+  position: relative;
+}
+
+.input {
+  border: 2px solid gainsboro;
+  margin-top: 30rpx;
+  margin-bottom: 30rpx;
+}
+
+.addStrategy {
+  position: relative;
+}
+
+.StrategyImages {
+  margin: 10rpx auto;
+  width: 480rpx;
+  height: 480rpx;
+}
+
+.StrategyImageBanner {
+  width: 480rpx;
+  height: 480rpx;
+}
+
+.StrategyTitle {
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  font-size: 40rpx;
+  font-weight: bold;
+  /* border-bottom-style: groove; */
+}
+
+.StrategyMainBody {
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  font-size: 35rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 0.5rpx solid rgb(187, 186, 186);
+}
+
+.inputStrategyTitle {
+  margin-top: 26rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  border-bottom: 0.5rpx solid rgb(187, 186, 186);
+}
+
+.inputStrategyShortBriefIntro {
+  margin-top: 26rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  border-bottom: 0.5rpx solid rgb(187, 186, 186);
+}
+
+.inputMainBody {
+  margin-top: 16rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  border-bottom: 0.5rpx solid rgb(187, 186, 186);
+}
+
+.StrategyButtonSet {
+  position: fixed;
+  bottom: 0rpx;
+}
+
+.cancelNewStrategy {
+  display: inline-block;
+  margin-left: 20rpx;
+  border-radius: 20rpx;
+  width: 200rpx;
+}
+
+.DetailStrategyPage {
+  background-color: white;
+}
+
+.createNewStrategy {
+  width: 450rpx;
+  margin-left: 60rpx;
+  border-radius: 30rpx;
+
+  display: inline-block;
+}
+
+.uploadPicture {
+  margin-left: 15rpx;
+}
+
+.commentTitle {
+  margin-top: 15rpx;
+  margin-left: 15rpx;
+  font-size: 35rpx;
+  font-weight: bold;
+}
+
+.Comments {
+  margin-bottom: 80rpx;
+  border-bottom: 0.5rpx solid rgb(187, 186, 186);
+}
+
+.comments {
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  border-bottom: 1rpx solid #F2F2F2;
+
+}
+
+.StrategyAreaInputComment {
+  border: 2px solid gainsboro;
+  margin-top: 30rpx;
+  margin-bottom: 30rpx;
+
+  height: auto;
+}
+
+.postStrategyComment {
+  /* position: fixed; */
+  /* bottom: 0; */
+  position: fixed;
+  bottom: 0rpx;
+  background: snow;
+  height: 70rpx;
+  width: 750rpx;
+  border-radius: 20rpx;
+  align-items: center;
+}
+
+.postStrategyComment input {
+  margin-top: 10rpx;
+  margin-left: 5rpx;
+  position: absolute;
+  border: 3rpx solid lightgray;
+  background: lightgray;
+  border-radius: 20rpx;
+  width: 745rpx;
+  height: 50rpx;
+  align-items: center;
+  text-align: center
+}
+
+.buildingContainer {
+  background-color: white;
+  width: 750rpx;
+  height: 1334rpx;
+}
+
+.userAvatar {
+  border-radius: 50%;
+  width: 50rpx;
+  height: 50rpx;
+
+}

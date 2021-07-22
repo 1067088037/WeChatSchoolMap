@@ -1,1 +1,131 @@
 /* pages/message/message.wxss */
+
+/* 输入框的样式 */
+input {
+  border-radius: 10rpx;
+  border: 1rpx black;
+  box-shadow: darkgray 5rpx 5rpx 10rpx;
+  width: 720rpx;
+  text-align: center;
+  margin-left: 15rpx;
+  height: 60rpx;
+}
+
+.MessageBox {
+  border-radius: 10rpx;
+  border: 1rpx black;
+  background-color: lightgrey;
+  /* box-shadow: darkgray 5rpx 5rpx 10rpx; */
+  margin-top: 20rpx;
+  margin-left: 10rpx;
+  margin-right: 10rpx;
+  position: relative;
+}
+
+.MessageImage {
+
+  width: 110rpx;
+  height: 110rpx;
+
+}
+
+.outBoxView {
+  border-radius: 10rpx;
+  border: 1rpx black;
+  box-shadow: darkgray 5rpx 5rpx 10rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+
+.titleBox {
+  display: flex;
+}
+
+.titleText {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: large;
+}
+
+.detailText {
+  right: 12rpx;
+  position: absolute;
+  display: flex;
+  align-self: center;
+  justify-items: center;
+}
+
+.outBoxView image {
+  position: relative;
+  widows: 90rpx;
+  height: 90rpx;
+  padding: 25rpx;
+}
+
+.LifeStrategies image {
+  width: 350rpx;
+  height: 300rpx;
+}
+
+.LifeStrategies text {
+  display: inline;
+  margin-left: 20rpx;
+  text-align: center;
+
+}
+
+.imageBanner {
+  width: 100%;
+  height: 600rpx;
+}
+
+.ContentImage {
+  width: 100%;
+  height: 600rpx;
+
+  align-items: center;
+}
+
+.LifeStrategies {
+  display: inline-block;
+  width: 350rpx;
+  height: auto;
+  background: white;
+  margin-left: 20rpx;
+  border-radius: 20rpx;
+  margin-top: 20rpx;
+  align-items: center;
+}
+
+.lifeStrategy {
+  width: 350rpx;
+  height: auto;
+}
+
+._hover_list {
+  opacity: 0.9;
+  background: #eeeeee;
+}
+
+.MessageBox .span {
+  position: absolute;
+
+  right: 3rpx;
+  display: inline-block;
+  padding: 0.15em 0.4em;
+  min-width: 16rpx;
+  border-radius: 55rpx;
+  background-color: #fa5151;
+
+  color: #fff;
+  line-height: 1.0;
+  text-align: center;
+  font-size: 28rpx
+}

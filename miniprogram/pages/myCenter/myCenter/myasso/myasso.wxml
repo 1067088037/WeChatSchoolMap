@@ -1,0 +1,19 @@
+<view class="classReflect"><text class="classReflect">我的社团</text></view>
+
+<view style="display:flex" >
+<view style="width:7rpx;height:5rpx;background:black"></view>
+<view style="width:100rpx;height:5rpx;background:gray"></view>
+</view>
+<view wx:for="{{userassotitle}}" wx:for-item="a" style="margin:30rpx"> 
+
+  <navigator url="./assoX/assoX?title={{a.title}}&id={{a.id}}">
+   <view class="all1">
+  <view class="asso1"></view>
+  <view class="asso2"></view>
+  <view class="asso3"></view>
+  <view class="wordt"> <text>{{a.title}}</text></view>
+  <view class="contain"><image src="../../../../images/mycenter/个性头像.png" class="image1" mode="cover"></image></view>
+</view>
+<view class="fake5"></view>
+</navigator>
+</view>

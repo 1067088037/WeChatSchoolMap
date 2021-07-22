@@ -1,0 +1,487 @@
+/* pages/designPage/designPage.wxss */
+.search {
+  border-radius: 10rpx;
+  border: 1rpx black;
+  box-shadow: darkgray 5rpx 5rpx 10rpx;
+  width: 720rpx;
+  text-align: center;
+  margin-left: 15rpx;
+  height: 60rpx;
+}
+
+.markerName {
+  text-align: center;
+}
+
+.begin-date {
+  text-align: center;
+}
+
+.uploader {
+  color: rgb(151, 151, 151);
+  margin-top: 5rpx;
+  border: 0.5rpx solid rgb(187, 186, 186);
+  padding-left: 32rpx;
+}
+
+.labelView {
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  padding: 1rpx 10rpx;
+  width: 140rpx;
+  height: 50rpx;
+
+  font-size: 26rpx;
+  border-radius: 12rpx;
+
+  margin-right: 5rpx;
+  margin-top: 15rpx;
+}
+
+.description-area {
+  border: 0.5rpx solid rgb(187, 186, 186);
+  margin-left: 25rpx;
+  width: 700rpx;
+}
+
+.departPick {
+  text-align: center;
+}
+
+.end-date {
+  text-align: center;
+}
+
+.outBoxView {
+  border-radius: 10rpx;
+  border: 1rpx black;
+  box-shadow: darkgray 5rpx 5rpx 10rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+
+image {
+  position: relative;
+  widows: 90rpx;
+  height: 90rpx;
+  padding: 25rpx;
+}
+
+.titleBox {
+  display: flex;
+}
+
+.titleText {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: large;
+}
+
+.detailText {
+  right: 12rpx;
+  position: absolute;
+  display: flex;
+  align-self: center;
+  justify-items: center;
+}
+
+.publishedArchStrategies {
+  display: inline-block;
+  width: 710rpx;
+  height: auto;
+  background: white;
+  margin-left: 20rpx;
+  border-radius: 20rpx;
+  margin-top: 20rpx;
+  align-items: center;
+  border:0.5rpx solid #2f98e4
+}
+
+.publishedLifeStrategies {
+  display: inline-block;
+  width: 750rpx;
+  height: 100%;
+  background: white;
+  margin-left: 20rpx;
+  border-radius: 20rpx;
+  margin-top: 20rpx;
+  align-items: center;
+}
+
+._hover_list {
+  opacity: 0.9;
+  background: #eeeeee;
+}
+
+.post {
+  margin-top: 20rpx;
+  margin-bottom: 20rpx;
+  margin-left: 175rpx;
+}
+
+.postView {
+  width: 50%;
+}
+
+.cancleOrPost {
+  display: flex;
+}
+
+.cancle {
+  margin-top: 20rpx;
+  margin-left: 50rpx;
+}
+
+.cancleView {
+  width: 50%;
+}
+
+.showStrategyForArch {
+  margin-top: 40rpx;
+  text-align: left;
+  text-justify: auto;
+  width: 700rpx;
+  height: 80rpx;
+  border-radius: 8rpx;
+  margin-left: 10rpx;
+  background-color: snow;
+  box-shadow: darkgray 5rpx 5rpx 10rpx;
+}
+
+#strategyForArchBox {
+  width: 700rpx;
+  border-top: 1rpx solid #ddd;
+  overflow: hidden;
+  margin-left: 10rpx;
+  animation-fill-mode: forwards;
+  margin-top: 10rpx;
+  border-radius: 0 0 10rpx 10rpx;
+}
+
+.strategyForArchList {
+
+  border-bottom: 1rpx solid darkgray;
+
+  width: 100%;
+  height: 300rpx;
+}
+
+.strategyForArchList view {
+  border-radius: 0 0 10rpx 10rpx;
+  box-shadow: darkgray 5rpx 5rpx;
+  margin-top: 10rpx;
+  margin-bottom: 10rpx;
+  background-color: white;
+  overflow: auto;
+  white-space: nowrap;
+  height: 120rpx;
+  border-bottom: 1rpx solid #ddd;
+
+}
+
+.showStrategySchool {
+  margin-top: 20rpx;
+  text-align: left;
+  text-justify: auto;
+  width: 700rpx;
+  height: 80rpx;
+  border-radius: 8rpx;
+  margin-left: 10rpx;
+  background-color: snow;
+  box-shadow: darkgray 5rpx 5rpx 10rpx;
+}
+
+#strategyForSchoolBox {
+  width: 700rpx;
+  border-top: 1rpx solid #ddd;
+  overflow: hidden;
+  margin-left: 10rpx;
+  animation-fill-mode: forwards;
+  margin-top: 10rpx;
+  border-radius: 0 0 10rpx 10rpx;
+}
+
+.strategySchoolList {
+  border-radius: 50rpx;
+  border-bottom: 1rpx solid darkgray;
+  width: 100%;
+  height: 300rpx;
+}
+
+.strategySchoolList view {
+  border-radius: 0 0 10rpx 10rpx;
+  box-shadow: darkgray 5rpx 5rpx;
+  margin-top: 10rpx;
+  margin-bottom: 10rpx;
+  background-color: white;
+  overflow: auto;
+  white-space: nowrap;
+  height: 120rpx;
+  border-bottom: 1rpx solid #ddd;
+}
+
+.uploadPicture {
+  margin-left: 15rpx;
+}
+
+.inputStrategyTitle {
+  margin-top: 26rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  border-bottom: 0.5rpx solid rgb(187, 186, 186);
+}
+
+.inputStrategyShortBriefIntro {
+  margin-top: 26rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  border-bottom: 0.5rpx solid rgb(187, 186, 186);
+}
+
+.inputMainBody {
+  margin-top: 16rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  border-bottom: 0.5rpx solid rgb(187, 186, 186);
+}
+
+.StrategyButtonSet {
+  position: fixed;
+  bottom: 0rpx;
+}
+
+.cancelNewStrategy {
+  display: inline-block;
+  border-radius: 20rpx;
+  width: 200rpx;
+}
+
+.createNewStrategy {
+  width: 500rpx;
+  margin-left: 50rpx;
+  border-radius: 30rpx;
+  /* background: red; */
+  display: inline-block;
+}
+
+.markerPosBtn {
+  padding-left: 20rpx;
+  position: fixed;
+  bottom: 0rpx;
+  width: 750rpx;
+  background: white;
+  height: 100rpx;
+
+}
+
+.markerPosBtn button {
+
+  display: inline-block;
+  text-align: center;
+  height: 75rpx;
+  width: 20rpx;
+}
+
+.markerPosBtn {
+  padding-left: 20rpx;
+  position: fixed;
+  bottom: 0rpx;
+  width: 750rpx;
+  background: white;
+  height: 100rpx;
+
+}
+
+.markerPosBtn button {
+
+  display: inline-block;
+  text-align: center;
+  height: 75rpx;
+  width: 20rpx;
+}
+
+.markerPosBtn {
+  padding-left: 20rpx;
+  position: fixed;
+  bottom: 0rpx;
+  width: 750rpx;
+  background: white;
+  height: 100rpx;
+
+}
+
+.markerPosBtn button {
+
+  display: inline-block;
+  text-align: center;
+  height: 75rpx;
+  width: 20rpx;
+}
+
+.markerPosBtn {
+  padding-left: 20rpx;
+  position: fixed;
+  bottom: 0rpx;
+  width: 750rpx;
+  background: white;
+  height: 100rpx;
+
+}
+
+.markerPosBtn button {
+
+  display: inline-block;
+  text-align: center;
+  height: 75rpx;
+  width: 20rpx;
+}
+
+.markerPosBtn {
+  padding-left: 20rpx;
+  position: fixed;
+  bottom: 0rpx;
+  width: 750rpx;
+  background: white;
+  height: 100rpx;
+
+}
+
+.markerPosBtn button {
+
+  display: inline-block;
+  text-align: center;
+  height: 75rpx;
+  width: 20rpx;
+}
+
+.markerPosBtn {
+  padding-left: 20rpx;
+  position: fixed;
+  bottom: 0rpx;
+  width: 750rpx;
+  background: white;
+  height: 100rpx;
+
+}
+
+.markerPosBtn button {
+
+  display: inline-block;
+  text-align: center;
+  height: 75rpx;
+  width: 20rpx;
+}
+
+.markerPosBtn {
+  padding-left: 20rpx;
+  position: fixed;
+  bottom: 0rpx;
+  width: 750rpx;
+  background: white;
+  height: 100rpx;
+
+}
+
+.markerPosBtn button {
+
+  display: inline-block;
+  text-align: center;
+  height: 75rpx;
+  width: 20rpx;
+}
+
+.markerPosBtn {
+  padding-left: 20rpx;
+  position: fixed;
+  bottom: 0rpx;
+  width: 750rpx;
+  background: white;
+  height: 100rpx;
+
+}
+
+.markerPosBtn button {
+
+  display: inline-block;
+  text-align: center;
+  height: 75rpx;
+  width: 20rpx;
+}
+
+@keyframes slidedown {
+  from {
+    height: 0;
+  }
+
+  to {
+    height: 300rpx;
+  }
+}
+
+@keyframes slideup {
+  from {
+    height: 300rpx;
+  }
+
+  to {
+    height: 0;
+  }
+}
+
+.open {
+  animation: slidedown 1s;
+}
+
+.close {
+  animation: slideup 1s;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.post-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20rpx;
+  margin-left: 40rpx;
+  margin-right: 40rpx;
+  border-top: 1px solid white;
+  border-bottom: 1px;
+  background-color: #fff;
+  padding-bottom: 5px;
+}
+
+.postTitle {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
+.changeOrDelete {
+  display: flex;
+}
+
+.changeOrDelete .change {
+  width: 50%;
+  text-align: left;
+}
+
+.changeOrDelete .delete {
+  width: 50%;
+  text-align: right;
+}

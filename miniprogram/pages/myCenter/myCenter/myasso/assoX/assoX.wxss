@@ -1,0 +1,76 @@
+.link:before{content: "/";margin:0 24rpx;color: grey;}   
+.link:first-child:before{display:none;}  
+.header_right{
+  display:flex;
+}
+.userinfo-avatar {
+  overflow: hidden;
+  width: 100rpx;
+  height: 100rpx;
+  margin: 20rpx;
+  border:3px solid rgba(255, 255, 255, 1);
+    box-shadow:0px 0px 7px 3px rgba(61, 55, 55, 0.2);
+  border-radius: 50%;
+}
+
+.btnImg {
+  margin-right: 8rpx;
+  width: 46rpx;
+  height: 46rpx;
+}
+
+.btn1::after {
+  border-radius: 98rpx;
+  border: 0; 
+}
+.FollowDialog{
+  margin:10rpx;
+  width:680rpx;
+  padding:20rpx;
+  position: relative;
+  height: auto;
+  border: 1rpx solid rgb(151, 151, 151);
+  border-radius: 40rpx;
+  background:white;
+  display:block;
+}
+.labelView{
+  margin:25rpx;
+  text-align: center;
+  width:auto;
+  height:auto;
+  color:gray;
+  text-align:center;
+  padding:0rpx;
+   font-size:28rpx;
+   border-radius:10rpx;border:1rpx solid #1c1f20;
+   color:gray;
+}
+.button1{
+  margin:20rpx;
+}
+.fake{
+  position:relative;
+  left:35rpx;
+  width:60rpx;
+  height:3rpx;
+  background:black;
+}
+.fake2{
+  margin:10rpx;
+  height:30rpx;
+  width:3rpx;
+  background:rgb(49, 47, 47);
+}
+.fake3{
+  height:2rpx;
+  width:300rpx;
+  background:rgb(44, 40, 40);
+}
+.permission{
+  border:2rpx rgb(95, 80, 67) solid;
+  border-radius: 10rpx;
+  color:rgb(95, 80, 67);
+  position:relative;
+  left:350rpx;
+}
